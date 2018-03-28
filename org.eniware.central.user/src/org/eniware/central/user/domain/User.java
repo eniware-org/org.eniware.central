@@ -22,7 +22,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * A user domain object.
  * 
- * @author matt
  * @version 1.4
  */
 public class User extends BaseEntity implements UserInfo {

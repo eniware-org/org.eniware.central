@@ -10,8 +10,6 @@ import java.io.Serializable;
 
 /**
  * Base implementation of a String-based {@link Identity}.
- * 
- * @author matt
  * @version $Revision$
  */
 public abstract class BaseStringIdentity implements Cloneable, Serializable, Identity<String> {

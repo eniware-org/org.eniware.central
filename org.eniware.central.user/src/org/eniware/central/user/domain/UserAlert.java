@@ -29,8 +29,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * <li>location <em>L</em> posted value <em>V</em> for property <em>A</em> less
  * than <em>T</em></li>
  * </ul>
- * 
- * @author matt
+ *
  * @version 1.0
  */
 @JsonPropertyOrder({ "id", "created", "userId", "nodeId", "type", "status", "validTo", "options" })

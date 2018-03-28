@@ -10,8 +10,6 @@ import org.eniware.central.domain.AppConfiguration;
 
 /**
  * Common API for exposing configuration data within applications.
- * 
- * @author matt
  * @version 1.0
  * @since 1.35
  */

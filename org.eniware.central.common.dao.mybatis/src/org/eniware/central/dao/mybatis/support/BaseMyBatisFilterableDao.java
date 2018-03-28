@@ -23,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Base MyBatis {@link FilterableDao} implementation.
- * 
- * @author matt
  * @version 1.1
  */
 public abstract class BaseMyBatisFilterableDao<T extends Entity<PK>, M extends FilterMatch<PK>, F extends Filter, PK extends Serializable>

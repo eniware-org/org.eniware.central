@@ -8,8 +8,6 @@ package org.eniware.central.domain;
 
 /**
  * An API for specifying a collection ordering.
- * 
- * @author matt
  * @version 1.1
  */
 public interface SortDescriptor {

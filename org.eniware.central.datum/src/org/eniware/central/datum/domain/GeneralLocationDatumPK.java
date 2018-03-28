@@ -12,8 +12,7 @@ import org.joda.time.DateTime;
 
 /**
  * Primary key for a general location datum.
- * 
- * @author matt
+ *
  * @version 1.1
  */
 public class GeneralLocationDatumPK

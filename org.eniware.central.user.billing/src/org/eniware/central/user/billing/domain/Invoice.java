@@ -14,7 +14,6 @@ import org.eniware.central.domain.Entity;
 /**
  * API for an invoice.
  * 
- * @author matt
  * @version 1.1
  */
 public interface Invoice extends Entity<String> {

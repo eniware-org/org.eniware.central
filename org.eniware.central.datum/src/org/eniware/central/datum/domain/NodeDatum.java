@@ -9,7 +9,6 @@ package org.eniware.central.datum.domain;
 /**
  * Basic node-level NodeDatum API.
  *
- * @author matt
  * @version $Revision$ $Date$
  */
 public interface NodeDatum extends Datum {

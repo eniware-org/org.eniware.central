@@ -10,8 +10,6 @@ import org.eniware.central.domain.WeatherSource;
 
 /**
  * DAO API for WeatherSource.
- * 
- * @author matt
  * @version $Revision$
  */
 public interface WeatherSourceDao extends GenericDao<WeatherSource, Long> {

@@ -11,8 +11,7 @@ import java.util.TimeZone;
 
 /**
  * Bean for a new node request details.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class NewNodeRequest {

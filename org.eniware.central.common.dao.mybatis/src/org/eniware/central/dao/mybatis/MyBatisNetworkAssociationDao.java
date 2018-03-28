@@ -17,8 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * MyBatis implementation of {@link NetworkAssociationDao}.
- * 
- * @author matt
  * @version 1.0
  */
 public class MyBatisNetworkAssociationDao extends BaseMyBatisDao implements NetworkAssociationDao {

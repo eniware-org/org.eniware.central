@@ -11,8 +11,6 @@ package org.eniware.central.domain;
  * 
  * Although this class extends {@link SolarNodeMetadata} that is merely an
  * implementation detail.
- * 
- * @author matt
  * @version 1.0
  * @since 1.32
  */

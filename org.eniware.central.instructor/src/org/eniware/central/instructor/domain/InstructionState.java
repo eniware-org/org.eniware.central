@@ -9,7 +9,6 @@ package org.eniware.central.instructor.domain;
 /**
  * An instruction state.
  * 
- * @author matt
  * @version $Revision$
  */
 public enum InstructionState {

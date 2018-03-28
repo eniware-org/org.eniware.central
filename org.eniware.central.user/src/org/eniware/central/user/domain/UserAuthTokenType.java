@@ -9,7 +9,6 @@ package org.eniware.central.user.domain;
 /**
  * Enum for {@link UserAuthToken} type.
  * 
- * @author matt
  * @version 1.0
  */
 public enum UserAuthTokenType {

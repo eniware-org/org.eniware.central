@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * A triggered alert condition.
  * 
- * @author matt
  * @version 1.1
  */
 public class UserAlertSituation extends BaseEntity {

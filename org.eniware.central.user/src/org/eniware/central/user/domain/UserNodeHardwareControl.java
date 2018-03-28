@@ -14,7 +14,6 @@ import org.eniware.central.domain.HardwareControl;
  * 
  * <p>This defines a relationship between a node control and a HardwareControl entity.</p>
  * 
- * @author matt
  * @version $Revision$
  */
 public class UserNodeHardwareControl extends BaseEntity {

@@ -13,8 +13,6 @@ import org.eniware.central.domain.WeatherLocation;
 
 /**
  * DAO API for WeatherLocation.
- * 
- * @author matt
  * @version $Revision$
  */
 public interface WeatherLocationDao extends GenericDao<WeatherLocation, Long>,

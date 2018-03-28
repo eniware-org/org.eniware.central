@@ -17,7 +17,6 @@ import java.util.List;
  * to support APIs that can localize objects based on a requested locale.
  * </p>
  * 
- * @author matt
  * @version 1.0
  */
 public interface LocalizedInvoiceItemInfo {

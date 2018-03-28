@@ -11,8 +11,7 @@ import org.joda.time.DateTime;
 
 /**
  * Filter API for {@link GeneralNodeDatum}.
- * 
- * @author matt
+ *
  * @version 1.2
  */
 public interface GeneralNodeDatumFilter extends Filter {

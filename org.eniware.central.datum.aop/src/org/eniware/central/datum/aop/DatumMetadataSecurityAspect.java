@@ -32,8 +32,7 @@ import org.springframework.util.AntPathMatcher;
 
 /**
  * Security AOP support for {@link DatumMetadataBiz}.
- * 
- * @author matt
+ *
  * @version 1.2
  */
 @Aspect

@@ -22,8 +22,7 @@ import org.springframework.util.AntPathMatcher;
 
 /**
  * Security enforcing AOP aspect for {@link UserMetadataBiz}.
- * 
- * @author matt
+ *
  * @version 1.0
  * @since 1.7
  */

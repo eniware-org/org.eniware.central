@@ -11,8 +11,6 @@ import org.joda.time.DateTime;
 
 /**
  * Base class for SolarNetwork entities using string primary keys.
- * 
- * @author matt
  * @version 1.0
  */
 public class BaseStringEntity extends BaseStringIdentity implements Entity<String>, Cloneable,

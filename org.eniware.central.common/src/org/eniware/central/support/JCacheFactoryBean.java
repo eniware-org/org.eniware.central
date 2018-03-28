@@ -23,8 +23,6 @@ import org.springframework.beans.factory.InitializingBean;
 
 /**
  * Factory bean for {@link Cache} instances.
- * 
- * @author matt
  * @version 1.0
  */
 public class JCacheFactoryBean<K, V> implements FactoryBean<Cache<K, V>>, InitializingBean {

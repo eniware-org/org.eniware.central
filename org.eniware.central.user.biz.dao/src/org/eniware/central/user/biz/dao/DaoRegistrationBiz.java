@@ -115,7 +115,6 @@ import net.sf.ehcache.Element;
  * <dd>The {@link PasswordEncoder} to use for encrypting passwords.</dd>
  * </dl>
  * 
- * @author matt
  * @version 1.8
  */
 public class DaoRegistrationBiz implements RegistrationBiz {

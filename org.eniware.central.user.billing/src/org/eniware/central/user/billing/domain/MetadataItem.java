@@ -9,7 +9,6 @@ package org.eniware.central.user.billing.domain;
 /**
  * A key/value style metadata object.
  * 
- * @author matt
  * @version 1.0
  */
 public interface MetadataItem {

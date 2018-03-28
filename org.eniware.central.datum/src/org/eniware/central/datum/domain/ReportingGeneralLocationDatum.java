@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * Extension of {@link GeneralLocationDatum} with some additional properties
  * geared towards reporting.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class ReportingGeneralLocationDatum extends GeneralLocationDatum implements

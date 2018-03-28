@@ -25,8 +25,7 @@ import net.solarnetwork.web.domain.Response;
 
 /**
  * REST API for the SolarNode Image Maker app.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 @RestController

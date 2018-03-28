@@ -8,8 +8,7 @@ package org.eniware.central.datum.domain;
 
 /**
  * Domain object for a unit of generation data collected from a node.
- * 
- * @author matt
+ *
  * @version $Revision$ $Date$
  */
 public class PowerDatum extends BaseNodeDatum implements LocationDatum {

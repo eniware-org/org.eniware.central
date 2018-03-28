@@ -40,7 +40,6 @@ import net.solarnetwork.web.domain.Response;
  * returned to the view.
  * </p>
  * 
- * @author matt
  * @version 2.2
  */
 @Controller("v1ReportableIntervalController")

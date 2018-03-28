@@ -22,8 +22,6 @@ import org.springframework.util.AntPathMatcher;
 
 /**
  * Security AOP support for {@link SolarNodeMetadataBiz}.
- * 
- * @author matt
  * @version 1.0
  */
 @Aspect

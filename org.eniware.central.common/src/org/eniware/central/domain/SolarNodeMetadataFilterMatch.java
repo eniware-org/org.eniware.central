@@ -8,8 +8,6 @@ package org.eniware.central.domain;
 
 /**
  * API for a {@link SolarNodeMetadata} search or filter match result.
- * 
- * @author matt
  * @version 1.0
  * @since 1.32
  */

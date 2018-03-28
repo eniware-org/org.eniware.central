@@ -11,7 +11,6 @@ import java.io.Serializable;
 /**
  * Helper class for instruction parameters.
  * 
- * @author matt
  * @version 1.1
  */
 public class InstructionParameter implements Serializable {

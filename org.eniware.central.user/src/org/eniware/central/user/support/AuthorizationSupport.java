@@ -33,7 +33,6 @@ import org.springframework.util.PathMatcher;
 /**
  * Helper class for authorization needs, e.g. aspect implementations.
  * 
- * @author matt
  * @version 1.4
  */
 public abstract class AuthorizationSupport {

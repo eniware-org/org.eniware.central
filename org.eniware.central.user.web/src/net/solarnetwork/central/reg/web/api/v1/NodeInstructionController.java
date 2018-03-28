@@ -26,7 +26,6 @@ import net.solarnetwork.web.domain.Response;
 /**
  * Controller for node instruction web service API.
  * 
- * @author matt
  * @version 1.2
  */
 @Controller("v1nodeInstructionController")

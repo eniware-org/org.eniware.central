@@ -12,8 +12,7 @@ import org.eniware.central.domain.BaseEntity;
 
 /**
  * Abstract base class for {@link NodeDatum} implementations.
- *
- * @author matt
+ 
  * @version $Revision$ $Date$
  */
 public abstract class BaseDatum extends BaseEntity implements Datum, Cloneable, Serializable {

@@ -12,8 +12,6 @@ import org.eniware.central.domain.SolarLocation;
 
 /**
  * DAO API for Location.
- * 
- * @author matt
  * @version 1.3
  */
 public interface SolarLocationDao extends GenericDao<SolarLocation, Long>,

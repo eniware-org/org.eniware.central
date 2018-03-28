@@ -12,7 +12,6 @@ import org.joda.time.LocalDate;
 /**
  * Usage records associated with a subscription time range.
  * 
- * @author matt
  * @version 1.0
  */
 public class SubscriptionUsageRecords {

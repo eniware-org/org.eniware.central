@@ -25,7 +25,6 @@ import net.solarnetwork.web.domain.Response;
 /**
  * Remote authentication for nodes.
  * 
- * @author matt
  * @version 1.2
  */
 @Controller("v1authenticationController")

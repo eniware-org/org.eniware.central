@@ -12,8 +12,7 @@ import org.eniware.central.domain.Filter;
 
 /**
  * Filter for Instruction entities.
- * 
- * @author matt
+ *
  * @version 1.2
  */
 public interface InstructionFilter extends Filter {

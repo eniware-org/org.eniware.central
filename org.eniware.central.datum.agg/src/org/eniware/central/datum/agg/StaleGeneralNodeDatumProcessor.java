@@ -29,8 +29,7 @@ import org.springframework.jdbc.core.JdbcOperations;
  * 
  * If {@code taskCount} is higher than {@code 1} then {@code taskCount} threads
  * will be spawned and each process {@code maximumRowCount / taskCount} rows.
- * 
- * @author matt
+ *
  * @version 1.1
  */
 public class StaleGeneralNodeDatumProcessor extends StaleDatumProcessor {

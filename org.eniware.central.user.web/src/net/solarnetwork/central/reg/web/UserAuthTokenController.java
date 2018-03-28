@@ -33,8 +33,7 @@ import net.solarnetwork.web.domain.Response;
 
 /**
  * Controller for user authorization ticket management.
- * 
- * @author matt
+ *
  * @version 1.2
  */
 @Controller

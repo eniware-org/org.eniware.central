@@ -13,8 +13,7 @@ import org.joda.time.LocalTime;
 /**
  * Extension of {@link HardwareControlDatum} with some additional properties
  * geared towards reporting.
- * 
- * @author matt
+ *
  * @version $Revision$
  */
 public class ReportingHardwareControlDatum extends HardwareControlDatum

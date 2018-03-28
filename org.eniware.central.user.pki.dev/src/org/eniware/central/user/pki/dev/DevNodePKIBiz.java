@@ -41,7 +41,6 @@ import org.springframework.util.FileCopyUtils;
 /**
  * Developer implementation of {@link NodePKIBiz}.
  * 
- * @author matt
  * @version 1.2
  */
 public class DevNodePKIBiz implements NodePKIBiz {

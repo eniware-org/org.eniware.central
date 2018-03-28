@@ -43,7 +43,6 @@ import net.solarnetwork.web.security.AuthorizationV2Builder;
 /**
  * Cloud based implementation of {@link SolarNodeImageMakerBiz}.
  * 
- * @author matt
  * @version 1.0
  */
 public class CloudSolarNodeImageMakerBiz implements SolarNodeImageMakerBiz, MaintenanceSubscriber {

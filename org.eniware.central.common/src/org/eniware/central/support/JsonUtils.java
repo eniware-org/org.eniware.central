@@ -24,8 +24,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Utilities for JSON data.
- * 
- * @author matt
  * @version 1.2
  */
 public final class JsonUtils {

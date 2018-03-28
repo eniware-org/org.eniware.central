@@ -10,8 +10,6 @@ import java.math.BigDecimal;
 
 /**
  * Information describing the physical location of an object.
- * 
- * @author matt
  * @version 1.2
  */
 public interface Location extends Filter {

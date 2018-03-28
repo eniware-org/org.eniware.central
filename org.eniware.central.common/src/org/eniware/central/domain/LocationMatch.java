@@ -10,8 +10,6 @@ import java.math.BigDecimal;
 
 /**
  * API for Location search results.
- * 
- * @author matt
  * @version 1.2
  */
 public interface LocationMatch extends EntityMatch {

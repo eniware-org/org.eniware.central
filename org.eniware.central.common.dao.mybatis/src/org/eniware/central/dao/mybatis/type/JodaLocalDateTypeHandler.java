@@ -19,8 +19,6 @@ import org.joda.time.LocalDate;
 /**
  * Implementation of {@link TypeHandler} for dealing with Joda Time
  * {@link LocalDate} objects.
- * 
- * @author matt
  * @version 1.0
  */
 public class JodaLocalDateTypeHandler extends BaseTypeHandler<LocalDate> {

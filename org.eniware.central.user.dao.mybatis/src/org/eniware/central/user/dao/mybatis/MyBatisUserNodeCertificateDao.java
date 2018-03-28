@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * MyBatis implementation of {@link UserNodeCertificateDao}.
  * 
- * @author matt
  * @version 1.0
  */
 public class MyBatisUserNodeCertificateDao extends

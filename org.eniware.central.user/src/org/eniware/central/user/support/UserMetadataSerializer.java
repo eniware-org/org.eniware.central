@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 /**
  * JSON serializer for {@link UserMetadata}.
  * 
- * @author matt
  * @version 1.1
  */
 public class UserMetadataSerializer extends StdSerializer<UserMetadata> {

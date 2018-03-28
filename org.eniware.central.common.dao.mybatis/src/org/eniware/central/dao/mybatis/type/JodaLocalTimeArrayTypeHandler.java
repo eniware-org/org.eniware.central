@@ -17,8 +17,6 @@ import org.joda.time.LocalTime;
 
 /**
  * Array handler for {@link LocalTime} objects stored as {@link Time} objects.
- * 
- * @author matt
  * @version 1.0
  */
 public class JodaLocalTimeArrayTypeHandler extends BaseArrayTypeHandler {

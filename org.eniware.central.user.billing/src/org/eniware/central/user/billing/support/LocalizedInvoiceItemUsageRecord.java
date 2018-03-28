@@ -17,7 +17,6 @@ import org.eniware.central.user.billing.domain.LocalizedInvoiceItemUsageRecordIn
 /**
  * Localized version of {@link InvoiceItemUsageRecord}.
  * 
- * @author matt
  * @version 1.0
  */
 public class LocalizedInvoiceItemUsageRecord

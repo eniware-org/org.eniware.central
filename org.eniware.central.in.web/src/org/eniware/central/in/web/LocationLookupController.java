@@ -34,8 +34,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Web access to PriceLocation data.
- * 
- * @author matt
+ *
  * @version 1.2
  */
 @Controller

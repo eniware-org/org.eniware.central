@@ -22,7 +22,6 @@ import org.springframework.util.MimeType;
 /**
  * Delegating implementation of {@link BillingBiz}, mostly to help with AOP.
  * 
- * @author matt
  * @version 1.1
  */
 public class DelegatingBillingBiz implements BillingBiz {

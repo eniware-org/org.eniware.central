@@ -25,7 +25,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * set.
  * </p>
  * 
- * @author matt
  * @version 1.1
  */
 public final class ReportableInterval {

@@ -11,7 +11,6 @@ import java.math.BigInteger;
 /**
  * Details about a certificate in Dogtag.
  * 
- * @author matt
  * @version 1.0
  */
 public class DogtagCertificateData {

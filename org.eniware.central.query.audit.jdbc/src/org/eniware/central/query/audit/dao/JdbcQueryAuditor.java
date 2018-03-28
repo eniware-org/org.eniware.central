@@ -36,7 +36,6 @@ import org.springframework.jdbc.core.JdbcOperations;
  * {@link QueryAuditor} implementation that uses JDBC statements to update audit
  * data.
  * 
- * @author matt
  * @version 1.0
  */
 public class JdbcQueryAuditor implements QueryAuditor {

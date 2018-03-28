@@ -8,8 +8,6 @@ package org.eniware.central.scheduler;
 
 /**
  * Status for the scheduler.
- * 
- * @author matt
  * @version 1.0
  * @since 1.37
  */

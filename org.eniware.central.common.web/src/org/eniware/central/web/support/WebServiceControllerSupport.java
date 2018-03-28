@@ -39,8 +39,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 
 /**
  * A base class to support web service style controllers.
- * 
- * @author matt
+
  * @version 1.7
  */
 public abstract class WebServiceControllerSupport {

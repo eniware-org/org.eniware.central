@@ -21,8 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * MyBatis implementation of {@link UserNodeDao}.
- * 
- * @author matt
+ *
  * @version 1.1
  */
 public class MyBatisUserNodeDao extends BaseMyBatisGenericDao<UserNode, Long> implements UserNodeDao {

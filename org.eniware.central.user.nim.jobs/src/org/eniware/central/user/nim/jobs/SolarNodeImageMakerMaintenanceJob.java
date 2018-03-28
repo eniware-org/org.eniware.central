@@ -19,7 +19,6 @@ import org.osgi.service.event.EventAdmin;
 /**
  * Periodic job to perform maintenance on registered NIM services.
  * 
- * @author matt
  * @version 1.0
  */
 public class SolarNodeImageMakerMaintenanceJob extends JobSupport {

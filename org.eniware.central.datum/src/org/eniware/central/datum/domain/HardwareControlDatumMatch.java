@@ -10,8 +10,7 @@ import org.eniware.central.domain.EntityMatch;
 
 /**
  * {@link EntityMatch} for {@link HardwareControlDatum}.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class HardwareControlDatumMatch extends HardwareControlDatum implements EntityMatch {

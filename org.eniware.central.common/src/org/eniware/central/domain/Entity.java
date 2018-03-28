@@ -10,8 +10,6 @@ import org.joda.time.DateTime;
 
 /**
  * Base domain object API.
- * 
- * @author matt
  * @version $Id$
  */
 public interface Entity<PK> extends Identity<PK> {

@@ -9,7 +9,6 @@ package org.eniware.central.user.billing.killbill.domain;
 /**
  * A tag associated with some object, such as an account.
  * 
- * @author matt
  * @version 1.0
  */
 public class Tag {

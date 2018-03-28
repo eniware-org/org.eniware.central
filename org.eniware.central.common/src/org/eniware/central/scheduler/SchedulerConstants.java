@@ -23,8 +23,6 @@ package org.eniware.central.scheduler;
  * {@link #JOB_MAX_WAIT} milliseconds (using a default value if this is not
  * specified on the job request), after which it will time out.
  * </p>
- * 
- * @author matt
  * @version 1.0
  */
 public final class SchedulerConstants {

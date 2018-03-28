@@ -29,7 +29,6 @@ import net.solarnetwork.web.domain.Response;
 /**
  * Controller for read-only node metadata access.
  * 
- * @author matt
  * @version 1.0
  */
 @Controller("v1NodeMetadataController")

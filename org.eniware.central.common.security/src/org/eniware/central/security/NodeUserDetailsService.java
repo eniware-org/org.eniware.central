@@ -18,8 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 /**
  * Implementation of {@link UserDetailsService} for X.509 authenticated nodes.
- * 
- * @author matt
+
  * @version $Revision$
  */
 public class NodeUserDetailsService implements UserDetailsService {

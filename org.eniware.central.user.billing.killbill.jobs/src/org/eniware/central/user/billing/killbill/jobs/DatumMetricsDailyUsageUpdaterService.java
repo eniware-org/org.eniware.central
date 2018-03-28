@@ -109,7 +109,6 @@ import org.slf4j.LoggerFactory;
  * for.
  * </p>
  * 
- * @author matt
  * @version 1.0
  */
 public class DatumMetricsDailyUsageUpdaterService {

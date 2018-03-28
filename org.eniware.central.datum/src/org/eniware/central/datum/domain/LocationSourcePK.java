@@ -10,8 +10,7 @@ import java.io.Serializable;
 
 /**
  * Primary key based on a location ID and source ID.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class LocationSourcePK implements Serializable, Cloneable, Comparable<LocationSourcePK> {

@@ -29,7 +29,6 @@ import org.joda.time.DateTime;
 /**
  * API for querying business logic.
  * 
- * @author matt
  * @version 2.0
  */
 public interface QueryBiz {

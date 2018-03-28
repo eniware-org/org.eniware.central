@@ -10,8 +10,6 @@ import org.eniware.domain.NetworkAssociation;
 
 /**
  * DAO API for network association support.
- * 
- * @author matt
  * @version 1.0
  */
 public interface NetworkAssociationDao {

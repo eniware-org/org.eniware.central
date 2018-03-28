@@ -13,7 +13,6 @@ import org.osgi.service.event.EventAdmin;
 /**
  * Job to execute the {@link DatumMetricsDailyUsageUpdaterService}.
  * 
- * @author matt
  * @version 1.0
  */
 public class DatumMetricsDailyUsageUpdaterJob extends JobSupport {

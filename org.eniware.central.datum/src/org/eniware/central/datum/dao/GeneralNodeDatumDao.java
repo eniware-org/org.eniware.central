@@ -22,8 +22,7 @@ import org.joda.time.ReadableInterval;
 
 /**
  * DAO API for {@link GeneralNodeDatum}.
- * 
- * @author matt
+ 
  * @version 1.1
  */
 public interface GeneralNodeDatumDao extends GenericDao<GeneralNodeDatum, GeneralNodeDatumPK>,

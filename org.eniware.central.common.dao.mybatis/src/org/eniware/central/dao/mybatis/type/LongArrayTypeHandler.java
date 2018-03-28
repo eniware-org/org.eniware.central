@@ -10,8 +10,6 @@ import org.apache.ibatis.type.TypeHandler;
 
 /**
  * {@link TypeHandler} for Array of BIGINT types.
- * 
- * @author matt
  * @version 1.0
  */
 public class LongArrayTypeHandler extends BaseArrayTypeHandler {

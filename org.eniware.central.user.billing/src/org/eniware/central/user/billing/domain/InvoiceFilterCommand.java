@@ -17,7 +17,6 @@ import org.eniware.central.support.MutableSortDescriptor;
 /**
  * Filter support for invoice actions.
  * 
- * @author matt
  * @version 1.0
  */
 public class InvoiceFilterCommand extends FilterSupport implements InvoiceFilter {

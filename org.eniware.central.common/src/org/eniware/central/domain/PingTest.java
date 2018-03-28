@@ -11,8 +11,6 @@ import org.omg.CORBA.Any;
 /**
  * API for a service that be used to verify the status of some specific part of
  * the SolarNetwork system.
- * 
- * @author matt
  * @version 1.0
  */
 public interface PingTest {

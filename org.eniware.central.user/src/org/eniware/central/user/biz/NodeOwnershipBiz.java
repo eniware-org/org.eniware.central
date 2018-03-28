@@ -14,7 +14,6 @@ import org.eniware.central.user.domain.UserNodeTransfer;
 /**
  * API for node owner tasks.
  * 
- * @author matt
  * @version 1.0
  */
 public interface NodeOwnershipBiz {

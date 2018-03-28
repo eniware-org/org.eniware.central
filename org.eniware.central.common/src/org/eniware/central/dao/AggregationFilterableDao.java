@@ -19,8 +19,6 @@ import org.eniware.central.domain.SortDescriptor;
  *        the result match type
  * @param <F>
  *        the filter type
- * 
- * @author matt
  * @version 1.0
  */
 public interface AggregationFilterableDao<M, F extends AggregationFilter> {

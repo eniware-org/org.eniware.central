@@ -12,8 +12,6 @@ import org.joda.time.DateTime;
 /**
  * Base implementation of {@link Entity} using a comparable, serializable
  * primary key.
- * 
- * @author matt
  * @version 1.0
  * @since 1.34
  */

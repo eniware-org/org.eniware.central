@@ -10,8 +10,6 @@ import java.util.Map;
 
 /**
  * API for common application configuration elements.
- * 
- * @author matt
  * @version 1.0
  * @since 1.35
  */

@@ -19,8 +19,6 @@ import org.joda.time.DateTime;
 /**
  * {@link TypeHandler} for {@link DateTime} objects mapped to {@code TIMESTAMP}
  * columns.
- * 
- * @author matt
  * @version 1.0
  */
 public class JodaDateTimeTypeHandler extends BaseTypeHandler<DateTime> {

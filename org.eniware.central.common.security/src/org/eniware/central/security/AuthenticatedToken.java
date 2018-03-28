@@ -11,8 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * {@link SecurityUser} implementation for authenticated tokens.
- * 
- * @author matt
+ 
  * @version 1.1
  */
 public class AuthenticatedToken extends User implements SecurityToken {

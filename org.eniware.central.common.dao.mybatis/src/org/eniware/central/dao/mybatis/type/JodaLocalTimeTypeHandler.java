@@ -22,8 +22,6 @@ import org.joda.time.ReadablePartial;
 /**
  * Implementation of {@link TypeHandler} for dealing with Joda Time
  * {@link LocalTime} objects.
- * 
- * @author matt
  * @version 1.0
  */
 public class JodaLocalTimeTypeHandler extends BaseTypeHandler<LocalTime> {

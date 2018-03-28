@@ -42,7 +42,6 @@ import org.springframework.util.MimeType;
 /**
  * Killbill implementation of {@link BillingSystem}.
  * 
- * @author matt
  * @version 1.1
  */
 public class KillbillBillingSystem implements BillingSystem {

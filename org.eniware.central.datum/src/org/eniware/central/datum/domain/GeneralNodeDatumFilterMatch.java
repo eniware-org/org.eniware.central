@@ -10,8 +10,7 @@ import org.eniware.central.domain.FilterMatch;
 
 /**
  * API for a GeneralNodeDatum search or filter match result.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public interface GeneralNodeDatumFilterMatch extends FilterMatch<GeneralNodeDatumPK> {

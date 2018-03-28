@@ -8,8 +8,7 @@ package org.eniware.central.user.pki.dogtag;
 
 /**
  * Agent info on a certificate request in Dogtag.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class DogtagAgentCertRequestInfo {

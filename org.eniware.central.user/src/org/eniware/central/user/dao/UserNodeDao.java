@@ -18,7 +18,6 @@ import org.eniware.central.user.domain.UserNodeTransfer;
 /**
  * DAO API for UserNode objects.
  * 
- * @author matt
  * @version 1.3
  */
 public interface UserNodeDao extends GenericDao<UserNode, Long> {

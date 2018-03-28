@@ -11,8 +11,6 @@ import java.io.Serializable;
 /**
  * Base implementation of {@link Identity} using a comparable, serializable
  * primary key.
- * 
- * @author matt
  * @version 1.0
  * @since 1.34
  */

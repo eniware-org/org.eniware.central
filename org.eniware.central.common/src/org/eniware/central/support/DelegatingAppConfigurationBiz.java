@@ -12,8 +12,6 @@ import org.eniware.central.domain.AppConfiguration;
 /**
  * Implementation of {@link AppConfigurationBiz} that delegates to another
  * {@link AppConfigurationBiz}. Designed for use with AOP.
- * 
- * @author matt
  * @version 1.0
  * @since 1.35
  */

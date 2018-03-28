@@ -17,8 +17,6 @@ package org.eniware.central.mail;
  *   <dt></dt>
  *   <dd></dd>
  * </dl>
- * 
- * @author matt
  * @version $Id$
  */
 public interface MailService {

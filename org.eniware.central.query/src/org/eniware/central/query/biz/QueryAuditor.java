@@ -14,7 +14,6 @@ import org.eniware.central.domain.FilterResults;
 /**
  * API for auditing query events in SolarNetwork.
  * 
- * @author matt
  * @version 1.0
  */
 public interface QueryAuditor {

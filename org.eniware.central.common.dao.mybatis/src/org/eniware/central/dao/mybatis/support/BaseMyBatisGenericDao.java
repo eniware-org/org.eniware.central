@@ -121,7 +121,6 @@ import org.springframework.validation.Errors;
  *        The entity type this DAO supports.
  * @param <PK>
  *        The primary key type this DAO supports.
- * @author matt
  * @version 1.1
  */
 public abstract class BaseMyBatisGenericDao<T extends Entity<PK>, PK extends Serializable>

@@ -7,8 +7,7 @@ package org.eniware.central.security;
 
 /**
  * API for an authenticated node security details.
- * 
- * @author matt
+
  * @version 1.0
  */
 public interface SecurityNode extends SecurityActor {

@@ -24,8 +24,7 @@ import org.springframework.security.core.userdetails.User;
 
 /**
  * Security helper methods.
- * 
- * @author matt
+ 
  * @version 1.3
  */
 public class SecurityUtils {

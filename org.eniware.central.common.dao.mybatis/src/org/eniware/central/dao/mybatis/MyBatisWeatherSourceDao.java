@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * MyBatis implementation of {@link WeatherSourceDao}.
- * 
- * @author matt
  * @version 1.0
  */
 public class MyBatisWeatherSourceDao extends BaseMyBatisGenericDao<WeatherSource, Long> implements

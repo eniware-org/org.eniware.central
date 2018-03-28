@@ -9,8 +9,7 @@ import java.util.Map;
 
 /**
  * A request envelope object.
- * 
- * @author matt
+ 
  * @version 1.1
  * @deprecated use the net.solarnetwork.web.domain.Request class directly
  */

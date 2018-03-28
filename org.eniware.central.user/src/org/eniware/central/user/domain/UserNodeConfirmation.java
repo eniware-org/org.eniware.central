@@ -14,7 +14,6 @@ import org.joda.time.DateTime;
  * "invitation" to join SolarNet. The user must confirm the invitation before a
  * UserNode entity is created.
  * 
- * @author matt
  * @version 1.2
  */
 public class UserNodeConfirmation extends BaseEntity {

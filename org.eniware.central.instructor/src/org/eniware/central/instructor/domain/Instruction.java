@@ -21,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
  * Domain object for an individual instruction.
- * 
- * @author matt
+ *
  * @version 1.1
  */
 public class Instruction extends BaseEntity {

@@ -11,8 +11,6 @@ package org.eniware.central.domain;
  * 
  * <p>This entity is designed to hold information about a control so that control
  * could be compared against other controls.</p>
- * 
- * @author matt
  * @version $Revision$
  */
 public class HardwareControl extends BaseEntity implements EntityMatch {

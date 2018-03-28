@@ -18,7 +18,6 @@ import org.eniware.central.user.domain.UserFilterMatch;
 /**
  * DAO API for User objects.
  * 
- * @author matt
  * @version 1.1
  */
 public interface UserDao

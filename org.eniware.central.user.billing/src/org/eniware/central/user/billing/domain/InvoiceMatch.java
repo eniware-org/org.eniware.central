@@ -14,7 +14,6 @@ import org.joda.time.DateTime;
 /**
  * Search resulut match for an Invoice.
  * 
- * @author matt
  * @version 1.0
  */
 public interface InvoiceMatch extends FilterMatch<String> {

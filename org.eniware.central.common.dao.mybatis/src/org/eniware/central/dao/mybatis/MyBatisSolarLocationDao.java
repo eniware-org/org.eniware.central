@@ -19,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * MyBatis implementation of {@link SolarLocationDao}.
- * 
- * @author matt
  * @version 1.0
  */
 public class MyBatisSolarLocationDao extends

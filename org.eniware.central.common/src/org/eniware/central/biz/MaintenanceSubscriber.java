@@ -18,8 +18,6 @@ import org.eniware.domain.Identifiable;
  * in order to maintain implementation specific resources over time. For example
  * a service may wish to purge expired items from a cache periodically.
  * </p>
- * 
- * @author matt
  * @version 1.0
  * @since 1.36
  */

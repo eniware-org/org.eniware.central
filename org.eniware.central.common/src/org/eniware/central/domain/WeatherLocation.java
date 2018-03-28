@@ -14,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Information about a specific weather location.
- * 
- * @author matt
  * @version 1.2
  */
 public class WeatherLocation extends BaseEntity implements Cloneable, Serializable, SourceLocationMatch {

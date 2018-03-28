@@ -16,7 +16,6 @@ import org.springframework.validation.Validator;
 /**
  * Validator for user registration.
  * 
- * @author matt
  * @version $Id$
  */
 @Component

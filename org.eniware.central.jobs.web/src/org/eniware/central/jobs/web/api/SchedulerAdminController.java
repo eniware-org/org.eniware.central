@@ -25,8 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * REST controller for job scheduler management.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 @RestController("v1SchedulerController")

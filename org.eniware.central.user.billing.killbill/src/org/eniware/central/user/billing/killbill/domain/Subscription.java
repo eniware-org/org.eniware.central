@@ -15,8 +15,7 @@ import java.util.stream.Collectors;
 
 /**
  * A subscription.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class Subscription {

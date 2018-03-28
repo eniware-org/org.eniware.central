@@ -21,7 +21,6 @@ import net.solarnetwork.javax.money.MoneyUtils;
 /**
  * Localized version of {@link InvoiceMatch}.
  * 
- * @author matt
  * @version 1.0
  */
 public class LocalizedInvoiceMatch implements InvoiceMatch, LocalizedInvoiceMatchInfo {

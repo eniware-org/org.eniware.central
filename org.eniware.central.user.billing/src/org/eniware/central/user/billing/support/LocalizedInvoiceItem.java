@@ -27,8 +27,7 @@ import net.solarnetwork.javax.money.MoneyUtils;
 
 /**
  * Localized version of {@link InvoiceItem}.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class LocalizedInvoiceItem implements InvoiceItem, LocalizedInvoiceItemInfo {

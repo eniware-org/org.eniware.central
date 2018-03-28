@@ -11,7 +11,6 @@ import java.net.URL;
 /**
  * Details on a Dogtag CSR.
  * 
- * @author matt
  * @version 1.0
  */
 public class DogtagCertRequestInfo {

@@ -19,7 +19,6 @@ import org.eniware.central.domain.SolarNode;
  * {@link SolarNode} object to remain lightweight.
  * </p>
  * 
- * @author matt
  * @version 1.3
  */
 public class UserNode extends BaseEntity {

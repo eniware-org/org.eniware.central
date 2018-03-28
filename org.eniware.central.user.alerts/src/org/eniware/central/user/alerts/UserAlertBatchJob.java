@@ -21,7 +21,6 @@ import org.osgi.service.event.EventAdmin;
  * Job to look for {@link UserAlertType#NodeStaleData} needing of creating /
  * updating a {@link UserAlertSituation} for.
  * 
- * @author matt
  * @version 1.0
  */
 public class UserAlertBatchJob extends JobSupport {

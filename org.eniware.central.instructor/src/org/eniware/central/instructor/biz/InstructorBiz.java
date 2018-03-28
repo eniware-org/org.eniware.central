@@ -16,8 +16,7 @@ import org.eniware.central.instructor.domain.NodeInstruction;
 
 /**
  * API for central instruction service.
- * 
- * @author matt
+ *
  * @version 1.3
  */
 public interface InstructorBiz {

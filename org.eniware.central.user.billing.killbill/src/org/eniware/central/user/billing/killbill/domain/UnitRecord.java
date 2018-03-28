@@ -13,7 +13,6 @@ import org.eniware.central.user.billing.domain.InvoiceItemUsageRecord;
 /**
  * A unit usage record.
  * 
- * @author matt
  * @version 1.0
  */
 public class UnitRecord implements InvoiceItemUsageRecord {

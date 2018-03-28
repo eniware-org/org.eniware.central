@@ -18,8 +18,6 @@ import com.amazonaws.services.ec2.model.Tag;
 
 /**
  * EC2 implementation of {@link VirtualMachine}.
- * 
- * @author matt
  * @version 1.0
  */
 public class Ec2VirtualMachine extends BaseObjectEntity<String> implements VirtualMachine {

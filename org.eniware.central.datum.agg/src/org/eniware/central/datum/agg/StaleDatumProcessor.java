@@ -41,8 +41,7 @@ import org.springframework.jdbc.core.JdbcOperations;
  * <dd>The stored procedure to call. It must return a single integer result.</dd>
  * 
  * </dl>
- * 
- * @author matt
+ *
  * @version 1.1
  */
 public class StaleDatumProcessor extends JobSupport {

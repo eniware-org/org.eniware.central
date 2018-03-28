@@ -22,7 +22,6 @@ import org.eniware.central.user.support.AuthorizationSupport;
 /**
  * Security enforcing AOP aspect for {@link UserBiz}.
  * 
- * @author matt
  * @version 1.1
  */
 @Aspect

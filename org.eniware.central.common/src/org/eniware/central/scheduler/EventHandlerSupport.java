@@ -17,8 +17,6 @@ import org.slf4j.LoggerFactory;
  * <p>This class traps all Exceptions and logs an error message. This
  * helps prevent the event handler from becoming black-listed by the
  * EventAdmin service, as the Apache Felix implementation does.</p>
- * 
- * @author matt
  * @version $Revision$
  */
 public abstract class EventHandlerSupport implements EventHandler {

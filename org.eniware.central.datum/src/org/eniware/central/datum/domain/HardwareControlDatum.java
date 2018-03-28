@@ -8,12 +8,11 @@ package org.eniware.central.datum.domain;
 
 /**
  * A node control, i.e. knob or switch that can be controlled by the node.
- * 
- * @author matt
+ *
  * @version $Revision$
  */
 public class HardwareControlDatum extends BaseNodeDatum {
-
+ 
 	private static final long serialVersionUID = -1715998499484315641L;
 
 	private Integer integerValue;

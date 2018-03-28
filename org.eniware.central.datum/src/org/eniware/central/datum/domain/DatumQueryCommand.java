@@ -16,8 +16,7 @@ import org.joda.time.DateTime;
 
 /**
  * Command object for specifying datum query criteria.
- * 
- * @author matt
+ 
  * @version 1.2
  * @deprecated use {@link DatumFilterCommand}
  */

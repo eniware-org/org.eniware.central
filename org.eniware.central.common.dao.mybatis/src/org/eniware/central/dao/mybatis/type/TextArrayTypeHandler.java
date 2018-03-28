@@ -18,8 +18,6 @@ import org.apache.ibatis.type.TypeHandler;
 
 /**
  * Text array type hanlder.
- * 
- * @author matt
  * @version 1.0
  */
 public class TextArrayTypeHandler implements TypeHandler<String[]> {

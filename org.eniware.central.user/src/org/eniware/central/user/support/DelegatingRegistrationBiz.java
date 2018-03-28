@@ -25,7 +25,6 @@ import org.joda.time.ReadablePeriod;
  * Delegating implementation of {@link RegistrationBiz}, mostly to help with
  * AOP.
  * 
- * @author matt
  * @version 1.1
  */
 public class DelegatingRegistrationBiz implements RegistrationBiz {

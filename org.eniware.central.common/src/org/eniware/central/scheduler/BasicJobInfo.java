@@ -10,8 +10,6 @@ import org.joda.time.DateTime;
 
 /**
  * Basic implementation of {@link JobInfo}.
- * 
- * @author matt
  * @version 1.0
  * @since 1.37
  */

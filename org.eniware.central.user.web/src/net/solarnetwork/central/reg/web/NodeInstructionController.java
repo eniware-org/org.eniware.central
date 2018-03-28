@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * Controller for managing node instructions.
  * 
- * @author matt
  * @version $Revision$
  */
 @Controller

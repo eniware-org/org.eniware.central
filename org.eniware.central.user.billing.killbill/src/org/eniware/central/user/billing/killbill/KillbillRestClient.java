@@ -63,7 +63,6 @@ import net.solarnetwork.web.support.LoggingHttpRequestInterceptor;
 /**
  * REST implementation of {@link KillbillClient}.
  * 
- * @author matt
  * @version 1.2
  */
 public class KillbillRestClient implements KillbillClient {

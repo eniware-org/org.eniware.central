@@ -11,8 +11,7 @@ import org.joda.time.LocalTime;
 
 /**
  * Basic reporting-level Datum API.
- * 
- * @author matt
+ *
  * @version $Revision$ $Date$
  */
 public interface ReportingDatum {

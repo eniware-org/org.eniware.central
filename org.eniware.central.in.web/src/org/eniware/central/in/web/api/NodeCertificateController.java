@@ -26,8 +26,7 @@ import net.solarnetwork.web.domain.Response;
 
 /**
  * Controller for node certificate API actions.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 @Controller("v1NodeCertificateController")

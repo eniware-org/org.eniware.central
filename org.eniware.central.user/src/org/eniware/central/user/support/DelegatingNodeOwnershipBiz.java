@@ -16,7 +16,6 @@ import org.eniware.central.user.domain.UserNodeTransfer;
  * Delegating implementation of {@link NodeOwnershipBiz}, mostly to help with
  * AOP.
  * 
- * @author matt
  * @version 1.0
  */
 public class DelegatingNodeOwnershipBiz implements NodeOwnershipBiz {

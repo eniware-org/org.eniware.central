@@ -11,8 +11,7 @@ import org.eniware.central.domain.AggregationFilter;
 /**
  * Extension of {@link GeneralLocationDatumFilter} with support for aggregated
  * values.
- * 
- * @author matt
+ 
  * @version 1.0
  */
 public interface AggregateGeneralLocationDatumFilter extends GeneralLocationDatumFilter,

@@ -37,7 +37,6 @@ import org.eniware.util.SerializeIgnore;
 /**
  * Simple implementation of {@link InstructionFilter}.
  * 
- * @author matt
  * @version 1.1
  */
 public class SimpleInstructionFilter implements InstructionFilter {

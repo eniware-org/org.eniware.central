@@ -31,8 +31,7 @@ import org.eniware.domain.GeneralDatumMetadata;
  * <p>
  * Serves as a transactional facade to posting data into central system.
  * </p>
- * 
- * @author matt.magoffin
+ *
  * @version 1.5
  */
 public interface DataCollectorBiz {

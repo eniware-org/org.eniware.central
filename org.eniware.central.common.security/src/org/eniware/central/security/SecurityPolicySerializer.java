@@ -20,8 +20,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 /**
  * JSON serializer for {@link SecurityPolicy}.
- * 
- * @author matt
+
  * @version 1.2
  */
 public class SecurityPolicySerializer extends StdSerializer<SecurityPolicy> {

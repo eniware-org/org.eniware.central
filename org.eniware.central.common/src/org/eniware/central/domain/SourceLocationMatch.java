@@ -10,8 +10,6 @@ package org.eniware.central.domain;
 
 /**
  * A match for a SourceLocation filter search.
- * 
- * @author matt
  * @version $Revision$
  */
 public interface SourceLocationMatch extends EntityMatch {

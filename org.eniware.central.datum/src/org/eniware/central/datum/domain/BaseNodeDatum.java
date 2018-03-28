@@ -10,8 +10,7 @@ import org.joda.time.DateTime;
 
 /**
  * Abstract base class for {@link NodeDatum} implementations.
- *
- * @author matt
+ 
  * @version $Revision$ $Date$
  */
 public abstract class BaseNodeDatum extends BaseDatum implements NodeDatum, Cloneable {

@@ -13,8 +13,6 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 
 /**
  * Base DAO support for MyBatis implementations
- * 
- * @author matt
  * @version 1.1
  */
 public abstract class BaseMyBatisDao extends SqlSessionDaoSupport {

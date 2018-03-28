@@ -24,8 +24,7 @@ import org.joda.time.DateTime;
 /**
  * Implementation of {@link LocationDatumFilter}, {@link NodeDatumFilter}, and
  * {@link AggregateNodeDatumFilter}, and {@link GeneralNodeDatumFilter}.
- * 
- * @author matt
+ 
  * @version 1.8
  */
 public class DatumFilterCommand implements LocationDatumFilter, NodeDatumFilter,

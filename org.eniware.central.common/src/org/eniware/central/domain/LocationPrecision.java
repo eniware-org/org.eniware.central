@@ -8,8 +8,6 @@ package org.eniware.central.domain;
 
 /**
  * Enumeration of locatioin precision levels.
- * 
- * @author matt
  * @version 1.0
  */
 public enum LocationPrecision {

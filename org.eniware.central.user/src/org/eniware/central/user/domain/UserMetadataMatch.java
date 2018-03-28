@@ -12,7 +12,6 @@ package org.eniware.central.user.domain;
  * Although this class extends {@link UserMetadataEntity} that is merely an
  * implementation detail.
  * 
- * @author matt
  * @version 1.0
  * @since 1.23
  */

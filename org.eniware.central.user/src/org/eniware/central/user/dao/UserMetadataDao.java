@@ -15,7 +15,6 @@ import org.eniware.central.user.domain.UserMetadataFilterMatch;
 /**
  * DAO API for {@link UserMetadataEntity}.
  * 
- * @author matt
  * @version 1.0
  * @since 1.23
  */

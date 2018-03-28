@@ -11,8 +11,6 @@ import org.joda.time.DateTime;
 
 /**
  * API for node metadata.
- * 
- * @author matt
  * @version 1.0
  */
 public interface NodeMetadata {

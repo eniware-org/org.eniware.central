@@ -29,7 +29,6 @@ import net.solarnetwork.web.domain.Response;
 /**
  * Controller for user nodes web service API.
  * 
- * @author matt
  * @version 1.1
  */
 @Controller("v1nodesController")

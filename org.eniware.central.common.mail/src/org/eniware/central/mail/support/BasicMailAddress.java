@@ -10,8 +10,6 @@ import org.eniware.central.mail.MailAddress;
 
 /**
  * Basic implementation of {@link MailAddress}.
- * 
- * @author matt
  * @version $Id$
  */
 public class BasicMailAddress implements MailAddress {

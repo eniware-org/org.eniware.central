@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * Object to associate usage with a subscription.
  * 
- * @author matt
  * @version 1.0
  */
 @JsonPropertyOrder({ "subscriptionId", "trackingId", "unitUsageRecords" })

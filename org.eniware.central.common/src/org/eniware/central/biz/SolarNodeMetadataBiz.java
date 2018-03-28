@@ -16,8 +16,6 @@ import org.eniware.domain.GeneralDatumMetadata;
 
 /**
  * API for manipulating node metadata.
- * 
- * @author matt
  * @version 1.0
  * @since 1.32
  */

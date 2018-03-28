@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * MyBatis implementation of {@link UserAlertSituationDao}.
  * 
- * @author matt
  * @version 1.0
  */
 public class MyBatisUserAlertSituationDao extends BaseMyBatisGenericDao<UserAlertSituation, Long>

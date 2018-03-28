@@ -17,7 +17,6 @@ import org.springframework.util.FileCopyUtils;
 /**
  * Constants for common user items.
  * 
- * @author matt
  * @version 1.3
  */
 public final class UserBizConstants {

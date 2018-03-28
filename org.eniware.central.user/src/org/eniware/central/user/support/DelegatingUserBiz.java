@@ -26,7 +26,6 @@ import net.solarnetwork.web.security.AuthorizationV2Builder;
 /**
  * Delegating implementation of {@link UserBiz}, mostly to help with AOP.
  * 
- * @author matt
  * @version 1.5
  */
 @SuppressWarnings("deprecation")

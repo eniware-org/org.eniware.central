@@ -17,8 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Utilities for Datum domain classes.
- * 
- * @author matt
+ *
  * @version 1.2
  */
 public final class DatumUtils {

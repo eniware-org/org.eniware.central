@@ -25,8 +25,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
  * A Killbill invoice item.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class InvoiceItem extends BaseObjectEntity<String>

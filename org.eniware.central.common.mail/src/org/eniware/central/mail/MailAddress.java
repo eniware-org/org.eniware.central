@@ -8,8 +8,6 @@ package org.eniware.central.mail;
 
 /**
  * API for mail address information.
- * 
- * @author matt
  * @version $Id$
  */
 public interface MailAddress {

@@ -10,8 +10,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * Password encoder using unsalted SHA-256 hashes.
- * 
- * @author matt
+
  * @version 1.0
  * @deprecated do not use this encoder for anything other than supporting legacy
  *             passwords

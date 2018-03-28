@@ -11,7 +11,6 @@ import org.eniware.central.domain.Filter;
 /**
  * Filter for Invoice.
  * 
- * @author matt
  * @version 1.0
  */
 public interface InvoiceFilter extends Filter {

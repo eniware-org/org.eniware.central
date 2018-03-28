@@ -13,7 +13,6 @@ import org.eniware.central.domain.Filter;
 /**
  * Filter API for {@link User}.
  * 
- * @author matt
  * @version 1.0
  */
 public interface UserFilter extends Filter {

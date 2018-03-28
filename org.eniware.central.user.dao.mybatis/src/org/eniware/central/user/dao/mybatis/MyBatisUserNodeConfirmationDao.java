@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * MyBatis implementation of {@link UserNodeConfirmationDao}.
  * 
- * @author matt
  * @version 1.0
  */
 public class MyBatisUserNodeConfirmationDao extends BaseMyBatisGenericDao<UserNodeConfirmation, Long>

@@ -21,8 +21,7 @@ import org.eniware.central.instructor.domain.Instruction;
  * <dt></dt>
  * <dd></dd>
  * </dl>
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class BulkUploadResult {

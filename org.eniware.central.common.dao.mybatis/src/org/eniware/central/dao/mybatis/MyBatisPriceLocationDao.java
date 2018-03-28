@@ -21,8 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * MyBatis implementation of {@link PriceLocationDao}.
- * 
- * @author matt
  * @version 1.0
  */
 public class MyBatisPriceLocationDao extends

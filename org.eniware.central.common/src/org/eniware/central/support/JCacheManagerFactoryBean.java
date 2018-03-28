@@ -18,8 +18,6 @@ import org.springframework.beans.factory.InitializingBean;
 /**
  * Re-implementation of Spring's {@code JCacheManagerFactoryBean} to better work
  * in OSGi.
- * 
- * @author matt
  * @version 1.0
  * @since 1.34
  */

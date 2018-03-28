@@ -8,8 +8,6 @@ package org.eniware.central.domain;
 
 /**
  * Node identity information.
- * 
- * @author matt
  * @version $Revision$
  */
 public interface NodeIdentity extends Identity<Long> {

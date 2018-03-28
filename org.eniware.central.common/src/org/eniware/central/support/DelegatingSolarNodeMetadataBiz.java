@@ -18,8 +18,6 @@ import org.eniware.domain.GeneralDatumMetadata;
 /**
  * Implementation of {@link SolarNodeMetadataBiz} that delegates to another
  * {@link SolarNodeMetadataBiz}. Designed for use with AOP.
- * 
- * @author matt
  * @version 1.0
  * @since 1.32
  */

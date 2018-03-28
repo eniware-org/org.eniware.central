@@ -18,8 +18,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * A location entity.
- * 
- * @author matt
  * @version 1.4
  */
 public class SolarLocation extends BaseEntity implements Cloneable, Serializable, Location,

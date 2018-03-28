@@ -14,7 +14,6 @@ import org.eniware.support.CertificateService;
 /**
  * API for managing SolarNode PKI from within SolarUser.
  * 
- * @author matt
  * @version 1.1
  */
 public interface NodePKIBiz extends CertificateService {

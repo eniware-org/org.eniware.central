@@ -31,7 +31,6 @@ import net.solarnetwork.web.domain.Response;
 /**
  * Controller for user metadata.
  * 
- * @author matt
  * @version 1.0
  * @since 1.18
  */

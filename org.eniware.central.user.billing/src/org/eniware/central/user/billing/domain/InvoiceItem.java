@@ -23,7 +23,6 @@ import org.joda.time.LocalDate;
  * {@link #getStartDate()}.
  * </p>
  * 
- * @author matt
  * @version 1.1
  */
 public interface InvoiceItem extends Entity<String> {

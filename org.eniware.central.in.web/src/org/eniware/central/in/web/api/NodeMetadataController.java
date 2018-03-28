@@ -28,8 +28,7 @@ import net.solarnetwork.web.domain.Response;
 
 /**
  * Controller for node metadata actions.
- * 
- * @author matt
+ *
  * @version 1.0
  * @since 1.21
  */

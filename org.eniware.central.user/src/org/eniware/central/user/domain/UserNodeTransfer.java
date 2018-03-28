@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * requesting the transfer. The request is sent to the email address provided on
  * this entity.
  * 
- * @author matt
  * @version 1.0
  */
 public class UserNodeTransfer implements Entity<UserNodePK>, Cloneable, Serializable {

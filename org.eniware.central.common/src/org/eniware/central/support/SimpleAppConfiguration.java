@@ -14,8 +14,6 @@ import org.eniware.central.domain.AppConfiguration;
 
 /**
  * Basic immutable implementation of {@link AppConfiguration}.
- * 
- * @author matt
  * @version 1.0
  */
 public class SimpleAppConfiguration implements AppConfiguration {

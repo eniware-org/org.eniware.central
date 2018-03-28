@@ -34,7 +34,6 @@ import org.eniware.central.instructor.domain.NodeInstruction;
 /**
  * Delegates to another InstructorBiz, designed for AOP use.
  * 
- * @author matt
  * @version 1.3
  */
 public class DelegatingInstructorBiz implements InstructorBiz {

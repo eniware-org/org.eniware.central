@@ -12,8 +12,6 @@ import org.eniware.central.domain.SolarNodeMetadataFilterMatch;
 
 /**
  * DAO API for {@link SolarNodeMetadata}.
- * 
- * @author matt
  * @version 1.0
  * @since 1.32
  */

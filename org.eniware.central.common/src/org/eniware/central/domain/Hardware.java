@@ -12,8 +12,6 @@ package org.eniware.central.domain;
  * 
  * <p>This entity is designed to hold information about hardware so that hardware
  * can be compared against other hardware.</p>
- * 
- * @author matt
  * @version $Revision$
  */
 public class Hardware extends BaseEntity implements EntityMatch {

@@ -35,8 +35,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Controller for querying location data.
- * 
- * @author matt
+ *
  * @version 1.2
  */
 @Controller("v1LocationLookupController")

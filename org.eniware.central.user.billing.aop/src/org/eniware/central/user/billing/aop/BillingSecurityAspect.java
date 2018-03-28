@@ -18,7 +18,6 @@ import net.solarnetwork.central.user.support.AuthorizationSupport;
 /**
  * Security enforcing AOP aspect for {@link BillingBiz}.
  * 
- * @author matt
  * @version 1.1
  */
 @Aspect

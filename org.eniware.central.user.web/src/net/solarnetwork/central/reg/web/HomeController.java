@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * Controller for the secure home page.
  * 
- * @author matt
  * @version 1.0
  */
 @Controller

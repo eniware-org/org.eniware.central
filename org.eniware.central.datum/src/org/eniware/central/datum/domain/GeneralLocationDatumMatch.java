@@ -14,8 +14,7 @@ package org.eniware.central.datum.domain;
  * implementation detail. Often instances of this class represent aggregated
  * data values and not actual datum entities.
  * </p>
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class GeneralLocationDatumMatch extends GeneralLocationDatum implements

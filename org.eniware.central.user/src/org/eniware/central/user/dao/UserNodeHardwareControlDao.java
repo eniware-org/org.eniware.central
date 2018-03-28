@@ -12,7 +12,6 @@ import org.eniware.central.user.domain.UserNodeHardwareControl;
 /**
  * DAO API for UserNodeHardwareControl objects.
  * 
- * @author matt
  * @version $Revision$
  */
 public interface UserNodeHardwareControlDao 

@@ -17,7 +17,6 @@ import org.eniware.central.user.billing.killbill.domain.HealthCheckResult;
 /**
  * Health check for Kill Bill.
  * 
- * @author matt
  * @version 1.0
  */
 public class KillbillPingTest implements PingTest {

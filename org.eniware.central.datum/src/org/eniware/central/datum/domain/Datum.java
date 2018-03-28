@@ -10,8 +10,7 @@ import org.eniware.central.domain.Entity;
 
 /**
  * Base domain object API for data collected from nodes.
- *
- * @author matt
+ 
  * @version $Revision$ $Date$
  */
 public interface Datum extends Entity<Long> {

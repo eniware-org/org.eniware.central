@@ -23,7 +23,6 @@ import org.eniware.central.domain.SortDescriptor;
  *        the primary key type
  * @param <F>
  *        the filter type
- * @author matt
  * @version 1.0
  */
 public interface FilterableDao<M extends FilterMatch<PK>, PK extends Serializable, F extends Filter> {

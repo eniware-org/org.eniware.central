@@ -39,7 +39,6 @@ import org.osgi.service.event.EventAdmin;
  * <code>0 0/1 * * * ?</code> (once per minute)</dd>.
  * </dl>
  * 
- * @author matt
  * @version 1.4
  */
 public abstract class JobSupport extends EventHandlerSupport {

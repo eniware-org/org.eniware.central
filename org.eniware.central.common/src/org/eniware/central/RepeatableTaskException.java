@@ -11,8 +11,6 @@ import java.io.Serializable;
 /**
  * An exception when some task that can be repeated safely has failed to signal
  * to the caller to retry the task.
- * 
- * @author matt
  * @version 1.1
  */
 public class RepeatableTaskException extends RuntimeException {

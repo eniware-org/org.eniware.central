@@ -28,8 +28,7 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
  * <b>Note</b> that {@link DatumUtils#getObjectFromJSON(String, Class)} is used
  * to manage the JSON value passed to {@link #setSampleJson(String)}.
  * </p>
- * 
- * @author matt
+ *
  * @version 1.2
  */
 @JsonPropertyOrder({ "created", "locationId", "sourceId" })

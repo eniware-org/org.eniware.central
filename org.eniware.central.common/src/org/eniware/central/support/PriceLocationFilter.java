@@ -17,8 +17,6 @@ import org.springframework.util.StringUtils;
 
 /**
  * Filter for {@link PriceLocation}.
- * 
- * @author matt
  * @version 1.1
  */
 public class PriceLocationFilter extends SourceLocationFilter {

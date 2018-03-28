@@ -11,8 +11,7 @@ import org.springframework.security.core.userdetails.User;
 /**
  * Extension of Spring Security's {@link User} object to add SolarNetwork
  * attributes.
- * 
- * @author matt
+ 
  * @version 1.1
  */
 public class AuthenticatedUser extends User implements SecurityUser {

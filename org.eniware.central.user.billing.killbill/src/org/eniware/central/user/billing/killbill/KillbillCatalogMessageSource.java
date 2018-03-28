@@ -15,7 +15,6 @@ import org.springframework.context.support.AbstractMessageSource;
 /**
  * Resolve Killbill catalog messages.
  * 
- * @author matt
  * @version 1.0
  */
 public class KillbillCatalogMessageSource extends AbstractMessageSource {

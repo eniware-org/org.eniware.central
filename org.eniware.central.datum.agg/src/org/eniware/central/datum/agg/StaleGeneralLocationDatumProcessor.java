@@ -17,8 +17,7 @@ import org.springframework.jdbc.core.JdbcOperations;
  * result representing the number of rows processed by the call. If the
  * procedure returns zero, the job stops immediately.
  * </p>
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class StaleGeneralLocationDatumProcessor extends StaleGeneralNodeDatumProcessor {

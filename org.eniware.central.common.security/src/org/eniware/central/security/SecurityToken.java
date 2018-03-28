@@ -8,8 +8,7 @@ package org.eniware.central.security;
 
 /**
  * A token based actor.
- * 
- * @author matt
+ 
  * @version 1.1
  */
 public interface SecurityToken extends SecurityActor {

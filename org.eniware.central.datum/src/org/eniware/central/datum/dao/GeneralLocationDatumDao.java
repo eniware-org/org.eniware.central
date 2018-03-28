@@ -24,8 +24,7 @@ import org.joda.time.ReadableInterval;
 
 /**
  * DAO API for {@link GeneralLocationDatum}.
- * 
- * @author matt
+ 
  * @version 1.1
  */
 public interface GeneralLocationDatumDao

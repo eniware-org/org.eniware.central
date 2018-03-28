@@ -48,8 +48,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * <li>Token IDs (String) - if Token is <em>true</em>, this is an optional set
  * of IDs</li>
  * </ol>
- * 
- * @author matt
+
  * @version 1.1
  */
 public class JdbcUserDetailsService extends JdbcDaoImpl implements UserDetailsService {

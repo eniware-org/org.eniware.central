@@ -12,8 +12,6 @@ import org.springframework.core.io.Resource;
 
 /**
  * API for data required to generate a template based mail message.
- * 
- * @author matt
  * @version 1.1
  */
 public interface MessageTemplateDataSource {

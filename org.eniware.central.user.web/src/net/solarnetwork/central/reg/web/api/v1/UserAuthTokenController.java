@@ -31,7 +31,6 @@ import net.solarnetwork.web.domain.Response;
 /**
  * Web service API for {@link UserAuthToken} management.
  * 
- * @author matt
  * @version 1.0
  */
 @RestController("v1UserAuthTokenController")

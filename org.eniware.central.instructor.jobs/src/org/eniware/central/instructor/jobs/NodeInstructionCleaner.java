@@ -14,8 +14,7 @@ import org.osgi.service.event.EventAdmin;
 
 /**
  * Job to periodically clean out old, completed instructions.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class NodeInstructionCleaner extends JobSupport {

@@ -14,7 +14,6 @@ import org.joda.time.LocalTime;
  * Extension of {@link WeatherDatum} with some additional properties
  * geared towards reporting.
  *
- * @author matt
  * @version $Revision$ $Date$
  */
 public class ReportingWeatherDatum extends WeatherDatum implements ReportingDatum {

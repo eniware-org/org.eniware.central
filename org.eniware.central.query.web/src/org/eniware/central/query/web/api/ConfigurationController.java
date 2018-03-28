@@ -22,7 +22,6 @@ import net.solarnetwork.web.domain.Response;
 /**
  * REST controller for configuration API.
  * 
- * @author matt
  * @version 1.0
  */
 @RestController("v1ConfigurationController")

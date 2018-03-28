@@ -46,7 +46,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * Controller for user alerts.
  * 
- * @author matt
  * @version 1.1
  */
 @Controller

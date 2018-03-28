@@ -11,8 +11,6 @@ import org.springframework.validation.Errors;
 
 /**
  * Exception for validation errors.
- * 
- * @author matt
  * @version 1.1
  */
 public class ValidationException extends RuntimeException {

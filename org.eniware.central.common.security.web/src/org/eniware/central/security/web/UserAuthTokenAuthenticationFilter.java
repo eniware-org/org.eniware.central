@@ -72,8 +72,7 @@ import net.solarnetwork.web.security.SecurityHttpServletRequestWrapper;
  * point.</dd>
  * 
  * </dl>
- * 
- * @author matt
+ 
  * @version 1.2
  */
 public class UserAuthTokenAuthenticationFilter extends GenericFilterBean implements Filter {

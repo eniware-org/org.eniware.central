@@ -11,7 +11,6 @@ import org.eniware.central.domain.Filter;
 /**
  * Filter API for {@link UserMetadataEntity}.
  * 
- * @author matt
  * @version 1.0
  * @since 1.23
  */

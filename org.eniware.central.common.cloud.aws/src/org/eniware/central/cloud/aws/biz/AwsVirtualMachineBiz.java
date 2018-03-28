@@ -42,8 +42,6 @@ import com.amazonaws.services.ec2.model.TagDescription;
 
 /**
  * AWS SDK implementation of {@link VirtualMachineBiz}.
- * 
- * @author matt
  * @version 1.0
  */
 public class AwsVirtualMachineBiz implements VirtualMachineBiz {

@@ -23,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * MyBatis implementation of {@link SolarNodeMetadataDao}.
- * 
- * @author matt
  * @version 1.0
  */
 public class MyBatisSolarNodeMetadataDao extends BaseMyBatisGenericDao<SolarNodeMetadata, Long>

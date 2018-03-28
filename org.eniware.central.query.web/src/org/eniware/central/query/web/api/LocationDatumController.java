@@ -35,7 +35,6 @@ import net.solarnetwork.web.domain.Response;
 /**
  * Controller for location-based data.
  * 
- * @author matt
  * @version 1.1
  */
 @Controller("v1LocationDatumController")

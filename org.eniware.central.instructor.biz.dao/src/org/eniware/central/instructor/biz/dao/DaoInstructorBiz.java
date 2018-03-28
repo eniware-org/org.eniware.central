@@ -31,7 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * DAO based implementation of {@link InstructorBiz}.
  * 
- * @author matt
  * @version 1.4
  */
 @Service

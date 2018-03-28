@@ -18,8 +18,6 @@ import org.apache.ibatis.type.JdbcType;
 
 /**
  * Base {@link org.apache.ibatis.type.TypeHandler} for SQL arrays.
- * 
- * @author matt
  * @version 1.0
  */
 public abstract class BaseArrayTypeHandler extends BaseTypeHandler<Object> {

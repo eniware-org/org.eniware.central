@@ -15,7 +15,6 @@ import org.osgi.service.event.EventAdmin;
 /**
  * Job to periodically clean out old, resolved user alert situations.
  * 
- * @author matt
  * @version 1.0
  */
 public class UserAlertSituationCleaner extends JobSupport {

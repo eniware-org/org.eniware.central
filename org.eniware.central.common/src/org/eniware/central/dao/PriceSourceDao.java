@@ -12,8 +12,6 @@ import org.eniware.central.domain.SourceLocation;
 
 /**
  * DAO API for PriceSource.
- * 
- * @author matt
  * @version $Revision$
  */
 public interface PriceSourceDao extends GenericDao<PriceSource, Long>,

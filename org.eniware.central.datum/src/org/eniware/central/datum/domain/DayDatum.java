@@ -31,8 +31,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * The {@code latitude} and {@long longitude} may or may not be used, it depends
  * on how granular the node wants to track day information.
  * </p>
- * 
- * @author matt.magoffin
+ *
  * @version 1.1
  */
 public class DayDatum extends BaseNodeDatum implements LocationDatum {

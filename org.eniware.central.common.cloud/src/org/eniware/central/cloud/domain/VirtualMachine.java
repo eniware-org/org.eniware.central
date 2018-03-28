@@ -10,8 +10,6 @@ import org.eniware.central.domain.Entity;
 
 /**
  * A virtual machine.
- * 
- * @author matt
  * @version 1.0
  */
 public interface VirtualMachine extends Entity<String> {

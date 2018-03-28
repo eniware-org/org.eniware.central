@@ -8,8 +8,6 @@ package org.eniware.central.cloud.domain;
 
 /**
  * Enum of possible states for a virtual machine to be in.
- * 
- * @author matt
  * @version 1.0
  */
 public enum VirtualMachineState {

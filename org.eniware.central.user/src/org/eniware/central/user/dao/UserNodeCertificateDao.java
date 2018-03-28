@@ -13,7 +13,6 @@ import org.eniware.central.user.domain.UserNodePK;
 /**
  * DAO API for user node certificates.
  * 
- * @author matt
  * @version 1.1
  */
 public interface UserNodeCertificateDao extends GenericDao<UserNodeCertificate, UserNodePK> {

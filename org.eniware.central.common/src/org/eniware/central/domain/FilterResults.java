@@ -13,9 +13,6 @@ package org.eniware.central.domain;
  * This object extends {@link Iterable} but also exposes a JavaBean getter
  * property {@link #getResults()} to easy the marshaling of the results into
  * other forms.
- * </p>
- * 
- * @author matt
  * @version 1.1
  */
 public interface FilterResults<T> extends Iterable<T> {

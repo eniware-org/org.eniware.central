@@ -12,7 +12,6 @@ import org.joda.time.DateTime;
 /**
  * API for batch processing user alerts.
  * 
- * @author matt
  * @version 1.0
  */
 public interface UserAlertBatchProcessor {

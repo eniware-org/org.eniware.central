@@ -13,8 +13,6 @@ import org.osgi.service.event.Event;
 
 /**
  * Utility methods for working with scheduled jobs.
- * 
- * @author matt
  * @version $Revision$
  */
 public final class SchedulerUtils {

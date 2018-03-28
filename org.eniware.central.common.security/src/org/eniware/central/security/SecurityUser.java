@@ -8,8 +8,7 @@ package org.eniware.central.security;
 
 /**
  * API for user details.
- * 
- * @author matt
+ 
  * @version 1.0
  */
 public interface SecurityUser extends SecurityActor {

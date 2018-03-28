@@ -14,7 +14,6 @@ import org.joda.time.LocalTime;
  * Extension of {@link PriceDatum} with some additional properties
  * geared towards reporting.
  *
- * @author matt
  * @version $Revision$ $Date$
  */
 public class ReportingPriceDatum extends PriceDatum implements ReportingDatum {

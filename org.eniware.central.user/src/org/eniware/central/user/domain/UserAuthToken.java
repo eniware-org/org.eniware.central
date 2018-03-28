@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * A user authorization token.
  * 
- * @author matt
  * @version 1.1
  */
 public class UserAuthToken extends BaseStringEntity {

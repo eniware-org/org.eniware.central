@@ -12,8 +12,6 @@ import org.eniware.central.domain.HardwareFilter;
 
 /**
  * DAO API for Hardware.
- * 
- * @author matt
  * @version $Revision$
  */
 public interface HardwareDao extends GenericDao<Hardware, Long>,

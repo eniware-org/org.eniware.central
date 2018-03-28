@@ -10,8 +10,7 @@ import org.eniware.central.scheduler.JobInfo;
 
 /**
  * A filter for job queries.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class JobFilter {

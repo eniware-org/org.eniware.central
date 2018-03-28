@@ -22,8 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * DAO-based implementation of {@link SolarNodeMetadataBiz}.
- * 
- * @author matt
  * @version 1.0
  */
 public class DaoSolarNodeMetadataBiz implements SolarNodeMetadataBiz {

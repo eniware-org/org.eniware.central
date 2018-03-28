@@ -11,7 +11,6 @@ import org.eniware.central.user.domain.User;
 /**
  * Constants for {@link User} internal properties.
  * 
- * @author matt
  * @version 1.0
  */
 public final class UserDataProperties {

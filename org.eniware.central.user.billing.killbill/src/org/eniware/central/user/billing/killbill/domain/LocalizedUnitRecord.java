@@ -11,7 +11,6 @@ import org.eniware.central.user.billing.domain.LocalizedInvoiceItemUsageRecordIn
 /**
  * Localized {@link UnitRecord}.
  * 
- * @author matt
  * @version 1.0
  */
 public class LocalizedUnitRecord extends UnitRecord implements LocalizedInvoiceItemUsageRecordInfo {

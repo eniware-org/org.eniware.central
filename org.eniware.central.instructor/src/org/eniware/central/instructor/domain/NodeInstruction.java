@@ -12,7 +12,6 @@ import org.joda.time.DateTime;
 /**
  * Instruction for a specific node.
  * 
- * @author matt
  * @version $Revision$
  */
 public class NodeInstruction extends Instruction implements EntityMatch {

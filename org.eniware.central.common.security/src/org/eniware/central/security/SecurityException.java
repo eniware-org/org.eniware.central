@@ -8,8 +8,7 @@ package org.eniware.central.security;
 
 /**
  * Exception for security errors.
- * 
- * @author matt
+
  * @version $Id$
  */
 public class SecurityException extends RuntimeException {

@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * Extension of {@link GeneralNodeDatum} with some additional properties geared
  * towards reporting.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class ReportingGeneralNodeDatum extends GeneralNodeDatum implements

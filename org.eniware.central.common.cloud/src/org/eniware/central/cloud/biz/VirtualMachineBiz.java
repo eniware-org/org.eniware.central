@@ -15,8 +15,6 @@ import org.eniware.domain.Identifiable;
 
 /**
  * API for controlling cloud virtual machine instances.
- * 
- * @author matt
  * @version 1.0
  */
 public interface VirtualMachineBiz extends Identifiable {

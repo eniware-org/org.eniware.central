@@ -9,8 +9,7 @@ package org.eniware.central.datum.domain;
 /**
  * Helper object when mapping legacy {link Datum} objects into
  * {@link GeneralNodeDatum} or {@link GeneralLocationDatum} objects.
- * 
- * @author matt
+ 
  * @version 1.0
  */
 public class DatumMappingInfo {

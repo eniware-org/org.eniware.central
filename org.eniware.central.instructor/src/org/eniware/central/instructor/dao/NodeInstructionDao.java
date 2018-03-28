@@ -15,8 +15,7 @@ import org.joda.time.DateTime;
 
 /**
  * DAO API for {@link NodeInstruction}.
- * 
- * @author matt
+ *
  * @version 1.1
  */
 public interface NodeInstructionDao extends GenericDao<NodeInstruction, Long>,

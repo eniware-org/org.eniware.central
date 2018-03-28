@@ -20,8 +20,7 @@ import org.eniware.util.StringUtils;
  * {@link ReportingDatum} API is also supported (those properties will be added
  * to the output if a {@link GeneralLocationDatum} subclass implements that
  * interface).
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class GeneralLocationDatumMapPropertySerializer implements PropertySerializer {

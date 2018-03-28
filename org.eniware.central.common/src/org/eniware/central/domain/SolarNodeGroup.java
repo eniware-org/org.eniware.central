@@ -19,8 +19,6 @@ import org.joda.time.DateTime;
  * a broadly-defined location There is no actual restriction that nodes within
  * the group are physically within the group location's boundaries, but in 
  * practice this will often be the case.</p>
- * 
- * @author matt
  * @version $Revision$
  */
 public class SolarNodeGroup extends BaseEntity implements Cloneable, Serializable, NodeGroupIdentity {

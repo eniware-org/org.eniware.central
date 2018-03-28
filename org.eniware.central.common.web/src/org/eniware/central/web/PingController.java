@@ -33,8 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * A web controller for running a set of {@link PingTest} tests and returning
  * the results.
- * 
- * @author matt
+
  * @version 1.0
  */
 @RequestMapping("/ping")

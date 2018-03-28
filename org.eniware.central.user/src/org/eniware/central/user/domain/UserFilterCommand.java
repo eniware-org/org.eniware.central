@@ -19,7 +19,6 @@ import org.eniware.util.JsonUtils;
 /**
  * Filter support for user actions.
  * 
- * @author matt
  * @version 1.1
  * @since 1.23
  */

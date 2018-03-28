@@ -21,7 +21,6 @@ import org.eniware.util.OptionalService;
  * {@link QueryBiz} implementation that audits query events using a
  * {@link QueryAuditor}.
  * 
- * @author matt
  * @version 1.0
  */
 public class AuditingQueryBiz extends DelegatingQueryBiz {

@@ -24,8 +24,6 @@ import org.joda.time.format.PeriodFormatter;
  * This implementation works by setting/getting String values of SQL INTERVAL
  * types, which are expected to be in standard ISO 8601 format.
  * </p>
- * 
- * @author matt
  * @version 1.0
  */
 public class JodaPeriodTypeHandler extends BaseTypeHandler<Period> {

@@ -10,8 +10,7 @@ import java.util.Arrays;
 
 /**
  * Exception thrown when authorization to some resource fails.
- * 
- * @author matt
+ 
  * @version 1.1
  */
 public class AuthorizationException extends SecurityException {

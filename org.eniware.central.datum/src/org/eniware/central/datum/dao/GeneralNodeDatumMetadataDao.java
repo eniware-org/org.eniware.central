@@ -17,8 +17,7 @@ import org.eniware.central.datum.domain.NodeSourcePK;
 
 /**
  * DAO API for {@link GeneralNodeDatumMetadata}.
- * 
- * @author matt
+ 
  * @version 1.1
  */
 public interface GeneralNodeDatumMetadataDao extends GenericDao<GeneralNodeDatumMetadata, NodeSourcePK>,

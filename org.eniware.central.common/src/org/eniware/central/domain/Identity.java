@@ -8,8 +8,6 @@ package org.eniware.central.domain;
 
 /**
  * Common API for identity information in SolarNetwork participating services.
- * 
- * @author matt
  * @version $Revision$
  * @param <PK> the primary data type that uniquely identifies the object
  */

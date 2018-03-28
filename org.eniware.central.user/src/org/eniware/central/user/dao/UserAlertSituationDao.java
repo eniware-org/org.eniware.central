@@ -14,7 +14,6 @@ import org.joda.time.DateTime;
 /**
  * DAO API for UserAlertSituation objects.
  * 
- * @author matt
  * @version 1.0
  */
 public interface UserAlertSituationDao extends GenericDao<UserAlertSituation, Long> {

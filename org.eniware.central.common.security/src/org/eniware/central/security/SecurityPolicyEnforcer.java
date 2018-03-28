@@ -26,8 +26,7 @@ import org.springframework.util.PathMatcher;
 
 /**
  * Support for enforcing a {@link SecurityPolicy} on domain objects.
- * 
- * @author matt
+ 
  * @version 1.2
  * @since 1.12
  */

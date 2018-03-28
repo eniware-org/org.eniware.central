@@ -33,7 +33,6 @@ import net.solarnetwork.web.domain.Response;
 /**
  * Controller for querying datum related data.
  * 
- * @author matt
  * @version 2.1
  */
 @Controller("v1DatumController")

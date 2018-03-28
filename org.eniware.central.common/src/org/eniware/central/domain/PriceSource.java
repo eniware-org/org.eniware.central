@@ -10,8 +10,6 @@ import java.io.Serializable;
 
 /**
  * A source of price information.
- * 
- * @author matt
  * @version $Revision$
  */
 public class PriceSource extends BaseEntity implements Cloneable, Serializable, EntityMatch {

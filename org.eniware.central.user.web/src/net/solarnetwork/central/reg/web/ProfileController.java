@@ -21,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * Controller for user profile management.
  * 
- * @author matt
  * @version 1.0
  */
 @Controller

@@ -8,8 +8,7 @@ package org.eniware.central.security;
 
 /**
  * The type of metadata associated with a policy action.
- * 
- * @author matt
+ 
  * @version 1.0
  * @since 1.12
  */

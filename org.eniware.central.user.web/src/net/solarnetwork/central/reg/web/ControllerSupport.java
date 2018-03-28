@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 /**
  * Supporting base class for other controllers.
  * 
- * @author matt
  * @version 1.0
  */
 public class ControllerSupport {

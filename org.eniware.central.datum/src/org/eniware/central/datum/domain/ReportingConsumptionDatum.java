@@ -14,8 +14,7 @@ import org.joda.time.LocalTime;
 /**
  * Extension of {@link ConsumptionDatum} with some additional properties geared
  * towards reporting.
- * 
- * @author matt
+ *
  * @version 1.1
  */
 public class ReportingConsumptionDatum extends ConsumptionDatum implements WattHourDatum,

@@ -13,8 +13,7 @@ import org.eniware.central.support.SourceLocationFilter;
 
 /**
  * Extension of {@link SourceLocationFilter} to add generic type support.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class GenericSourceLocationFilter extends SourceLocationFilter {

@@ -14,7 +14,6 @@ import org.eniware.central.user.billing.domain.LocalizedInvoiceItemUsageRecordIn
 /**
  * Localized Killbill {@link InvoiceItem}.
  * 
- * @author matt
  * @version 1.0
  */
 public class LocalizedInvoiceItem extends InvoiceItem implements LocalizedInvoiceItemInfo {

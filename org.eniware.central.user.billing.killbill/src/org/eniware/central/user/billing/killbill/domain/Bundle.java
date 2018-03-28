@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * A subscription bundle.
  * 
- * @author matt
  * @version 1.0
  */
 public class Bundle implements Cloneable {

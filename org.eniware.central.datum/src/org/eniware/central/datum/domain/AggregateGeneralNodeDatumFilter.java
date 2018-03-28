@@ -10,8 +10,7 @@ import org.eniware.central.domain.AggregationFilter;
 
 /**
  * Extension of {@link NodeDatumFilter} with support for aggregated values.
- * 
- * @author matt
+ 
  * @version 1.0
  */
 public interface AggregateGeneralNodeDatumFilter extends GeneralNodeDatumFilter, AggregationFilter {

@@ -14,8 +14,6 @@ import org.eniware.central.domain.SolarNodeGroupCapability;
 
 /**
  * Simple implementation of {@link NodeGroupInformation}.
- * 
- * @author matt
  * @version $Revision$
  */
 public class SimpleNodeGroupInformation extends BaseIdentity implements NodeGroupInformation {

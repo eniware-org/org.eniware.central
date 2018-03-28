@@ -21,7 +21,6 @@ import org.eniware.central.user.support.AuthorizationSupport;
 /**
  * Security enforcing AOP aspect for {@link NodeOwnershipBiz}.
  * 
- * @author matt
  * @version 1.0
  */
 @Aspect

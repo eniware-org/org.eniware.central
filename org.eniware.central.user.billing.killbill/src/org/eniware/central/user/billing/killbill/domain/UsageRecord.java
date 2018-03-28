@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * A record of usage for a day.
  * 
- * @author matt
  * @version 1.0
  */
 @JsonPropertyOrder({ "recordDate", "amount" })

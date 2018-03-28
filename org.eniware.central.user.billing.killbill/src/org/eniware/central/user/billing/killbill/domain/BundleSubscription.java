@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 /**
  * A bundle and subscription combo, for setting up a new bundle.
  * 
- * @author matt
  * @version 1.0
  */
 public class BundleSubscription {

@@ -11,8 +11,7 @@ import org.eniware.domain.NetworkAssociationDetails;
 
 /**
  * Basic implementation of {@link UserNodeCertificateRenewal}.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class BasicUserNodeCertificateRenewal extends NetworkAssociationDetails

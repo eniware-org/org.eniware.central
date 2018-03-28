@@ -9,7 +9,6 @@ package org.eniware.central.datum.domain;
 /**
  * NodeDatum API for watt-hour related data.
  *
- * @author matt
  * @version $Revision$ $Date$
  */
 public interface WattHourDatum {

@@ -11,7 +11,6 @@ import org.eniware.central.domain.FilterMatch;
 /**
  * API for a {@link UserMetadataEntity} search or filter match result.
  * 
- * @author matt
  * @version 1.0
  * @since 1.23
  */

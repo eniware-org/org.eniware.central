@@ -11,8 +11,7 @@ import java.util.regex.Pattern;
 
 /**
  * A standardized enumeration of weather sky conditions.
- * 
- * @author matt.magoffin
+ *
  * @version 1.1
  */
 public enum SkyCondition {

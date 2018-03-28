@@ -14,8 +14,6 @@ import org.eniware.util.StringUtils;
 
 /**
  * Basic implementation of {@link AppConfigurationBiz}.
- * 
- * @author matt
  * @version 1.0
  * @since 1.35
  */

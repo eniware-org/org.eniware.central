@@ -18,8 +18,6 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 /**
  * JSON serializer for {@link NodeMetadata}.
- * 
- * @author matt
  * @version 1.1
  */
 public class NodeMetadataSerializer extends StdSerializer<NodeMetadata> {

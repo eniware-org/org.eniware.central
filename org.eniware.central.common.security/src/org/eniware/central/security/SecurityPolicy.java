@@ -13,8 +13,7 @@ import org.eniware.central.domain.LocationPrecision;
 
 /**
  * API for a security policy, that is rules defining access permissions.
- * 
- * @author matt
+ 
  * @version 1.1
  */
 public interface SecurityPolicy {

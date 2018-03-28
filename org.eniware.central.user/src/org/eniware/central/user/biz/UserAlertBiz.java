@@ -15,7 +15,6 @@ import org.eniware.central.user.domain.UserAlertSituationStatus;
 /**
  * API for user alert tasks.
  * 
- * @author matt
  * @version 1.1
  */
 public interface UserAlertBiz {

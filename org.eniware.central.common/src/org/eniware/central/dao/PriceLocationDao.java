@@ -12,8 +12,6 @@ import org.eniware.central.domain.SourceLocationMatch;
 
 /**
  * DAO API for PriceLocation.
- * 
- * @author matt
  * @version $Revision$
  */
 public interface PriceLocationDao extends GenericDao<PriceLocation, Long>,

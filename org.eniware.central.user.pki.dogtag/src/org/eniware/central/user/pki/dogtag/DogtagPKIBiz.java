@@ -44,7 +44,6 @@ import org.w3c.dom.Node;
 /**
  * Dogtag implementation of {@link NodePKIBiz}.
  * 
- * @author matt
  * @version 1.1
  */
 public class DogtagPKIBiz implements NodePKIBiz, PingTest {

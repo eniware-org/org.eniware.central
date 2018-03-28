@@ -19,8 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * implements both {@link NodeDatum} and {@link LocationDatum} for ease of use,
  * although strictly speaking it is only a {@link LocationDatum}.
  * </p>
- * 
- * @author matt.magoffin
+ *
  * @version 1.1
  */
 public class WeatherDatum extends BaseNodeDatum implements LocationDatum {

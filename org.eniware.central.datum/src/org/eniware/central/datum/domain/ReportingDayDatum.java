@@ -14,8 +14,7 @@ import org.joda.time.LocalTime;
 /**
  * Extension of {@link DayDatum} with some additional properties
  * geared towards reporting.
- * 
- * @author matt
+ *
  * @version $Revision$ $Date$
  */
 public class ReportingDayDatum extends DayDatum implements ReportingDatum {

@@ -15,8 +15,7 @@ package org.eniware.central.datum.domain;
  * both {@link NodeDatum} and {@link LocationDatum} for ease of use, although
  * strictly speaking it is only a {@link LocationDatum}.
  * </p>
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class PriceDatum extends BaseNodeDatum implements LocationDatum {

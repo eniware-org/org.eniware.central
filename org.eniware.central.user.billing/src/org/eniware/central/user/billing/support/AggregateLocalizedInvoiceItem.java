@@ -36,7 +36,6 @@ import net.solarnetwork.javax.money.MoneyUtils;
  * added.
  * </p>
  * 
- * @author matt
  * @version 1.0
  * @since 0.2
  */

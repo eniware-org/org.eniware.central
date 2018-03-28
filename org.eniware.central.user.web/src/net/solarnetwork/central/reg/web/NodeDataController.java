@@ -28,7 +28,6 @@ import net.solarnetwork.web.domain.Response;
 /**
  * REST controller to support data queries.
  * 
- * @author matt
  * @version 1.0
  */
 @RestController("v1NodeDataController")

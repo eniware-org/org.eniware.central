@@ -14,8 +14,6 @@ import org.eniware.central.domain.SortDescriptor;
  * <p>
  * The {@code descending} property defaults to <em>false</em>.
  * </p>
- * 
- * @author matt
  * @version 1.1
  */
 public class MutableSortDescriptor implements SortDescriptor {

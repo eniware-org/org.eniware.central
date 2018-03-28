@@ -10,8 +10,7 @@ import java.util.Map;
 
 /**
  * API for user information.
- * 
- * @author matt
+ *
  * @version 1.0
  * @since 1.25
  */

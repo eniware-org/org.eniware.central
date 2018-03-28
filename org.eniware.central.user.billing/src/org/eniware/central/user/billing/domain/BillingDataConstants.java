@@ -11,8 +11,7 @@ import net.solarnetwork.central.user.domain.UserFilterCommand;
 
 /**
  * Constants related to billing data.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public final class BillingDataConstants {

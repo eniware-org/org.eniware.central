@@ -8,8 +8,6 @@ package org.eniware.central.domain;
 
 /**
  * A filter for locations based on a specific source.
- * 
- * @author matt
  * @version 1.1
  */
 public interface SourceLocation extends Filter {

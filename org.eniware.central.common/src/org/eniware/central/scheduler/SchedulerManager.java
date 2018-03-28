@@ -10,8 +10,6 @@ import java.util.Collection;
 
 /**
  * API for management of the SolarNet scheduler.
- * 
- * @author matt
  * @version 1.0
  * @since 1.37
  */

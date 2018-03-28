@@ -21,8 +21,6 @@ import org.springframework.util.StringUtils;
 
 /**
  * Criteria for location data tied to a source.
- * 
- * @author matt
  * @version 1.3
  */
 public class SourceLocationFilter implements Serializable, SourceLocation {

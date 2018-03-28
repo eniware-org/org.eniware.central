@@ -17,8 +17,6 @@ import org.eniware.central.domain.Filter;
 
 /**
  * Generic object search filter.
- * 
- * @author matt
  * @version $Revision$
  * @param <T> the object to filter on
  */

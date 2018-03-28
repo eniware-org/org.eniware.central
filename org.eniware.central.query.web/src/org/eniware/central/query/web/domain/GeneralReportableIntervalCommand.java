@@ -11,7 +11,6 @@ import org.joda.time.DateTime;
 /**
  * Command for general reportable interval queries.
  * 
- * @author matt
  * @version 1.3
  */
 public class GeneralReportableIntervalCommand {

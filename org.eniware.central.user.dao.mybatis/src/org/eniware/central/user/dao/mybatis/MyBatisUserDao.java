@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * MyBatis implementation of {@link UserDao}.
  * 
- * @author matt
  * @version 1.2
  */
 public class MyBatisUserDao extends BaseMyBatisFilterableDao<User, UserFilterMatch, UserFilter, Long>

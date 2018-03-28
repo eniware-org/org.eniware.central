@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * DAO-based implementation of {@link UserMetadataBiz}.
  * 
- * @author matt
  * @version 1.0
  */
 public class DaoUserMetadataBiz implements UserMetadataBiz {

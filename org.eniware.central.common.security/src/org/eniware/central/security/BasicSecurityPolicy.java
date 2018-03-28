@@ -23,8 +23,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * Basic implementation of {@link SecurityPolicy}.
- * 
- * @author matt
+ 
  * @version 1.1
  */
 @JsonDeserialize(builder = org.eniware.central.security.BasicSecurityPolicy.Builder.class)

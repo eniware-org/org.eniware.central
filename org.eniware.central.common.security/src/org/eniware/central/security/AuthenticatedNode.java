@@ -13,8 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 /**
  * Implementation of Spring Security's {@link UserDetails} object for
  * authenticated nodes.
- * 
- * @author matt
  * @version 1.1
  */
 public class AuthenticatedNode implements UserDetails, SecurityNode {

@@ -53,7 +53,6 @@ import org.springframework.context.MessageSource;
 /**
  * Process stale data alerts for nodes.
  * 
- * @author matt
  * @version 1.2
  */
 public class EmailNodeStaleDataAlertProcessor implements UserAlertBatchProcessor {

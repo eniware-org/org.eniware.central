@@ -11,7 +11,6 @@ import org.eniware.central.user.billing.domain.BillingSystemInfo;
 /**
  * Basic implementation of {@link BillingSystemInfo}.
  * 
- * @author matt
  * @version 1.0
  */
 public class BasicBillingSystemInfo implements BillingSystemInfo {

@@ -34,8 +34,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Map {@link Datum} instances into {@link GeneralNodeDatum} instances, to help
  * migrate away from {@link Datum}.
- * 
- * @author matt
+ *
  * @version 1.1
  */
 public class GeneralDatumMapper {

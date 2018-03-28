@@ -11,8 +11,7 @@ import org.eniware.domain.NetworkIdentity;
 
 /**
  * API for identifying the SolarIn service to nodes.
- * 
- * @author matt
+ *
  * @version $Revision$
  */
 public interface NetworkIdentityBiz {

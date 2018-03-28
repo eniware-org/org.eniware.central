@@ -14,8 +14,6 @@ import org.joda.time.DateTime;
  * <p>
  * Jobs are uniquely defined by a group name plus a job name.
  * </p>
- * 
- * @author matt
  * @version 1.0
  * @since 1.37
  */

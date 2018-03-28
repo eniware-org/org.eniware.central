@@ -8,8 +8,6 @@ package org.eniware.central.dao;
 
 /**
  * A range specification.
- * 
- * @author matt
  * @version $Revision$
  * @param <T> the range type
  */

@@ -10,8 +10,6 @@ import org.apache.ibatis.session.SqlSession;
 
 /**
  * Callback API for performing work with a {@link SqlSession}.
- * 
- * @author matt
  * @version 1.0
  */
 public interface SqlSessionCallback<T> {

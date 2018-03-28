@@ -16,8 +16,6 @@ import org.eniware.central.mail.MessageTemplateDataSource;
 
 /**
  * Factory helper class for creating mail objects.
- * 
- * @author matt
  * @version $Id$
  */
 public class MailServiceHelper implements Serializable {

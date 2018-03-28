@@ -25,8 +25,7 @@ import java.util.Map;
  * to iteration order will be used as the primary encoder. Thus a map
  * implementation like {@link java.util.LinkedHashMap} is recommended.</dd>
  * </dl>
- * 
- * @author matt
+
  * @version 1.0
  */
 public class DelegatingPasswordEncoder implements PasswordEncoder,

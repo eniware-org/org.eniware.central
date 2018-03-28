@@ -20,7 +20,6 @@ import org.springframework.util.MimeType;
 /**
  * API for billing business logic.
  * 
- * @author matt
  * @version 1.0
  */
 public interface BillingBiz {

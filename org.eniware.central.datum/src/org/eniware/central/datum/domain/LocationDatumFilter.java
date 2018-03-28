@@ -10,8 +10,7 @@ import org.eniware.central.domain.Location;
 
 /**
  * Extension of {@link DatumFilter} for location-based entities.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public interface LocationDatumFilter extends DatumFilter {

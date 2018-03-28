@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * 
  * @param T
  *        the result type
- * @author matt
  * @version 1.1
  */
 @JsonPropertyOrder({ "totalResults", "startingOffset", "returnedResultCount", "results" })

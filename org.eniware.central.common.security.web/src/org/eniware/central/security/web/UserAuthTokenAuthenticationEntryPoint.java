@@ -20,8 +20,7 @@ import net.solarnetwork.web.security.WebConstants;
 
 /**
  * Entry point for SolarNetworkWS authentication.
- * 
- * @author matt
+ 
  * @version 1.3
  */
 public class UserAuthTokenAuthenticationEntryPoint implements AuthenticationEntryPoint, Ordered {

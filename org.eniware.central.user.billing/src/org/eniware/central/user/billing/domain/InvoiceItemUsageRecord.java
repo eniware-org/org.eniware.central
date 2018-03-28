@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 /**
  * A usage record attached to an invoice item.
  * 
- * @author matt
  * @version 1.0
  */
 public interface InvoiceItemUsageRecord {

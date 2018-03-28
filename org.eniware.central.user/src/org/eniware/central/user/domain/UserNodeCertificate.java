@@ -27,7 +27,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * A user node certificate. The certificate is expected to be in X.509 format.
  * 
- * @author matt
  * @version 1.2
  */
 public class UserNodeCertificate implements Entity<UserNodePK>, Cloneable, Serializable {

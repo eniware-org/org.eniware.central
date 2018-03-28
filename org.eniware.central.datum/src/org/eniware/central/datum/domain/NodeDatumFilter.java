@@ -8,8 +8,7 @@ package org.eniware.central.datum.domain;
 
 /**
  * Filter for node datum.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public interface NodeDatumFilter extends DatumFilter {

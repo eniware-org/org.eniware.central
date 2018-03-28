@@ -8,8 +8,6 @@ package org.eniware.central.domain;
 
 /**
  * General node group information.
- * 
- * @author matt
  * @version $Revision$
  */
 public interface NodeGroupInformation extends NodeGroupIdentity {

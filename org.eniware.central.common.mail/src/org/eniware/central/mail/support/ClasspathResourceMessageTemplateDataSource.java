@@ -33,8 +33,6 @@ import org.springframework.util.StringUtils;
  * resource path exactly as configured. If that resource cannot be found, a
  * {@code RuntimeException} will be thrown.
  * </p>
- * 
- * @author matt
  * @version 1.1
  */
 public class ClasspathResourceMessageTemplateDataSource implements MessageTemplateDataSource {

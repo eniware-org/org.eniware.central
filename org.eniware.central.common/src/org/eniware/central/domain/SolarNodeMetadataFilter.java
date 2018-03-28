@@ -7,9 +7,7 @@
 package org.eniware.central.domain;
 
 /**
- * Filter API for {@link SolarNodeMetadata}.
- * 
- * @author matt
+ * Filter API for {@link SolarNodeMetadata}
  * @version 1.0
  * @since 1.32
  */

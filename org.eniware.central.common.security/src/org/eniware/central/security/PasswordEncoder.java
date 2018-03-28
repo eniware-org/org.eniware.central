@@ -12,8 +12,7 @@ package org.eniware.central.security;
  * <p>
  * Modeled after the Spring Security <code>PasswordEncoder</code> API.
  * </p>
- * 
- * @author matt
+ 
  * @version 1.1
  */
 public interface PasswordEncoder extends org.eniware.support.PasswordEncoder {

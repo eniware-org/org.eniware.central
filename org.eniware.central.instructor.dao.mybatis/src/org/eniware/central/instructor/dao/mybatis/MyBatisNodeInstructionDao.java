@@ -20,7 +20,6 @@ import org.joda.time.DateTime;
 /**
  * MyBatis implementation of {@link NodeInstructionDao}.
  * 
- * @author matt
  * @version 1.1
  */
 public class MyBatisNodeInstructionDao extends

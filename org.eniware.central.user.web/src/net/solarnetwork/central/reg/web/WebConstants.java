@@ -9,7 +9,6 @@ package net.solarnetwork.central.reg.web;
 /**
  * Constants for the web controller layer.
  * 
- * @author matt
  * @version 1.0
  */
 public final class WebConstants {

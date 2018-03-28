@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Controller for {@link NetworkIdentityBiz} requests.
- * 
- * @author matt
+ *
  * @version 1.1
  */
 @Controller

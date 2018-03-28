@@ -22,8 +22,7 @@ import net.solarnetwork.web.security.AuthorizationV2Builder;
 
 /**
  * MyBatis implementation of {@link UserAuthTokenDao}.
- * 
- * @author matt
+ *
  * @version 1.2
  */
 public class MyBatisUserAuthTokenDao extends BaseMyBatisGenericDao<UserAuthToken, String>

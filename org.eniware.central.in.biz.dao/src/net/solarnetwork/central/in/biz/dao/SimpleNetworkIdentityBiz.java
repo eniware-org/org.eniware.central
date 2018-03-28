@@ -18,8 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Simple implementation of {@link NetworkIdentityBiz}.
- * 
- * @author matt
+ *
  * @version 1.1
  */
 public class SimpleNetworkIdentityBiz implements NetworkIdentityBiz {

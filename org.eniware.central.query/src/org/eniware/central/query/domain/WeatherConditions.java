@@ -13,8 +13,7 @@ import org.eniware.central.datum.domain.WeatherDatum;
 
 /**
  * A snapshot of weather conditions at a particular time.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class WeatherConditions {

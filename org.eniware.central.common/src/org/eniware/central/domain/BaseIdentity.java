@@ -10,8 +10,6 @@ import java.io.Serializable;
 
 /**
  * Base implementation of a Long-based {@link Identity}.
- * 
- * @author matt
  * @version $Revision$
  */
 public abstract class BaseIdentity implements Cloneable, Serializable, Identity<Long> {

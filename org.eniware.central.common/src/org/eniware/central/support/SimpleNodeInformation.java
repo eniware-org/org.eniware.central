@@ -13,8 +13,6 @@ import org.eniware.central.domain.SolarNodeCapability;
 
 /**
  * Simple implementation of {@link NodeInformation}.
- * 
- * @author matt
  * @version $Revision$
  */
 public class SimpleNodeInformation extends BaseIdentity implements NodeInformation {

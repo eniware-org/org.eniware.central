@@ -14,7 +14,6 @@ import org.joda.time.LocalTime;
  * Extension of {@link PowerDatum} with some additional properties
  * geared towards reporting.
  *
- * @author matt
  * @version $Revision$ $Date$
  */
 public class ReportingPowerDatum extends PowerDatum implements WattHourDatum, ReportingDatum {

@@ -24,7 +24,6 @@ import org.springframework.util.Base64Utils;
 /**
  * Authorization interceptor for Killbill.
  * 
- * @author matt
  * @version 1.0
  */
 public class KillbillAuthorizationInterceptor implements ClientHttpRequestInterceptor {

@@ -17,8 +17,7 @@ import org.eniware.central.datum.domain.LocationSourcePK;
 
 /**
  * DAO API for {@link GeneralLocationDatumMetadata}.
- * 
- * @author matt
+ 
  * @version 1.1
  */
 public interface GeneralLocationDatumMetadataDao

@@ -23,8 +23,7 @@ import org.eniware.domain.GeneralDatumMetadata;
 /**
  * Implementation of {@link DatumMetadataBiz} that delgates to another
  * {@link DatumMetadataBiz}. Designed for use with AOP.
- * 
- * @author matt
+ *
  * @version 1.2
  */
 public class DelegatingDatumMetadataBiz implements DatumMetadataBiz {

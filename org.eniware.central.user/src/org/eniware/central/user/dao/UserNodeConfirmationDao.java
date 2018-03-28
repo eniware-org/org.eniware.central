@@ -15,7 +15,6 @@ import org.eniware.central.user.domain.UserNodeConfirmation;
 /**
  * DAO API for UserNodeConfirmation entities.
  * 
- * @author matt
  * @version $Revision$
  */
 public interface UserNodeConfirmationDao extends GenericDao<UserNodeConfirmation, Long> {

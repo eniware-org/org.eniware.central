@@ -16,7 +16,6 @@ import org.eniware.central.user.domain.UserMetadataMatch;
 /**
  * MyBatis implementation of {@link UserMetadataDao}.
  * 
- * @author matt
  * @version 1.1
  * @since 1.8
  */

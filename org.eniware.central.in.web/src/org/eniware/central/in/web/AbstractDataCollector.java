@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * Base class for data collector implementations.
  *
- * @author matt.magoffin
  * @version 1.1
  */
 public abstract class AbstractDataCollector {

@@ -9,7 +9,6 @@ package org.eniware.central.user.billing.killbill.domain;
 /**
  * An individual health check result.
  * 
- * @author matt
  * @version 1.0
  */
 public class HealthCheckResult {

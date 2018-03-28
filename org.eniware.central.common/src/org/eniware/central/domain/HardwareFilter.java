@@ -8,8 +8,6 @@ package org.eniware.central.domain;
 
 /**
  * Filter API for Hardware.
- * 
- * @author matt
  * @version $Revision$
  */
 public interface HardwareFilter extends Filter {

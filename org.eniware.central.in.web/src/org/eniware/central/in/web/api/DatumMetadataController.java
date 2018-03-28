@@ -28,8 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Controller for datum metadata actions.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 @Controller("v1DatumMetadataController")

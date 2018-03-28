@@ -12,8 +12,6 @@ import org.joda.time.DateTime;
 
 /**
  * Base class for SolarNetwork entities.
- * 
- * @author matt
  * @version $Revision$
  */
 public abstract class BaseEntity extends BaseIdentity 

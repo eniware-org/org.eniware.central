@@ -43,7 +43,6 @@ import net.solarnetwork.web.domain.Response;
 /**
  * JSON implementation of bulk upload service.
  * 
- * @author matt
  * @version 1.4
  */
 @Controller

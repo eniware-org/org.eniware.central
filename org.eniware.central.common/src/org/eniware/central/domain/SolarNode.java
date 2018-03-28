@@ -15,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Domain object for node related info.
- * 
- * @author matt
  * @version 1.1
  */
 public class SolarNode extends BaseEntity implements Cloneable, Serializable, NodeIdentity {

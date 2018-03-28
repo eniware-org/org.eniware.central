@@ -19,7 +19,6 @@ import org.eniware.domain.GeneralDatumMetadata;
  * Delegating implementation of {@link UserMetadataBiz}, mostly to help with
  * AOP.
  * 
- * @author matt
  * @version 1.0
  * @since 1.23
  */

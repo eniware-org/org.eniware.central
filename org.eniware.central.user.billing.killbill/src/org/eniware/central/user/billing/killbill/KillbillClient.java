@@ -35,7 +35,6 @@ import org.springframework.util.MimeType;
 /**
  * API for interaction with Killbill.
  * 
- * @author matt
  * @version 1.2
  */
 public interface KillbillClient {

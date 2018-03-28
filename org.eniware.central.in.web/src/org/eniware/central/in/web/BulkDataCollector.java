@@ -54,7 +54,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * request for securely processing node data.
  * </p>
  * 
- * @author matt
  * @version 1.1
  * @deprecated see {@link BulkJsonDataCollector}
  */

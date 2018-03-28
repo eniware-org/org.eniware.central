@@ -17,7 +17,6 @@ import net.solarnetwork.web.security.AuthorizationV2Builder;
 /**
  * DAO API for {@link UserAuthToken} entities.
  * 
- * @author matt
  * @version 1.1
  */
 public interface UserAuthTokenDao extends GenericDao<UserAuthToken, String> {

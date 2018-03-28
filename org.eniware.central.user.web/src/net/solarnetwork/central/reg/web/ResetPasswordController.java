@@ -33,7 +33,6 @@ import net.solarnetwork.domain.RegistrationReceipt;
 /**
  * Controller for managing the reset password functionality.
  * 
- * @author matt
  * @version 1.1
  */
 @Controller

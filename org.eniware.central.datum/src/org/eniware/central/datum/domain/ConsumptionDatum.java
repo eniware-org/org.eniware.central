@@ -9,8 +9,7 @@ package org.eniware.central.datum.domain;
 
 /**
  * Domain object for a unit of data collected from a power consumption monitor.
- *
- * @author matt
+ 
  * @version $Revision$ $Date$
  */
 public class ConsumptionDatum extends BaseNodeDatum implements LocationDatum {

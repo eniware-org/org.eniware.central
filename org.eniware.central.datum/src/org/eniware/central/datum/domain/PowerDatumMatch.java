@@ -10,8 +10,7 @@ import org.eniware.central.domain.EntityMatch;
 
 /**
  * {@link EntityMatch} for {@link PowerDatum}.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class PowerDatumMatch extends PowerDatum implements EntityMatch {

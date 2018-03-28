@@ -35,8 +35,6 @@ import org.springframework.mail.SimpleMailMessage;
  * This can be used to configure a default "from" address, for example.</dd>
  * 
  * </dl>
- * 
- * @author matt
  * @version 1.2
  */
 public class DefaultMailService implements MailService {

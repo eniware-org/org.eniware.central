@@ -11,7 +11,6 @@ import java.io.Serializable;
 /**
  * Primary key based on a user ID and node ID.
  * 
- * @author matt
  * @version 1.0
  */
 public class UserNodePK implements Serializable, Cloneable, Comparable<UserNodePK> {

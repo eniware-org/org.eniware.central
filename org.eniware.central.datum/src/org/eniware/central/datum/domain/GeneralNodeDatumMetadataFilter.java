@@ -10,8 +10,7 @@ import org.eniware.central.domain.Filter;
 
 /**
  * Filter API for {@link GeneralNodeDatumMetadata}.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public interface GeneralNodeDatumMetadataFilter extends Filter {

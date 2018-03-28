@@ -42,8 +42,7 @@ import org.springframework.web.client.RestTemplate;
 /**
  * Factory for {@link SSLContext} objects configured with an associated
  * key/trust store.
- * 
- * @author matt
+ *
  * @version 1.2
  */
 public class SSLContextFactory implements PingTest {

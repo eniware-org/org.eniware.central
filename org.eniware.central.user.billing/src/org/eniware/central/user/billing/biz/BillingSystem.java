@@ -20,7 +20,6 @@ import org.springframework.util.MimeType;
 /**
  * API for interacting with a billing system.
  * 
- * @author matt
  * @version 1.1
  */
 public interface BillingSystem {

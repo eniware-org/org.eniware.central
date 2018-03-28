@@ -17,8 +17,6 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 /**
  * JSON serializer for {@link GeneralDatumMetadata}.
- * 
- * @author matt
  * @version 1.1
  */
 public class GeneralDatumMetadataSerializer extends StdSerializer<GeneralDatumMetadata> {

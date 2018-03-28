@@ -26,7 +26,6 @@ import net.solarnetwork.web.security.AuthorizationV2Builder;
 /**
  * API for registered user tasks.
  * 
- * @author matt
  * @version 1.5
  */
 public interface UserBiz {

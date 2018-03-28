@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * Usage records of a specific type.
  * 
- * @author matt
  * @version 1.0
  */
 @JsonPropertyOrder({ "unitType", "usageRecords" })

@@ -29,8 +29,7 @@ import org.springframework.util.MimeType;
 /**
  * DAO based implementation of {@link BillingBiz} that delegates responsibility
  * to the {@link BillingSystem} configured for each user.
- * 
- * @author matt
+ *
  * @version 1.1
  */
 public class DaoBillingBiz implements BillingBiz {

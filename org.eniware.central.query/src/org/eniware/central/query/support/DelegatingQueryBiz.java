@@ -27,7 +27,6 @@ import org.joda.time.DateTime;
 /**
  * Delegating implementation of {@link QueryBiz}, mostly to help with AOP.
  * 
- * @author matt
  * @version 2.0
  */
 public class DelegatingQueryBiz implements QueryBiz {

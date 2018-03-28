@@ -26,8 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * MyBatis implementation of {@link GeneralNodeDatumMetadataDao}.
- * 
- * @author matt
+ *
  * @version 1.1
  */
 public class MyBatisGeneralNodeDatumMetadataDao

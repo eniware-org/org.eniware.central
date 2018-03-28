@@ -10,8 +10,7 @@ import org.eniware.domain.NetworkCertificate;
 
 /**
  * Extension of {@link NetworkCertificate} with support for renewal requests.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public interface UserNodeCertificateRenewal extends NetworkCertificate {

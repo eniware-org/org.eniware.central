@@ -21,7 +21,6 @@ import org.eniware.central.user.support.AuthorizationSupport;
 /**
  * Security aspect for {@link InstructorBiz}.
  * 
- * @author matt
  * @version 1.1
  */
 @Aspect

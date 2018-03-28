@@ -10,8 +10,6 @@ import org.eniware.central.domain.SortDescriptor;
 
 /**
  * Implementation of {@link SortDescriptor}.
- * 
- * @author matt
  * @version 1.2
  */
 public class SimpleSortDescriptor implements SortDescriptor {

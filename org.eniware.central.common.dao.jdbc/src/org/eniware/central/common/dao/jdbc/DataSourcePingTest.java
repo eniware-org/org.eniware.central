@@ -21,8 +21,6 @@ import org.eniware.central.domain.PingTestResult;
  * {@link PingTest} to verify a {@link DataSource} connection is available. This
  * test expects the configured {@code query} to return a
  * {@link java.sql.Timestamp} as the first column of the query result.
- * 
- * @author matt
  * @version 1.0
  */
 public class DataSourcePingTest implements PingTest {

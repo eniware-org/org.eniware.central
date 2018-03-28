@@ -75,8 +75,7 @@ import org.springframework.transaction.annotation.Transactional;
  * <em>null</em> {@link NodeDatum#getNodeId()} value, this service will set the
  * node ID to the authenticated node ID automatically.
  * </p>
- * 
- * @author matt
+ *
  * @version 2.1
  */
 public class DaoDataCollectorBiz implements DataCollectorBiz {

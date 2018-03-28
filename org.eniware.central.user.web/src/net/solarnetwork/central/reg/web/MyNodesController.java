@@ -68,8 +68,7 @@ import net.solarnetwork.web.domain.Response;
 
 /**
  * Controller for "my nodes".
- * 
- * @author matt
+ *
  * @version 1.4
  */
 @Controller

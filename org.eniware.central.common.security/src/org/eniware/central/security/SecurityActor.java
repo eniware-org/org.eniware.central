@@ -8,8 +8,7 @@ package org.eniware.central.security;
 
 /**
  * Base interface for other authenticated detail interfaces to extend.
- * 
- * @author matt
+ 
  * @version 1.0
  */
 public interface SecurityActor {

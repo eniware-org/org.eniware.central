@@ -9,7 +9,6 @@ package org.eniware.central.user.domain;
 /**
  * {@link UserAlert} option constants.
  * 
- * @author matt
  * @version 1.1
  */
 public interface UserAlertOptions {

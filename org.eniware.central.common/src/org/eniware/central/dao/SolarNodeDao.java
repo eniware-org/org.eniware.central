@@ -10,8 +10,6 @@ import org.eniware.central.domain.SolarNode;
 
 /**
  * DAO API for SolarNode data.
- * 
- * @author matt
  * @version $Revision$ $Date$
  */
 public interface SolarNodeDao extends GenericDao<SolarNode, Long> {

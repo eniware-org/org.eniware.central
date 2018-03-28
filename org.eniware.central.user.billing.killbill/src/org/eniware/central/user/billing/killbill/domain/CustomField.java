@@ -11,7 +11,6 @@ import org.eniware.central.user.billing.domain.MetadataItem;
 /**
  * A custom field.
  * 
- * @author matt
  * @version 1.0
  */
 public class CustomField implements MetadataItem {

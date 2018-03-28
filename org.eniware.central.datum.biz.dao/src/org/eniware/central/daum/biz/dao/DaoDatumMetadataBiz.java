@@ -41,8 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
  * <dt>generalNodeDatumMetadataDao</dt>
  * <dd>The {@link GeneralNodeDatumMetadataDao} to use.</dd>
  * </dl>
- * 
- * @author matt
+ *
  * @version 1.1
  */
 public class DaoDatumMetadataBiz implements DatumMetadataBiz {

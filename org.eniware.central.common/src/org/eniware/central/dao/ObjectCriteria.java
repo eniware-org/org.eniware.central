@@ -10,8 +10,6 @@ import org.eniware.central.domain.Filter;
 
 /**
  * Generic object search criteria API.
- * 
- * @author matt
  * @version $Revision$
  */
 public interface ObjectCriteria<T extends Filter> {

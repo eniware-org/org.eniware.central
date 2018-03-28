@@ -13,8 +13,6 @@ import java.util.Map;
 /**
  * API for a "filter-able" object, that is something that can be searched
  * for by specifying filter keys and associated match values.
- * 
- * @author matt
  * @version $Revision$
  */
 public interface Filter {

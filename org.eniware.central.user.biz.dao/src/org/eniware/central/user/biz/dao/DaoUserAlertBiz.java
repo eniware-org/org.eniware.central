@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * DAO-based implementation of {@link UserAlertBiz}.
  * 
- * @author matt
  * @version 1.0
  */
 public class DaoUserAlertBiz implements UserAlertBiz {

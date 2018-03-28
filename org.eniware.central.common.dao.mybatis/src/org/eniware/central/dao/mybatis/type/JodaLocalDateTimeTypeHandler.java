@@ -20,8 +20,6 @@ import org.joda.time.LocalDateTime;
 /**
  * Implementation of {@link TypeHandler} for dealing with Joda Time
  * {@link LocalDateTime} objects.
- * 
- * @author matt
  * @version 1.0
  */
 public class JodaLocalDateTimeTypeHandler extends BaseTypeHandler<LocalDateTime> {

@@ -17,7 +17,6 @@ import org.eniware.domain.GeneralDatumMetadata;
 /**
  * API for manipulating user metadata.
  * 
- * @author matt
  * @version 1.0
  * @since 1.23
  */

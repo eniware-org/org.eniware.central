@@ -15,7 +15,6 @@ import org.eniware.central.user.domain.UserAlertSituationStatus;
 /**
  * Delegating implementation of {@link UserAlertBiz}, mostly to help with AOP.
  * 
- * @author matt
  * @version 1.1
  */
 public class DelegatingUserAlertBiz implements UserAlertBiz {

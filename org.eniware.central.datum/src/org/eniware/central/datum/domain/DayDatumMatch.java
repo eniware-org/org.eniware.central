@@ -10,8 +10,7 @@ import org.eniware.central.domain.EntityMatch;
 
 /**
  * Search result for DayDatum.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class DayDatumMatch extends DayDatum implements EntityMatch {

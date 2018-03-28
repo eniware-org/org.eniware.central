@@ -10,8 +10,7 @@ import java.io.Serializable;
 
 /**
  * Primary key based on a node ID and source ID.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class NodeSourcePK implements Serializable, Cloneable, Comparable<NodeSourcePK> {

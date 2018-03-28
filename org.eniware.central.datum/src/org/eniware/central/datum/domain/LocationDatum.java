@@ -9,7 +9,6 @@ package org.eniware.central.datum.domain;
 /**
  * Basic location-level Datum API.
  *
- * @author matt
  * @version $Revision$ $Date$
  */
 public interface LocationDatum extends Datum {

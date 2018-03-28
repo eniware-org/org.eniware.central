@@ -10,8 +10,7 @@ import java.util.Map;
 
 /**
  * API for an aggregate (reporting) {@link GeneralLocationDatumFilterMatch}.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public interface ReportingGeneralLocationDatumMatch extends ReportingDatum,

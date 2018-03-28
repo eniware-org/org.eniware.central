@@ -24,7 +24,6 @@ import org.joda.time.ReadablePeriod;
 /**
  * API for user registration tasks.
  * 
- * @author matt
  * @version 1.5
  */
 public interface RegistrationBiz {

@@ -10,8 +10,6 @@ import java.util.Date;
 
 /**
  * Extension of {@link PingTestResult} to support the UI layer.
- * 
- * @author matt
  * @version 1.0
  */
 public class PingTestResultDisplay extends PingTestResult {

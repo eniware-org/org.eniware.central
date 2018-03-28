@@ -36,8 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Abstract base class to support node-related controllers.
- * 
- * @author matt
+
  * @version 1.1
  */
 public abstract class AbstractNodeController {

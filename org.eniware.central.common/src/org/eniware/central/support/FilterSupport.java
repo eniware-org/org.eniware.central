@@ -16,8 +16,6 @@ import org.eniware.central.domain.SolarNodeMetadataFilter;
 
 /**
  * Supporting base class for {@link Filter} implementations.
- * 
- * @author matt
  * @version 1.1
  * @since 1.32
  */

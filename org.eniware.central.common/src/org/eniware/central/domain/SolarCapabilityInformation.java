@@ -15,7 +15,6 @@ package org.eniware.central.domain;
  * used in.</p>
  * 
  * @param <PK> the identity type
- * @author matt
  * @version $Revision$
  */
 public interface SolarCapabilityInformation<PK> extends Identity<PK> {

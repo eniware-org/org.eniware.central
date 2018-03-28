@@ -12,8 +12,6 @@ import org.joda.time.DateTime;
  * Extension of {@link Filter} specific to aggregated results. This API designed
  * to support DAOs that want to implement both "raw" filter results and
  * "aggregate" filter results.
- * 
- * @author matt
  * @version 1.0
  */
 public interface AggregationFilter extends Filter {

@@ -20,7 +20,6 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 /**
  * Global Killbill helpers.
  * 
- * @author matt
  * @version 1.0
  */
 public final class KillbillUtils {

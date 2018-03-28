@@ -26,8 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Controller for returning i18n message resources.
- * 
- * @author matt
+ 
  * @version $Revision$
  */
 @Controller

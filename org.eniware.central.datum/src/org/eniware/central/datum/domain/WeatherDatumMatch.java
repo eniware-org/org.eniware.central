@@ -10,8 +10,7 @@ import org.eniware.central.domain.EntityMatch;
 
 /**
  * Search result for WeatherDatum.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public class WeatherDatumMatch extends WeatherDatum implements EntityMatch {

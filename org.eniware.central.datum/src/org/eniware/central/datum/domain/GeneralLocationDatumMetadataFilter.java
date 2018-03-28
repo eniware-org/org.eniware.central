@@ -11,8 +11,7 @@ import org.eniware.central.domain.Location;
 
 /**
  * Filter API for {@link GeneralLocationDatumMetadata}.
- * 
- * @author matt
+ *
  * @version 1.0
  */
 public interface GeneralLocationDatumMetadataFilter extends Filter {

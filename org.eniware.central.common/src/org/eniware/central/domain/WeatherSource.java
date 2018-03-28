@@ -10,8 +10,6 @@ import java.io.Serializable;
 
 /**
  * A source of weather information.
- * 
- * @author matt
  * @version $Revision$
  */
 public class WeatherSource extends BaseEntity implements Cloneable, Serializable {

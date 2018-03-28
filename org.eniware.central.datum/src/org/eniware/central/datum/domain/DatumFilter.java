@@ -11,8 +11,7 @@ import org.joda.time.DateTime;
 
 /**
  * Filter for Datum entities.
- * 
- * @author matt
+ 
  * @version 1.1
  */
 public interface DatumFilter extends Filter {

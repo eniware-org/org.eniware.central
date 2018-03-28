@@ -11,7 +11,6 @@ import org.eniware.central.security.SecurityToken;
 /**
  * API for integration with a SolarNode Image Maker instance.
  * 
- * @author matt
  * @version 1.0
  */
 public interface SolarNodeImageMakerBiz {

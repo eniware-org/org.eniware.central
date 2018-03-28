@@ -52,7 +52,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Implementation of {@link QueryBiz}.
  * 
- * @author matt
  * @version 2.2
  */
 public class DaoQueryBiz implements QueryBiz {

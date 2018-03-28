@@ -10,8 +10,6 @@ import java.io.Serializable;
 
 /**
  * A set of capabilities.
- * 
- * @author matt
  * @version $Revision$
  */
 public class SolarCapability extends BaseEntity implements Cloneable, Serializable {

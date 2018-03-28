@@ -8,8 +8,7 @@ package org.eniware.central.web.domain;
 
 /**
  * A simple service response envelope object.
- * 
- * @author matt
+ 
  * @version 1.1
  * @param <T>
  *        the object type

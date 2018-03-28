@@ -21,8 +21,7 @@ import org.eniware.domain.GeneralDatumMetadata;
 
 /**
  * API for manipulating general datum metadata.
- * 
- * @author matt
+ 
  * @version 1.2
  */
 public interface DatumMetadataBiz {

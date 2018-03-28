@@ -10,8 +10,6 @@ import java.util.Map;
 
 /**
  * A results object for a single {@link PingTest} result.
- * 
- * @author matt
  * @version 1.0
  */
 public class PingTestResult {

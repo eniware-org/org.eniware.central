@@ -45,8 +45,7 @@ import net.solarnetwork.web.domain.Response;
 
 /**
  * Web service API for billing management.
- * 
- * @author matt
+ *
  * @version 1.1
  */
 @RestController("v1BillingController")

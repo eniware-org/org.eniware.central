@@ -9,7 +9,6 @@ package org.eniware.central.user.domain;
 /**
  * The status of a network certificate install process.
  * 
- * @author matt
  * @version 1.0
  */
 public enum UserNodeCertificateInstallationStatus {

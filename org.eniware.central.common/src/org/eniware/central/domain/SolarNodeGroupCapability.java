@@ -10,8 +10,6 @@ import java.io.Serializable;
 
 /**
  * A set of capabilities for a node.
- * 
- * @author matt
  * @version $Revision$
  */
 public class SolarNodeGroupCapability extends SolarCapability implements Cloneable, Serializable {

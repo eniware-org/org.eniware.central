@@ -37,7 +37,6 @@ import org.springframework.util.AntPathMatcher;
 /**
  * Security enforcing AOP aspect for {@link QueryBiz}.
  * 
- * @author matt
  * @version 1.5
  */
 @Aspect

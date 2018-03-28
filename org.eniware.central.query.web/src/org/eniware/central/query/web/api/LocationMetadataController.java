@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * Controller for location metadata actions.
  * 
- * @author matt
  * @version 1.1
  */
 @Controller("v1LocationMetadataController")
