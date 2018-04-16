@@ -27,9 +27,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.GenericFilterBean;
-import net.solarnetwork.web.security.AuthenticationData;
-import net.solarnetwork.web.security.AuthenticationDataFactory;
-import net.solarnetwork.web.security.SecurityHttpServletRequestWrapper;
+import org.eniware.web.security.AuthenticationData;
+import org.eniware.web.security.AuthenticationDataFactory;
+import org.eniware.web.security.SecurityHttpServletRequestWrapper;
 
 /**
  * Authentication filter for "SolarNetworkWS" style authentication.

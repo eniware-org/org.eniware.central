@@ -18,7 +18,7 @@ import org.joda.time.DateTimeZone;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.solarnetwork.web.security.AuthorizationV2Builder;
+import org.eniware.web.security.AuthorizationV2Builder;
 
 /**
  * MyBatis implementation of {@link UserAuthTokenDao}.

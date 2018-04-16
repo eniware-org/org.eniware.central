@@ -38,7 +38,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
-import net.solarnetwork.web.security.AuthorizationV2Builder;
+import org.eniware.web.security.AuthorizationV2Builder;
 
 /**
  * Cloud based implementation of {@link SolarNodeImageMakerBiz}.

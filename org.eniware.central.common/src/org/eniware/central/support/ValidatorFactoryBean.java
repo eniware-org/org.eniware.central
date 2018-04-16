@@ -25,7 +25,7 @@ import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 /**
  * Bootstrap javax.validation for OSGi using {@link HibernateValidator}.
  * 
- * @author matt
+ * 
  * @version 1.0
  */
 public final class ValidatorFactoryBean {

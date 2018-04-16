@@ -10,10 +10,10 @@ import java.beans.PropertyEditor;
 import java.util.List;
 import javax.annotation.Resource;
 
-import net.solarnetwork.central.in.biz.DataCollectorBiz;
-import net.solarnetwork.central.instructor.biz.InstructorBiz;
-import net.solarnetwork.central.security.AuthenticatedNode;
-import net.solarnetwork.central.security.SecurityException;
+import org.eniware.central.in.biz.DataCollectorBiz;
+import org.eniware.central.instructor.biz.InstructorBiz;
+import org.eniware.central.security.AuthenticatedNode;
+import org.eniware.central.security.SecurityException;
 
 import org.eniware.central.dao.SolarNodeDao;
 import org.eniware.central.domain.SolarNode;

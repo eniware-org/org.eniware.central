@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.core.Ordered;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import net.solarnetwork.web.security.AuthenticationScheme;
-import net.solarnetwork.web.security.WebConstants;
+import org.eniware.web.security.AuthenticationScheme;
+import org.eniware.web.security.WebConstants;
 
 /**
  * Entry point for SolarNetworkWS authentication.

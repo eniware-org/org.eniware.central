@@ -1,17 +1,31 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNetwork Common Central
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eniware.central.common
 Bundle-Version: 1.37.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: 
- org.eniware.central;version="1.4.0",
- org.eniware.central.biz;version="1.2.0",
- org.eniware.central.dao;version="1.14.0",
- org.eniware.central.domain;version="1.23.0",
- org.eniware.central.scheduler;version="1.5.0",
- org.eniware.central.support;version="1.15.0"
+ org.eniware.central;version="1.4.0";uses:="org.springframework.validation,org.springframework.context",
+ org.eniware.central.biz;version="1.2.0";uses:="org.eniware.central.domain,org.eniware.domain",
+ org.eniware.central.dao;version="1.14.0";uses:="org.eniware.central.domain,org.eniware.domain",
+ org.eniware.central.domain;version="1.23.0";uses:="org.joda.time,org.eniware.domain",
+ org.eniware.central.scheduler;version="1.5.0";uses:="org.joda.time,org.osgi.service.event,org.slf4j",
+ org.eniware.central.support;version="1.15.0";
+  uses:="javax.cache,
+   org.eniware.central.domain,
+   javax.cache.expiry,
+   com.fasterxml.jackson.core,
+   org.eniware.util,
+   org.eniware.domain,
+   com.fasterxml.jackson.core.type,
+   javax.cache.configuration,
+   com.fasterxml.jackson.databind.ser.std,
+   org.springframework.beans.factory,
+   org.eniware.central.biz,
+   org.eniware.central.dao,
+   com.fasterxml.jackson.databind,
+   javax.validation"
 Import-Package: 
  com.fasterxml.jackson.annotation;version="[2.4,3.0)",
  com.fasterxml.jackson.core;version="[2.4,3.0)",
@@ -20,7 +34,7 @@ Import-Package:
  com.fasterxml.jackson.databind.annotation;version="[2.4,3.0)",
  com.fasterxml.jackson.databind.ser.std;version="[2.4,3.0)",
  com.fasterxml.jackson.databind.type;version="[2.4,3.0)",
- javax.cache;version="[1.0,2.0)";resolution:=optional,
+ javax.cache;version="[1.0.0,2.0.0)";resolution:=optional,
  javax.cache.configuration;version="[1.0,2.0)";resolution:=optional,
  javax.cache.expiry;version="[1.0,2.0)";resolution:=optional,
  javax.cache.integration;version="[1.0,2.0)";resolution:=optional,
@@ -33,7 +47,7 @@ Import-Package:
  org.eniware.domain;version="1.7.0",
  org.eniware.util;version="1.27.0",
  org.hibernate.validator;version="[5.0,6.0)";resolution:=optional,
- org.joda.time;version="[2.4,3.0)",
+ org.joda.time;version="[2.4.0,3.0.0)",
  org.osgi.service.event;version="[1.2,2.0)",
  org.slf4j;version="[1.6.0,2.0.0)",
  org.springframework.beans;version="[4.2,5.0)",

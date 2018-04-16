@@ -26,9 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import net.solarnetwork.central.query.biz.QueryBiz;
-import net.solarnetwork.central.web.support.WebServiceControllerSupport;
-import net.solarnetwork.web.domain.Response;
+import org.eniware.central.query.biz.QueryBiz;
+import org.eniware.central.web.support.WebServiceControllerSupport;
+import org.eniware.web.domain.Response;
 
 /**
  * Controller for querying datum related data.

@@ -6,10 +6,10 @@
 
 package org.eniware.central.in.web;
 
-import net.solarnetwork.central.in.biz.NetworkIdentityBiz;
-import net.solarnetwork.domain.NetworkAssociation;
-import net.solarnetwork.domain.NetworkAssociationDetails;
-import net.solarnetwork.domain.NetworkIdentity;
+import org.eniware.central.in.biz.NetworkIdentityBiz;
+import org.eniware.domain.NetworkAssociation;
+import org.eniware.domain.NetworkAssociationDetails;
+import org.eniware.domain.NetworkIdentity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

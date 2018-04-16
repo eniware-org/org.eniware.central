@@ -11,7 +11,7 @@ import java.util.TimeZone;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.solarnetwork.web.support.WebUtils;
+import org.eniware.web.support.WebUtils;
 
 import org.eniware.central.ValidationException;
 import org.eniware.central.dao.SolarNodeDao;

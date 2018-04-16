@@ -9,8 +9,8 @@ package org.eniware.central.in.web;
 import java.util.List;
 import javax.validation.Valid;
 
-import net.solarnetwork.central.in.biz.DataCollectorBiz;
-import net.solarnetwork.web.domain.Response;
+import org.eniware.central.in.biz.DataCollectorBiz;
+import org.eniware.web.domain.Response;
 
 import org.eniware.central.dao.SolarNodeDao;
 import org.eniware.central.domain.EntityMatch;

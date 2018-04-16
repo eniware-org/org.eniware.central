@@ -12,8 +12,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.eniware.central.user.billing.biz.BillingBiz;
 import org.eniware.central.user.billing.domain.InvoiceFilter;
 
-import net.solarnetwork.central.user.dao.UserNodeDao;
-import net.solarnetwork.central.user.support.AuthorizationSupport;
+import org.eniware.central.user.dao.UserNodeDao;
+import org.eniware.central.user.support.AuthorizationSupport;
 
 /**
  * Security enforcing AOP aspect for {@link BillingBiz}.

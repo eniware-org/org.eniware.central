@@ -6,11 +6,11 @@
 
 package org.eniware.central.query.web.api;
 
-import static net.solarnetwork.web.domain.Response.response;
+import static org.eniware.web.domain.Response.response;
 
-import net.solarnetwork.central.query.biz.QueryBiz;
-import net.solarnetwork.central.web.support.WebServiceControllerSupport;
-import net.solarnetwork.web.domain.Response;
+import org.eniware.central.query.biz.QueryBiz;
+import org.eniware.central.web.support.WebServiceControllerSupport;
+import org.eniware.web.domain.Response;
 
 import org.eniware.central.domain.FilterResults;
 import org.eniware.central.domain.LocationMatch;

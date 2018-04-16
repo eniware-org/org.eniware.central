@@ -13,8 +13,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.solarnetwork.web.support.MessagesSource;
-import net.solarnetwork.web.support.WebUtils;
+import org.eniware.web.support.MessagesSource;
+import org.eniware.web.support.WebUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;

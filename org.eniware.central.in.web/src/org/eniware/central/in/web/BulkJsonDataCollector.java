@@ -30,15 +30,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.solarnetwork.central.datum.domain.Datum;
-import net.solarnetwork.central.datum.domain.GeneralLocationDatum;
-import net.solarnetwork.central.datum.domain.GeneralNodeDatum;
-import net.solarnetwork.central.datum.domain.HardwareControlDatum;
-import net.solarnetwork.central.in.biz.DataCollectorBiz;
-import net.solarnetwork.central.instructor.biz.InstructorBiz;
-import net.solarnetwork.central.security.AuthenticatedNode;
-import net.solarnetwork.domain.NodeControlPropertyType;
-import net.solarnetwork.web.domain.Response;
+import org.eniware.central.datum.domain.Datum;
+import org.eniware.central.datum.domain.GeneralLocationDatum;
+import org.eniware.central.datum.domain.GeneralNodeDatum;
+import org.eniware.central.datum.domain.HardwareControlDatum;
+import org.eniware.central.in.biz.DataCollectorBiz;
+import org.eniware.central.instructor.biz.InstructorBiz;
+import org.eniware.central.security.AuthenticatedNode;
+import org.eniware.domain.NodeControlPropertyType;
+import org.eniware.web.domain.Response;
 
 /**
  * JSON implementation of bulk upload service.

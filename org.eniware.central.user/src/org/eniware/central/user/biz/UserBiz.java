@@ -21,7 +21,7 @@ import org.eniware.central.user.domain.UserNodeCertificate;
 import org.eniware.central.user.domain.UserNodeConfirmation;
 import org.joda.time.DateTime;
 
-import net.solarnetwork.web.security.AuthorizationV2Builder;
+import org.eniware.web.security.AuthorizationV2Builder;
 
 /**
  * API for registered user tasks.

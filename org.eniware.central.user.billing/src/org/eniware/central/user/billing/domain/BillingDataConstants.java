@@ -7,7 +7,7 @@
 package org.eniware.central.user.billing.domain;
 
 import java.util.Collections;
-import net.solarnetwork.central.user.domain.UserFilterCommand;
+import org.eniware.central.user.domain.UserFilterCommand;
 
 /**
  * Constants related to billing data.

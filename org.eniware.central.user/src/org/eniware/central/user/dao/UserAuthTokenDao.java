@@ -12,7 +12,7 @@ import org.eniware.central.dao.GenericDao;
 import org.eniware.central.user.domain.UserAuthToken;
 import org.joda.time.DateTime;
 
-import net.solarnetwork.web.security.AuthorizationV2Builder;
+import org.eniware.web.security.AuthorizationV2Builder;
 
 /**
  * DAO API for {@link UserAuthToken} entities.

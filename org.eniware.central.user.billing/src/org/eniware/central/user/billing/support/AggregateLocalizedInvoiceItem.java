@@ -17,7 +17,7 @@ import org.eniware.central.user.billing.domain.InvoiceItem;
 import org.eniware.central.user.billing.domain.LocalizedInvoiceItemInfo;
 import org.eniware.central.user.billing.domain.LocalizedInvoiceItemUsageRecordInfo;
 
-import net.solarnetwork.javax.money.MoneyUtils;
+import org.eniware.javax.money.MoneyUtils;
 
 /**
  * An aggregate invoice item that sums the item amount for a group of items.

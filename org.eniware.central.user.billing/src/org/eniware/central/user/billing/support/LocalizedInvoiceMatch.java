@@ -16,7 +16,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import net.solarnetwork.javax.money.MoneyUtils;
+import org.eniware.javax.money.MoneyUtils;
 
 /**
  * Localized version of {@link InvoiceMatch}.
