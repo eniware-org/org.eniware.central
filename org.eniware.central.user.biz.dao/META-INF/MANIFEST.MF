@@ -10,7 +10,7 @@ Import-Package:
  javax.crypto,
  javax.crypto.spec,
  net.sf.ehcache;version="[2.7,3.0)",
- net.solarnetwork.web.security;version="[1.0,2.0)",
+ org.eniware.web.security;version="[1.0,2.0)",
  org.aopalliance.aop;version="[1.0,2.0)",
  org.apache.commons.codec.binary;version="[1.7,2.0)",
  org.apache.commons.codec.digest;version="[1.7,2.0)",

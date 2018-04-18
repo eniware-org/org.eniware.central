@@ -4,7 +4,7 @@
  * ==================================================================
  */
 
-package net.solarnetwork.central.reg.web;
+package org.eniware.central.reg.web;
 
 /**
  * Constants for the web controller layer.

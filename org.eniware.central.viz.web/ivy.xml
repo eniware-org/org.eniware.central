@@ -1,5 +1,5 @@
 <ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
-    <info organisation="net.solarnetwork.central" module="${bundle.name}" />
+    <info organisation="org.eniware.central" module="${bundle.name}" />
 	<configurations defaultconf="compile,runtime">
 		<conf name="compile" visibility="public" description="Build dependencies"/>
 		<conf name="runtime" visibility="public" description="Runtime dependencies"/>
@@ -9,6 +9,6 @@
 		<artifact type="bundle" ext="jar" conf="runtime"/>
 	</publications>
 	<dependencies defaultconfmapping="runtime->default(runtime);compile->default(runtime)">
-		<dependency org="net.solarnetwork.external" name="net.solarnetwork.external.org.tuckey.urlrewritefilter" rev="4.0.4.SN01" conf="runtime"/>
+		<dependency org="org.eniware.external" name="org.eniware.external.org.tuckey.urlrewritefilter" rev="4.0.4.SN01" conf="runtime"/>
     </dependencies>
 </ivy-module>

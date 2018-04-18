@@ -4,7 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.eniware.common.web"/>
-	<classpathentry kind="lib" path="/home/eniware/git/solarnetwork-build original/solarnetwork-osgi-target/platform/joda-time-2.9.7.jar"/>
-	<classpathentry kind="lib" path="/home/eniware/git/solarnetwork-build original/solarnetwork-osgi-target/spring/org.apache.servicemix.bundles.spring-security-core-4.1.0.RELEASE_1.jar"/>
+	<classpathentry kind="lib" path="/eniware-osgi-target/platform/joda-time-2.9.7.jar"/>
+	<classpathentry kind="lib" path="/eniware-osgi-target/spring/org.apache.servicemix.bundles.spring-security-core-4.1.0.RELEASE_1.jar"/>
 	<classpathentry kind="output" path="build/eclipse"/>
 </classpath>

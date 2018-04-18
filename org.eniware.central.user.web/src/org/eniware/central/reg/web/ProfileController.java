@@ -4,10 +4,10 @@
  * ==================================================================
  */
 
-package net.solarnetwork.central.reg.web;
+package org.eniware.central.reg.web;
 
-import net.solarnetwork.central.security.SecurityUser;
-import net.solarnetwork.central.security.SecurityUtils;
+import org.eniware.central.security.SecurityUser;
+import org.eniware.central.security.SecurityUtils;
 
 import org.eniware.central.user.biz.RegistrationBiz;
 import org.eniware.central.user.biz.UserBiz;

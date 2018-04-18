@@ -3,9 +3,9 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="/home/eniware/git/solarnetwork-build original/solarnetwork-osgi-target/platform/hibernate-validator-5.0.1.Final.jar"/>
-	<classpathentry kind="lib" path="/home/eniware/git/solarnetwork-build original/solarnetwork-osgi-target/platform/org.apache.servicemix.bundles.javax-cache-api-1.0.0_1.jar"/>
-	<classpathentry kind="lib" path="/home/eniware/git/solarnetwork-build original/solarnetwork-osgi-target/platform/validation-api-1.1.0.Final.jar"/>
-	<classpathentry kind="lib" path="/home/eniware/git/solarnetwork-build original/solarnetwork-osgi-target/platform/joda-time-2.9.7.jar"/>
+	<classpathentry kind="lib" path="/eniware-osgi-target/platform/hibernate-validator-5.0.1.Final.jar"/>
+	<classpathentry kind="lib" path="/eniware-osgi-target/platform/joda-time-2.9.7.jar"/>
+	<classpathentry kind="lib" path="/eniware-osgi-target/platform/org.apache.servicemix.bundles.javax-cache-api-1.0.0_1.jar"/>
+	<classpathentry kind="lib" path="/eniware-osgi-target/platform/validation-api-1.1.0.Final.jar"/>
 	<classpathentry kind="output" path="build/eclipse"/>
 </classpath>

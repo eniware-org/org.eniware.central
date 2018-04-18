@@ -9,8 +9,9 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/eniware/git/solarnetwork-build original/solarnetwork-osgi-target/platform/joda-time-2.9.7.jar"/>
-	<classpathentry kind="lib" path="/home/eniware/git/solarnetwork-build original/solarnetwork-osgi-target/spring/org.apache.servicemix.bundles.spring-security-core-4.1.0.RELEASE_1.jar"/>
-	<classpathentry kind="lib" path="/home/eniware/git/solarnetwork-build original/solarnetwork-osgi-target/platform/validation-api-1.1.0.Final.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eniware.central.common.web"/>
+	<classpathentry kind="lib" path="/eniware-osgi-target/platform/joda-time-2.9.7.jar"/>
+	<classpathentry kind="lib" path="/eniware-osgi-target/platform/validation-api-1.1.0.Final.jar"/>
+	<classpathentry kind="lib" path="/eniware-osgi-target/spring/org.apache.servicemix.bundles.spring-security-core-4.1.0.RELEASE_1.jar"/>
 	<classpathentry kind="output" path="web/WEB-INF/classes"/>
 </classpath>

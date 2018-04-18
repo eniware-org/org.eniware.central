@@ -4,7 +4,7 @@
  * ==================================================================
  */
 
-package net.solarnetwork.central.reg.web;
+package org.eniware.central.reg.web;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -22,13 +22,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
-import net.solarnetwork.central.mail.MailService;
-import net.solarnetwork.central.mail.support.BasicMailAddress;
-import net.solarnetwork.central.mail.support.ClasspathResourceMessageTemplateDataSource;
-import net.solarnetwork.central.security.AuthorizationException;
-import net.solarnetwork.central.security.SecurityUtils;
-import net.solarnetwork.domain.BasicRegistrationReceipt;
-import net.solarnetwork.domain.RegistrationReceipt;
+import org.eniware.central.mail.MailService;
+import org.eniware.central.mail.support.BasicMailAddress;
+import org.eniware.central.mail.support.ClasspathResourceMessageTemplateDataSource;
+import org.eniware.central.security.AuthorizationException;
+import org.eniware.central.security.SecurityUtils;
+import org.eniware.domain.BasicRegistrationReceipt;
+import org.eniware.domain.RegistrationReceipt;
 
 /**
  * Controller for managing the reset password functionality.

@@ -21,13 +21,13 @@
 		<property name="maxUploadSize" value="10000000"/>
 	</bean>
 	
-	<bean id="objectMapper" class="net.solarnetwork.util.ObjectMapperFactoryBean">
+	<bean id="objectMapper" class="org.eniware.util.ObjectMapperFactoryBean">
 		<property name="serializers">
 			<list>
-				<bean class="net.solarnetwork.util.JodaDateTimeSerializer"/>
-				<bean class="net.solarnetwork.util.JodaLocalDateSerializer"/>
-				<bean class="net.solarnetwork.util.JodaLocalDateTimeSerializer"/>
-				<bean class="net.solarnetwork.util.JodaLocalTimeSerializer"/>
+				<bean class="org.eniware.util.JodaDateTimeSerializer"/>
+				<bean class="org.eniware.util.JodaLocalDateSerializer"/>
+				<bean class="org.eniware.util.JodaLocalDateTimeSerializer"/>
+				<bean class="org.eniware.util.JodaLocalTimeSerializer"/>
 			</list>
 		</property>
 		<property name="featuresToDisable">
@@ -63,7 +63,7 @@
 		<property name="suffix" value=".jsp"/>
 	</bean>
 	
-	<bean id="xml" class="net.solarnetwork.web.support.SimpleXmlView">
+	<bean id="xml" class="org.eniware.web.support.SimpleXmlView">
 		<property name="contentType" value="text/xml;charset=UTF-8"/>
 		<property name="propertySerializerRegistrar" ref="propertySerializerRegistrar"/>
 		<property name="classNamesAllowedForNesting">
@@ -73,13 +73,13 @@
 		</property>
 	</bean>
 	
-	<bean id="json" class="net.solarnetwork.web.support.JSONView">
+	<bean id="json" class="org.eniware.web.support.JSONView">
 		<property name="contentType" value="application/json;charset=UTF-8"/>
 		<property name="propertySerializerRegistrar" ref="propertySerializerRegistrar"/>
 		<property name="includeParentheses" value="false"/>
 	</bean>
 
-	<bean id="pingController" class="net.solarnetwork.central.web.PingController">
+	<bean id="pingController" class="org.eniware.central.web.PingController">
 		<property name="pingTests" ref="pingTests"/>
 	</bean>
 

@@ -13,7 +13,7 @@ Import-Package:
  javax.servlet;version="2.5.0",
  javax.servlet.http;version="2.5.0",
  javax.sql,
- net.solarnetwork.web.support;version="1.7.0",
+ org.eniware.web.support;version="1.7.0",
  org.aopalliance.aop;version="[1.0,2.0)",
  org.apache.taglibs.response;version="1.0.1",
  org.eclipse.gemini.blueprint.compendium.cm;version="[2.0,3.0)",

@@ -24,7 +24,7 @@ Import-Package:
  javax.sql,
  javax.validation;version="[1.1.0,2.0.0)",
  javax.xml.stream,
- net.solarnetwork.web.support;version="1.7.0",
+ org.eniware.web.support;version="1.7.0",
  org.apache.commons.codec.binary;version="[1.7,2.0)",
  org.apache.commons.fileupload;version="[1.3,2.0)",
  org.apache.taglibs.response;version="1.0.1",

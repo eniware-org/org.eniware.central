@@ -45,15 +45,15 @@
 		</authentication-provider>
 	</authentication-manager>
 
-	<beans:bean id="jdbcUserService" class="net.solarnetwork.central.security.jdbc.JdbcUserDetailsService">
+	<beans:bean id="jdbcUserService" class="org.eniware.central.security.jdbc.JdbcUserDetailsService">
 		<beans:property name="dataSource" ref="dataSource"/>
 	</beans:bean>
 
-	<beans:bean id="authTokenEntryPoint" class="net.solarnetwork.central.security.web.UserAuthTokenAuthenticationEntryPoint"/>
+	<beans:bean id="authTokenEntryPoint" class="org.eniware.central.security.web.UserAuthTokenAuthenticationEntryPoint"/>
 
-	<beans:bean id="authTokenFilter" class="net.solarnetwork.central.security.web.UserAuthTokenAuthenticationFilter">
+	<beans:bean id="authTokenFilter" class="org.eniware.central.security.web.UserAuthTokenAuthenticationFilter">
 		<beans:property name="userDetailsService">
-			<beans:bean class="net.solarnetwork.central.security.jdbc.JdbcUserDetailsService">
+			<beans:bean class="org.eniware.central.security.jdbc.JdbcUserDetailsService">
 				<beans:property name="dataSource" ref="dataSource"/>
 				<beans:property name="usersByUsernameQuery" 
 						value="#{T(net.solarnetwork.central.security.jdbc.JdbcUserDetailsService).DEFAULT_TOKEN_USERS_BY_USERNAME_SQL}"/>

@@ -24,6 +24,6 @@
 		<authentication-provider user-service-ref="nodeUserService"/>
 	</authentication-manager>
 
-	<beans:bean id="nodeUserService" class="net.solarnetwork.central.security.NodeUserDetailsService"/>
+	<beans:bean id="nodeUserService" class="org.eniware.central.security.NodeUserDetailsService"/>
 
 </beans:beans>

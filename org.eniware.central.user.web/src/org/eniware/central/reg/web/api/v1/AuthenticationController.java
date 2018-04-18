@@ -4,7 +4,7 @@
  * ==================================================================
  */
 
-package net.solarnetwork.central.reg.web.api.v1;
+package org.eniware.central.reg.web.api.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import net.solarnetwork.central.security.SecurityActor;
-import net.solarnetwork.central.security.SecurityToken;
-import net.solarnetwork.central.security.SecurityUser;
-import net.solarnetwork.central.security.SecurityUtils;
-import net.solarnetwork.central.web.support.WebServiceControllerSupport;
-import net.solarnetwork.web.domain.Response;
+import org.eniware.central.security.SecurityActor;
+import org.eniware.central.security.SecurityToken;
+import org.eniware.central.security.SecurityUser;
+import org.eniware.central.security.SecurityUtils;
+import org.eniware.central.web.support.WebServiceControllerSupport;
+import org.eniware.web.domain.Response;
 
 /**
  * Remote authentication for nodes.

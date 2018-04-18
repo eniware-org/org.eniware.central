@@ -10,7 +10,7 @@ Export-Package:
  org.eniware.central.user.dao.mybatis.map;version="1.9.1"
 Import-Package: 
  javax.sql,
- net.solarnetwork.web.security;version="1.1",
+ org.eniware.web.security;version="1.1",
  org.aopalliance.aop;version="1.0.0",
  org.apache.ibatis.annotations;version="[3.2,4.0)",
  org.apache.ibatis.mapping;version="[3.2,4.0)",

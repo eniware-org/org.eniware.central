@@ -4,14 +4,14 @@
  * ==================================================================
  */
 
-package net.solarnetwork.central.reg.web;
+package org.eniware.central.reg.web;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.solarnetwork.central.instructor.biz.InstructorBiz;
-import net.solarnetwork.web.support.WebUtils;
+import org.eniware.central.instructor.biz.InstructorBiz;
+import org.eniware.web.support.WebUtils;
 
 import org.eniware.central.instructor.domain.Instruction;
 import org.eniware.central.instructor.domain.NodeInstruction;

@@ -4,7 +4,7 @@
  * ==================================================================
  */
 
-package net.solarnetwork.central.reg.web;
+package org.eniware.central.reg.web;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -25,11 +25,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import net.solarnetwork.central.security.BasicSecurityPolicy;
-import net.solarnetwork.central.security.SecurityPolicy;
-import net.solarnetwork.central.security.SecurityUser;
-import net.solarnetwork.central.security.SecurityUtils;
-import net.solarnetwork.web.domain.Response;
+import org.eniware.central.security.BasicSecurityPolicy;
+import org.eniware.central.security.SecurityPolicy;
+import org.eniware.central.security.SecurityUser;
+import org.eniware.central.security.SecurityUtils;
+import org.eniware.web.domain.Response;
 
 /**
  * Controller for user authorization ticket management.

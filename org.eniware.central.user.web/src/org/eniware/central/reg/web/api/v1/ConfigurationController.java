@@ -4,9 +4,9 @@
  * ==================================================================
  */
 
-package net.solarnetwork.central.reg.web.api.v1;
+package org.eniware.central.reg.web.api.v1;
 
-import static net.solarnetwork.web.domain.Response.response;
+import static org.eniware.web.domain.Response.response;
 
 import org.eniware.central.biz.AppConfigurationBiz;
 import org.eniware.central.domain.AppConfiguration;
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.solarnetwork.central.web.support.WebServiceControllerSupport;
-import net.solarnetwork.web.domain.Response;
+import org.eniware.central.web.support.WebServiceControllerSupport;
+import org.eniware.web.domain.Response;
 
 /**
  * REST controller for configuration API.

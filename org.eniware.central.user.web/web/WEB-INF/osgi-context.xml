@@ -62,13 +62,13 @@
 	
 	<osgi:list id="pingTests" availability="optional" interface="net.solarnetwork.central.domain.PingTest"/>
 
-	<bean id="billingBiz" class="net.solarnetwork.util.DynamicServiceTracker">
+	<bean id="billingBiz" class="org.eniware.util.DynamicServiceTracker">
 		<property name="bundleContext" ref="bundleContext"/>
 		<property name="serviceClassName" value="net.solarnetwork.central.user.billing.biz.BillingBiz"/>
 		<property name="serviceFilter" value="(secured=true)"/>
 	</bean>
 
-	<bean id="nimBiz" class="net.solarnetwork.util.DynamicServiceTracker">
+	<bean id="nimBiz" class="org.eniware.util.DynamicServiceTracker">
 		<property name="bundleContext" ref="bundleContext"/>
 		<property name="serviceClassName" value="net.solarnetwork.central.user.nim.biz.SolarNodeImageMakerBiz"/>
 	</bean>
@@ -86,7 +86,7 @@
 	
 	<!-- Supporting Services -->
 	
-	<bean id="mailService" class="net.solarnetwork.central.mail.support.DefaultMailService">
+	<bean id="mailService" class="org.eniware.central.mail.support.DefaultMailService">
 		<constructor-arg ref="mailSender"/>
 		<osgix:managed-properties 
 			persistent-id="net.solarnetwork.central.user.web" 

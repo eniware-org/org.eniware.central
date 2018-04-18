@@ -4,9 +4,9 @@
  * ==================================================================
  */
 
-package net.solarnetwork.central.reg.web.api.v1;
+package org.eniware.central.reg.web.api.v1;
 
-import static net.solarnetwork.web.domain.Response.response;
+import static org.eniware.web.domain.Response.response;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -38,10 +38,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.solarnetwork.central.security.SecurityUser;
-import net.solarnetwork.central.security.SecurityUtils;
-import net.solarnetwork.central.web.support.WebServiceControllerSupport;
-import net.solarnetwork.web.domain.Response;
+import org.eniware.central.security.SecurityUser;
+import org.eniware.central.security.SecurityUtils;
+import org.eniware.central.web.support.WebServiceControllerSupport;
+import org.eniware.web.domain.Response;
 
 /**
  * Web service API for billing management.

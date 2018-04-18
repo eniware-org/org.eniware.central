@@ -4,13 +4,13 @@
  * ==================================================================
  */
 
-package net.solarnetwork.central.reg.web;
+package org.eniware.central.reg.web;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.solarnetwork.domain.NetworkAssociationDetails;
-import net.solarnetwork.domain.NetworkCertificate;
-import net.solarnetwork.web.support.WebUtils;
+import org.eniware.domain.NetworkAssociationDetails;
+import org.eniware.domain.NetworkCertificate;
+import org.eniware.web.support.WebUtils;
 
 import org.eniware.central.user.biz.RegistrationBiz;
 import org.springframework.beans.factory.annotation.Autowired;

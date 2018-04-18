@@ -4,9 +4,9 @@
  * ==================================================================
  */
 
-package net.solarnetwork.central.reg.web;
+package org.eniware.central.reg.web;
 
-import static net.solarnetwork.web.domain.Response.response;
+import static org.eniware.web.domain.Response.response;
 import java.security.KeyStore;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -56,15 +56,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import net.solarnetwork.central.mail.MailService;
-import net.solarnetwork.central.mail.support.BasicMailAddress;
-import net.solarnetwork.central.mail.support.ClasspathResourceMessageTemplateDataSource;
-import net.solarnetwork.central.security.AuthorizationException;
-import net.solarnetwork.central.security.SecurityUser;
-import net.solarnetwork.central.security.SecurityUtils;
-import net.solarnetwork.domain.NetworkAssociation;
-import net.solarnetwork.domain.NetworkCertificate;
-import net.solarnetwork.web.domain.Response;
+import org.eniware.central.mail.MailService;
+import org.eniware.central.mail.support.BasicMailAddress;
+import org.eniware.central.mail.support.ClasspathResourceMessageTemplateDataSource;
+import org.eniware.central.security.AuthorizationException;
+import org.eniware.central.security.SecurityUser;
+import org.eniware.central.security.SecurityUtils;
+import org.eniware.domain.NetworkAssociation;
+import org.eniware.domain.NetworkCertificate;
+import org.eniware.web.domain.Response;
 
 /**
  * Controller for "my nodes".

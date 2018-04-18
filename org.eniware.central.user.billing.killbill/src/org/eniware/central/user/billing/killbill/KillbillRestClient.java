@@ -58,7 +58,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.solarnetwork.web.support.LoggingHttpRequestInterceptor;
+import org.eniware.web.support.LoggingHttpRequestInterceptor;
 
 /**
  * REST implementation of {@link KillbillClient}.

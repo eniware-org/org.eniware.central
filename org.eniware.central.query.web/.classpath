@@ -9,6 +9,7 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/eniware/git/solarnetwork-build original/solarnetwork-osgi-target/platform/joda-time-2.9.7.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eniware.central.common.web"/>
+	<classpathentry kind="lib" path="/eniware-osgi-target/platform/joda-time-2.9.7.jar"/>
 	<classpathentry kind="output" path="web/WEB-INF/classes"/>
 </classpath>

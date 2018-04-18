@@ -12,7 +12,7 @@ Import-Package:
  javax.crypto.spec,
  javax.servlet;version="2.5.0",
  javax.servlet.http;version="2.4.0",
- net.solarnetwork.web.security;version="1.0.0",
+ org.eniware.web.security;version="1.0.0",
  org.apache.commons.codec;version="[1.7,2.0)",
  org.apache.commons.codec.binary;version="[1.7,2.0)",
  org.apache.commons.codec.digest;version="[1.7,2.0)",

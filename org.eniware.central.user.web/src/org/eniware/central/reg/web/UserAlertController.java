@@ -3,9 +3,9 @@
  *  Apache License 2.0
  * ==================================================================
  */
-package net.solarnetwork.central.reg.web;
+package org.eniware.central.reg.web;
 
-import static net.solarnetwork.web.domain.Response.response;
+import static org.eniware.web.domain.Response.response;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -16,10 +16,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
-import net.solarnetwork.central.query.biz.QueryBiz;
-import net.solarnetwork.central.security.SecurityUser;
-import net.solarnetwork.central.security.SecurityUtils;
-import net.solarnetwork.web.domain.Response;
+import org.eniware.central.query.biz.QueryBiz;
+import org.eniware.central.security.SecurityUser;
+import org.eniware.central.security.SecurityUtils;
+import org.eniware.web.domain.Response;
 
 import org.eniware.central.user.biz.UserAlertBiz;
 import org.eniware.central.user.biz.UserBiz;

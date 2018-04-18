@@ -4,7 +4,7 @@
  * ==================================================================
  */
 
-package net.solarnetwork.central.reg.web.api.v1;
+package org.eniware.central.reg.web.api.v1;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.WebAsyncTask;
-import net.solarnetwork.central.security.SecurityToken;
-import net.solarnetwork.central.security.SecurityUtils;
-import net.solarnetwork.central.web.support.WebServiceControllerSupport;
-import net.solarnetwork.web.domain.Response;
+import org.eniware.central.security.SecurityToken;
+import org.eniware.central.security.SecurityUtils;
+import org.eniware.central.web.support.WebServiceControllerSupport;
+import org.eniware.web.domain.Response;
 
 /**
  * REST API for the SolarNode Image Maker app.

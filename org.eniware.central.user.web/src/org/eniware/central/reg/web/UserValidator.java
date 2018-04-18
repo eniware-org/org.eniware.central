@@ -4,7 +4,7 @@
  * ==================================================================
  */
 
-package net.solarnetwork.central.reg.web;
+package org.eniware.central.reg.web;
 
 import org.eniware.central.user.domain.User;
 import org.springframework.beans.factory.annotation.Qualifier;

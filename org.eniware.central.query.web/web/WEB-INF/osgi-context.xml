@@ -46,12 +46,12 @@
 
 	<osgi:list id="pingTests" availability="optional" interface="net.solarnetwork.central.domain.PingTest"/>
 	
-	<bean id="queryBiz" class="net.solarnetwork.central.query.support.AuditingQueryBiz">
+	<bean id="queryBiz" class="org.eniware.central.query.support.AuditingQueryBiz">
 		<constructor-arg>
 			<osgi:reference sticky="false" interface="net.solarnetwork.central.query.biz.QueryBiz"/>
 		</constructor-arg>
 		<constructor-arg>
-			<bean class="net.solarnetwork.util.DynamicServiceTracker">
+			<bean class="org.eniware.util.DynamicServiceTracker">
 				<property name="bundleContext" ref="bundleContext"/>
 				<property name="serviceClassName" value="net.solarnetwork.central.query.biz.QueryAuditor"/>
 			</bean>
