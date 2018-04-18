@@ -7,7 +7,7 @@
 package org.eniware.central;
 
 /**
- * Exception thrown when interacting with a remote service.
+ * Exception  thrown when interacting with a remote service.
  * @version 1.0
  * @since 1.36
  */
