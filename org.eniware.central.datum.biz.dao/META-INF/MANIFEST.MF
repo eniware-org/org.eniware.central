@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNet Datum Biz DAO
+Bundle-Name: EniwareNet Datum Biz DAO
 Bundle-SymbolicName: org.eniware.central.datum.biz.dao
 Bundle-Version: 1.2.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: 
  org.aopalliance.aop;version="1.0.0",

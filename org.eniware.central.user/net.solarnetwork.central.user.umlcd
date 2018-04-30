@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <com.yattasolutions.uml.diagrams.classifier:ClassDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:com.yattasolutions.uml.diagrams.classifier="http://ns.yatta-solutions.com/umllab/diagrams/classifier/1.1.0" xmi:id="_FALukCtzEeiUlpWP0e20Fw">
-  <modelElement href="platform:/resource/net.solarnetwork.central.user/net.solarnetwork.central.user.uml#_E-gTkCtzEeiUlpWP0e20Fw"/>
+  <modelElement href="platform:/resource/org.eniware.central.user/org.eniware.central.user.uml#_E-gTkCtzEeiUlpWP0e20Fw"/>
 </com.yattasolutions.uml.diagrams.classifier:ClassDiagram>

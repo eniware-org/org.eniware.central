@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?><!--Converted at: Thu Nov 13 07:30:21 NZDT 2014-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.solarnetwork.central.datum.dao.mybatis">
+<mapper namespace="org.eniware.central.datum.dao.mybatis">
 
 	<select id="find-reportable-interval" resultType="java.sql.Timestamp">
 		SELECT min(created) AS created FROM
 		<if test="class == &quot;PowerDatum&quot;">
-			solarnet.sn_power_datum
+			eniwarenet.sn_power_datum
 		</if>
 		<if test="class == &quot;ConsumptionDatum&quot;">
-			solarnet.sn_consum_datum
+			eniwarenet.sn_consum_datum
 		</if>
 		<if test="node != null">
 			WHERE node_id = #{node}
@@ -17,10 +17,10 @@
 		UNION ALL
 		SELECT max(created) AS created  FROM
 		<if test="class == &quot;PowerDatum&quot;">
-			solarnet.sn_power_datum
+			eniwarenet.sn_power_datum
 		</if>
 		<if test="class == &quot;ConsumptionDatum&quot;">
-			solarnet.sn_consum_datum
+			eniwarenet.sn_consum_datum
 		</if>
 		<if test="node != null">
 			WHERE node_id = #{node}

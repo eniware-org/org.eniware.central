@@ -9,7 +9,7 @@ package org.eniware.central.support;
 import org.eniware.central.domain.BaseIdentity;
 import org.eniware.central.domain.Location;
 import org.eniware.central.domain.NodeInformation;
-import org.eniware.central.domain.SolarNodeCapability;
+import org.eniware.central.domain.EniwareEdgeCapability;
 
 /**
  * Simple implementation of {@link NodeInformation}.
@@ -20,7 +20,7 @@ public class SimpleNodeInformation extends BaseIdentity implements NodeInformati
 	private static final long serialVersionUID = -7130984585644772072L;
 
 	private Location location;
-	private SolarNodeCapability capability;
+	private EniwareEdgeCapability capability;
 	
 	/**
 	 * Default constructor.
@@ -35,7 +35,7 @@ public class SimpleNodeInformation extends BaseIdentity implements NodeInformati
 	 * @param group the group to copy values from.
 	 * @param location the location
 	 */
-	public SimpleNodeInformation(SolarNodeCapability capability, Location location) {
+	public SimpleNodeInformation(EniwareEdgeCapability capability, Location location) {
 		setId(capability.getNodeId());
 		this.capability = capability;
 		this.location = location;

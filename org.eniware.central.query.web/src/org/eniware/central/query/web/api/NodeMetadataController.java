@@ -9,10 +9,10 @@ package org.eniware.central.query.web.api;
 import static org.eniware.web.domain.Response.response;
 import java.util.NoSuchElementException;
 
-import org.eniware.central.biz.SolarNodeMetadataBiz;
+import org.eniware.central.biz.EniwareEdgeMetadataBiz;
 import org.eniware.central.datum.domain.DatumFilterCommand;
 import org.eniware.central.domain.FilterResults;
-import org.eniware.central.domain.SolarNodeMetadataFilterMatch;
+import org.eniware.central.domain.EniwareEdgeMetadataFilterMatch;
 import org.eniware.central.user.biz.UserBiz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,21 +36,21 @@ import org.eniware.web.domain.Response;
 public class NodeMetadataController extends WebServiceControllerSupport {
 
 	private final UserBiz userBiz;
-	private final SolarNodeMetadataBiz solarNodeMetadataBiz;
+	private final EniwareEdgeMetadataBiz eniwareEdgeMetadataBiz;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param userBiz
 	 *        the UserBiz to use
-	 * @param solarNodeMetadataBiz
-	 *        the SolarNodeMetadataBiz to use
+	 * @param eniwareEdgeMetadataBiz
+	 *        the EniwareEdgeMetadataBiz to use
 	 */
 	@Autowired
-	public NodeMetadataController(UserBiz userBiz, SolarNodeMetadataBiz solarNodeMetadataBiz) {
+	public NodeMetadataController(UserBiz userBiz, EniwareEdgeMetadataBiz eniwareEdgeMetadataBiz) {
 		super();
 		this.userBiz = userBiz;
-		this.solarNodeMetadataBiz = solarNodeMetadataBiz;
+		this.eniwareEdgeMetadataBiz = eniwareEdgeMetadataBiz;
 	}
 
 	@InitBinder
@@ -67,13 +67,13 @@ public class NodeMetadataController extends WebServiceControllerSupport {
 	 */
 	@ResponseBody
 	@RequestMapping(value = { "", "/" }, method = RequestMethod.GET)
-	public Response<FilterResults<SolarNodeMetadataFilterMatch>> findMetadata(
+	public Response<FilterResults<EniwareEdgeMetadataFilterMatch>> findMetadata(
 			DatumFilterCommand criteria) {
 		if ( criteria.getNodeId() == null ) {
 			// default to all nodes for actor
 			criteria.setNodeIds(authorizedNodeIdsForCurrentActor(userBiz));
 		}
-		FilterResults<SolarNodeMetadataFilterMatch> results = solarNodeMetadataBiz.findSolarNodeMetadata(
+		FilterResults<EniwareEdgeMetadataFilterMatch> results = eniwareEdgeMetadataBiz.findEniwareEdgeMetadata(
 				criteria, criteria.getSortDescriptors(), criteria.getOffset(), criteria.getMax());
 		return response(results);
 	}
@@ -85,12 +85,12 @@ public class NodeMetadataController extends WebServiceControllerSupport {
 	 */
 	@ResponseBody
 	@RequestMapping(value = { "/{nodeId}" }, method = RequestMethod.GET)
-	public Response<SolarNodeMetadataFilterMatch> getMetadata(@PathVariable("nodeId") Long nodeId) {
+	public Response<EniwareEdgeMetadataFilterMatch> getMetadata(@PathVariable("nodeId") Long nodeId) {
 		DatumFilterCommand criteria = new DatumFilterCommand();
 		criteria.setNodeId(nodeId);
-		FilterResults<SolarNodeMetadataFilterMatch> results = solarNodeMetadataBiz
-				.findSolarNodeMetadata(criteria, null, null, null);
-		SolarNodeMetadataFilterMatch result = null;
+		FilterResults<EniwareEdgeMetadataFilterMatch> results = eniwareEdgeMetadataBiz
+				.findEniwareEdgeMetadata(criteria, null, null, null);
+		EniwareEdgeMetadataFilterMatch result = null;
 		if ( results != null ) {
 			try {
 				result = results.iterator().next();

@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eniware.central.domain.SolarLocation;
+import org.eniware.central.domain.EniwareLocation;
 import org.eniware.central.domain.SortDescriptor;
 import org.eniware.central.domain.SourceLocation;
 import org.eniware.util.SerializeIgnore;
@@ -29,7 +29,7 @@ public class SourceLocationFilter implements Serializable, SourceLocation {
 
 	private Long id;
 	private String source;
-	private SolarLocation location;
+	private EniwareLocation location;
 	private List<MutableSortDescriptor> sorts;
 	private Integer offset;
 	private Integer max;
@@ -51,7 +51,7 @@ public class SourceLocationFilter implements Serializable, SourceLocation {
 	 */
 	public SourceLocationFilter(String source, String locationName) {
 		this.source = source;
-		this.location = new SolarLocation();
+		this.location = new EniwareLocation();
 		this.location.setName(locationName);
 	}
 
@@ -97,7 +97,7 @@ public class SourceLocationFilter implements Serializable, SourceLocation {
 
 	public void setLocationName(String locationName) {
 		if ( this.location == null ) {
-			this.location = new SolarLocation();
+			this.location = new EniwareLocation();
 		}
 		this.location.setName(locationName);
 	}
@@ -121,11 +121,11 @@ public class SourceLocationFilter implements Serializable, SourceLocation {
 	}
 
 	@Override
-	public SolarLocation getLocation() {
+	public EniwareLocation getLocation() {
 		return location;
 	}
 
-	public void setLocation(SolarLocation location) {
+	public void setLocation(EniwareLocation location) {
 		this.location = location;
 	}
 
@@ -142,7 +142,7 @@ public class SourceLocationFilter implements Serializable, SourceLocation {
 
 	public void setTimeZoneId(String timeZoneId) {
 		if ( location == null ) {
-			location = new SolarLocation();
+			location = new EniwareLocation();
 		}
 		location.setTimeZoneId(timeZoneId);
 	}

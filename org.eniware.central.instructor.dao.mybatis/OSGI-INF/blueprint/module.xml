@@ -26,7 +26,7 @@
 	
 	<!-- Published Services -->
 	
-	<service ref="nodeInstructionDao" interface="net.solarnetwork.central.instructor.dao.NodeInstructionDao" ranking="5"/>
+	<service ref="nodeInstructionDao" interface="org.eniware.central.instructor.dao.NodeInstructionDao" ranking="5"/>
 
 	<service ref="sqlSessionFactory" interface="org.apache.ibatis.session.SqlSessionFactory">
 		<service-properties>
@@ -40,7 +40,7 @@
 	<!-- Use Java @Transactional annotations to declare transactions. -->
 	<tx:annotation-driven transaction-manager="txManager"/>
 
-	<bean id="nodeInstructionDao" class="net.solarnetwork.central.instructor.dao.mybatis.MyBatisNodeInstructionDao">
+	<bean id="nodeInstructionDao" class="org.eniware.central.instructor.dao.mybatis.MyBatisNodeInstructionDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
@@ -48,19 +48,19 @@
 		<property name="dataSource" ref="dataSource"/>
 		<property name="typeAliases">
 			<list>
-				<value>net.solarnetwork.central.instructor.domain.InstructionParameter</value>
-				<value>net.solarnetwork.central.instructor.domain.NodeInstruction</value>
+				<value>org.eniware.central.instructor.domain.InstructionParameter</value>
+				<value>org.eniware.central.instructor.domain.NodeInstruction</value>
 			</list>
 		</property>
 		<property name="typeHandlers">
 			<list>
-				<bean class="net.solarnetwork.central.dao.mybatis.type.JodaDateTimeTypeHandler"/>
+				<bean class="org.eniware.central.dao.mybatis.type.JodaDateTimeTypeHandler"/>
 			</list>
 		</property>
 		<property name="mapperLocations">
 			<!-- Note: the order of these elements is significant because of inter-resource includes -->
 			<list>
-				<value>classpath:/net/solarnetwork/central/instructor/dao/mybatis/map/NodeInstruction.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/instructor/dao/mybatis/map/NodeInstruction.xml</value>
 			</list>
 		</property>
 	</bean>

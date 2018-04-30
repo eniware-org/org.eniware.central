@@ -25,16 +25,16 @@
 
 	<!-- Service References -->
 
-	<reference id="userNodeDao" interface="net.solarnetwork.central.user.dao.UserNodeDao"/>
+	<reference id="userNodeDao" interface="org.eniware.central.user.dao.UserNodeDao"/>
 
 	<reference id="datumMetadataBiz"
-		interface="net.solarnetwork.central.datum.biz.DatumMetadataBiz"
+		interface="org.eniware.central.datum.biz.DatumMetadataBiz"
 		filter="(!(aop=true))"/>
 	
 	<!-- Published Services -->
 
 	<service ref="aopDatumMetadataBiz" 
-			interface="net.solarnetwork.central.datum.biz.DatumMetadataBiz" ranking="10">
+			interface="org.eniware.central.datum.biz.DatumMetadataBiz" ranking="10">
 		<service-properties>
 			<entry key="aop" value="true"/>
 		</service-properties>
@@ -44,11 +44,11 @@
 
 	<aop:aspectj-autoproxy/>
 
-	<bean id="datumMetadataSecurityAspect" class="net.solarnetwork.central.datum.aop.DatumMetadataSecurityAspect">
+	<bean id="datumMetadataSecurityAspect" class="org.eniware.central.datum.aop.DatumMetadataSecurityAspect">
 		<argument ref="userNodeDao"/>
 	</bean>
 	
-	<bean id="aopDatumMetadataBiz" class="net.solarnetwork.central.datum.support.DelegatingDatumMetadataBiz">
+	<bean id="aopDatumMetadataBiz" class="org.eniware.central.datum.support.DelegatingDatumMetadataBiz">
 		<argument ref="datumMetadataBiz"/>
 	</bean>
 	

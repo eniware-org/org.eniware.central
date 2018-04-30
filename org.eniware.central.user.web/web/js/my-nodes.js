@@ -55,7 +55,7 @@ $(document).ready(function() {
 		if ( nodeName ) {
 			nodeName = nodeId + ' - ' + nodeName;
 		}
-		SolarReg.viewAlertSituation.call(this, event, nodeName);
+		EniwareReg.viewAlertSituation.call(this, event, nodeName);
 	});
 	
 	$('#pending-transfer').on('click', 'button.cancel-ownership-transfer', function(event) {
@@ -64,10 +64,10 @@ $(document).ready(function() {
 		var url = btn.data('action'),
 			userId = btn.data('user-id'),
 			nodeId = btn.data('node-id');
-		$.post(url, { userId:userId, nodeId:nodeId, _csrf:SolarReg.csrf() }, function(json) {
+		$.post(url, { userId:userId, nodeId:nodeId, _csrf:EniwareReg.csrf() }, function(json) {
 			document.location.reload(true);
 		}).fail(function(data, statusText, xhr) {
-			SolarReg.showAlertBefore('#top', 'alert-warning', statusText);
+			EniwareReg.showAlertBefore('#top', 'alert-warning', statusText);
 		});
 	});
 	
@@ -137,7 +137,7 @@ $(document).ready(function() {
 			$('#view-cert-modal .nocert').addClass('hidden');
 		},
 		error: function(xhr, status, statusText) {
-			SolarReg.showAlertBefore('#view-cert-modal .modal-body > *:first-child', 'alert-warning', statusText);
+			EniwareReg.showAlertBefore('#view-cert-modal .modal-body > *:first-child', 'alert-warning', statusText);
 		}
 	}).on('shown.bs.modal', function() {
 		$('#view-cert-password').focus();
@@ -156,7 +156,7 @@ $(document).ready(function() {
 			data: {password:pass},
 			dataType: 'json',
 			beforeSend: function(xhr) {
-				SolarReg.csrf(xhr);
+				EniwareReg.csrf(xhr);
             },
 			success: function(json, status, xhr) {
 				$('#view-cert-modal .renewed').removeClass('hidden');
@@ -164,7 +164,7 @@ $(document).ready(function() {
 				updateCertDisplayDetails(json);
 			},
 			error: function(xhr, status, statusText){
-				SolarReg.showAlertBefore('#view-cert-modal .modal-body > *:first-child', 'alert-warning', statusText);
+				EniwareReg.showAlertBefore('#view-cert-modal .modal-body > *:first-child', 'alert-warning', statusText);
 			}
 		});
 	});
@@ -175,7 +175,7 @@ $(document).ready(function() {
 			$('#transfer-ownership-modal').modal('hide');
 		},
 		error: function(xhr, status, statusText) {
-			SolarReg.showAlertBefore('#transfer-ownership-modal .modal-body > *:first-child', 'alert-warning', statusText);
+			EniwareReg.showAlertBefore('#transfer-ownership-modal .modal-body > *:first-child', 'alert-warning', statusText);
 		}
 	}).on('shown.bs.modal', function() {
 		$('#transfer-ownership-recipient').focus();
@@ -189,7 +189,7 @@ $(document).ready(function() {
 			$('#decide-transfer-ownership-modal').modal('hide');
 		},
 		error: function(xhr, status, statusText) {
-			SolarReg.showAlertBefore('#decide-transfer-ownership-modal .modal-body > *:first-child', 'alert-warning', statusText);
+			EniwareReg.showAlertBefore('#decide-transfer-ownership-modal .modal-body > *:first-child', 'alert-warning', statusText);
 		}
 	}).on('hidden.bs.modal', function() {
 		document.location.reload(true);
@@ -206,7 +206,7 @@ $(document).ready(function() {
 			document.location.reload(true);
 		},
 		error: function(xhr, status, statusText) {
-			SolarReg.showAlertBefore('#archive-node-modal .modal-body > *:first-child', 'alert-warning', statusText);
+			EniwareReg.showAlertBefore('#archive-node-modal .modal-body > *:first-child', 'alert-warning', statusText);
 		}
 	});
 	
@@ -281,7 +281,7 @@ $(document).ready(function() {
 		$.getJSON(url, req, function(json) {
 			setupEditUserNodeFields(form, json.data);
 		}).fail(function(data, statusText, xhr) {
-			SolarReg.showAlertBefore('#edit-node-modal .modal-body > *:first-child', 'alert-warning', statusText);
+			EniwareReg.showAlertBefore('#edit-node-modal .modal-body > *:first-child', 'alert-warning', statusText);
 		});
 		editNodeShowPage(form, 1);
 		form.modal('show');
@@ -294,7 +294,7 @@ $(document).ready(function() {
 			document.location.reload(true);
 		},
 		error: function(xhr, status, statusText) {
-			SolarReg.showAlertBefore('#edit-node-modal .modal-body > *:first-child', 'alert-warning', statusText);
+			EniwareReg.showAlertBefore('#edit-node-modal .modal-body > *:first-child', 'alert-warning', statusText);
 		}
 	}).data('page', 1).on('show', function() {
 		dynamicSearchTimer = undefined;
@@ -453,7 +453,7 @@ $(document).ready(function() {
 				showLocationSearchResults(json.data.results);
 			}
 		}).fail(function(data, statusText, xhr) {
-			SolarReg.showAlertBefore('#edit-node-modal .modal-body > *:first-child', 'alert-warning', statusText);
+			EniwareReg.showAlertBefore('#edit-node-modal .modal-body > *:first-child', 'alert-warning', statusText);
 		});
 	}
 	
@@ -521,7 +521,7 @@ $(document).ready(function() {
 		var nodeRows = $('.node-row');
 		if ( nodeRows.length > 0 ) {
 			// show active alert situations
-			$.getJSON(SolarReg.solarUserURL('/sec/alerts/user/situations'), function(json) {
+			$.getJSON(EniwareReg.eniwareUserURL('/sec/alerts/user/situations'), function(json) {
 				var i, alert;
 				if ( json && json.data && Array.isArray(json.data) ) {
 					for ( i = 0; i < json.data.length; i++ ) {

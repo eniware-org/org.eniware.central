@@ -32,7 +32,7 @@ import org.eniware.web.security.AuthenticationDataFactory;
 import org.eniware.web.security.SecurityHttpServletRequestWrapper;
 
 /**
- * Authentication filter for "SolarNetworkWS" style authentication.
+ * Authentication filter for "EniwareNetworkWS" style authentication.
  * 
  * <p>
  * This authentication method has been modeled after the Amazon Web Service
@@ -55,7 +55,7 @@ import org.eniware.web.security.SecurityHttpServletRequestWrapper;
  * <dd>Defaults to {@link WebAuthenticationDetailsSource}.</dd>
  * 
  * <dt>userDetailsService</dt>
- * <dd>The details service, which must return users with valid SolarNetwork
+ * <dd>The details service, which must return users with valid EniwareNetwork
  * usernames (email addresses) and plain-text authorization token secret
  * passwords via {@link UserDetails#getUsername()} and
  * {@link UserDetails#getPassword()}. After validating the request

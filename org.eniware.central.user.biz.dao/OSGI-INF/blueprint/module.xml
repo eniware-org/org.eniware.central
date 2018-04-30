@@ -13,54 +13,54 @@
 
 	<!-- Service References -->
 	
-	<reference id="nodePKIBiz" interface="net.solarnetwork.central.user.biz.NodePKIBiz"/>
-	<reference id="instructorBiz" interface="net.solarnetwork.central.instructor.biz.InstructorBiz"/>
-	<reference id="certificateService" interface="net.solarnetwork.support.CertificateService"/>
+	<reference id="nodePKIBiz" interface="org.eniware.central.user.biz.NodePKIBiz"/>
+	<reference id="instructorBiz" interface="org.eniware.central.instructor.biz.InstructorBiz"/>
+	<reference id="certificateService" interface="org.eniware.support.CertificateService"/>
 	
-	<reference id="userDao" interface="net.solarnetwork.central.user.dao.UserDao"/>
-	<reference id="userAlertDao" interface="net.solarnetwork.central.user.dao.UserAlertDao"/>
-	<reference id="userAlertSituationDao" interface="net.solarnetwork.central.user.dao.UserAlertSituationDao"/>
-	<reference id="userAuthTokenDao" interface="net.solarnetwork.central.user.dao.UserAuthTokenDao"/>
-	<reference id="userMetadataDao" interface="net.solarnetwork.central.user.dao.UserMetadataDao"/>
-	<reference id="userNodeDao" interface="net.solarnetwork.central.user.dao.UserNodeDao"/>
-	<reference id="userNodeCertificateDao" interface="net.solarnetwork.central.user.dao.UserNodeCertificateDao"/>
-	<reference id="userNodeConfirmationDao" interface="net.solarnetwork.central.user.dao.UserNodeConfirmationDao"/>
+	<reference id="userDao" interface="org.eniware.central.user.dao.UserDao"/>
+	<reference id="userAlertDao" interface="org.eniware.central.user.dao.UserAlertDao"/>
+	<reference id="userAlertSituationDao" interface="org.eniware.central.user.dao.UserAlertSituationDao"/>
+	<reference id="userAuthTokenDao" interface="org.eniware.central.user.dao.UserAuthTokenDao"/>
+	<reference id="userMetadataDao" interface="org.eniware.central.user.dao.UserMetadataDao"/>
+	<reference id="userNodeDao" interface="org.eniware.central.user.dao.UserNodeDao"/>
+	<reference id="userNodeCertificateDao" interface="org.eniware.central.user.dao.UserNodeCertificateDao"/>
+	<reference id="userNodeConfirmationDao" interface="org.eniware.central.user.dao.UserNodeConfirmationDao"/>
 	
 	<reference id="userValidator" interface="org.springframework.validation.Validator"
 		availability="optional"
-		filter="(&amp;(targetClassName=net.solarnetwork.central.user.domain.User)(mode=Registration))"/>
+		filter="(&amp;(targetClassName=org.eniware.central.user.domain.User)(mode=Registration))"/>
 	
-	<reference id="solarLocationDao" interface="net.solarnetwork.central.dao.SolarLocationDao"/>
-	<reference id="solarNodeDao" interface="net.solarnetwork.central.dao.SolarNodeDao"/>
+	<reference id="eniwareLocationDao" interface="org.eniware.central.dao.EniwareLocationDao"/>
+	<reference id="eniwareEdgeDao" interface="org.eniware.central.dao.EniwareEdgeDao"/>
 	
 	<reference id="transactionManager"
 		interface="org.springframework.transaction.PlatformTransactionManager"
 		filter="(db=central)"/>
 	
 	<reference id="networkIdentityBiz" 
-		interface="net.solarnetwork.central.in.biz.NetworkIdentityBiz"/>
+		interface="org.eniware.central.in.biz.NetworkIdentityBiz"/>
 	
-	<reference id="passwordEncoder" interface="net.solarnetwork.central.security.PasswordEncoder"/>
+	<reference id="passwordEncoder" interface="org.eniware.central.security.PasswordEncoder"/>
 	
 	<!-- Published Services -->
 	
 	<service ref="daoRegistrationBiz" ranking="1">
 		<interfaces>
-			<value>net.solarnetwork.central.user.biz.RegistrationBiz</value>
+			<value>org.eniware.central.user.biz.RegistrationBiz</value>
 		</interfaces>
 	</service>
 	
 	<service ref="daoUserBiz" 
 		ranking="1">
 		<interfaces>
-			<value>net.solarnetwork.central.user.biz.UserBiz</value>
-			<value>net.solarnetwork.central.user.biz.NodeOwnershipBiz</value>
+			<value>org.eniware.central.user.biz.UserBiz</value>
+			<value>org.eniware.central.user.biz.NodeOwnershipBiz</value>
 		</interfaces>
 	</service>
 	
-	<service ref="daoUserAlertBiz" ranking="1" interface="net.solarnetwork.central.user.biz.UserAlertBiz"/>
+	<service ref="daoUserAlertBiz" ranking="1" interface="org.eniware.central.user.biz.UserAlertBiz"/>
 	
-	<service ref="daoUserMetadataBiz" ranking="1" interface="net.solarnetwork.central.user.biz.UserMetadataBiz"/>
+	<service ref="daoUserMetadataBiz" ranking="1" interface="org.eniware.central.user.biz.UserMetadataBiz"/>
 	
 	<!-- Supporting Services -->
 	
@@ -68,7 +68,7 @@
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 
 	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-		<property name="configLocation" value="classpath:/net/solarnetwork/central/user/biz/dao/ehcache.xml"/>
+		<property name="configLocation" value="classpath:/net/eniwarenetwork/central/user/biz/dao/ehcache.xml"/>
 	</bean>
 	
 	<!-- Throttle email requests to at most once every 5 minutes. -->
@@ -80,15 +80,15 @@
 		<property name="overflowToDisk" value="true"/>
 	</bean>
 	
-	<bean id="daoRegistrationBiz" class="net.solarnetwork.central.user.biz.dao.DaoRegistrationBiz">
-		<osgix:managed-properties persistent-id="net.solarnetwork.central.user.biz.dao.DaoRegistrationBiz" autowire-on-update="true"/>
+	<bean id="daoRegistrationBiz" class="org.eniware.central.user.biz.dao.DaoRegistrationBiz">
+		<osgix:managed-properties persistent-id="org.eniware.central.user.biz.dao.DaoRegistrationBiz" autowire-on-update="true"/>
 		<property name="userDao" ref="userDao"/>
 		<property name="userNodeDao" ref="userNodeDao"/>
 		<property name="userNodeConfirmationDao" ref="userNodeConfirmationDao"/>
 		<property name="userNodeCertificateDao" ref="userNodeCertificateDao"/>
 		<property name="userValidator" ref="userValidator"/>
-		<property name="solarNodeDao" ref="solarNodeDao"/>
-		<property name="solarLocationDao" ref="solarLocationDao"/>
+		<property name="eniwareEdgeDao" ref="eniwareEdgeDao"/>
+		<property name="eniwareLocationDao" ref="eniwareLocationDao"/>
 		<property name="networkIdentityBiz" ref="networkIdentityBiz"/>
 		<property name="passwordEncoder" ref="passwordEncoder"/>
 		<property name="emailThrottleCache" ref="emailThrottleCache"/>
@@ -97,22 +97,22 @@
 		<property name="certificateService" ref="certificateService"/>
 	</bean>
 	
-	<bean id="daoUserBiz" class="net.solarnetwork.central.user.biz.dao.DaoUserBiz">
+	<bean id="daoUserBiz" class="org.eniware.central.user.biz.dao.DaoUserBiz">
 		<property name="userDao" ref="userDao"/>
 		<property name="userAlertDao" ref="userAlertDao"/>
 		<property name="userNodeDao" ref="userNodeDao"/>
 		<property name="userNodeConfirmationDao" ref="userNodeConfirmationDao"/>
 		<property name="userNodeCertificateDao" ref="userNodeCertificateDao"/>
 		<property name="userAuthTokenDao" ref="userAuthTokenDao"/>
-		<property name="solarNodeDao" ref="solarNodeDao"/>
-		<property name="solarLocationDao" ref="solarLocationDao"/>
+		<property name="eniwareEdgeDao" ref="eniwareEdgeDao"/>
+		<property name="eniwareLocationDao" ref="eniwareLocationDao"/>
 	</bean>
 	
-	<bean id="daoUserMetadataBiz" class="net.solarnetwork.central.user.biz.dao.DaoUserMetadataBiz">
+	<bean id="daoUserMetadataBiz" class="org.eniware.central.user.biz.dao.DaoUserMetadataBiz">
 		<argument ref="userMetadataDao"/>
 	</bean>
 	
-	<bean id="daoUserAlertBiz" class="net.solarnetwork.central.user.biz.dao.DaoUserAlertBiz">
+	<bean id="daoUserAlertBiz" class="org.eniware.central.user.biz.dao.DaoUserAlertBiz">
 		<argument ref="userAlertDao"/>
 		<argument ref="userAlertSituationDao"/>
 	</bean>

@@ -16,9 +16,9 @@
 
 	<!-- Configuration -->
 	
-	<osgix:cm-properties id="central.user.cfg" persistent-id="net.solarnetwork.central.user">
+	<osgix:cm-properties id="central.user.cfg" persistent-id="org.eniware.central.user">
 		<beans:prop key="BasicAppConfigurationBiz.serviceUrls">
-			solaruser = http://localhost/solaruser
+			eniwareuser = http://localhost/eniwareuser
 		</beans:prop>
 	</osgix:cm-properties>
 
@@ -32,15 +32,15 @@
 		</service-properties>
 	</service>
 	
-	<bean id="cacheManager" class="net.solarnetwork.central.support.JCacheManagerFactoryBean">
-		<property name="cacheManagerUri" value="classpath:/net/solarnetwork/central/user/ehcache.xml"/>
+	<bean id="cacheManager" class="org.eniware.central.support.JCacheManagerFactoryBean">
+		<property name="cacheManagerUri" value="classpath:/net/eniwarenetwork/central/user/ehcache.xml"/>
 	</bean>
 	
-	<service interface="net.solarnetwork.central.biz.AppConfigurationBiz">
+	<service interface="org.eniware.central.biz.AppConfigurationBiz">
 		<service-properties>
 			<entry key="app" value="user"/>
 		</service-properties>
-		<bean class="net.solarnetwork.central.support.BasicAppConfigurationBiz">
+		<bean class="org.eniware.central.support.BasicAppConfigurationBiz">
 			<property name="serviceUrlMapping" value="${BasicAppConfigurationBiz.serviceUrls}"/>
 		</bean>
 	</service>

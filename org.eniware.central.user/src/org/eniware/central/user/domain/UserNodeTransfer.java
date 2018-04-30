@@ -9,7 +9,7 @@ package org.eniware.central.user.domain;
 import java.io.Serializable;
 
 import org.eniware.central.domain.Entity;
-import org.eniware.central.domain.SolarNode;
+import org.eniware.central.domain.EniwareEdge;
 import org.eniware.util.SerializeIgnore;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,7 +30,7 @@ public class UserNodeTransfer implements Entity<UserNodePK>, Cloneable, Serializ
 	private String email;
 
 	private User user;
-	private SolarNode node;
+	private EniwareEdge node;
 
 	/**
 	 * Default constructor.
@@ -197,11 +197,11 @@ public class UserNodeTransfer implements Entity<UserNodePK>, Cloneable, Serializ
 		this.user = user;
 	}
 
-	public SolarNode getNode() {
+	public EniwareEdge getNode() {
 		return node;
 	}
 
-	public void setNode(SolarNode node) {
+	public void setNode(EniwareEdge node) {
 		this.node = node;
 	}
 

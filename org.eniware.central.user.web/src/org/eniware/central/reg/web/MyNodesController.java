@@ -286,7 +286,7 @@ public class MyNodesController extends ControllerSupport {
 		headers.setCacheControl("no-cache");
 
 		headers.set("Content-Disposition",
-				"attachment; filename=solarnode-" + cert.getNode().getId() + ".p12");
+				"attachment; filename=eniwareedge-" + cert.getNode().getId() + ".p12");
 
 		return new ResponseEntity<byte[]>(data, headers, HttpStatus.OK);
 	}
@@ -497,7 +497,7 @@ public class MyNodesController extends ControllerSupport {
 	}
 
 	/**
-	 * Request an ownership transfer of a node to another SolarNetwork account.
+	 * Request an ownership transfer of a node to another EniwareNetwork account.
 	 * 
 	 * @param userId
 	 *        The user ID of the current node owner.
@@ -533,7 +533,7 @@ public class MyNodesController extends ControllerSupport {
 						new ClasspathResourceMessageTemplateDataSource(locale,
 								messageSource.getMessage("my-nodes.transferOwnership.mail.subject", null,
 										locale),
-								"/net/solarnetwork/central/reg/web/transfer-ownership.txt", mailModel));
+								"/net/eniwarenetwork/central/reg/web/transfer-ownership.txt", mailModel));
 			} catch ( RuntimeException e ) {
 				// ignore this other than log
 				log.warn("Error sending ownership transfer mail message to {}: {}", email,
@@ -564,7 +564,7 @@ public class MyNodesController extends ControllerSupport {
 									messageSource.getMessage(
 											"my-nodes.transferOwnership.mail.subject.cancelled", null,
 											locale),
-									"/net/solarnetwork/central/reg/web/transfer-ownership-cancelled.txt",
+									"/net/eniwarenetwork/central/reg/web/transfer-ownership-cancelled.txt",
 									mailModel));
 				} catch ( RuntimeException e ) {
 					// ignore this other than log
@@ -598,7 +598,7 @@ public class MyNodesController extends ControllerSupport {
 													("my-nodes.transferOwnership.mail.subject."
 															+ (accept ? "accepted" : "declined")),
 													null, locale),
-											("/net/solarnetwork/central/reg/web/transfer-ownership-"
+											("/net/eniwarenetwork/central/reg/web/transfer-ownership-"
 													+ (accept ? "accepted" : "declined") + ".txt"),
 											mailModel));
 				} catch ( RuntimeException e ) {

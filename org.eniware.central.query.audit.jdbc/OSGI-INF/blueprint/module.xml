@@ -20,12 +20,12 @@
 	
 	<!-- Published Services -->
 
-	<service interface="net.solarnetwork.central.query.biz.QueryAuditor" ref="jdbcQueryAuditor"/>
+	<service interface="org.eniware.central.query.biz.QueryAuditor" ref="jdbcQueryAuditor"/>
 
-	<bean id="jdbcQueryAuditor" class="net.solarnetwork.central.query.audit.dao.JdbcQueryAuditor" 
+	<bean id="jdbcQueryAuditor" class="org.eniware.central.query.audit.dao.JdbcQueryAuditor" 
 			init-method="enableWriting" destroy-method="disableWriting">
 		<argument ref="jdbcOps"/>
-		<osgix:managed-properties persistent-id="net.solarnetwork.central.query.audit.dao.JdbcQueryAuditor"
+		<osgix:managed-properties persistent-id="org.eniware.central.query.audit.dao.JdbcQueryAuditor"
 			autowire-on-update="true"/>
 	</bean>
 

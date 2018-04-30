@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.eniware.web.support.WebUtils;
 
 import org.eniware.central.ValidationException;
-import org.eniware.central.dao.SolarNodeDao;
-import org.eniware.central.domain.SolarNode;
+import org.eniware.central.dao.EniwareEdgeDao;
+import org.eniware.central.domain.EniwareEdge;
 import org.eniware.central.security.AuthorizationException;
 import org.eniware.util.CloningPropertyEditorRegistrar;
 import org.eniware.util.JodaDateFormatEditor;
@@ -53,7 +53,7 @@ public abstract class AbstractNodeController {
 	@Autowired
 	private MessageSource messageSource;
 
-	private SolarNodeDao solarNodeDao;
+	private EniwareEdgeDao eniwareEdgeDao;
 	private String viewName;
 	private String[] requestDateFormats = new String[] { DEFAULT_DATE_TIME_FORMAT, DEFAULT_DATE_FORMAT };
 
@@ -103,7 +103,7 @@ public abstract class AbstractNodeController {
 	 * @return the registrar
 	 */
 	protected CloningPropertyEditorRegistrar setupViewPropertyEditorRegistrar(
-			HttpServletRequest request, String dateFormat, SolarNode node) {
+			HttpServletRequest request, String dateFormat, EniwareEdge node) {
 		return setupViewPropertyEditorRegistrar(request, dateFormat,
 				(node == null ? null : node.getTimeZone()));
 	}
@@ -268,12 +268,12 @@ public abstract class AbstractNodeController {
 		this.requestDateFormats = new String[] { requestDateFormat };
 	}
 
-	public SolarNodeDao getSolarNodeDao() {
-		return solarNodeDao;
+	public EniwareEdgeDao getEniwareEdgeDao() {
+		return eniwareEdgeDao;
 	}
 
-	public void setSolarNodeDao(SolarNodeDao solarNodeDao) {
-		this.solarNodeDao = solarNodeDao;
+	public void setEniwareEdgeDao(EniwareEdgeDao eniwareEdgeDao) {
+		this.eniwareEdgeDao = eniwareEdgeDao;
 	}
 
 	public String getViewName() {

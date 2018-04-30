@@ -39,35 +39,35 @@ public class UserAlertSecurityAspect extends AuthorizationSupport {
 		this.userAlertDao = userAlertDao;
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserAlertBiz.userAlertsForUser(..)) && args(userId)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserAlertBiz.userAlertsForUser(..)) && args(userId)")
 	public void findAlertsForUser(Long userId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserAlertBiz.alertSituationCountForUser(..)) && args(userId)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserAlertBiz.alertSituationCountForUser(..)) && args(userId)")
 	public void getAlertSituationCountForUser(Long userId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserAlertBiz.alertSituationsForUser(..)) && args(userId)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserAlertBiz.alertSituationsForUser(..)) && args(userId)")
 	public void getAlertSituationsForUser(Long userId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserAlertBiz.alertSituationsForNode(..)) && args(nodeId)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserAlertBiz.alertSituationsForNode(..)) && args(nodeId)")
 	public void getAlertSituationsForNode(Long nodeId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserAlertBiz.saveAlert(..)) && args(alert)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserAlertBiz.saveAlert(..)) && args(alert)")
 	public void saveAlert(UserAlert alert) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserAlertBiz.alertSituation(..)) && args(alertId)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserAlertBiz.alertSituation(..)) && args(alertId)")
 	public void getAlert(Long alertId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserAlertBiz.deleteAlert(..)) && args(alertId)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserAlertBiz.deleteAlert(..)) && args(alertId)")
 	public void deleteAlert(Long alertId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserAlertBiz.updateSituationStatus(..)) && args(alertId, ..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserAlertBiz.updateSituationStatus(..)) && args(alertId, ..)")
 	public void updateSituationStatus(Long alertId) {
 	}
 

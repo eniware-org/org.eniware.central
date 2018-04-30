@@ -54,14 +54,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class JdbcUserDetailsService extends JdbcDaoImpl implements UserDetailsService {
 
 	public static final String DEFAULT_USERS_BY_USERNAME_SQL = "SELECT username, password, enabled, user_id, display_name, FALSE AS is_token"
-			+ " FROM solaruser.user_login WHERE username = ?";
+			+ " FROM eniwareuser.user_login WHERE username = ?";
 
-	public static final String DEFAULT_AUTHORITIES_BY_USERNAME_SQL = "SELECT username, authority FROM solaruser.user_login_role WHERE username = ?";
+	public static final String DEFAULT_AUTHORITIES_BY_USERNAME_SQL = "SELECT username, authority FROM eniwareuser.user_login_role WHERE username = ?";
 
 	public static final String DEFAULT_TOKEN_USERS_BY_USERNAME_SQL = "SELECT username, password, enabled, user_id, display_name, TRUE AS is_token, token_type, jpolicy"
-			+ " FROM solaruser.user_auth_token_login WHERE username = ?";
+			+ " FROM eniwareuser.user_auth_token_login WHERE username = ?";
 
-	public static final String DEFAULT_TOKEN_AUTHORITIES_BY_USERNAME_SQL = "SELECT username, authority FROM solaruser.user_auth_token_role WHERE username = ?";
+	public static final String DEFAULT_TOKEN_AUTHORITIES_BY_USERNAME_SQL = "SELECT username, authority FROM eniwareuser.user_auth_token_role WHERE username = ?";
 
 	private List<GrantedAuthority> staticAuthorities;
 	private final ObjectMapper objectMapper;

@@ -48,7 +48,7 @@ public class StaleGeneralNodeDatumProcessor extends StaleDatumProcessor {
 	 */
 	public StaleGeneralNodeDatumProcessor(EventAdmin eventAdmin, JdbcOperations jdbcOps) {
 		super(eventAdmin, jdbcOps);
-		setJdbcCall("{? = call solaragg.process_agg_stale_datum(?, ?)}");
+		setJdbcCall("{? = call eniwareagg.process_agg_stale_datum(?, ?)}");
 	}
 
 	private int execute(final AtomicInteger remainingCount) {

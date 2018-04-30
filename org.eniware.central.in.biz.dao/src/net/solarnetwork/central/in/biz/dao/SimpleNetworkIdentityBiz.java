@@ -4,7 +4,7 @@
  * ==================================================================
  */
 
-package net.solarnetwork.central.in.biz.dao;
+package org.eniware.central.in.biz.dao;
 
 import java.util.Map;
 

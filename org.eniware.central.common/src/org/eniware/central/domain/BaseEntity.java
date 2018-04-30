@@ -11,7 +11,7 @@ import java.io.Serializable;
 import org.joda.time.DateTime;
 
 /**
- * Base class for SolarNetwork entities.
+ * Base class for EniwareNetwork entities.
  * @version $Revision$
  */
 public abstract class BaseEntity extends BaseIdentity 

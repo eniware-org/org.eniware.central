@@ -20,7 +20,7 @@ public class WeatherLocation extends BaseEntity implements Cloneable, Serializab
 
 	private static final long serialVersionUID = -3594930550501316172L;
 
-	private SolarLocation location;
+	private EniwareLocation location;
 	private WeatherSource source;
 	private String sourceData;
 
@@ -60,11 +60,11 @@ public class WeatherLocation extends BaseEntity implements Cloneable, Serializab
 		return buf.toString();
 	}
 
-	public SolarLocation getLocation() {
+	public EniwareLocation getLocation() {
 		return location;
 	}
 
-	public void setLocation(SolarLocation location) {
+	public void setLocation(EniwareLocation location) {
 		this.location = location;
 	}
 

@@ -65,13 +65,13 @@ $(document).ready(function() {
 			contentType : 'application/json',
 			data : JSON.stringify(data),
 			beforeSend: function(xhr) {
-				SolarReg.csrf(xhr);
+				EniwareReg.csrf(xhr);
             },
 			success: function(json, status, xhr) {
 				document.location.reload(true);
 			},
 			error: function(xhr, status, statusText) {
-				SolarReg.showAlertBefore('#create-node-data-alert-modal .modal-body > *:first-child', 'alert-warning', statusText);
+				EniwareReg.showAlertBefore('#create-node-data-alert-modal .modal-body > *:first-child', 'alert-warning', statusText);
 			}
 		});
 	}).on('shown.bs.modal', function() {
@@ -79,19 +79,19 @@ $(document).ready(function() {
 	}).on('click', 'button.action-delete', function(event) {
 		var form = $('#create-node-data-alert-modal').get(0),
 			alertId = form.elements['id'].value,
-			url = SolarReg.solarUserURL('/sec/alerts/') + alertId;
+			url = EniwareReg.eniwareUserURL('/sec/alerts/') + alertId;
 		$.ajax({
 			type : 'DELETE',
 			url : url,
 			dataType : 'json',
 			beforeSend: function(xhr) {
-				SolarReg.csrf(xhr);
+				EniwareReg.csrf(xhr);
             },
 			success : function(json, status, xhr) {
 				document.location.reload(true);
 			},
 			error: function(xhr, status, statusText) {
-				SolarReg.showAlertBefore('#create-node-data-alert-modal .modal-body > *:first-child', 'alert-warning', statusText);
+				EniwareReg.showAlertBefore('#create-node-data-alert-modal .modal-body > *:first-child', 'alert-warning', statusText);
 			}
 		});
 	});
@@ -121,8 +121,8 @@ $(document).ready(function() {
 	
 	function populateAlertSituationValues(root, alert, nodeName) {
 		// make use of the i18n type/status
-		var type = (alert && alert.type && SolarReg.userAlertTypes
-				? SolarReg.userAlertTypes[alert.type]
+		var type = (alert && alert.type && EniwareReg.userAlertTypes
+				? EniwareReg.userAlertTypes[alert.type]
 				: '');
 		var date = (alert && alert.options && alert.options.situationDate
 				? alert.options.situationDate
@@ -156,7 +156,7 @@ $(document).ready(function() {
 	}
 
 	function alertSituationBaseURL() {
-		return SolarReg.solarUserURL('/sec/alerts/situation');
+		return EniwareReg.eniwareUserURL('/sec/alerts/situation');
 	}
 	
 	/**
@@ -164,7 +164,7 @@ $(document).ready(function() {
 	 * attribute <code>alert-id</code> for the ID of the alert to view, and a modal 
 	 * dialog with an ID <code>alert-situation-modal</code> to display the alert details.
 	 */
-	SolarReg.viewAlertSituation = function(event, nodeName) {
+	EniwareReg.viewAlertSituation = function(event, nodeName) {
 		event.preventDefault();
 		var btn = $(this);
 		var alertId = btn.data('alert-id');
@@ -179,7 +179,7 @@ $(document).ready(function() {
 			}
 			modal.modal('show');
 		}).fail(function(data, statusText, xhr) {
-			SolarReg.showAlertBefore('#alert-situation-modal .modal-body > *:first-child', 'alert-warning', 
+			EniwareReg.showAlertBefore('#alert-situation-modal .modal-body > *:first-child', 'alert-warning', 
 					'Error getting alert situation details. ' +statusText);
 		});
 	};
@@ -206,7 +206,7 @@ $(document).ready(function() {
 		form.get(0).elements['id'].value = alertId;
 		form.find('button.action-delete').show();
 		form.modal('show');
-	}).on('click', 'button.view-situation', SolarReg.viewAlertSituation);
+	}).on('click', 'button.view-situation', EniwareReg.viewAlertSituation);
 	
 	$('#alert-situation-resolve').on('click', function(event) {
 		event.preventDefault();
@@ -214,7 +214,7 @@ $(document).ready(function() {
 			alertId = me.data('alert-id');
 		if ( alertId !== undefined ) {
 			var url = alertSituationBaseURL() + '/' + encodeURIComponent(alertId) + '/resolve';
-			$.post(url, {status:'Resolved', _csrf:SolarReg.csrf()}, function(data) {
+			$.post(url, {status:'Resolved', _csrf:EniwareReg.csrf()}, function(data) {
 				document.location.reload(true);
 			}, 'json');
 		}
@@ -223,7 +223,7 @@ $(document).ready(function() {
 	(function() {
 		var situationCountContainers = $('.alert-situation-count');
 		if ( situationCountContainers.length > 0 ) {
-			$.getJSON(SolarReg.solarUserURL('/sec/alerts/user/situation/count'), function(json) {
+			$.getJSON(EniwareReg.eniwareUserURL('/sec/alerts/user/situation/count'), function(json) {
 				var count = 0;
 				if ( json && json.data ) {
 					count = Number(json.data);

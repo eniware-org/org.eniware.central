@@ -17,7 +17,7 @@ package org.eniware.central.domain;
  * @param <PK> the identity type
  * @version $Revision$
  */
-public interface SolarCapabilityInformation<PK> extends Identity<PK> {
+public interface EniwareCapabilityInformation<PK> extends Identity<PK> {
 
 	/**
 	 * Get the name of the object.

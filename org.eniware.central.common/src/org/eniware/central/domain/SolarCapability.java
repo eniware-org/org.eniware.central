@@ -12,7 +12,7 @@ import java.io.Serializable;
  * A set of capabilities.
  * @version $Revision$
  */
-public class SolarCapability extends BaseEntity implements Cloneable, Serializable {
+public class EniwareCapability extends BaseEntity implements Cloneable, Serializable {
 
 	private static final long serialVersionUID = 1449569875028595935L;
 

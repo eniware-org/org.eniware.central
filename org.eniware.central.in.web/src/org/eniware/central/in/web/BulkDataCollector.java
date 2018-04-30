@@ -27,7 +27,7 @@ import org.eniware.central.security.SecurityException;
 import org.eniware.domain.NodeControlPropertyType;
 
 import org.eniware.central.RepeatableTaskException;
-import org.eniware.central.dao.SolarNodeDao;
+import org.eniware.central.dao.EniwareEdgeDao;
 import org.eniware.central.instructor.domain.Instruction;
 import org.eniware.central.instructor.domain.InstructionState;
 import org.joda.time.DateTime;
@@ -82,13 +82,13 @@ public class BulkDataCollector extends AbstractDataCollector {
 	 * 
 	 * @param dataCollectorBiz
 	 *        the {@link DataCollectorBiz} to use
-	 * @param solarNodeDao
-	 *        the {@link SolarNodeDao} to use
+	 * @param eniwareEdgeDao
+	 *        the {@link EniwareEdgeDao} to use
 	 */
 	@Autowired
-	public BulkDataCollector(DataCollectorBiz dataCollectorBiz, SolarNodeDao solarNodeDao) {
+	public BulkDataCollector(DataCollectorBiz dataCollectorBiz, EniwareEdgeDao eniwareEdgeDao) {
 		setDataCollectorBiz(dataCollectorBiz);
-		setSolarNodeDao(solarNodeDao);
+		setEniwareEdgeDao(eniwareEdgeDao);
 	}
 
 	/**
@@ -235,7 +235,7 @@ public class BulkDataCollector extends AbstractDataCollector {
 		} else if ( className.equals(NODE_CONTROL_INFO_ELEMENT_NAME) ) {
 			return handleNodeControlInfoElement(reader, attributes);
 		}
-		className = "net.solarnetwork.central.datum.domain." + className;
+		className = "org.eniware.central.datum.domain." + className;
 		Datum datum = null;
 		try {
 			@SuppressWarnings("unchecked")

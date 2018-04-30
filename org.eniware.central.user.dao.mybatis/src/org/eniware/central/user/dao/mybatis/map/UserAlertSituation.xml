@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?><!--Converted at: Tue Nov 11 06:02:38 NZDT 2014-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.solarnetwork.central.user.dao.mybatis.UserAlertSituation">
+<mapper namespace="org.eniware.central.user.dao.mybatis.UserAlertSituation">
 
 	<insert id="insert-UserAlertSituation" parameterType="UserAlertSituation">
 		<selectKey keyProperty="id" resultType="long" order="BEFORE"> 
-              SELECT nextval('solaruser.user_alert_seq') AS id 
+              SELECT nextval('eniwareuser.user_alert_seq') AS id 
 		</selectKey>
-		INSERT INTO solaruser.user_alert_sit 
+		INSERT INTO eniwareuser.user_alert_sit 
 			(id, alert_id, status
 			<if test="created != null">,created</if>
 			<if test="notified != null">,notified</if>
 			<if test="infoJson != null">,info</if>
 			)
 		VALUES
-			(#{id}, #{alert.id}, CAST(#{status} AS solaruser.user_alert_sit_status)
+			(#{id}, #{alert.id}, CAST(#{status} AS eniwareuser.user_alert_sit_status)
 			<if test="created != null">,#{created}</if>
 			<if test="notified != null">,#{notified}</if>
 			<if test="infoJson != null">,CAST(#{infoJson} AS json)</if>
@@ -22,9 +22,9 @@
 	</insert>
 
 	<update id="update-UserAlertSituation" parameterType="UserAlertSituation">
-		UPDATE solaruser.user_alert_sit SET
+		UPDATE eniwareuser.user_alert_sit SET
 			notified = #{notified}, 
-			status = CAST(#{status} AS solaruser.user_alert_sit_status)
+			status = CAST(#{status} AS eniwareuser.user_alert_sit_status)
 			<if test="infoJson != null">, info = CAST(#{infoJson} AS json)</if>
 		WHERE
 			id = #{id}
@@ -48,17 +48,17 @@
 	</resultMap>
 	
 	<resultMap id="UserAlertSituationFullResult" type="UserAlertSituation" extends="UserAlertSituationResult">
-		<association property="alert" resultMap="net.solarnetwork.central.user.dao.mybatis.UserAlert.UserAlertFullResult"/>
+		<association property="alert" resultMap="org.eniware.central.user.dao.mybatis.UserAlert.UserAlertFullResult"/>
 	</resultMap>
 	
 	<select id="get-UserAlertSituation-for-id" parameterType="long" resultMap="UserAlertSituationFullResult">
 		SELECT
 			<include refid="fragment-UserAlertSituation-full-result"/>,
-			<include refid="net.solarnetwork.central.user.dao.mybatis.UserAlert.fragment-UserAlert-full-result"/>
+			<include refid="org.eniware.central.user.dao.mybatis.UserAlert.fragment-UserAlert-full-result"/>
 		FROM
-			solaruser.user_alert_sit uas
+			eniwareuser.user_alert_sit uas
 		INNER JOIN
-			solaruser.user_alert ual ON ual.id = uas.alert_id
+			eniwareuser.user_alert ual ON ual.id = uas.alert_id
 		WHERE
 			uas.id = #{id}
 	</select>
@@ -66,18 +66,18 @@
 	<select id="get-UserAlertSituation-for-active-alert" parameterType="long" resultMap="UserAlertSituationFullResult">
 		SELECT
 			<include refid="fragment-UserAlertSituation-full-result"/>,
-			<include refid="net.solarnetwork.central.user.dao.mybatis.UserAlert.fragment-UserAlert-full-result"/>
+			<include refid="org.eniware.central.user.dao.mybatis.UserAlert.fragment-UserAlert-full-result"/>
 		FROM
-			solaruser.user_alert_sit uas
+			eniwareuser.user_alert_sit uas
 		INNER JOIN
-			solaruser.user_alert ual ON ual.id = uas.alert_id
+			eniwareuser.user_alert ual ON ual.id = uas.alert_id
 		WHERE
 			uas.alert_id = #{id}
-			AND uas.status = 'Active'::solaruser.user_alert_sit_status
+			AND uas.status = 'Active'::eniwareuser.user_alert_sit_status
 	</select>
 
 	<update id="delete-UserAlertSituation-resolved" statementType="CALLABLE" parameterType="map">
-		{#{result, mode=OUT, jdbcType=BIGINT} = call solaruser.purge_resolved_situations(
+		{#{result, mode=OUT, jdbcType=BIGINT} = call eniwareuser.purge_resolved_situations(
 			#{date, mode=IN, jdbcType=TIMESTAMP}
 		)}
 	</update>

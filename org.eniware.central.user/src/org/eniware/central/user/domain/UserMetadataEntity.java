@@ -9,7 +9,7 @@ package org.eniware.central.user.domain;
 import java.io.Serializable;
 
 import org.eniware.central.domain.BaseEntity;
-import org.eniware.central.domain.SolarNode;
+import org.eniware.central.domain.EniwareEdge;
 import org.eniware.central.support.JsonUtils;
 import org.eniware.domain.GeneralDatumMetadata;
 import org.eniware.util.SerializeIgnore;
@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 /**
- * Metadata about a {@link SolarNode}.
+ * Metadata about a {@link EniwareEdge}.
  * 
  * <b>Note</b> that {@link JsonUtils#getObjectFromJSON(String, Class)} is used
  * to manage the JSON value passed to {@link #setMetaJson(String)}.

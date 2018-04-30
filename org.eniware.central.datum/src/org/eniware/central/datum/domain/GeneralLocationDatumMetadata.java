@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 import org.eniware.central.datum.support.DatumUtils;
 import org.eniware.central.domain.Entity;
-import org.eniware.central.domain.SolarLocation;
+import org.eniware.central.domain.EniwareLocation;
 import org.eniware.domain.GeneralDatumMetadata;
 import org.eniware.util.SerializeIgnore;
 import org.joda.time.DateTime;
@@ -41,7 +41,7 @@ public class GeneralLocationDatumMetadata implements Entity<LocationSourcePK>, C
 	private GeneralDatumMetadata meta;
 	private String metaJson;
 
-	private SolarLocation location;
+	private EniwareLocation location;
 
 	@Override
 	public int compareTo(LocationSourcePK o) {
@@ -203,11 +203,11 @@ public class GeneralLocationDatumMetadata implements Entity<LocationSourcePK>, C
 		this.updated = updated;
 	}
 
-	public SolarLocation getLocation() {
+	public EniwareLocation getLocation() {
 		return location;
 	}
 
-	public void setLocation(SolarLocation location) {
+	public void setLocation(EniwareLocation location) {
 		this.location = location;
 	}
 

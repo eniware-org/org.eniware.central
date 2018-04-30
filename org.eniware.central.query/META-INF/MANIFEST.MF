@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNetwork Query
+Bundle-Name: EniwareNetwork Query
 Bundle-SymbolicName: org.eniware.central.query
 Bundle-Version: 2.3.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: 
  org.eniware.central.query.biz;version="2.1.0",

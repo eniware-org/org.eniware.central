@@ -77,7 +77,7 @@ public final class DatumUtils {
 	 * {@code name} and appending {@code Datum} to the end. For example, a
 	 * {@code name} value of <em>power</em> would result in a class named
 	 * {@code PowerDatum} in the same package as {@link NodeDatum} (e.g.
-	 * {@code net.solarnetwork.central.datum.domain.PowerDatum}).
+	 * {@code org.eniware.central.datum.domain.PowerDatum}).
 	 * 
 	 * @param name
 	 *        the node datum class name

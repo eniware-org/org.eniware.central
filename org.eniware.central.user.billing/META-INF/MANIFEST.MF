@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarUser Billing
+Bundle-Name: EniwareUser Billing
 Bundle-SymbolicName: org.eniware.central.user.billing
 Bundle-Version: 0.2.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: 
  org.eniware.central.user.billing.biz;version="0.2.0",

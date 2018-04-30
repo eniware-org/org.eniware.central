@@ -19,18 +19,18 @@
 
 	<!-- Service references -->
 
-	<reference id="userDao" interface="net.solarnetwork.central.user.dao.UserDao"/>
+	<reference id="userDao" interface="org.eniware.central.user.dao.UserDao"/>
 	
 	<reference id="cacheManager" interface="javax.cache.CacheManager" filter="(app=user)"/>
 	
 	<!-- Supporting Services -->
 	
-	<bean id="killbillClient" class="net.solarnetwork.central.user.billing.killbill.KillbillRestClient">
-		<osgix:managed-properties persistent-id="net.solarnetwork.central.user.billing.killbill.KillbillRestClient" 
+	<bean id="killbillClient" class="org.eniware.central.user.billing.killbill.KillbillRestClient">
+		<osgix:managed-properties persistent-id="org.eniware.central.user.billing.killbill.KillbillRestClient" 
 			autowire-on-update="true"/>
 	</bean>
 		
-	<bean id="catalogMessageSourceCache" class="net.solarnetwork.central.support.JCacheFactoryBean">
+	<bean id="catalogMessageSourceCache" class="org.eniware.central.support.JCacheFactoryBean">
 		<argument ref="cacheManager"/>
 		<argument value="java.lang.String"/>
 		<argument value="java.util.Properties"/>
@@ -39,26 +39,26 @@
 		<property name="expiryDuration" value="#{T(javax.cache.expiry.Duration).ONE_DAY}"/>
 	</bean>
 	
-	<bean id="subscriptionCache" class="net.solarnetwork.central.support.JCacheFactoryBean">
+	<bean id="subscriptionCache" class="org.eniware.central.support.JCacheFactoryBean">
 		<argument ref="cacheManager"/>
 		<argument value="java.lang.String"/>
-		<argument value="net.solarnetwork.central.user.billing.killbill.domain.Subscription"/>
+		<argument value="org.eniware.central.user.billing.killbill.domain.Subscription"/>
 		<property name="name" value="subscriptions"/>
 		<property name="expiryPolicy" value="Created"/>
 		<property name="expiryDuration" value="#{T(javax.cache.expiry.Duration).ONE_DAY}"/>
 	</bean>
 	
-	<bean id="catalogMessageSource" class="net.solarnetwork.central.user.billing.killbill.KillbillCatalogMessageSource">
+	<bean id="catalogMessageSource" class="org.eniware.central.user.billing.killbill.KillbillCatalogMessageSource">
 		<argument ref="killbillClient"/>
 		<argument ref="catalogMessageSourceCache"/>
 	</bean>
 	
 	<!-- Published Services -->
 	
-	<service ref="killbillClient" interface="net.solarnetwork.central.user.billing.killbill.KillbillClient"/>
+	<service ref="killbillClient" interface="org.eniware.central.user.billing.killbill.KillbillClient"/>
 
-	<service interface="net.solarnetwork.central.user.billing.biz.BillingSystem">
-		<bean class="net.solarnetwork.central.user.billing.killbill.KillbillBillingSystem">
+	<service interface="org.eniware.central.user.billing.biz.BillingSystem">
+		<bean class="org.eniware.central.user.billing.killbill.KillbillBillingSystem">
 			<argument ref="killbillClient"/>
 			<argument ref="userDao"/>
 			<argument ref="catalogMessageSource"/>
@@ -66,8 +66,8 @@
 		</bean>
 	</service>
 
-	<service interface="net.solarnetwork.central.domain.PingTest">
-		<bean class="net.solarnetwork.central.user.billing.killbill.KillbillPingTest">
+	<service interface="org.eniware.central.domain.PingTest">
+		<bean class="org.eniware.central.user.billing.killbill.KillbillPingTest">
 			<argument ref="killbillClient"/>
 		</bean>
 	</service>

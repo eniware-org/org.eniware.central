@@ -13,14 +13,14 @@
 
 	<!-- Service References -->
 
-	<reference id="userBiz" interface="net.solarnetwork.central.user.biz.UserBiz" filter="(secured=true)"/>
+	<reference id="userBiz" interface="org.eniware.central.user.biz.UserBiz" filter="(secured=true)"/>
 
-	<bean id="appsVirtualMachineBiz" class="net.solarnetwork.util.DynamicServiceTracker">
+	<bean id="appsVirtualMachineBiz" class="org.eniware.util.DynamicServiceTracker">
 		<property name="bundleContext" ref="bundleContext"/>
-		<property name="serviceClassName" value="net.solarnetwork.central.cloud.biz.VirtualMachineBiz"/>
+		<property name="serviceClassName" value="org.eniware.central.cloud.biz.VirtualMachineBiz"/>
 		<property name="propertyFilters">
 			<map>
-				<entry key="uid" value="SolarNetwork-Apps"/>
+				<entry key="uid" value="EniwareNetwork-Apps"/>
 			</map>
 		</property>
 	</bean>
@@ -29,15 +29,15 @@
 	
 	<service ref="nimBiz">
 		<interfaces>
-			<value>net.solarnetwork.central.user.nim.biz.SolarNodeImageMakerBiz</value>
-			<value>net.solarnetwork.central.biz.MaintenanceSubscriber</value>
+			<value>org.eniware.central.user.nim.biz.EniwareEdgeImageMakerBiz</value>
+			<value>org.eniware.central.biz.MaintenanceSubscriber</value>
 		</interfaces>
 	</service>
 	
 	<!-- Supporting Services -->
 
-	<bean id="nimBiz" class="net.solarnetwork.central.user.nim.cloud.CloudSolarNodeImageMakerBiz">
-		<osgix:managed-properties persistent-id="net.solarnetwork.central.user.nim.cloud.CloudSolarNodeImageMakerBiz" autowire-on-update="true"/>
+	<bean id="nimBiz" class="org.eniware.central.user.nim.cloud.CloudEniwareEdgeImageMakerBiz">
+		<osgix:managed-properties persistent-id="org.eniware.central.user.nim.cloud.CloudEniwareEdgeImageMakerBiz" autowire-on-update="true"/>
 		<argument ref="userBiz"/>
 		<argument ref="appsVirtualMachineBiz"/>
 	</bean>

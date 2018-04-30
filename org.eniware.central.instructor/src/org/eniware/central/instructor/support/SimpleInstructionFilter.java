@@ -1,7 +1,7 @@
 /* ==================================================================
  * SimpleInstructionFilter.java - Sep 30, 2011 9:31:17 AM
  * 
- * Copyright 2007-2011 SolarNetwork.net Dev Team
+ * Copyright 2007-2011 EniwareNetwork.net Dev Team
  * 
  * This program is free software; you can redistribute it and/or 
  * modify it under the terms of the GNU General Public License as 

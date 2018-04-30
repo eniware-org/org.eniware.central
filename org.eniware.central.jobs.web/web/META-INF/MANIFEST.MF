@@ -1,12 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNet Jobs Webapp
+Bundle-Name: EniwareNet Jobs Webapp
 Bundle-SymbolicName: org.eniware.central.jobs.web
 Bundle-Version: 1.0.0
 Bundle-ClassPath: WEB-INF/classes/
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Web-ContextPath: /solarjobs
+Web-ContextPath: /eniwarejobs
 Import-Package: 
  javax.el,
  javax.servlet;version="3.0.0",

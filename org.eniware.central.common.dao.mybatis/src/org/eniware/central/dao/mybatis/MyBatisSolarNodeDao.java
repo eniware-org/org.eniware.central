@@ -6,17 +6,17 @@
 
 package org.eniware.central.dao.mybatis;
 
-import org.eniware.central.dao.SolarNodeDao;
+import org.eniware.central.dao.EniwareEdgeDao;
 import org.eniware.central.dao.mybatis.support.BaseMyBatisGenericDao;
-import org.eniware.central.domain.SolarNode;
+import org.eniware.central.domain.EniwareEdge;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * MyBatis implementation of {@link SolarNodeDao}.
+ * MyBatis implementation of {@link EniwareEdgeDao}.
  * @version 1.0
  */
-public class MyBatisSolarNodeDao extends BaseMyBatisGenericDao<SolarNode, Long> implements SolarNodeDao {
+public class MyBatisEniwareEdgeDao extends BaseMyBatisGenericDao<EniwareEdge, Long> implements EniwareEdgeDao {
 
 	/** The query name used for {@link #getUnusedNodeId(String)}. */
 	public static final String QUERY_FOR_NEXT_NODE_ID = "get-next-node-id";
@@ -24,8 +24,8 @@ public class MyBatisSolarNodeDao extends BaseMyBatisGenericDao<SolarNode, Long> 
 	/**
 	 * Default constructor.
 	 */
-	public MyBatisSolarNodeDao() {
-		super(SolarNode.class, Long.class);
+	public MyBatisEniwareEdgeDao() {
+		super(EniwareEdge.class, Long.class);
 	}
 
 	@Override
@@ -36,14 +36,14 @@ public class MyBatisSolarNodeDao extends BaseMyBatisGenericDao<SolarNode, Long> 
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public Long store(SolarNode datum) {
+	public Long store(EniwareEdge datum) {
 		// because we allow the node ID to be pre-assigned (i.e. from a
 		// previous call to getUnusedNodeId() we have to test if the node
 		// ID exists in the database yet, and if so perform an update, 
 		// otherwise perform an insert
 
 		if ( datum.getId() != null ) {
-			SolarNode entity = get(datum.getId());
+			EniwareEdge entity = get(datum.getId());
 			if ( entity == null ) {
 				// insert here
 				preprocessInsert(datum);

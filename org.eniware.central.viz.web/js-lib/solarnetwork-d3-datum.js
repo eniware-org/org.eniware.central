@@ -13,10 +13,10 @@ if ( sn === undefined ) {
 }
 
 /**
- * @namespace the SolarNetwork Datum namespace
+ * @namespace the EniwareNetwork Datum namespace
  * @require d3 3.0
  * @require queue 1.0
- * @require solarnetwork-d3 0.0.6
+ * @require eniwarenetwork-d3 0.0.6
  */
 sn.datum = {};
 
@@ -37,16 +37,16 @@ sn.datum.nodeUrlHelper = function(node, configuration) {
 	var nodeId = node;
 	
 	var config = sn.util.copy(configuration, {
-		host : 'data.solarnetwork.net',
+		host : 'data.network.eniware.org',
 		tls : true,
-		path : '/solarquery',
+		path : '/eniwarequery',
 		secureQuery : false
 	});
 	
 	/**
-	 * Get a URL for just the SolarNet host, without any path.
+	 * Get a URL for just the EniwareNet host, without any path.
 	 *
-	 * @returns {String} the URL to the SolarNet host
+	 * @returns {String} the URL to the EniwareNet host
 	 * @memberOf sn.datum.nodeUrlHelper
 	 */
 	function hostURL() {
@@ -54,9 +54,9 @@ sn.datum.nodeUrlHelper = function(node, configuration) {
 	}
 	
 	/**
-	 * Get a URL for the SolarNet host and the base API path, e.g. <code>/solarquery/api/v1/sec</code>.
+	 * Get a URL for the EniwareNet host and the base API path, e.g. <code>/eniwarequery/api/v1/sec</code>.
 	 *
-	 * @returns {String} the URL to the SolarNet base API path
+	 * @returns {String} the URL to the EniwareNet base API path
 	 * @memberOf sn.datum.nodeUrlHelper
 	 */
 	function baseURL() {
@@ -99,7 +99,7 @@ sn.datum.nodeUrlHelper = function(node, configuration) {
 	}
 	
 	/**
-	 * Generate a SolarNet {@code /datum/list} URL.
+	 * Generate a EniwareNet {@code /datum/list} URL.
 	 * 
 	 * @param {Date} startDate The starting date for the query, or <em>null</em> to omit
 	 * @param {Date} endDate The ending date for the query, or <em>null</em> to omit
@@ -135,7 +135,7 @@ sn.datum.nodeUrlHelper = function(node, configuration) {
 	}
 		
 	/**
-	 * Generate a SolarNet {@code /datum/mostRecent} URL.
+	 * Generate a EniwareNet {@code /datum/mostRecent} URL.
 	 * 
 	 * @param {Array} sourceIds Array of source IDs to limit query to
 	 * @return {String} the URL to perform the most recent query with
@@ -237,16 +237,16 @@ sn.datum.locationUrlHelper = function(location, configuration) {
 	var locationId = location;
 	
 	var config = sn.util.copy(configuration, {
-		host : 'data.solarnetwork.net',
+		host : 'data.network.eniware.org',
 		tls : true,
-		path : '/solarquery',
+		path : '/eniwarequery',
 		secureQuery : false
 	});
 	
 	/**
-	 * Get a URL for just the SolarNet host, without any path.
+	 * Get a URL for just the EniwareNet host, without any path.
 	 *
-	 * @returns {String} the URL to the SolarNet host
+	 * @returns {String} the URL to the EniwareNet host
 	 * @memberOf sn.datum.nodeUrlHelper
 	 */
 	function hostURL() {
@@ -254,9 +254,9 @@ sn.datum.locationUrlHelper = function(location, configuration) {
 	}
 	
 	/**
-	 * Get a URL for the SolarNet host and the base API path, e.g. <code>/solarquery/api/v1/sec</code>.
+	 * Get a URL for the EniwareNet host and the base API path, e.g. <code>/eniwarequery/api/v1/sec</code>.
 	 *
-	 * @returns {String} the URL to the SolarNet base API path
+	 * @returns {String} the URL to the EniwareNet base API path
 	 * @memberOf sn.datum.locationUrlHelper
 	 */
 	function baseURL() {
@@ -299,7 +299,7 @@ sn.datum.locationUrlHelper = function(location, configuration) {
 	}
 	
 	/**
-	 * Generate a SolarNet {@code /datum/list} URL.
+	 * Generate a EniwareNet {@code /datum/list} URL.
 	 * 
 	 * @param {Date} startDate The starting date for the query, or <em>null</em> to omit
 	 * @param {Date} endDate The ending date for the query, or <em>null</em> to omit
@@ -335,7 +335,7 @@ sn.datum.locationUrlHelper = function(location, configuration) {
 	}
 		
 	/**
-	 * Generate a SolarNet {@code /datum/mostRecent} URL.
+	 * Generate a EniwareNet {@code /datum/mostRecent} URL.
 	 * 
 	 * @param {Array} sourceIds Array of source IDs to limit query to
 	 * @return {String} the URL to perform the most recent query with

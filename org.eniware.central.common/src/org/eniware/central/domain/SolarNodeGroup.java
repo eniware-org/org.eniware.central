@@ -21,7 +21,7 @@ import org.joda.time.DateTime;
  * practice this will often be the case.</p>
  * @version $Revision$
  */
-public class SolarNodeGroup extends BaseEntity implements Cloneable, Serializable, NodeGroupIdentity {
+public class EniwareEdgeGroup extends BaseEntity implements Cloneable, Serializable, NodeGroupIdentity {
 
 	private static final long serialVersionUID = 1843734913796373879L;
 
@@ -31,7 +31,7 @@ public class SolarNodeGroup extends BaseEntity implements Cloneable, Serializabl
 	/**
 	 * Default constructor.
 	 */
-	public SolarNodeGroup() {
+	public EniwareEdgeGroup() {
 		super();
 	}
 	
@@ -42,7 +42,7 @@ public class SolarNodeGroup extends BaseEntity implements Cloneable, Serializabl
 	 * @param locationId the location ID
 	 * @param name the name
 	 */
-	public SolarNodeGroup(Long id, Long locationId, String name) {
+	public EniwareEdgeGroup(Long id, Long locationId, String name) {
 		super();
 		setId(id);
 		setCreated(new DateTime());

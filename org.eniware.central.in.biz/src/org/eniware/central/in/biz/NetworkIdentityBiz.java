@@ -10,7 +10,7 @@ import org.eniware.domain.NetworkAssociation;
 import org.eniware.domain.NetworkIdentity;
 
 /**
- * API for identifying the SolarIn service to nodes.
+ * API for identifying the EniwareIn service to nodes.
  *
  * @version $Revision$
  */

@@ -19,12 +19,12 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import org.eniware.central.RepeatableTaskException;
-import org.eniware.central.dao.SolarNodeDao;
+import org.eniware.central.dao.EniwareEdgeDao;
 import org.eniware.central.datum.dao.GeneralNodeDatumDao;
 import org.eniware.central.datum.domain.DatumFilterCommand;
 import org.eniware.central.datum.domain.GeneralNodeDatumFilterMatch;
 import org.eniware.central.domain.FilterResults;
-import org.eniware.central.domain.SolarNode;
+import org.eniware.central.domain.EniwareEdge;
 import org.eniware.central.mail.MailService;
 import org.eniware.central.mail.support.BasicMailAddress;
 import org.eniware.central.mail.support.ClasspathResourceMessageTemplateDataSource;
@@ -61,10 +61,10 @@ public class EmailNodeStaleDataAlertProcessor implements UserAlertBatchProcessor
 	public static final Integer DEFAULT_BATCH_SIZE = 50;
 
 	/** The default value for {@link #getMailTemplateResource()}. */
-	public static final String DEFAULT_MAIL_TEMPLATE_RESOURCE = "/net/solarnetwork/central/user/alerts/user-alert-NodeStaleData.txt";
+	public static final String DEFAULT_MAIL_TEMPLATE_RESOURCE = "/net/eniwarenetwork/central/user/alerts/user-alert-NodeStaleData.txt";
 
 	/** The default value for {@link #getMailTemplateResolvedResource()}. */
-	public static final String DEFAULT_MAIL_TEMPLATE_RESOLVED_RESOURCE = "/net/solarnetwork/central/user/alerts/user-alert-NodeStaleData-Resolved.txt";
+	public static final String DEFAULT_MAIL_TEMPLATE_RESOLVED_RESOURCE = "/net/eniwarenetwork/central/user/alerts/user-alert-NodeStaleData-Resolved.txt";
 
 	/**
 	 * A {@code UserAlertSituation} {@code info} key for an associated node ID.
@@ -89,7 +89,7 @@ public class EmailNodeStaleDataAlertProcessor implements UserAlertBatchProcessor
 	 */
 	public static final String SITUATION_INFO_DATUM_CREATED = "datumCreated";
 
-	private final SolarNodeDao solarNodeDao;
+	private final EniwareEdgeDao eniwareEdgeDao;
 	private final UserDao userDao;
 	private final UserNodeDao userNodeDao;
 	private final UserAlertDao userAlertDao;
@@ -105,7 +105,7 @@ public class EmailNodeStaleDataAlertProcessor implements UserAlertBatchProcessor
 	private int alertReminderFrequencyMultiplier = 4;
 
 	// maintain a cache of node data during the execution of the job (cleared after each invocation)
-	private final Map<Long, SolarNode> nodeCache = new HashMap<Long, SolarNode>(64);
+	private final Map<Long, EniwareEdge> nodeCache = new HashMap<Long, EniwareEdge>(64);
 	private final Map<Long, List<GeneralNodeDatumFilterMatch>> nodeDataCache = new HashMap<Long, List<GeneralNodeDatumFilterMatch>>(
 			64);
 	private final Map<Long, List<GeneralNodeDatumFilterMatch>> userDataCache = new HashMap<Long, List<GeneralNodeDatumFilterMatch>>(
@@ -116,8 +116,8 @@ public class EmailNodeStaleDataAlertProcessor implements UserAlertBatchProcessor
 	/**
 	 * Construct with properties.
 	 * 
-	 * @param solarNodeDao
-	 *        The {@link SolarNodeDao} to use.
+	 * @param eniwareEdgeDao
+	 *        The {@link EniwareEdgeDao} to use.
 	 * @param userDao
 	 *        The {@link UserDao} to use.
 	 * @param userNodeDao
@@ -133,12 +133,12 @@ public class EmailNodeStaleDataAlertProcessor implements UserAlertBatchProcessor
 	 * @param messageSource
 	 *        The {@link MessageSource} to use.
 	 */
-	public EmailNodeStaleDataAlertProcessor(SolarNodeDao solarNodeDao, UserDao userDao,
+	public EmailNodeStaleDataAlertProcessor(EniwareEdgeDao eniwareEdgeDao, UserDao userDao,
 			UserNodeDao userNodeDao, UserAlertDao userAlertDao,
 			UserAlertSituationDao userAlertSituationDao, GeneralNodeDatumDao generalNodeDatumDao,
 			MailService mailService, MessageSource messageSource) {
 		super();
-		this.solarNodeDao = solarNodeDao;
+		this.eniwareEdgeDao = eniwareEdgeDao;
 		this.userDao = userDao;
 		this.userNodeDao = userNodeDao;
 		this.userAlertDao = userAlertDao;
@@ -313,7 +313,7 @@ public class EmailNodeStaleDataAlertProcessor implements UserAlertBatchProcessor
 				try {
 					LocalTime start = timeFormatter.parseLocalTime(s.toString());
 					LocalTime end = timeFormatter.parseLocalTime(e.toString());
-					SolarNode node = nodeCache.get(intervalNodeId);
+					EniwareEdge node = nodeCache.get(intervalNodeId);
 					DateTimeZone tz = DateTimeZone.UTC;
 					if ( node != null ) {
 						TimeZone nodeTz = node.getTimeZone();
@@ -426,7 +426,7 @@ public class EmailNodeStaleDataAlertProcessor implements UserAlertBatchProcessor
 				}
 				if ( !nodeCache.containsKey(match.getId().getNodeId()) ) {
 					nodeCache.put(match.getId().getNodeId(),
-							solarNodeDao.get(match.getId().getNodeId()));
+							eniwareEdgeDao.get(match.getId().getNodeId()));
 				}
 				datumMatches.add(match);
 			}
@@ -558,7 +558,7 @@ public class EmailNodeStaleDataAlertProcessor implements UserAlertBatchProcessor
 			return;
 		}
 		User user = userDao.get(alert.getUserId());
-		SolarNode node = (datum != null ? nodeCache.get(datum.getId().getNodeId()) : null);
+		EniwareEdge node = (datum != null ? nodeCache.get(datum.getId().getNodeId()) : null);
 		if ( user != null && node != null ) {
 			BasicMailAddress addr = new BasicMailAddress(user.getName(), user.getEmail());
 			Locale locale = Locale.US; // TODO: get Locale from User entity

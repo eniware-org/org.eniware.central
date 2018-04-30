@@ -27,7 +27,7 @@ $(document).ready(function() {
 			handleAuthTokenCreated(json, status, xhr, form);
 		},
 		error: function(xhr, status, statusText) {
-			SolarReg.showAlertBefore('#create-user-auth-token .modal-body > *:first-child', 'alert-warning', statusText);
+			EniwareReg.showAlertBefore('#create-user-auth-token .modal-body > *:first-child', 'alert-warning', statusText);
 		}
 	}).on('hidden.bs.modal', reloadIfTokenCreated);
 	
@@ -57,7 +57,7 @@ $(document).ready(function() {
 			document.location.reload(true);
 		},
 		error: function(xhr, status, statusText) {
-			SolarReg.showAlertBefore('#delete-user-auth-token .modal-body > *:first-child', 'alert-error', statusText);
+			EniwareReg.showAlertBefore('#delete-user-auth-token .modal-body > *:first-child', 'alert-error', statusText);
 		}
 	});
 
@@ -107,7 +107,7 @@ $(document).ready(function() {
 			sources = nodeSourceMap[nodeKey];
 			if ( sources === undefined ) {
 				nodeSourceMap[nodeKey] = [];
-				urls.push({nodeKey:nodeKey, url:SolarReg.solarUserURL('/sec/node-data/'+nodeKey+'/sources')});
+				urls.push({nodeKey:nodeKey, url:EniwareReg.eniwareUserURL('/sec/node-data/'+nodeKey+'/sources')});
 			} else {
 				populateSourceSet(sources);
 			}
@@ -204,7 +204,7 @@ $(document).ready(function() {
 			handleAuthTokenCreated(json, status, xhr, form);
 		},
 		error: function(xhr, status, statusText) {
-			SolarReg.showAlertBefore('#create-data-auth-token .modal-body > *:first-child', 'alert-error', statusText);
+			EniwareReg.showAlertBefore('#create-data-auth-token .modal-body > *:first-child', 'alert-error', statusText);
 		}
 	}).on('hidden.bs.modal', function() {
 		var form = $(this);
@@ -282,7 +282,7 @@ $(document).ready(function() {
 			document.location.reload(true);
 		},
 		error: function(xhr, status, statusText) {
-			SolarReg.showAlertBefore('#delete-data-auth-token .modal-body > *:first-child', 'alert-error', statusText);
+			EniwareReg.showAlertBefore('#delete-data-auth-token .modal-body > *:first-child', 'alert-error', statusText);
 		}
 	});
 });

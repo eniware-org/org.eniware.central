@@ -18,15 +18,15 @@ import org.eniware.central.datum.domain.GeneralNodeDatumMetadataFilterMatch;
 import org.eniware.central.domain.FilterResults;
 import org.eniware.central.domain.Location;
 import org.eniware.central.domain.LocationMatch;
-import org.eniware.central.domain.SolarNodeMetadataFilter;
-import org.eniware.central.domain.SolarNodeMetadataFilterMatch;
+import org.eniware.central.domain.EniwareEdgeMetadataFilter;
+import org.eniware.central.domain.EniwareEdgeMetadataFilterMatch;
 import org.eniware.central.domain.SortDescriptor;
 import org.eniware.central.domain.SourceLocation;
 import org.eniware.central.domain.SourceLocationMatch;
 import org.eniware.domain.GeneralDatumMetadata;
 
 /**
- * API for collecting data from solar nodes.
+ * API for collecting data from eniware nodes.
  * 
  * <p>
  * Serves as a transactional facade to posting data into central system.
@@ -108,7 +108,7 @@ public interface DataCollectorBiz {
 	 *        the metadata to add
 	 * @since 1.5
 	 */
-	void addSolarNodeMetadata(Long nodeId, GeneralDatumMetadata meta);
+	void addEniwareEdgeMetadata(Long nodeId, GeneralDatumMetadata meta);
 
 	/**
 	 * Search for node metadata.
@@ -124,7 +124,7 @@ public interface DataCollectorBiz {
 	 * @return the results, never <em>null</em>
 	 * @since 1.5
 	 */
-	FilterResults<SolarNodeMetadataFilterMatch> findSolarNodeMetadata(SolarNodeMetadataFilter criteria,
+	FilterResults<EniwareEdgeMetadataFilterMatch> findEniwareEdgeMetadata(EniwareEdgeMetadataFilter criteria,
 			final List<SortDescriptor> sortDescriptors, final Integer offset, final Integer max);
 
 	/**

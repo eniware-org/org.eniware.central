@@ -23,11 +23,11 @@ import java.util.TimeZone;
 import java.util.stream.Collectors;
 import javax.cache.Cache;
 
-import org.eniware.central.dao.SolarLocationDao;
+import org.eniware.central.dao.EniwareLocationDao;
 import org.eniware.central.datum.dao.GeneralNodeDatumDao;
 import org.eniware.central.datum.domain.DatumFilterCommand;
 import org.eniware.central.domain.FilterResults;
-import org.eniware.central.domain.SolarLocation;
+import org.eniware.central.domain.EniwareLocation;
 import org.eniware.central.user.billing.domain.BillingDataConstants;
 import org.eniware.central.user.billing.killbill.KillbillBillingSystem;
 import org.eniware.central.user.billing.killbill.KillbillClient;
@@ -54,7 +54,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Post daily usage data to Killbill for SolarNetwork users subscribed to this
+ * Post daily usage data to Killbill for EniwareNetwork users subscribed to this
  * service.
  * 
  * <p>
@@ -80,7 +80,7 @@ import org.slf4j.LoggerFactory;
  * </p>
  * 
  * <p>
- * All nodes associated with their SolarNetwork account will be subscribed to a
+ * All nodes associated with their EniwareNetwork account will be subscribed to a
  * Killbill bundle using a bundle external key based on the node's ID (e.g.
  * {@literal IN_234}, see {@link #setBundleKeyTemplate(String)}). The bundle is
  * expected to contain a subscription to the {@code basePlanName} configured on
@@ -159,13 +159,13 @@ public class DatumMetricsDailyUsageUpdaterService {
 	/** The default usage unit name. */
 	public static final String DEFAULT_USAGE_UNIT_NAME = "DatumMetrics";
 
-	/** The custom field name for a SolarNode ID. */
+	/** The custom field name for a EniwareEdge ID. */
 	public static final String CUSTOM_FIELD_NODE_ID = "nodeId";
 
 	/** The default value for the account tags property. */
 	public static final Set<String> DEFAULT_ACCOUNT_TAGS = Collections.singleton("MANUAL_PAY");
 
-	private final SolarLocationDao locationDao;
+	private final EniwareLocationDao locationDao;
 	private final GeneralNodeDatumDao nodeDatumDao;
 	private final UserDao userDao;
 	private final UserNodeDao userNodeDao;
@@ -205,7 +205,7 @@ public class DatumMetricsDailyUsageUpdaterService {
 	 * Constructor.
 	 * 
 	 * @param locationDao
-	 *        the {@link SolarLocationDao} to use
+	 *        the {@link EniwareLocationDao} to use
 	 * @param userDao
 	 *        the {@link UserDao} to use
 	 * @param userNodeDao
@@ -215,7 +215,7 @@ public class DatumMetricsDailyUsageUpdaterService {
 	 * @param client
 	 *        the {@link KillbillClient} to use
 	 */
-	public DatumMetricsDailyUsageUpdaterService(SolarLocationDao locationDao, UserDao userDao,
+	public DatumMetricsDailyUsageUpdaterService(EniwareLocationDao locationDao, UserDao userDao,
 			UserNodeDao userNodeDao, GeneralNodeDatumDao nodeDatumDao, KillbillClient client) {
 		this.locationDao = locationDao;
 		this.userDao = userDao;
@@ -266,7 +266,7 @@ public class DatumMetricsDailyUsageUpdaterService {
 						+ userResults.getReturnedResultCount() < userResults.getTotalResults()) );
 	}
 
-	private Locale localeForUser(UserInfo user, SolarLocation loc) {
+	private Locale localeForUser(UserInfo user, EniwareLocation loc) {
 		String country = loc.getCountry();
 		String[] defaultLangCountry = accountDefaultLocale.split("_");
 		assert defaultLangCountry.length > 1;
@@ -312,7 +312,7 @@ public class DatumMetricsDailyUsageUpdaterService {
 						user.getId(), user.getEmail());
 				return;
 			}
-			SolarLocation loc = locationDao.get(user.getLocationId());
+			EniwareLocation loc = locationDao.get(user.getLocationId());
 			if ( loc == null ) {
 				log.error("Location {} not available for user {} ({}): cannot create Killbill account",
 						user.getLocationId(), user.getId(), user.getEmail());
@@ -588,7 +588,7 @@ public class DatumMetricsDailyUsageUpdaterService {
 	 * 
 	 * <p>
 	 * This is used to assign a currency to new accounts, using the country of
-	 * the SolarNetwork user.
+	 * the EniwareNetwork user.
 	 * </p>
 	 * 
 	 * @param countryCurrencyMap

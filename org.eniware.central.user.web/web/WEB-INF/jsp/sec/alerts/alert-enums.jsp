@@ -5,12 +5,12 @@
 		alertStatuses       - collection of UesrAlertStatus
  --%>
 <script type="text/javascript">
-SolarReg.userAlertTypes = {
+EniwareReg.userAlertTypes = {
 <c:forEach items="${nodeDataAlertTypes}" var="alertType" varStatus="itr">
 	${alertType} : "<fmt:message key='alert.type.${alertType}.label'/>"${itr.last ? '' : ', '}
 </c:forEach>
 };
-SolarReg.userAlertStatuses = {
+EniwareReg.userAlertStatuses = {
 <c:forEach items="${alertStatuses}" var="alertStatus" varStatus="itr">
 	${alertStatus} : "<fmt:message key='alert.status.${alertStatus}.label'/>"${itr.last ? '' : ', '}
 </c:forEach>

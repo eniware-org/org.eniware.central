@@ -197,7 +197,7 @@ public interface RegistrationBiz {
 			throws AuthorizationException;
 
 	/**
-	 * Obtain a certificate generated and signed by SolarUser on behalf of the
+	 * Obtain a certificate generated and signed by EniwareUser on behalf of the
 	 * node. This method can be called <em>after</em> a call to
 	 * {@link #confirmNodeAssociation(NetworkAssociation)} where a
 	 * {@code keystorePassword} was also supplied. The {@code username},
@@ -216,11 +216,11 @@ public interface RegistrationBiz {
 	NetworkCertificate getNodeCertificate(NetworkAssociation association);
 
 	/**
-	 * Renew a certificate generated and signed by SolarUser by a previous call
+	 * Renew a certificate generated and signed by EniwareUser by a previous call
 	 * to {@link #confirmNodeAssociation(NetworkAssociation)}. The provided
 	 * certificate itself must be valid for the active {@code SecurityActor}.
 	 * 
-	 * This method is meant to support renewing certificates via a SolarNode.
+	 * This method is meant to support renewing certificates via a EniwareEdge.
 	 * 
 	 * @param pkcs12InputStream
 	 *        the PKCS12 keystore data containing the node's existing
@@ -245,7 +245,7 @@ public interface RegistrationBiz {
 	ReadablePeriod getNodeCertificateRenewalPeriod();
 
 	/**
-	 * Renew a certificate generated and signed by SolarUser by a previous call
+	 * Renew a certificate generated and signed by EniwareUser by a previous call
 	 * to {@link #confirmNodeAssociation(NetworkAssociation)} where a
 	 * {@code keystorePassword} was also supplied. After the certificate is
 	 * renewed, it must still be installed on the node. This method <em>may</em>
@@ -255,7 +255,7 @@ public interface RegistrationBiz {
 	 * {@link #getPendingNodeCertificateRenewal(UserNode, String)} method to
 	 * check the status of the node certificate install process.
 	 *
-	 * This method is meant to support renewing certificates via SolarUser.
+	 * This method is meant to support renewing certificates via EniwareUser.
 	 *
 	 * @param userNode
 	 *        the user node to renew the certificate for

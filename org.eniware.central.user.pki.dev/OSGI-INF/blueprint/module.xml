@@ -16,17 +16,17 @@
 
 	<!-- Service References -->
 	
-	<reference id="certificateService" interface="net.solarnetwork.support.CertificateService"/>
-	<reference id="caService" interface="net.solarnetwork.support.CertificationAuthorityService"/>
+	<reference id="certificateService" interface="org.eniware.support.CertificateService"/>
+	<reference id="caService" interface="org.eniware.support.CertificationAuthorityService"/>
 		
 	<!-- Published Services -->
 	
-	<service ref="devNodePKIBiz" interface="net.solarnetwork.central.user.biz.NodePKIBiz" ranking="-1"/>
+	<service ref="devNodePKIBiz" interface="org.eniware.central.user.biz.NodePKIBiz" ranking="-1"/>
 	
 	<!-- Supporting Services -->
 
-	<bean id="devNodePKIBiz" class="net.solarnetwork.central.user.pki.dev.DevNodePKIBiz" init-method="init">
-		<osgix:managed-properties persistent-id="net.solarnetwork.central.user.pki.dev.DevNodePKIBiz" autowire-on-update="true"/>
+	<bean id="devNodePKIBiz" class="org.eniware.central.user.pki.dev.DevNodePKIBiz" init-method="init">
+		<osgix:managed-properties persistent-id="org.eniware.central.user.pki.dev.DevNodePKIBiz" autowire-on-update="true"/>
 		<property name="certificateService" ref="certificateService"/>
 		<property name="caService" ref="caService"/>
 	</bean>

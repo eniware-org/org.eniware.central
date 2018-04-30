@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNetwork Central Instructor Biz DAO
+Bundle-Name: EniwareNetwork Central Instructor Biz DAO
 Bundle-SymbolicName: org.eniware.central.instructor.biz.dao
 Bundle-Version: 1.6.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .,build/eclipse/
 Import-Package: 

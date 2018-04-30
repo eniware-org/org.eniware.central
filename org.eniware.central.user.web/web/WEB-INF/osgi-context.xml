@@ -13,7 +13,7 @@
 
 	<!-- Configuration -->
 
-	<osgix:cm-properties id="cfg" persistent-id="net.solarnetwork.central.user.web">
+	<osgix:cm-properties id="cfg" persistent-id="org.eniware.central.user.web">
 		<prop key="JSONView.indentAmount">0</prop>
 	</osgix:cm-properties>
 	
@@ -26,51 +26,51 @@
 		filter="(db=central)"/>
 	
 	<osgi:reference id="appConfigBiz"
-		interface="net.solarnetwork.central.biz.AppConfigurationBiz"
+		interface="org.eniware.central.biz.AppConfigurationBiz"
 		filter="(app=user)"/>
 	
 	<osgi:reference id="instructorBiz" sticky="false"
-		interface="net.solarnetwork.central.instructor.biz.InstructorBiz"/>
+		interface="org.eniware.central.instructor.biz.InstructorBiz"/>
 	
 	<osgi:reference id="queryBiz" sticky="false"
-		interface="net.solarnetwork.central.query.biz.QueryBiz"/>
+		interface="org.eniware.central.query.biz.QueryBiz"/>
 	
 	<osgi:reference id="registrationBiz" sticky="false" depends-on="userValidator"
-		interface="net.solarnetwork.central.user.biz.RegistrationBiz"/>
+		interface="org.eniware.central.user.biz.RegistrationBiz"/>
 	
 	<osgi:reference id="userBiz" filter="(secured=true)" depends-on="userValidator"
-		interface="net.solarnetwork.central.user.biz.UserBiz"/>
+		interface="org.eniware.central.user.biz.UserBiz"/>
 		
 	<osgi:reference id="userMetadataBiz" sticky="false"
-		interface="net.solarnetwork.central.user.biz.UserMetadataBiz"/>
+		interface="org.eniware.central.user.biz.UserMetadataBiz"/>
 	
 	<osgi:reference id="nodeOwnershipBiz" sticky="false"
-		interface="net.solarnetwork.central.user.biz.NodeOwnershipBiz"/>
+		interface="org.eniware.central.user.biz.NodeOwnershipBiz"/>
 	
 	<osgi:reference id="userAlertBiz" sticky="false"
-		interface="net.solarnetwork.central.user.biz.UserAlertBiz"/>
+		interface="org.eniware.central.user.biz.UserAlertBiz"/>
 	
-	<osgi:reference id="solarNodeMetadataBiz" sticky="false"
-		interface="net.solarnetwork.central.biz.SolarNodeMetadataBiz"/>
+	<osgi:reference id="eniwareEdgeMetadataBiz" sticky="false"
+		interface="org.eniware.central.biz.EniwareEdgeMetadataBiz"/>
 
 	<osgi:reference id="mailSender" interface="org.springframework.mail.MailSender"/>
 	
 	<osgi:reference id="passwordEncoder" 
 		interface="org.springframework.security.crypto.password.PasswordEncoder"/>
 		
-	<osgi:reference id="certificateService" interface="net.solarnetwork.support.CertificateService"/>
+	<osgi:reference id="certificateService" interface="org.eniware.support.CertificateService"/>
 	
-	<osgi:list id="pingTests" availability="optional" interface="net.solarnetwork.central.domain.PingTest"/>
+	<osgi:list id="pingTests" availability="optional" interface="org.eniware.central.domain.PingTest"/>
 
 	<bean id="billingBiz" class="org.eniware.util.DynamicServiceTracker">
 		<property name="bundleContext" ref="bundleContext"/>
-		<property name="serviceClassName" value="net.solarnetwork.central.user.billing.biz.BillingBiz"/>
+		<property name="serviceClassName" value="org.eniware.central.user.billing.biz.BillingBiz"/>
 		<property name="serviceFilter" value="(secured=true)"/>
 	</bean>
 
 	<bean id="nimBiz" class="org.eniware.util.DynamicServiceTracker">
 		<property name="bundleContext" ref="bundleContext"/>
-		<property name="serviceClassName" value="net.solarnetwork.central.user.nim.biz.SolarNodeImageMakerBiz"/>
+		<property name="serviceClassName" value="org.eniware.central.user.nim.biz.EniwareEdgeImageMakerBiz"/>
 	</bean>
 
 	<!-- Published Services -->
@@ -79,7 +79,7 @@
 		interface="org.springframework.validation.Validator"
 		ranking="1">
 		<osgi:service-properties>
-			<entry key="targetClassName" value="net.solarnetwork.central.user.domain.User"/>
+			<entry key="targetClassName" value="org.eniware.central.user.domain.User"/>
 			<entry key="mode" value="Registration"/>
 		</osgi:service-properties>
 	</osgi:service>
@@ -89,7 +89,7 @@
 	<bean id="mailService" class="org.eniware.central.mail.support.DefaultMailService">
 		<constructor-arg ref="mailSender"/>
 		<osgix:managed-properties 
-			persistent-id="net.solarnetwork.central.user.web" 
+			persistent-id="org.eniware.central.user.web" 
 			update-method="container-managed"/>
 		<property name="templateMessage">
 			<bean class="org.springframework.mail.SimpleMailMessage"/>

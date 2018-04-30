@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * Domain object for day related data.
  * 
  * <p>
- * Note a {@code DayDatum} is not directly related to a {@code SolarNode}, and
+ * Note a {@code DayDatum} is not directly related to a {@code EniwareEdge}, and
  * the {@code nodeId} value may actually be <em>null</em>. This class implements
  * both {@link NodeDatum} and {@link LocationDatum} for ease of use, although
  * strictly speaking it is only a {@link LocationDatum}.

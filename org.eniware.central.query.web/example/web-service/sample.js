@@ -24,7 +24,7 @@ SNAPI.shouldIncludeContentDigest = function(contentType) {
  * @param {String} params.contentType the HTTP content type, for HTTP POST requests
  * @param {String} params.data the HTTP request body data
  * @param {Date} params.date the HTTP request date
- * @param {String} params.path the SolarNetworkWS canonicalized path value
+ * @param {String} params.path the EniwareNetworkWS canonicalized path value
  * @return {String} the authorization message value
  */
 SNAPI.generateAuthorizationMessage = function(params) {
@@ -123,7 +123,7 @@ SNAPI.generateAuthorizationMessageV2 = function(params, canonicalRequestData) {
  * example this might return a value like
  * <code>a09sjds09wu9wjsd9uya:6U2NcYHz8jaYhPd5Xr07KmfZbnw=</code>. To use
  * as a valid <code>Authorization</code> header, you must still prefix the
- * returned value with <code>SolarNetworkWS</code> (with a space between
+ * returned value with <code>EniwareNetworkWS</code> (with a space between
  * that prefix and the associated value).</p>
  *
  * <p>Note that the <b>Content-MD5</b> and <b>Content-Type</b> headers are <b>not</b>
@@ -148,7 +148,7 @@ SNAPI.generateAuthorizationHeaderValue = function(params) {
 			+',Signature='+CryptoJS.enc.Hex.stringify(signature);
 	} else {
 		signature = CryptoJS.HmacSHA1(msg, secretKey);
-		authHeader = 'SolarNetworkWS ' +params.token +':' +CryptoJS.enc.Base64.stringify(signature);
+		authHeader = 'EniwareNetworkWS ' +params.token +':' +CryptoJS.enc.Base64.stringify(signature);
 	}
 	return authHeader;
 };
@@ -215,10 +215,10 @@ SNAPI.normalizedQueryTermsString = function(authType, url, data) {
 };
 
 /**
- * Generate the SolarNetworkWS path required by the authorization header value.
+ * Generate the EniwareNetworkWS path required by the authorization header value.
  *
  * <p>This method will parse the given URL and then apply the path canonicalization
- * rules defined by the SolarNetworkWS scheme.</p>
+ * rules defined by the EniwareNetworkWS scheme.</p>
  *
  * @param {Number} authType The authorization version (1, 2, etc)
  * @param {String} url the request URL
@@ -238,7 +238,7 @@ SNAPI.authURLPath = function(authType, url, queryString) {
 };
 
 /**
- * Invoke the web service URL, adding the required SolarNetworkWS authorization
+ * Invoke the web service URL, adding the required EniwareNetworkWS authorization
  * headers to the request.
  *
  * <p>This method will construct the <code>X-SN-Date</code> and <code>Authorization</code>
@@ -258,7 +258,7 @@ SNAPI.requestJSON = function(url, method, data, contentType) {
 };
 
 /**
- * Invoke the web service URL, adding the required SolarNetworkWS authorization
+ * Invoke the web service URL, adding the required EniwareNetworkWS authorization
  * headers to the request.
  *
  * <p>This method will construct the <code>X-SN-Date</code> and <code>Authorization</code>

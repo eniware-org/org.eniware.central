@@ -61,35 +61,35 @@ public class DatumMetadataSecurityAspect extends AuthorizationSupport {
 		setPathMatcher(antMatch);
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.datum.biz.DatumMetadata*.addGeneralNode*(..)) && args(nodeId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.datum.biz.DatumMetadata*.addGeneralNode*(..)) && args(nodeId,..)")
 	public void addMetadata(Long nodeId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.datum.biz.DatumMetadata*.storeGeneralNode*(..)) && args(nodeId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.datum.biz.DatumMetadata*.storeGeneralNode*(..)) && args(nodeId,..)")
 	public void storeMetadata(Long nodeId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.datum.biz.DatumMetadata*.removeGeneralNode*(..)) && args(nodeId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.datum.biz.DatumMetadata*.removeGeneralNode*(..)) && args(nodeId,..)")
 	public void removeMetadata(Long nodeId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.datum.biz.DatumMetadata*.findGeneralNode*(..)) && args(filter,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.datum.biz.DatumMetadata*.findGeneralNode*(..)) && args(filter,..)")
 	public void findMetadata(GeneralNodeDatumMetadataFilter filter) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.datum.biz.DatumMetadata*.getGeneralNodeDatumMetadataFilteredSources(..)) && args(nodeIds,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.datum.biz.DatumMetadata*.getGeneralNodeDatumMetadataFilteredSources(..)) && args(nodeIds,..)")
 	public void getMetadataFilteredSources(Long[] nodeIds) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.datum.biz.DatumMetadata*.addGeneralLocation*(..)) && args(locationId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.datum.biz.DatumMetadata*.addGeneralLocation*(..)) && args(locationId,..)")
 	public void addLocationMetadata(Long locationId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.datum.biz.DatumMetadata*.storeGeneralLocation*(..)) && args(locationId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.datum.biz.DatumMetadata*.storeGeneralLocation*(..)) && args(locationId,..)")
 	public void storeLocationMetadata(Long locationId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.datum.biz.DatumMetadata*.removeGeneralLocation*(..)) && args(locationId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.datum.biz.DatumMetadata*.removeGeneralLocation*(..)) && args(locationId,..)")
 	public void removeLocationMetadata(Long locationId) {
 	}
 

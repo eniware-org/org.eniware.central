@@ -12,7 +12,7 @@ import java.io.Serializable;
  * A set of capabilities for a node.
  * @version $Revision$
  */
-public class SolarNodeGroupCapability extends SolarCapability implements Cloneable, Serializable {
+public class EniwareEdgeGroupCapability extends EniwareCapability implements Cloneable, Serializable {
 
 	private static final long serialVersionUID = 5120295683193038735L;
 
@@ -21,7 +21,7 @@ public class SolarNodeGroupCapability extends SolarCapability implements Cloneab
 	/**
 	 * Default constructor.
 	 */
-	public SolarNodeGroupCapability() {
+	public EniwareEdgeGroupCapability() {
 		super();
 	}
 	
@@ -32,7 +32,7 @@ public class SolarNodeGroupCapability extends SolarCapability implements Cloneab
 	 * @param generationCapacityWatts the generation capacity
 	 * @param storageCapacityWattHours the energy storage capacity
 	 */
-	public SolarNodeGroupCapability(Long groupId, Long generationCapacityWatts,
+	public EniwareEdgeGroupCapability(Long groupId, Long generationCapacityWatts,
 			Long storageCapacityWattHours) {
 		setGroupId(groupId);
 		setGenerationCapacityWatts(generationCapacityWatts);

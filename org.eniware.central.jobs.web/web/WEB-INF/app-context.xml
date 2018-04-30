@@ -10,13 +10,13 @@
 
 	<ctx:annotation-config/>
 
-	<bean id="objectMapper" class="net.solarnetwork.util.ObjectMapperFactoryBean">
+	<bean id="objectMapper" class="org.eniware.util.ObjectMapperFactoryBean">
 		<property name="serializers">
 			<list>
-				<bean class="net.solarnetwork.util.JodaDateTimeSerializer"/>
-				<bean class="net.solarnetwork.util.JodaLocalDateSerializer"/>
-				<bean class="net.solarnetwork.util.JodaLocalDateTimeSerializer"/>
-				<bean class="net.solarnetwork.util.JodaLocalTimeSerializer"/>
+				<bean class="org.eniware.util.JodaDateTimeSerializer"/>
+				<bean class="org.eniware.util.JodaLocalDateSerializer"/>
+				<bean class="org.eniware.util.JodaLocalDateTimeSerializer"/>
+				<bean class="org.eniware.util.JodaLocalTimeSerializer"/>
 			</list>
 		</property>
 	</bean>

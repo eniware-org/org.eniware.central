@@ -32,7 +32,7 @@ public class StaleGeneralLocationDatumProcessor extends StaleGeneralNodeDatumPro
 	 */
 	public StaleGeneralLocationDatumProcessor(EventAdmin eventAdmin, JdbcOperations jdbcOps) {
 		super(eventAdmin, jdbcOps);
-		setJdbcCall("{? = call solaragg.process_agg_stale_loc_datum(?, ?)}");
+		setJdbcCall("{? = call eniwareagg.process_agg_stale_loc_datum(?, ?)}");
 	}
 
 }

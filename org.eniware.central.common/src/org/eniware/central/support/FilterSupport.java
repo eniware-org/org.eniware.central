@@ -12,14 +12,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.eniware.central.domain.Filter;
-import org.eniware.central.domain.SolarNodeMetadataFilter;
+import org.eniware.central.domain.EniwareEdgeMetadataFilter;
 
 /**
  * Supporting base class for {@link Filter} implementations.
  * @version 1.1
  * @since 1.32
  */
-public class FilterSupport implements Filter, Serializable, SolarNodeMetadataFilter {
+public class FilterSupport implements Filter, Serializable, EniwareEdgeMetadataFilter {
 
 	private static final long serialVersionUID = 912502801129411927L;
 

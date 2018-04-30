@@ -7,7 +7,7 @@ var SNDemo = {};
  * example this might return a value like 
  * <code>a09sjds09wu9wjsd9uya:6U2NcYHz8jaYhPd5Xr07KmfZbnw=</code>. To use
  * as a valid <code>Authorization</code> header, you must still prefix the
- * returned value with <code>SolarNetworkWS</code> (with a space between
+ * returned value with <code>EniwareNetworkWS</code> (with a space between
  * that prefix and the associated value).</p>
  * 
  * <p>Note that the <b>Content-MD5</b> and <b>Content-Type</b> headers are <b>not</b>
@@ -16,7 +16,7 @@ var SNDemo = {};
  * @param {Object} params the request parameters
  * @param {String} params.method the HTTP request method
  * @param {String} params.date the formatted HTTP request date
- * @param {String} params.path the SolarNetworkWS canonicalized path value
+ * @param {String} params.path the EniwareNetworkWS canonicalized path value
  * @param {String} params.token the authentication token
  * @param {String} params.secret the authentication token secret
  * @return {String} the authorization header value
@@ -63,13 +63,13 @@ SNDemo.parseURLQueryTerms = function(search) {
 };
 
 /**
- * Generate the SolarNetworkWS path required by the authorization header value.
+ * Generate the EniwareNetworkWS path required by the authorization header value.
  * 
  * <p>This method will parse the given URL and then apply the path canonicalization
- * rules defined by the SolarNetworkWS scheme.</p>
+ * rules defined by the EniwareNetworkWS scheme.</p>
  * 
  * @param {String} url the request URL
- * @return {String} path the canonicalized path value to use in the SolarNetworkWS 
+ * @return {String} path the canonicalized path value to use in the EniwareNetworkWS 
  *                       authorization header value
  */
 SNDemo.authURLPath = function(url) {
@@ -104,7 +104,7 @@ SNDemo.authURLPath = function(url) {
 };
 
 /**
- * Invoke the web service URL, adding the required SolarNetworkWS authorization
+ * Invoke the web service URL, adding the required EniwareNetworkWS authorization
  * headers to the request.
  * 
  * <p>This method will construct the <code>X-SN-Date</code> and <code>Authorization</code>
@@ -140,7 +140,7 @@ SNDemo.requestJSON = function(url, callback, method) {
 			
 			// set the headers on our request
 			xhr.setRequestHeader('X-SN-Date', date);
-			xhr.setRequestHeader('Authorization', 'SolarNetworkWS ' +auth);
+			xhr.setRequestHeader('Authorization', 'EniwareNetworkWS ' +auth);
 		}
 	}).done(callback).fail(function(xhr, status, reason) {
 		alert(reason + ': ' +status +' (' +xhr.status +')');
@@ -176,7 +176,7 @@ $(document).ready(function() {
 		var authHeader = SNDemo.generateAuthorizationHeaderValue(params);
  	   	showResult('Date: ' +params.date 
 	   		+'\nAuthorization: ' +authHeader
-	   		+'\nCurl: ' +'curl -H "X-SN-Date: '+params.date +'" -H "Authorization: SolarNetworkWS ' 
+	   		+'\nCurl: ' +'curl -H "X-SN-Date: '+params.date +'" -H "Authorization: EniwareNetworkWS ' 
 	   			+authHeader +'" http://localhost:8680' +params.path);
  	   	SNDemo.requestJSON('http://localhost:8680'+params.path, function(data) {
  	   		showResult(JSON.stringify(data));

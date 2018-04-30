@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarUser DAO Billing
+Bundle-Name: EniwareUser DAO Billing
 Bundle-SymbolicName: org.eniware.central.user.billing.biz.dao
 Bundle-Version: 0.2.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: 
  org.aopalliance.aop;version="1.0.0",

@@ -68,7 +68,7 @@ import org.eniware.web.support.LoggingHttpRequestInterceptor;
 public class KillbillRestClient implements KillbillClient {
 
 	/** The default base URL for the production service. */
-	public static final String DEFAULT_BASE_URL = "https://billing.solarnetwork.net";
+	public static final String DEFAULT_BASE_URL = "https://billing.network.eniware.org";
 
 	public static final String HEADER_PAGINATION_OFFSET = "X-Killbill-Pagination-CurrentOffset";
 	public static final String HEADER_PAGINATION_TOTAL_COUNT = "X-Killbill-Pagination-TotalNbRecords";
@@ -93,9 +93,9 @@ public class KillbillRestClient implements KillbillClient {
 	};
 
 	private String baseUrl = DEFAULT_BASE_URL;
-	private String username = "solaruser";
+	private String username = "eniwareuser";
 	private String password = "changeit";
-	private String apiKey = "solarnetwork";
+	private String apiKey = "eniwarenetwork";
 	private String apiSecret = "changeit";
 
 	private final RestOperations client;

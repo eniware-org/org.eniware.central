@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * Domain object for weather related data.
  * 
  * <p>
- * Note a {@code WeatherDatum} is not directly related to a {@code SolarNode},
+ * Note a {@code WeatherDatum} is not directly related to a {@code EniwareEdge},
  * and the {@code nodeId} value may actually be <em>null</em>. This class
  * implements both {@link NodeDatum} and {@link LocationDatum} for ease of use,
  * although strictly speaking it is only a {@link LocationDatum}.

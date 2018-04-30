@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNet Instructor
+Bundle-Name: EniwareNet Instructor
 Bundle-SymbolicName: org.eniware.central.instructor
 Bundle-Version: 1.6.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: 
  org.eniware.central.instructor.biz;version="1.4.0",

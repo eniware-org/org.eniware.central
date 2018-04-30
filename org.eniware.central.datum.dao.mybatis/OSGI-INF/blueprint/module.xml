@@ -29,10 +29,10 @@
 	
 	<!-- Published Services -->
 	
-	<service ref="generalLocationDatumDao" interface="net.solarnetwork.central.datum.dao.GeneralLocationDatumDao" ranking="5"/>
-	<service ref="generalLocationDatumMetadataDao" interface="net.solarnetwork.central.datum.dao.GeneralLocationDatumMetadataDao" ranking="5"/>
-	<service ref="generalNodeDatumDao" interface="net.solarnetwork.central.datum.dao.GeneralNodeDatumDao" ranking="5"/>
-	<service ref="generalNodeDatumMetadataDao" interface="net.solarnetwork.central.datum.dao.GeneralNodeDatumMetadataDao" ranking="5"/>
+	<service ref="generalLocationDatumDao" interface="org.eniware.central.datum.dao.GeneralLocationDatumDao" ranking="5"/>
+	<service ref="generalLocationDatumMetadataDao" interface="org.eniware.central.datum.dao.GeneralLocationDatumMetadataDao" ranking="5"/>
+	<service ref="generalNodeDatumDao" interface="org.eniware.central.datum.dao.GeneralNodeDatumDao" ranking="5"/>
+	<service ref="generalNodeDatumMetadataDao" interface="org.eniware.central.datum.dao.GeneralNodeDatumMetadataDao" ranking="5"/>
 
 	<service ref="sqlSessionFactory" interface="org.apache.ibatis.session.SqlSessionFactory">
 		<service-properties>
@@ -46,7 +46,7 @@
 	<!-- Use Java @Transactional annotations to declare transactions. -->
 	<tx:annotation-driven transaction-manager="txManager"/>
 	
-	<util:map id="skyConditionMap" value-type="net.solarnetwork.central.datum.domain.SkyCondition">
+	<util:map id="skyConditionMap" value-type="org.eniware.central.datum.domain.SkyCondition">
 		<beans:entry key="^(clear|sunny|fine)" value="Clear"/>
 		<beans:entry key="^(?:mostly\s+)?cloudy" value="Overcast"/>
 		<beans:entry key="^fair" value="Clear"/>
@@ -59,25 +59,25 @@
 	</util:map>
 
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basenames" value="net.solarnetwork.central.datum.dao.mybatis.messages"/>
+		<property name="basenames" value="org.eniware.central.datum.dao.mybatis.messages"/>
 	</bean>
 	
-	<bean id="generalLocationDatumDao" class="net.solarnetwork.central.datum.dao.mybatis.MyBatisGeneralLocationDatumDao">
+	<bean id="generalLocationDatumDao" class="org.eniware.central.datum.dao.mybatis.MyBatisGeneralLocationDatumDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 		<property name="messageSource" ref="messageSource"/>
 	</bean>
 	
-	<bean id="generalLocationDatumMetadataDao" class="net.solarnetwork.central.datum.dao.mybatis.MyBatisGeneralLocationDatumMetadataDao">
+	<bean id="generalLocationDatumMetadataDao" class="org.eniware.central.datum.dao.mybatis.MyBatisGeneralLocationDatumMetadataDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 		<property name="messageSource" ref="messageSource"/>
 	</bean>
 	
-	<bean id="generalNodeDatumDao" class="net.solarnetwork.central.datum.dao.mybatis.MyBatisGeneralNodeDatumDao">
+	<bean id="generalNodeDatumDao" class="org.eniware.central.datum.dao.mybatis.MyBatisGeneralNodeDatumDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 		<property name="messageSource" ref="messageSource"/>
 	</bean>
 	
-	<bean id="generalNodeDatumMetadataDao" class="net.solarnetwork.central.datum.dao.mybatis.MyBatisGeneralNodeDatumMetadataDao">
+	<bean id="generalNodeDatumMetadataDao" class="org.eniware.central.datum.dao.mybatis.MyBatisGeneralNodeDatumMetadataDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 		<property name="messageSource" ref="messageSource"/>
 	</bean>
@@ -86,48 +86,48 @@
 		<property name="dataSource" ref="dataSource"/>
 		<property name="typeAliases">
 			<list>
-				<value>net.solarnetwork.central.domain.SolarLocation</value>
-				<value>net.solarnetwork.central.domain.SolarNode</value>
+				<value>org.eniware.central.domain.EniwareLocation</value>
+				<value>org.eniware.central.domain.EniwareEdge</value>
 				
-				<value>net.solarnetwork.central.datum.domain.LocationSourcePK</value>
-				<value>net.solarnetwork.central.datum.domain.NodeSourcePK</value>
-				<value>net.solarnetwork.central.datum.domain.GeneralLocationDatumPK</value>
-				<value>net.solarnetwork.central.datum.domain.GeneralNodeDatumPK</value>
+				<value>org.eniware.central.datum.domain.LocationSourcePK</value>
+				<value>org.eniware.central.datum.domain.NodeSourcePK</value>
+				<value>org.eniware.central.datum.domain.GeneralLocationDatumPK</value>
+				<value>org.eniware.central.datum.domain.GeneralNodeDatumPK</value>
 			
-				<value>net.solarnetwork.central.datum.domain.GeneralLocationDatum</value>
-				<value>net.solarnetwork.central.datum.domain.GeneralLocationDatumMatch</value>
-				<value>net.solarnetwork.central.datum.domain.GeneralLocationDatumMetadata</value>
-				<value>net.solarnetwork.central.datum.domain.GeneralLocationDatumMetadataMatch</value>
-				<value>net.solarnetwork.central.datum.domain.GeneralNodeDatum</value>
-				<value>net.solarnetwork.central.datum.domain.GeneralNodeDatumMatch</value>
-				<value>net.solarnetwork.central.datum.domain.GeneralNodeDatumMetadata</value>
-				<value>net.solarnetwork.central.datum.domain.GeneralNodeDatumMetadataMatch</value>
+				<value>org.eniware.central.datum.domain.GeneralLocationDatum</value>
+				<value>org.eniware.central.datum.domain.GeneralLocationDatumMatch</value>
+				<value>org.eniware.central.datum.domain.GeneralLocationDatumMetadata</value>
+				<value>org.eniware.central.datum.domain.GeneralLocationDatumMetadataMatch</value>
+				<value>org.eniware.central.datum.domain.GeneralNodeDatum</value>
+				<value>org.eniware.central.datum.domain.GeneralNodeDatumMatch</value>
+				<value>org.eniware.central.datum.domain.GeneralNodeDatumMetadata</value>
+				<value>org.eniware.central.datum.domain.GeneralNodeDatumMetadataMatch</value>
 				
-				<value>net.solarnetwork.central.datum.domain.ReportingGeneralLocationDatum</value>
-				<value>net.solarnetwork.central.datum.domain.ReportingGeneralNodeDatum</value>
+				<value>org.eniware.central.datum.domain.ReportingGeneralLocationDatum</value>
+				<value>org.eniware.central.datum.domain.ReportingGeneralNodeDatum</value>
 			</list>
 		</property>
 		<property name="typeHandlers">
 			<list>
-				<bean class="net.solarnetwork.central.dao.mybatis.type.TextArrayTypeHandler"/>
-				<bean class="net.solarnetwork.central.dao.mybatis.type.JodaDateTimeTypeHandler"/>
-				<bean class="net.solarnetwork.central.dao.mybatis.type.JodaLocalDateTimeTypeHandler"/>
-				<bean class="net.solarnetwork.central.dao.mybatis.type.JodaLocalDateTypeHandler"/>
-				<bean class="net.solarnetwork.central.dao.mybatis.type.JodaLocalTimeTypeHandler"/>
+				<bean class="org.eniware.central.dao.mybatis.type.TextArrayTypeHandler"/>
+				<bean class="org.eniware.central.dao.mybatis.type.JodaDateTimeTypeHandler"/>
+				<bean class="org.eniware.central.dao.mybatis.type.JodaLocalDateTimeTypeHandler"/>
+				<bean class="org.eniware.central.dao.mybatis.type.JodaLocalDateTypeHandler"/>
+				<bean class="org.eniware.central.dao.mybatis.type.JodaLocalTimeTypeHandler"/>
 			</list>
 		</property>
 		<property name="mapperLocations">
 			<!-- Note: the order of these elements is significant because of inter-resource includes -->
 			<list>
-				<value>classpath:/net/solarnetwork/central/dao/mybatis/map/SolarLocation.xml</value>
-				<value>classpath:/net/solarnetwork/central/dao/mybatis/map/SolarNode.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/dao/mybatis/map/EniwareLocation.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/dao/mybatis/map/EniwareEdge.xml</value>
 
-				<value>classpath:/net/solarnetwork/central/datum/dao/mybatis/map/Global.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/datum/dao/mybatis/map/Global.xml</value>
 
-				<value>classpath:/net/solarnetwork/central/datum/dao/mybatis/map/GeneralLocationDatum.xml</value>
-				<value>classpath:/net/solarnetwork/central/datum/dao/mybatis/map/GeneralLocationDatumMetadata.xml</value>
-				<value>classpath:/net/solarnetwork/central/datum/dao/mybatis/map/GeneralNodeDatum.xml</value>
-				<value>classpath:/net/solarnetwork/central/datum/dao/mybatis/map/GeneralNodeDatumMetadata.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/datum/dao/mybatis/map/GeneralLocationDatum.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/datum/dao/mybatis/map/GeneralLocationDatumMetadata.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/datum/dao/mybatis/map/GeneralNodeDatum.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/datum/dao/mybatis/map/GeneralNodeDatumMetadata.xml</value>
 			</list>
 		</property>
 	</bean>

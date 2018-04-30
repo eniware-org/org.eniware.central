@@ -8,12 +8,12 @@ package org.eniware.central.biz.dao;
 
 import java.util.List;
 
-import org.eniware.central.biz.SolarNodeMetadataBiz;
-import org.eniware.central.dao.SolarNodeMetadataDao;
+import org.eniware.central.biz.EniwareEdgeMetadataBiz;
+import org.eniware.central.dao.EniwareEdgeMetadataDao;
 import org.eniware.central.domain.FilterResults;
-import org.eniware.central.domain.SolarNodeMetadata;
-import org.eniware.central.domain.SolarNodeMetadataFilter;
-import org.eniware.central.domain.SolarNodeMetadataFilterMatch;
+import org.eniware.central.domain.EniwareEdgeMetadata;
+import org.eniware.central.domain.EniwareEdgeMetadataFilter;
+import org.eniware.central.domain.EniwareEdgeMetadataFilterMatch;
 import org.eniware.central.domain.SortDescriptor;
 import org.eniware.domain.GeneralDatumMetadata;
 import org.joda.time.DateTime;
@@ -21,33 +21,33 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * DAO-based implementation of {@link SolarNodeMetadataBiz}.
+ * DAO-based implementation of {@link EniwareEdgeMetadataBiz}.
  * @version 1.0
  */
-public class DaoSolarNodeMetadataBiz implements SolarNodeMetadataBiz {
+public class DaoEniwareEdgeMetadataBiz implements EniwareEdgeMetadataBiz {
 
-	private final SolarNodeMetadataDao solarNodeMetadataDao;
+	private final EniwareEdgeMetadataDao eniwareEdgeMetadataDao;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param solarNodeMetadataDao
+	 * @param eniwareEdgeMetadataDao
 	 *        the node metadata DAO to use
 	 */
-	public DaoSolarNodeMetadataBiz(SolarNodeMetadataDao solarNodeMetadataDao) {
+	public DaoEniwareEdgeMetadataBiz(EniwareEdgeMetadataDao eniwareEdgeMetadataDao) {
 		super();
-		this.solarNodeMetadataDao = solarNodeMetadataDao;
+		this.eniwareEdgeMetadataDao = eniwareEdgeMetadataDao;
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	@Override
-	public void addSolarNodeMetadata(Long nodeId, GeneralDatumMetadata meta) {
+	public void addEniwareEdgeMetadata(Long nodeId, GeneralDatumMetadata meta) {
 		assert nodeId != null;
 		assert meta != null;
-		SolarNodeMetadata snm = solarNodeMetadataDao.get(nodeId);
+		EniwareEdgeMetadata snm = eniwareEdgeMetadataDao.get(nodeId);
 		GeneralDatumMetadata newMeta = meta;
 		if ( snm == null ) {
-			snm = new SolarNodeMetadata();
+			snm = new EniwareEdgeMetadata();
 			snm.setCreated(new DateTime());
 			snm.setId(nodeId);
 			newMeta = meta;
@@ -58,42 +58,42 @@ public class DaoSolarNodeMetadataBiz implements SolarNodeMetadataBiz {
 		if ( newMeta != null && newMeta.equals(snm.getMeta()) == false ) {
 			// have changes, so persist
 			snm.setMeta(newMeta);
-			solarNodeMetadataDao.store(snm);
+			eniwareEdgeMetadataDao.store(snm);
 		}
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	@Override
-	public void storeSolarNodeMetadata(Long nodeId, GeneralDatumMetadata meta) {
+	public void storeEniwareEdgeMetadata(Long nodeId, GeneralDatumMetadata meta) {
 		assert nodeId != null;
 		assert meta != null;
-		SolarNodeMetadata snm = solarNodeMetadataDao.get(nodeId);
+		EniwareEdgeMetadata snm = eniwareEdgeMetadataDao.get(nodeId);
 		if ( snm == null ) {
-			snm = new SolarNodeMetadata();
+			snm = new EniwareEdgeMetadata();
 			snm.setCreated(new DateTime());
 			snm.setId(nodeId);
 			snm.setMeta(meta);
 		} else {
 			snm.setMeta(meta);
 		}
-		solarNodeMetadataDao.store(snm);
+		eniwareEdgeMetadataDao.store(snm);
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	@Override
-	public void removeSolarNodeMetadata(Long nodeId) {
-		SolarNodeMetadata meta = solarNodeMetadataDao.get(nodeId);
+	public void removeEniwareEdgeMetadata(Long nodeId) {
+		EniwareEdgeMetadata meta = eniwareEdgeMetadataDao.get(nodeId);
 		if ( meta != null ) {
-			solarNodeMetadataDao.delete(meta);
+			eniwareEdgeMetadataDao.delete(meta);
 		}
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
-	public FilterResults<SolarNodeMetadataFilterMatch> findSolarNodeMetadata(
-			SolarNodeMetadataFilter criteria, List<SortDescriptor> sortDescriptors, Integer offset,
+	public FilterResults<EniwareEdgeMetadataFilterMatch> findEniwareEdgeMetadata(
+			EniwareEdgeMetadataFilter criteria, List<SortDescriptor> sortDescriptors, Integer offset,
 			Integer max) {
-		return solarNodeMetadataDao.findFiltered(criteria, sortDescriptors, offset, max);
+		return eniwareEdgeMetadataDao.findFiltered(criteria, sortDescriptors, offset, max);
 	}
 
 }

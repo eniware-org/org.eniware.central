@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 
 /**
  * The "pending confirmation" entity for after a user generates a node
- * "invitation" to join SolarNet. The user must confirm the invitation before a
+ * "invitation" to join EniwareNet. The user must confirm the invitation before a
  * UserNode entity is created.
  * 
  * @version 1.2

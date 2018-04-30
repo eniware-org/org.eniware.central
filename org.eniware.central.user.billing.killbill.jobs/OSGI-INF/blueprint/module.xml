@@ -19,7 +19,7 @@
 
 	<!-- Configuration -->
 	
-	<osgix:cm-properties id="cfg" persistent-id="net.solarnetwork.central.user.billing.killbill.jobs">
+	<osgix:cm-properties id="cfg" persistent-id="org.eniware.central.user.billing.killbill.jobs">
 		<beans:prop key="datumMetricsDailyUsageUpdater.jobCron">0 3 * * * ?</beans:prop>
 		<beans:prop key="datumMetricsDailyUsageUpdater.maximumWaitMs">3600000</beans:prop>
 	</osgix:cm-properties>
@@ -32,26 +32,26 @@
 
 	<reference id="eventAdmin" interface="org.osgi.service.event.EventAdmin"/>
 
-	<reference id="locationDao" interface="net.solarnetwork.central.dao.SolarLocationDao"/>
-	<reference id="nodeDatumDao" interface="net.solarnetwork.central.datum.dao.GeneralNodeDatumDao"/>
-	<reference id="userDao" interface="net.solarnetwork.central.user.dao.UserDao"/>
-	<reference id="userNodeDao" interface="net.solarnetwork.central.user.dao.UserNodeDao"/>
+	<reference id="locationDao" interface="org.eniware.central.dao.EniwareLocationDao"/>
+	<reference id="nodeDatumDao" interface="org.eniware.central.datum.dao.GeneralNodeDatumDao"/>
+	<reference id="userDao" interface="org.eniware.central.user.dao.UserDao"/>
+	<reference id="userNodeDao" interface="org.eniware.central.user.dao.UserNodeDao"/>
 	
-	<reference id="killbillClient" interface="net.solarnetwork.central.user.billing.killbill.KillbillClient"/>
+	<reference id="killbillClient" interface="org.eniware.central.user.billing.killbill.KillbillClient"/>
 	
 	<!-- Supporting Services -->
 	
-	<bean id="tagDefinitionCache" class="net.solarnetwork.central.support.JCacheFactoryBean">
+	<bean id="tagDefinitionCache" class="org.eniware.central.support.JCacheFactoryBean">
 		<argument ref="cacheManager"/>
 		<argument value="java.lang.String"/>
-		<argument value="net.solarnetwork.central.user.billing.killbill.domain.TagDefinition"/>
+		<argument value="org.eniware.central.user.billing.killbill.domain.TagDefinition"/>
 		<property name="name" value="tagDefinitions"/>
 		<property name="expiryPolicy" value="Touched"/>
 		<property name="expiryDuration" value="#{T(javax.cache.expiry.Duration).ONE_DAY}"/>
 	</bean>
 	
-	<bean id="datumMetricsDailyUsageUpdaterService" class="net.solarnetwork.central.user.billing.killbill.jobs.DatumMetricsDailyUsageUpdaterService">
-		<osgix:managed-properties persistent-id="net.solarnetwork.central.user.billing.killbill.jobs.DatumMetricsDailyUsageUpdaterService" 
+	<bean id="datumMetricsDailyUsageUpdaterService" class="org.eniware.central.user.billing.killbill.jobs.DatumMetricsDailyUsageUpdaterService">
+		<osgix:managed-properties persistent-id="org.eniware.central.user.billing.killbill.jobs.DatumMetricsDailyUsageUpdaterService" 
 			autowire-on-update="true"/>
 		<argument ref="locationDao"/>
 		<argument ref="userDao"/>
@@ -61,13 +61,13 @@
 		<property name="tagDefinitionCache" ref="tagDefinitionCache"/>
 	</bean>
 	
-	<bean id="datumMetricsDailyUsageUpdaterJob" class="net.solarnetwork.central.user.billing.killbill.jobs.DatumMetricsDailyUsageUpdaterJob">
+	<bean id="datumMetricsDailyUsageUpdaterJob" class="org.eniware.central.user.billing.killbill.jobs.DatumMetricsDailyUsageUpdaterJob">
 		<argument ref="eventAdmin"/>
 		<argument ref="datumMetricsDailyUsageUpdaterService"/>
 		<property name="jobCron" value="${datumMetricsDailyUsageUpdater.jobCron}"/>
 		<property name="maximumWaitMs" value="${datumMetricsDailyUsageUpdater.maximumWaitMs}"/>
 		<property name="jobId" value="DatumMetricsDailyUsageUpdater"/>
-		<property name="jobTopic" value="net/solarnetwork/central/user/billing/killbill/DatumMetricsDailyUsageUpdater"/>
+		<property name="jobTopic" value="net/eniwarenetwork/central/user/billing/killbill/DatumMetricsDailyUsageUpdater"/>
 	</bean>
 	
 	<!-- Published Services -->
@@ -76,7 +76,7 @@
 		<service-properties>
 			<entry key="#{T(org.osgi.service.event.EventConstants).EVENT_TOPIC}">
 				<array value-type="java.lang.String">
-					<value>#{T(net.solarnetwork.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
+					<value>#{T(org.eniware.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
 					<value>#{datumMetricsDailyUsageUpdaterJob.jobTopic}</value>
 				</array>
 			</entry>

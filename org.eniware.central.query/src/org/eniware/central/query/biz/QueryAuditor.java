@@ -12,7 +12,7 @@ import org.eniware.central.domain.FilterMatch;
 import org.eniware.central.domain.FilterResults;
 
 /**
- * API for auditing query events in SolarNetwork.
+ * API for auditing query events in EniwareNetwork.
  * 
  * @version 1.0
  */

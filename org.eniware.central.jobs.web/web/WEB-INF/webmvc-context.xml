@@ -17,7 +17,7 @@
 		http://www.springframework.org/schema/util
 		http://www.springframework.org/schema/util/spring-util-4.2.xsd">
 
-	<context:component-scan base-package="net.solarnetwork.central.jobs.web"/>
+	<context:component-scan base-package="org.eniware.central.jobs.web"/>
 
 	<mvc:annotation-driven>
 		<mvc:message-converters register-defaults="true">

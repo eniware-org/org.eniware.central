@@ -61,19 +61,19 @@ public class QuerySecurityAspect extends AuthorizationSupport {
 		setPathMatcher(antMatch);
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.query.biz.*.getReportableInterval(..)) && args(nodeId,sourceId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.query.biz.*.getReportableInterval(..)) && args(nodeId,sourceId,..)")
 	public void nodeReportableInterval(Long nodeId, String sourceId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.query.biz.*.getAvailableSources(..)) && args(nodeId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.query.biz.*.getAvailableSources(..)) && args(nodeId,..)")
 	public void nodeReportableSources(Long nodeId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.query.biz.*.getMostRecentWeatherConditions(..)) && args(nodeId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.query.biz.*.getMostRecentWeatherConditions(..)) && args(nodeId,..)")
 	public void nodeMostRecentWeatherConditions(Long nodeId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.query.biz.*.findFiltered*(..)) && args(filter,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.query.biz.*.findFiltered*(..)) && args(filter,..)")
 	public void nodeDatumFilter(Filter filter) {
 	}
 

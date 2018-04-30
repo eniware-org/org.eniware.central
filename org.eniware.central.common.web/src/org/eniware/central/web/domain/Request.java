@@ -11,7 +11,7 @@ import java.util.Map;
  * A request envelope object.
  
  * @version 1.1
- * @deprecated use the net.solarnetwork.web.domain.Request class directly
+ * @deprecated use the org.eniware.web.domain.Request class directly
  */
 @Deprecated
 public class Request extends org.eniware.web.domain.Request {

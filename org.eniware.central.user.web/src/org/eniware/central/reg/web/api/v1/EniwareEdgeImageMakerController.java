@@ -10,7 +10,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 
-import org.eniware.central.user.nim.biz.SolarNodeImageMakerBiz;
+import org.eniware.central.user.nim.biz.EniwareEdgeImageMakerBiz;
 import org.eniware.util.OptionalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,25 +24,25 @@ import org.eniware.central.web.support.WebServiceControllerSupport;
 import org.eniware.web.domain.Response;
 
 /**
- * REST API for the SolarNode Image Maker app.
+ * REST API for the EniwareEdge Image Maker app.
  *
  * @version 1.0
  */
 @RestController
 @RequestMapping(value = { "/sec/nim", "/v1/sec/user/nim" })
-public class SolarNodeImageMakerController extends WebServiceControllerSupport {
+public class EniwareEdgeImageMakerController extends WebServiceControllerSupport {
 
-	private final OptionalService<SolarNodeImageMakerBiz> nimBiz;
+	private final OptionalService<EniwareEdgeImageMakerBiz> nimBiz;
 	private int timeoutSeconds = (int) TimeUnit.MINUTES.toSeconds(5L);
 
 	@Autowired
-	public SolarNodeImageMakerController(OptionalService<SolarNodeImageMakerBiz> nimBiz) {
+	public EniwareEdgeImageMakerController(OptionalService<EniwareEdgeImageMakerBiz> nimBiz) {
 		super();
 		this.nimBiz = nimBiz;
 	}
 
 	/**
-	 * Asynchronously handle getting an authentication key for the SolarNode
+	 * Asynchronously handle getting an authentication key for the EniwareEdge
 	 * Image Maker.
 	 * 
 	 * <p>
@@ -62,7 +62,7 @@ public class SolarNodeImageMakerController extends WebServiceControllerSupport {
 
 			@Override
 			public Response<String> call() throws Exception {
-				SolarNodeImageMakerBiz biz = nimBiz.service();
+				EniwareEdgeImageMakerBiz biz = nimBiz.service();
 				if ( biz == null ) {
 					return new Response<String>(false, null, "NIM service not available", null);
 				}

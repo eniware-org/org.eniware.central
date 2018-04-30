@@ -15,17 +15,17 @@
 
     <rule>
         <from>/(currentWeather.)(json|do)</from>
-        <to type="redirect">/solarquery/$1$2?%{query-string}</to>
+        <to type="redirect">/eniwarequery/$1$2?%{query-string}</to>
     </rule>
 
     <rule>
         <from>/(reportableInterval.)(json|do)</from>
-        <to type="redirect">/solarquery/$1$2?%{query-string}</to>
+        <to type="redirect">/eniwarequery/$1$2?%{query-string}</to>
     </rule>
 
     <rule>
         <from>/(.*Data.)(json|do)</from>
-        <to type="redirect">/solarquery/$1$2?%{query-string}</to>
+        <to type="redirect">/eniwarequery/$1$2?%{query-string}</to>
     </rule>
 
 </urlrewrite>

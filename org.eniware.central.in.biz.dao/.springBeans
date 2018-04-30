@@ -11,7 +11,7 @@
 	</configs>
 	<configSets>
 		<configSet>
-			<name><![CDATA[SolarNetwork Central Dao In Biz]]></name>
+			<name><![CDATA[EniwareNetwork Central Dao In Biz]]></name>
 			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
 			<incomplete>false</incomplete>
 			<configs>

@@ -13,7 +13,7 @@ import java.util.Set;
 
 import org.eniware.central.dao.FilterableDao;
 import org.eniware.central.dao.PriceLocationDao;
-import org.eniware.central.dao.SolarLocationDao;
+import org.eniware.central.dao.EniwareLocationDao;
 import org.eniware.central.dao.WeatherLocationDao;
 import org.eniware.central.datum.dao.GeneralLocationDatumDao;
 import org.eniware.central.datum.dao.GeneralNodeDatumDao;
@@ -58,7 +58,7 @@ public class DaoQueryBiz implements QueryBiz {
 
 	private GeneralNodeDatumDao generalNodeDatumDao;
 	private GeneralLocationDatumDao generalLocationDatumDao;
-	private SolarLocationDao solarLocationDao;
+	private EniwareLocationDao eniwareLocationDao;
 	private int filteredResultsLimit = 1000;
 	private long maxDaysForMinuteAggregation = 7;
 	private long maxDaysForHourAggregation = 31;
@@ -125,7 +125,7 @@ public class DaoQueryBiz implements QueryBiz {
 			return null;
 		}
 		if ( s == null && e != null ) {
-			// treat start date as SolarNetwork epoch (may want to make epoch configurable)
+			// treat start date as EniwareNetwork epoch (may want to make epoch configurable)
 			s = new DateTime(2008, 1, 1, 0, 0, 0, DateTimeZone.UTC);
 		} else if ( s != null && e == null ) {
 			// treat end date as now for purposes of this calculating query range
@@ -198,7 +198,7 @@ public class DaoQueryBiz implements QueryBiz {
 		if ( filter == null || filter.getFilter() == null || filter.getFilter().isEmpty() ) {
 			throw new IllegalArgumentException("Filter is required.");
 		}
-		return solarLocationDao.findFiltered(filter, sortDescriptors, limitFilterOffset(offset),
+		return eniwareLocationDao.findFiltered(filter, sortDescriptors, limitFilterOffset(offset),
 				limitFilterMaximum(max));
 	}
 
@@ -343,13 +343,13 @@ public class DaoQueryBiz implements QueryBiz {
 		this.maxDaysForHourOfDayAggregation = maxDaysForHourOfDayAggregation;
 	}
 
-	public SolarLocationDao getSolarLocationDao() {
-		return solarLocationDao;
+	public EniwareLocationDao getEniwareLocationDao() {
+		return eniwareLocationDao;
 	}
 
 	@Autowired
-	public void setSolarLocationDao(SolarLocationDao solarLocationDao) {
-		this.solarLocationDao = solarLocationDao;
+	public void setEniwareLocationDao(EniwareLocationDao eniwareLocationDao) {
+		this.eniwareLocationDao = eniwareLocationDao;
 	}
 
 	public GeneralLocationDatumDao getGeneralLocationDatumDao() {

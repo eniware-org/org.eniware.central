@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?><!--Converted at: Tue Nov 11 06:02:38 NZDT 2014-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.solarnetwork.central.user.dao.mybatis.User">
+<mapper namespace="org.eniware.central.user.dao.mybatis.User">
 
 	<cache/>
 
 	<insert id="insert-User" parameterType="User">
 		<selectKey keyProperty="id" resultType="long" order="BEFORE"> 
-              SELECT nextval('solaruser.solaruser_seq') AS id 
+              SELECT nextval('eniwareuser.eniwareuser_seq') AS id 
 		</selectKey>
-		INSERT INTO solaruser.user_user 
+		INSERT INTO eniwareuser.user_user 
 			(id, created, disp_name, email, password, enabled,
 			loc_id, jdata)
 		VALUES
@@ -18,7 +18,7 @@
 	</insert>
 
 	<update id="update-User" parameterType="User">
-		UPDATE solaruser.user_user SET
+		UPDATE eniwareuser.user_user SET
 			disp_name = #{name}, 
 			email = #{email}, 
 			password = #{password},
@@ -64,7 +64,7 @@
 		SELECT
 			<include refid="fragment-User-full-result"/>
 		FROM
-			solaruser.user_user u
+			eniwareuser.user_user u
 		WHERE
 			u.id = #{id}
 	</select>
@@ -73,7 +73,7 @@
 		SELECT
 			u.jdata AS user_jdata
 		FROM
-			solaruser.user_user u
+			eniwareuser.user_user u
 		WHERE
 			u.id = #{id}
 	</select>
@@ -82,23 +82,23 @@
 		SELECT
 			<include refid="fragment-User-full-result"/>
 		FROM
-			solaruser.user_user u
+			eniwareuser.user_user u
 		WHERE
 			u.email = #{email}::citext
 	</select>
 	
 	<select id="find-roles-for-User" resultType="java.lang.String">
-		SELECT role_name FROM solaruser.user_role
+		SELECT role_name FROM eniwareuser.user_role
 		WHERE user_id = #{id}
 	</select>
 	
 	<delete id="delete-roles-for-User">
-		DELETE FROM solaruser.user_role
+		DELETE FROM eniwareuser.user_role
 		WHERE user_id = #{id}
 	</delete>
 	
 	<insert id="insert-role-for-User">
-		INSERT INTO solaruser.user_role (user_id, role_name)
+		INSERT INTO eniwareuser.user_role (user_id, role_name)
 		VALUES (#{userId}, #{role})
 	</insert>
 	
@@ -108,14 +108,14 @@
 	</parameterMap>
 
 	<update id="update-internal-data" parameterMap="pmap-store-user-data" statementType="CALLABLE">
-		{call solaruser.store_user_data(?, ?::jsonb)}
+		{call eniwareuser.store_user_data(?, ?::jsonb)}
 	</update>
 
 	<!-- 
 		FilterableDao support 
 	-->
 
-	<resultMap id="UserMatchResult" type="UserMatch" extends="net.solarnetwork.central.user.dao.mybatis.User.UserFullResult"/>
+	<resultMap id="UserMatchResult" type="UserMatch" extends="org.eniware.central.user.dao.mybatis.User.UserFullResult"/>
 
 	<sql id="fragment-findall-User-UserMatch-where">
 		<where>
@@ -133,7 +133,7 @@
 		SELECT
 			<include refid="fragment-User-full-result"/>
 		FROM
-			solaruser.user_user u
+			eniwareuser.user_user u
 		<include refid="fragment-findall-User-UserMatch-where"/>
 		ORDER BY
 		<choose>
@@ -155,7 +155,7 @@
 	<select id="findall-User-UserMatch-count" resultType="long" useCache="false">
 		SELECT count(u.created)
 		FROM
-			solaruser.user_user u
+			eniwareuser.user_user u
 		<include refid="fragment-findall-User-UserMatch-where"/>
 	</select>
 

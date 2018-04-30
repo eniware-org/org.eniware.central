@@ -40,7 +40,7 @@ public class KillbillAuthorizationInterceptor implements ClientHttpRequestInterc
 	public static final String CREATED_BY_HEADER_NAME = "X-Killbill-CreatedBy";
 
 	/** The default "created by" HTTP header value. */
-	public static final String DEFAULT_CREATED_BY = "SolarUser";
+	public static final String DEFAULT_CREATED_BY = "EniwareUser";
 
 	private final String auth;
 	private final String apiKey;

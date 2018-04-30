@@ -1,9 +1,9 @@
 dManifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNet Dogtag CA
+Bundle-Name: EniwareNet Dogtag CA
 Bundle-SymbolicName: org.eniware.central.user.pki.dogtag
 Bundle-Version: 1.3.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: 
  javax.net.ssl,

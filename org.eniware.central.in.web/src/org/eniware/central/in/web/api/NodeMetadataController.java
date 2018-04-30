@@ -86,7 +86,7 @@ public class NodeMetadataController extends WebServiceControllerSupport {
 	@RequestMapping(value = { "/{nodeId}" }, method = RequestMethod.POST)
 	public Response<Object> addMetadata(@PathVariable("nodeId") Long nodeId,
 			@RequestBody GeneralDatumMetadata meta) {
-		dataCollectorBiz.addSolarNodeMetadata(nodeId, meta);
+		dataCollectorBiz.addEniwareEdgeMetadata(nodeId, meta);
 		return response(null);
 	}
 

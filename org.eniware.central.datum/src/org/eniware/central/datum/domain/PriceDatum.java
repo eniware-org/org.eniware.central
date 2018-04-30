@@ -10,7 +10,7 @@ package org.eniware.central.datum.domain;
  * Domain object for a unit of data collected from a power price monitor.
  * 
  * <p>
- * Note a {@code PriceDatum} is not directly related to a {@code SolarNode}, and
+ * Note a {@code PriceDatum} is not directly related to a {@code EniwareEdge}, and
  * the {@code nodeId} value may actually be <em>null</em>. This class implements
  * both {@link NodeDatum} and {@link LocationDatum} for ease of use, although
  * strictly speaking it is only a {@link LocationDatum}.

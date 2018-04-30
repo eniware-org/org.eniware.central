@@ -19,7 +19,7 @@
 
 	<!-- Configuration -->
 	
-	<osgix:cm-properties id="cfg" persistent-id="net.solarnetwork.central.instructor.jobs">
+	<osgix:cm-properties id="cfg" persistent-id="org.eniware.central.instructor.jobs">
 		<beans:prop key="completedNodeInstructionCleaner.daysOlder">30</beans:prop>
 		<beans:prop key="completedNodeInstructionCleaner.jobCron">0 0 1 ? * SUN</beans:prop><!--  Weekly, on Sunday 1am -->
 	</osgix:cm-properties>
@@ -30,16 +30,16 @@
 
 	<reference id="eventAdmin" interface="org.osgi.service.event.EventAdmin"/>
 
- 	<reference id="nodeInstructionDao" interface="net.solarnetwork.central.instructor.dao.NodeInstructionDao"/>
+ 	<reference id="nodeInstructionDao" interface="org.eniware.central.instructor.dao.NodeInstructionDao"/>
 	
 	<!-- Supporting Services -->
 	
-	<bean id="completedNodeInstructionCleaner" class="net.solarnetwork.central.instructor.jobs.NodeInstructionCleaner">
+	<bean id="completedNodeInstructionCleaner" class="org.eniware.central.instructor.jobs.NodeInstructionCleaner">
 		<argument ref="eventAdmin"/>
 		<argument ref="nodeInstructionDao"/>
 		<property name="jobCron" value="${completedNodeInstructionCleaner.jobCron}"/>
 		<property name="jobId" value="NodeInstructionCleaner"/>
-		<property name="jobTopic" value="net/solarnetwork/central/instructor/jobs/NodeInstructionCleaner"/>
+		<property name="jobTopic" value="net/eniwarenetwork/central/instructor/jobs/NodeInstructionCleaner"/>
 		<property name="daysOlder" value="${completedNodeInstructionCleaner.daysOlder}"/>
 	</bean>
 	
@@ -49,7 +49,7 @@
 		<service-properties>
 			<entry key="#{T(org.osgi.service.event.EventConstants).EVENT_TOPIC}">
 				<array value-type="java.lang.String">
-					<value>#{T(net.solarnetwork.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
+					<value>#{T(org.eniware.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
 					<value>#{completedNodeInstructionCleaner.jobTopic}</value>
 				</array>
 			</entry>

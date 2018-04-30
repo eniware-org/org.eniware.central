@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: AWS SolarNetwork Cloud Support
+Bundle-Name: AWS EniwareNetwork Cloud Support
 Bundle-SymbolicName: org.eniware.central.common.cloud.aws
 Bundle-Version: 1.0.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: 
  com.amazonaws.auth;version="1.11.207",

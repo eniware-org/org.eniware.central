@@ -55,7 +55,7 @@ public class DevNodePKIBiz implements NodePKIBiz {
 	private CertificationAuthorityService caService;
 	private File baseDir = new File("var/DeveloperCA");
 	private int keySize = 2048;
-	private String caDN = "CN=Developer CA, O=SolarDev";
+	private String caDN = "CN=Developer CA, O=EniwareDev";
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -67,7 +67,7 @@ public class DevNodePKIBiz implements NodePKIBiz {
 	 * if one does not already exist in the configured {@code baseDir}
 	 * directory. When it is generated, a copy of the keystore will be saved as
 	 * {@code central.jks} with a password {@code dev123}, which is designed to
-	 * be configured with your development webserver to support SolarIn
+	 * be configured with your development webserver to support EniwareIn
 	 * development.
 	 * </p>
 	 * 
@@ -75,7 +75,7 @@ public class DevNodePKIBiz implements NodePKIBiz {
 	 * Also, if a new CA certificate is generated, a {@code central-trust.jks}
 	 * keystore will be created with a password {@code dev123} that contains
 	 * just the CA certificate. This is designed to be configured as the
-	 * developer node's trust store, to allow posting to the development SolarIn
+	 * developer node's trust store, to allow posting to the development EniwareIn
 	 * service.
 	 * </p>
 	 */
@@ -103,12 +103,12 @@ public class DevNodePKIBiz implements NodePKIBiz {
 			if ( webserverCert == null ) {
 				OutputStream out = null;
 				try {
-					// create a new private key + CSR and approve for webserver certificate for developer SolarIn
+					// create a new private key + CSR and approve for webserver certificate for developer EniwareIn
 					KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
 					keyGen.initialize(2048, new SecureRandom());
 					KeyPair webserverKeyPair = keyGen.generateKeyPair();
 					webserverCert = certificateService.generateCertificate(
-							"CN=solarnetworkdev.net, O=SolarDev", webserverKeyPair.getPublic(),
+							"CN=eniwarenetworkdev.net, O=EniwareDev", webserverKeyPair.getPublic(),
 							webserverKeyPair.getPrivate());
 					String csr = certificateService.generatePKCS10CertificateRequestString(webserverCert,
 							webserverKeyPair.getPrivate());

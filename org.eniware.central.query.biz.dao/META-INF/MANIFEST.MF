@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNetwork DAO Query Biz
+Bundle-Name: EniwareNetwork DAO Query Biz
 Bundle-SymbolicName: org.eniware.central.query.biz.dao
 Bundle-Version: 2.2.2
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: 
  org.aopalliance.aop;version="1.0.0",

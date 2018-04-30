@@ -9,14 +9,14 @@
 	
 	<service ref="passwordEncoder" ranking="1">
 		<interfaces>
-			<value>net.solarnetwork.central.security.PasswordEncoder</value>
+			<value>org.eniware.central.security.PasswordEncoder</value>
 			<value>org.springframework.security.crypto.password.PasswordEncoder</value>
 		</interfaces>
 	</service>
 	
 	<!-- Supporting Services -->
 	
-	<bean id="passwordEncoder" class="net.solarnetwork.central.security.DelegatingPasswordEncoder">
+	<bean id="passwordEncoder" class="org.eniware.central.security.DelegatingPasswordEncoder">
 		<property name="encoders">
 			<map>
 				<entry key="$2a$">
@@ -28,7 +28,7 @@
 					</bean>
 				</entry>
 				<entry key="{SHA}">
-					<bean class="net.solarnetwork.central.security.LegacyPasswordEncoder"/>
+					<bean class="org.eniware.central.security.LegacyPasswordEncoder"/>
 				</entry>
 			</map>
 		</property>

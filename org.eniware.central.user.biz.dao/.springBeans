@@ -11,7 +11,7 @@
 	</configs>
 	<configSets>
 		<configSet>
-			<name><![CDATA[SolarNetwork Registration Biz]]></name>
+			<name><![CDATA[EniwareNetwork Registration Biz]]></name>
 			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
 			<incomplete>false</incomplete>
 			<configs>

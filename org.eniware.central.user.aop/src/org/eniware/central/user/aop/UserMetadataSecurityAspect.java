@@ -43,19 +43,19 @@ public class UserMetadataSecurityAspect extends AuthorizationSupport {
 		setPathMatcher(antMatch);
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.UserMetadata*.addUser*(..)) && args(userId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.UserMetadata*.addUser*(..)) && args(userId,..)")
 	public void addMetadata(Long userId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.UserMetadata*.storeUser*(..)) && args(userId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.UserMetadata*.storeUser*(..)) && args(userId,..)")
 	public void storeMetadata(Long userId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.UserMetadata*.removeUser*(..)) && args(userId)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.UserMetadata*.removeUser*(..)) && args(userId)")
 	public void removeMetadata(Long userId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.UserMetadata*.findUser*(..)) && args(filter,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.UserMetadata*.findUser*(..)) && args(filter,..)")
 	public void findMetadata(UserMetadataFilter filter) {
 	}
 

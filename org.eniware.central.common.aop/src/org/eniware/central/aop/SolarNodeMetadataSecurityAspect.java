@@ -11,8 +11,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.eniware.central.biz.SolarNodeMetadataBiz;
-import org.eniware.central.domain.SolarNodeMetadataFilter;
+import org.eniware.central.biz.EniwareEdgeMetadataBiz;
+import org.eniware.central.domain.EniwareEdgeMetadataFilter;
 import org.eniware.central.security.AuthorizationException;
 import org.eniware.central.security.SecurityPolicy;
 import org.eniware.central.security.SecurityPolicyMetadataType;
@@ -21,11 +21,11 @@ import org.eniware.central.user.support.AuthorizationSupport;
 import org.springframework.util.AntPathMatcher;
 
 /**
- * Security AOP support for {@link SolarNodeMetadataBiz}.
+ * Security AOP support for {@link EniwareEdgeMetadataBiz}.
  * @version 1.0
  */
 @Aspect
-public class SolarNodeMetadataSecurityAspect extends AuthorizationSupport {
+public class EniwareEdgeMetadataSecurityAspect extends AuthorizationSupport {
 
 	/**
 	 * Constructor.
@@ -33,7 +33,7 @@ public class SolarNodeMetadataSecurityAspect extends AuthorizationSupport {
 	 * @param userNodeDao
 	 *        the UserNodeDao to use
 	 */
-	public SolarNodeMetadataSecurityAspect(UserNodeDao userNodeDao) {
+	public EniwareEdgeMetadataSecurityAspect(UserNodeDao userNodeDao) {
 		super(userNodeDao);
 		AntPathMatcher antMatch = new AntPathMatcher();
 		antMatch.setCachePatterns(false);
@@ -41,20 +41,20 @@ public class SolarNodeMetadataSecurityAspect extends AuthorizationSupport {
 		setPathMatcher(antMatch);
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.biz.SolarNodeMetadata*.addSolarNode*(..)) && args(nodeId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.biz.EniwareEdgeMetadata*.addEniwareEdge*(..)) && args(nodeId,..)")
 	public void addMetadata(Long nodeId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.biz.SolarNodeMetadata*.storeSolarNode*(..)) && args(nodeId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.biz.EniwareEdgeMetadata*.storeEniwareEdge*(..)) && args(nodeId,..)")
 	public void storeMetadata(Long nodeId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.biz.SolarNodeMetadata*.removeSolarNode*(..)) && args(nodeId)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.biz.EniwareEdgeMetadata*.removeEniwareEdge*(..)) && args(nodeId)")
 	public void removeMetadata(Long nodeId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.biz.SolarNodeMetadata*.findSolarNode*(..)) && args(filter,..)")
-	public void findMetadata(SolarNodeMetadataFilter filter) {
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.biz.EniwareEdgeMetadata*.findEniwareEdge*(..)) && args(filter,..)")
+	public void findMetadata(EniwareEdgeMetadataFilter filter) {
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class SolarNodeMetadataSecurityAspect extends AuthorizationSupport {
 	 *        the filter to verify
 	 */
 	@Around("findMetadata(filter)")
-	public Object readMetadataCheck(ProceedingJoinPoint pjp, SolarNodeMetadataFilter filter)
+	public Object readMetadataCheck(ProceedingJoinPoint pjp, EniwareEdgeMetadataFilter filter)
 			throws Throwable {
 		Long[] nodeIds = (filter == null ? null : filter.getNodeIds());
 		if ( nodeIds == null ) {

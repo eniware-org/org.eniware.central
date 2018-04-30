@@ -41,9 +41,9 @@
 	<beans:bean id="jdbcUserService" class="org.eniware.central.security.jdbc.JdbcUserDetailsService">
 		<beans:property name="dataSource" ref="dataSource"/>
 			<beans:property name="usersByUsernameQuery" 
-					value="#{T(net.solarnetwork.central.security.jdbc.JdbcUserDetailsService).DEFAULT_TOKEN_USERS_BY_USERNAME_SQL}"/>
+					value="#{T(org.eniware.central.security.jdbc.JdbcUserDetailsService).DEFAULT_TOKEN_USERS_BY_USERNAME_SQL}"/>
 			<beans:property name="authoritiesByUsernameQuery" 
-					value="#{T(net.solarnetwork.central.security.jdbc.JdbcUserDetailsService).DEFAULT_TOKEN_AUTHORITIES_BY_USERNAME_SQL}"/>
+					value="#{T(org.eniware.central.security.jdbc.JdbcUserDetailsService).DEFAULT_TOKEN_AUTHORITIES_BY_USERNAME_SQL}"/>
 	</beans:bean>
 	
 	<beans:bean id="authTokenEntryPoint" class="org.eniware.central.security.web.UserAuthTokenAuthenticationEntryPoint"/>

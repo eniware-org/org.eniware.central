@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNet Common DAO Biz
+Bundle-Name: EniwareNet Common DAO Biz
 Bundle-SymbolicName: org.eniware.central.common.biz.dao
 Bundle-Version: 1.0.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: 
  org.aopalliance.aop;version="1.0.0",

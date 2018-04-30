@@ -11,7 +11,7 @@ import java.util.Map;
 
 import org.eniware.central.domain.Location;
 import org.eniware.central.domain.PriceLocation;
-import org.eniware.central.domain.SolarLocation;
+import org.eniware.central.domain.EniwareLocation;
 import org.eniware.central.domain.SourceLocation;
 import org.springframework.util.StringUtils;
 
@@ -55,10 +55,10 @@ public class PriceLocationFilter extends SourceLocationFilter {
 		setId(sourceLocation.getId());
 		setSource(sourceLocation.getSource());
 		Location loc = sourceLocation.getLocation();
-		if ( loc instanceof SolarLocation ) {
-			setLocation((SolarLocation) loc);
+		if ( loc instanceof EniwareLocation ) {
+			setLocation((EniwareLocation) loc);
 		} else {
-			setLocation(new SolarLocation(sourceLocation.getLocation()));
+			setLocation(new EniwareLocation(sourceLocation.getLocation()));
 		}
 	}
 

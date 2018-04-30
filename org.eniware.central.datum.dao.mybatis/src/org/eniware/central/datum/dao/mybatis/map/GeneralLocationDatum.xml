@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!--Converted at: Thu Nov 13 07:30:20 NZDT 2014-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.solarnetwork.central.datum.dao.mybatis.GeneralLocationDatum">
+<mapper namespace="org.eniware.central.datum.dao.mybatis.GeneralLocationDatum">
 
 	<parameterMap id="pmap-GeneralLocationDatum" type="GeneralLocationDatum">
 		<parameter property="created" jdbcType="TIMESTAMP" mode="IN"/>
@@ -12,11 +12,11 @@
 	</parameterMap>
 
 	<update id="insert-GeneralLocationDatum" parameterMap="pmap-GeneralLocationDatum" statementType="CALLABLE">
-		{call solardatum.store_loc_datum(?, ?, ?, ?, ?)}
+		{call eniwaredatum.store_loc_datum(?, ?, ?, ?, ?)}
 	</update>
 	
 	<update id="update-GeneralLocationDatum" parameterMap="pmap-GeneralLocationDatum" statementType="CALLABLE">
-		{call solardatum.store_loc_datum(?, ?, ?, ?, ?)}
+		{call eniwaredatum.store_loc_datum(?, ?, ?, ?, ?)}
 	</update>
 	
 	<sql id="fragment-GeneralLocationDatum-full-result">
@@ -47,7 +47,7 @@
 		SELECT
 			<include refid="fragment-GeneralLocationDatum-full-result"/>
 		FROM
-			solardatum.da_loc_datum_data datum
+			eniwaredatum.da_loc_datum_data datum
 		WHERE
 			datum.loc_id = #{locationId}
 			AND datum.ts = #{created}
@@ -55,7 +55,7 @@
 	</select>
 
 	<select id="find-general-loc-distinct-sources" statementType="CALLABLE" resultType="string">
-		{call solardatum.find_loc_available_sources(#{location,jdbcType=BIGINT}, #{start,jdbcType=TIMESTAMP}, #{end,jdbcType=TIMESTAMP})}
+		{call eniwaredatum.find_loc_available_sources(#{location,jdbcType=BIGINT}, #{start,jdbcType=TIMESTAMP}, #{end,jdbcType=TIMESTAMP})}
 	</select>
 	
 	<parameterMap id="pmap-reportable-interval" type="map">
@@ -68,12 +68,12 @@
 	</parameterMap>
 
 	<update id="find-general-loc-reportable-interval" parameterMap="pmap-reportable-interval" statementType="CALLABLE">
-		{call solardatum.find_loc_reportable_interval(?, ?, ?, ?, ?, ?)}
+		{call eniwaredatum.find_loc_reportable_interval(?, ?, ?, ?, ?, ?)}
 	</update>
 	
 	<!-- Legacy mapping support -->
 
-	<resultMap id="DatumMappingInfoResult" type="net.solarnetwork.central.datum.domain.DatumMappingInfo">
+	<resultMap id="DatumMappingInfoResult" type="org.eniware.central.datum.domain.DatumMappingInfo">
 		<id property="id" column="loc_id"/>
 		<id property="sourceId" column="loc_src"/>
 		<id property="timeZoneId" column="loc_tz"/>
@@ -84,9 +84,9 @@
 			ws.sname || ' Day' AS loc_src,
 			l.time_zone AS loc_tz,
 			l.id AS loc_id
-		FROM solarnet.sn_weather_loc wl
-		INNER JOIN solarnet.sn_weather_source ws ON ws.id = wl.source_id
-		INNER JOIN solarnet.sn_loc l ON l.id = wl.loc_id
+		FROM eniwarenet.sn_weather_loc wl
+		INNER JOIN eniwarenet.sn_weather_source ws ON ws.id = wl.source_id
+		INNER JOIN eniwarenet.sn_loc l ON l.id = wl.loc_id
 		WHERE wl.id = #{id,javaType=long,jdbcType=BIGINT}
 	</select>
 
@@ -95,9 +95,9 @@
 			ws.sname AS loc_src,
 			l.time_zone AS loc_tz,
 			l.id AS loc_id
-		FROM solarnet.sn_weather_loc wl
-		INNER JOIN solarnet.sn_weather_source ws ON ws.id = wl.source_id
-		INNER JOIN solarnet.sn_loc l ON l.id = wl.loc_id
+		FROM eniwarenet.sn_weather_loc wl
+		INNER JOIN eniwarenet.sn_weather_source ws ON ws.id = wl.source_id
+		INNER JOIN eniwarenet.sn_loc l ON l.id = wl.loc_id
 		WHERE wl.id = #{id,javaType=long,jdbcType=BIGINT}
 	</select>
 
@@ -106,9 +106,9 @@
 			ps.sname AS loc_src, 
 			l.time_zone AS loc_tz, 
 			l.id AS loc_id
-		FROM solarnet.sn_price_loc pl
-		INNER JOIN solarnet.sn_price_source ps ON ps.id = pl.source_id
-		INNER JOIN solarnet.sn_loc l ON l.id = pl.loc_id
+		FROM eniwarenet.sn_price_loc pl
+		INNER JOIN eniwarenet.sn_price_source ps ON ps.id = pl.source_id
+		INNER JOIN eniwarenet.sn_loc l ON l.id = pl.loc_id
 		WHERE pl.id = #{id,javaType=long,jdbcType=BIGINT}
 	</select>
 
@@ -116,18 +116,18 @@
 		FilterableDao support 
 	-->
 
-	<resultMap id="GeneralLocationDatumMatchResult" type="ReportingGeneralLocationDatum" extends="net.solarnetwork.central.datum.dao.mybatis.GeneralLocationDatum.GeneralLocationDatumFullResult">
+	<resultMap id="GeneralLocationDatumMatchResult" type="ReportingGeneralLocationDatum" extends="org.eniware.central.datum.dao.mybatis.GeneralLocationDatum.GeneralLocationDatumFullResult">
 		<result property="localDateTime" column="datum_local_date"/>
 	</resultMap>
-	<resultMap id="GeneralLocationDatumDirectMatchResult" type="GeneralLocationDatumMatch" extends="net.solarnetwork.central.datum.dao.mybatis.GeneralLocationDatum.GeneralLocationDatumDirectResult"/>
+	<resultMap id="GeneralLocationDatumDirectMatchResult" type="GeneralLocationDatumMatch" extends="org.eniware.central.datum.dao.mybatis.GeneralLocationDatum.GeneralLocationDatumDirectResult"/>
 
 	<parameterMap id="pmap-most-recent" type="map">
 		<parameter property="filter.locationId" jdbcType="BIGINT" mode="IN"/>
-		<parameter property="filter.sourceIds" jdbcType="ARRAY" mode="IN" typeHandler="net.solarnetwork.central.dao.mybatis.type.TextArrayTypeHandler"/>
+		<parameter property="filter.sourceIds" jdbcType="ARRAY" mode="IN" typeHandler="org.eniware.central.dao.mybatis.type.TextArrayTypeHandler"/>
 	</parameterMap>
 
 	<select id="find-general-loc-most-recent" parameterMap="pmap-most-recent" resultMap="GeneralLocationDatumDirectMatchResult" statementType="CALLABLE">
-		{call solardatum.find_loc_most_recent(?, ?)}
+		{call eniwaredatum.find_loc_most_recent(?, ?)}
 	</select>
 
 	<sql id="fragment-findall-GeneralLocationDatum-GeneralLocationDatumMatch-where">
@@ -159,8 +159,8 @@
 			<include refid="fragment-GeneralLocationDatum-full-result"/>
 			, datum.ts AT TIME ZONE COALESCE(loc.time_zone, 'UTC') AS datum_local_date
 		FROM
-			solardatum.da_loc_datum_data datum
-		LEFT OUTER JOIN solarnet.sn_loc loc ON loc.id = datum.loc_id
+			eniwaredatum.da_loc_datum_data datum
+		LEFT OUTER JOIN eniwarenet.sn_loc loc ON loc.id = datum.loc_id
 		<include refid="fragment-findall-GeneralLocationDatum-GeneralLocationDatumMatch-where"/>
 		ORDER BY
 		<choose>
@@ -183,7 +183,7 @@
 	<select id="findall-GeneralLocationDatum-GeneralLocationDatumMatch-count" resultType="long">
 		SELECT count(datum.ts)
 		FROM
-			solardatum.da_loc_datum_data datum
+			eniwaredatum.da_loc_datum_data datum
 		<include refid="fragment-findall-GeneralLocationDatum-GeneralLocationDatumMatch-where"/>
 	</select>
 
@@ -246,9 +246,9 @@
 	</sql>
 
 	<sql id="fragment-findall-ReportingGeneralLocationDatum-minuteagg-where">
-		solaragg.find_agg_loc_datum_minute(
+		eniwareagg.find_agg_loc_datum_minute(
 			#{filter.locationId},
-			#{filter.sourceIds,jdbcType=ARRAY,typeHandler=net.solarnetwork.central.dao.mybatis.type.TextArrayTypeHandler},
+			#{filter.sourceIds,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.TextArrayTypeHandler},
 			#{filter.startDate,jdbcType=TIMESTAMP}::timestamptz,
 			#{filter.endDate,jdbcType=TIMESTAMP}::timestamptz,
 			#{filter.aggregation.level}
@@ -257,9 +257,9 @@
 
 	<sql id="fragment-findall-ReportingGeneralLocationDatum-agg-where">
 		#{filter.locationId},
-		#{filter.sourceIds,jdbcType=ARRAY,typeHandler=net.solarnetwork.central.dao.mybatis.type.TextArrayTypeHandler}
+		#{filter.sourceIds,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.TextArrayTypeHandler}
 		<if test="filter.dataPathElements != null">
-			,#{filter.dataPathElements,jdbcType=ARRAY,typeHandler=net.solarnetwork.central.dao.mybatis.type.TextArrayTypeHandler}
+			,#{filter.dataPathElements,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.TextArrayTypeHandler}
 		</if>
 		<if test="filter != null and filter.startDate != null and filter.endDate != null">
 			,#{filter.startDate,jdbcType=TIMESTAMP}::timestamptz
@@ -282,7 +282,7 @@
 	<select id="findall-GeneralLocationDatum-ReportingGeneralLocationDatum-Hour-count" resultType="long">
 		SELECT count(datum.ts_start)
 		FROM
-			solaragg.agg_loc_datum_hourly_data datum
+			eniwareagg.agg_loc_datum_hourly_data datum
 		<include refid="fragment-findall-ReportingGeneralLocationDatum-where"/>
 	</select>
 	
@@ -290,7 +290,7 @@
 		SELECT
 			<include refid="fragment-GeneralLocationDatum-aggregation-result"/>
 		FROM
-			solaragg.agg_loc_datum_hourly_data datum
+			eniwareagg.agg_loc_datum_hourly_data datum
 		<include refid="fragment-findall-ReportingGeneralLocationDatum-where"/>
 		<include refid="fragment-findall-ReportingGeneralLocationDatum-order"/>
 	</select>
@@ -301,7 +301,7 @@
 		SELECT
 			<include refid="fragment-GeneralLocationDatum-aggregation-result"/>
 		FROM
-			solaragg.find_agg_loc_datum_hod(
+			eniwareagg.find_agg_loc_datum_hod(
 				<include refid="fragment-findall-ReportingGeneralLocationDatum-agg-where"/>
 			) AS datum
 		<include refid="fragment-findall-ReportingGeneralLocationDatum-order"/>
@@ -313,7 +313,7 @@
 		SELECT
 			<include refid="fragment-GeneralLocationDatum-aggregation-result"/>
 		FROM
-			solaragg.find_agg_loc_datum_seasonal_hod(
+			eniwareagg.find_agg_loc_datum_seasonal_hod(
 				<include refid="fragment-findall-ReportingGeneralLocationDatum-agg-where"/>
 			) AS datum
 		<include refid="fragment-findall-ReportingGeneralLocationDatum-order"/>
@@ -324,7 +324,7 @@
 	<select id="findall-GeneralLocationDatum-ReportingGeneralLocationDatum-Day-count" resultType="long">
 		SELECT count(datum.ts_start)
 		FROM
-			solaragg.agg_loc_datum_daily_data datum
+			eniwareagg.agg_loc_datum_daily_data datum
 		<include refid="fragment-findall-ReportingGeneralLocationDatum-where"/>
 	</select>
 	
@@ -332,7 +332,7 @@
 		SELECT
 			<include refid="fragment-GeneralLocationDatum-aggregation-result"/>
 		FROM
-			solaragg.agg_loc_datum_daily_data datum
+			eniwareagg.agg_loc_datum_daily_data datum
 		<include refid="fragment-findall-ReportingGeneralLocationDatum-where"/>
 		<include refid="fragment-findall-ReportingGeneralLocationDatum-order"/>
 	</select>
@@ -343,7 +343,7 @@
 		SELECT
 			<include refid="fragment-GeneralLocationDatum-aggregation-result"/>
 		FROM
-			solaragg.find_agg_loc_datum_dow(
+			eniwareagg.find_agg_loc_datum_dow(
 				<include refid="fragment-findall-ReportingGeneralLocationDatum-agg-where"/>
 			) AS datum
 		<include refid="fragment-findall-ReportingGeneralLocationDatum-order"/>
@@ -355,7 +355,7 @@
 		SELECT
 			<include refid="fragment-GeneralLocationDatum-aggregation-result"/>
 		FROM
-			solaragg.find_agg_loc_datum_seasonal_dow(
+			eniwareagg.find_agg_loc_datum_seasonal_dow(
 				<include refid="fragment-findall-ReportingGeneralLocationDatum-agg-where"/>
 			) AS datum
 		<include refid="fragment-findall-ReportingGeneralLocationDatum-order"/>
@@ -366,7 +366,7 @@
 	<select id="findall-GeneralLocationDatum-ReportingGeneralLocationDatum-Month-count" resultType="long">
 		SELECT count(datum.ts_start)
 		FROM
-			solaragg.agg_loc_datum_monthly_data datum
+			eniwareagg.agg_loc_datum_monthly_data datum
 		<include refid="fragment-findall-ReportingGeneralLocationDatum-where"/>
 	</select>
 	
@@ -374,7 +374,7 @@
 		SELECT
 			<include refid="fragment-GeneralLocationDatum-aggregation-result"/>
 		FROM
-			solaragg.agg_loc_datum_monthly_data datum
+			eniwareagg.agg_loc_datum_monthly_data datum
 		<include refid="fragment-findall-ReportingGeneralLocationDatum-where"/>
 		<include refid="fragment-findall-ReportingGeneralLocationDatum-order"/>
 	</select>
@@ -385,7 +385,7 @@
 		SELECT
 			<include refid="fragment-GeneralLocationDatum-aggregation-result"/>
 		FROM
-			solaragg.calc_running_loc_datum_total(
+			eniwareagg.calc_running_loc_datum_total(
 				<include refid="fragment-findall-ReportingGeneralLocationDatum-agg-where"/>
 			) AS datum
 	</select>

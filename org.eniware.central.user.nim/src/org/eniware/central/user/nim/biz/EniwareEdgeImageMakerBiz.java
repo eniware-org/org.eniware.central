@@ -9,14 +9,14 @@ package org.eniware.central.user.nim.biz;
 import org.eniware.central.security.SecurityToken;
 
 /**
- * API for integration with a SolarNode Image Maker instance.
+ * API for integration with a EniwareEdge Image Maker instance.
  * 
  * @version 1.0
  */
-public interface SolarNodeImageMakerBiz {
+public interface EniwareEdgeImageMakerBiz {
 
 	/**
-	 * Get a NIM authorization key for a SolarNetwork auth token.
+	 * Get a NIM authorization key for a Eniware auth token.
 	 * 
 	 * <p>
 	 * This method might take several minutes to complete, for example if NIM is
@@ -25,10 +25,10 @@ public interface SolarNodeImageMakerBiz {
 	 * 
 	 * @param token
 	 *        the auth token to use
-	 * @param solarNetworkBaseUrl
-	 *        the SolarNetwork base URL
+	 * @param eniwareNetworkBaseUrl
+	 *        the EniwareNetwork base URL
 	 * @return the NIM authorization token
 	 */
-	String authorizeToken(SecurityToken token, String solarNetworkBaseUrl);
+	String authorizeToken(SecurityToken token, String EniwareNetworkBaseUrl);
 
 }

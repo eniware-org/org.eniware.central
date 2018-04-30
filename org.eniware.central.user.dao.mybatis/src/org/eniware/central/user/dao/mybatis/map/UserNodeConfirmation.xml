@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?><!--Converted at: Tue Nov 11 06:02:39 NZDT 2014-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.solarnetwork.central.user.dao.mybatis.UserNodeConfirmation">
+<mapper namespace="org.eniware.central.user.dao.mybatis.UserNodeConfirmation">
 
-	<cache-ref namespace="net.solarnetwork.central.user.dao.mybatis.UserNode"/>
+	<cache-ref namespace="org.eniware.central.user.dao.mybatis.UserNode"/>
 
 	<insert id="insert-UserNodeConfirmation" parameterType="UserNodeConfirmation">
 		<selectKey keyProperty="id" resultType="long" order="BEFORE"> 
-              SELECT nextval('solaruser.solaruser_seq') AS id 
+              SELECT nextval('eniwareuser.eniwareuser_seq') AS id 
 		</selectKey>
-		INSERT INTO solaruser.user_node_conf 
+		INSERT INTO eniwareuser.user_node_conf 
 			(id
 			<if test="created != null">,created</if>
 			, user_id, node_id, conf_key
@@ -26,7 +26,7 @@
 	</insert>
 
 	<update id="update-UserNodeConfirmation" parameterType="UserNodeConfirmation">
-		UPDATE solaruser.user_node_conf SET
+		UPDATE eniwareuser.user_node_conf SET
 			node_id = #{nodeId},
 			conf_date = #{confirmationDate},
 			sec_phrase = #{securityPhrase},
@@ -37,7 +37,7 @@
 	</update>
 
 	<update id="delete-UserNodeConfirmation" parameterType="long">
-		DELETE FROM solaruser.user_node_conf
+		DELETE FROM eniwareuser.user_node_conf
 		WHERE
 			id = #{id}
 	</update>
@@ -62,17 +62,17 @@
 		<result property="securityPhrase" column="unc_sec_phrase"/>
 		<result property="country" column="unc_country"/>
 		<result property="timeZoneId" column="unc_time_zone"/>
-		<association property="user" resultMap="net.solarnetwork.central.user.dao.mybatis.User.UserFullResult"/>
+		<association property="user" resultMap="org.eniware.central.user.dao.mybatis.User.UserFullResult"/>
 	</resultMap>
 	
 	<select id="get-UserNodeConfirmation-for-id" parameterType="long" resultMap="UserNodeConfirmationFullResult">
 		SELECT
 			<include refid="fragment-UserNodeConfirmation-full-result"/>,
-			<include refid="net.solarnetwork.central.user.dao.mybatis.User.fragment-User-full-result"/>
+			<include refid="org.eniware.central.user.dao.mybatis.User.fragment-User-full-result"/>
 		FROM
-			solaruser.user_node_conf unc
+			eniwareuser.user_node_conf unc
 		INNER JOIN
-			solaruser.user_user u ON u.id = unc.user_id
+			eniwareuser.user_user u ON u.id = unc.user_id
 		WHERE
 			unc.id = #{id}
 	</select>
@@ -80,11 +80,11 @@
 	<select id="get-UserNodeConfirmation-for-key" parameterType="map" resultMap="UserNodeConfirmationFullResult">
 		SELECT
 			<include refid="fragment-UserNodeConfirmation-full-result"/>,
-			<include refid="net.solarnetwork.central.user.dao.mybatis.User.fragment-User-full-result"/>
+			<include refid="org.eniware.central.user.dao.mybatis.User.fragment-User-full-result"/>
 		FROM
-			solaruser.user_node_conf unc
+			eniwareuser.user_node_conf unc
 		INNER JOIN
-			solaruser.user_user u ON u.id = unc.user_id
+			eniwareuser.user_user u ON u.id = unc.user_id
 		WHERE
 			unc.user_id = #{userId,javaType=long,jdbcType=BIGINT}
 			AND unc.conf_key = #{key,javaType=string,jdbcType=VARCHAR}
@@ -93,11 +93,11 @@
 	<select id="find-UserNodeConfirmation-for-User" parameterType="User" resultMap="UserNodeConfirmationFullResult">
 		SELECT
 			<include refid="fragment-UserNodeConfirmation-full-result"/>,
-			<include refid="net.solarnetwork.central.user.dao.mybatis.User.fragment-User-full-result"/>
+			<include refid="org.eniware.central.user.dao.mybatis.User.fragment-User-full-result"/>
 		FROM
-			solaruser.user_node_conf unc
+			eniwareuser.user_node_conf unc
 		INNER JOIN
-			solaruser.user_user u ON u.id = unc.user_id
+			eniwareuser.user_user u ON u.id = unc.user_id
 		WHERE
 			unc.user_id = #{user.id}
 			<if test="pending != null">AND unc.conf_date IS NULL</if>

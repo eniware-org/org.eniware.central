@@ -24,7 +24,7 @@ import org.eniware.central.security.AuthorizationException;
 import org.eniware.central.security.SecurityToken;
 import org.eniware.central.security.AuthorizationException.Reason;
 import org.eniware.central.user.biz.UserBiz;
-import org.eniware.central.user.nim.biz.SolarNodeImageMakerBiz;
+import org.eniware.central.user.nim.biz.EniwareEdgeImageMakerBiz;
 import org.eniware.util.OptionalService;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -41,18 +41,18 @@ import org.springframework.web.client.RestTemplate;
 import org.eniware.web.security.AuthorizationV2Builder;
 
 /**
- * Cloud based implementation of {@link SolarNodeImageMakerBiz}.
+ * Cloud based implementation of {@link EniwareEdgeImageMakerBiz}.
  * 
  * @version 1.0
  */
-public class CloudSolarNodeImageMakerBiz implements SolarNodeImageMakerBiz, MaintenanceSubscriber {
+public class CloudEniwareEdgeImageMakerBiz implements EniwareEdgeImageMakerBiz, MaintenanceSubscriber {
 
 	private final UserBiz userBiz;
 	private final OptionalService<VirtualMachineBiz> virtualMachineBiz;
 	private String uid;
 	private String groupUid;
 	private String virtualMachineName = "NIM";
-	private String nimBaseUrl = "https://apps.solarnetwork.net/solarnode-image-maker";
+	private String nimBaseUrl = "https://apps.network.eniware.org/eniwareedge-image-maker";
 	private int virtualMachineTimeoutSeconds = (int) TimeUnit.MINUTES.toSeconds(4);
 
 	private final RestOperations client = new RestTemplate();
@@ -70,7 +70,7 @@ public class CloudSolarNodeImageMakerBiz implements SolarNodeImageMakerBiz, Main
 	 * @param virtualMachineBiz
 	 *        the virtual machine API to manage the NIM VM with
 	 */
-	public CloudSolarNodeImageMakerBiz(UserBiz userBiz,
+	public CloudEniwareEdgeImageMakerBiz(UserBiz userBiz,
 			OptionalService<VirtualMachineBiz> virtualMachineBiz) {
 		super();
 		this.userBiz = userBiz;
@@ -79,12 +79,12 @@ public class CloudSolarNodeImageMakerBiz implements SolarNodeImageMakerBiz, Main
 	}
 
 	@Override
-	public String authorizeToken(SecurityToken token, String solarNetworkBaseUrl) {
+	public String authorizeToken(SecurityToken token, String eniwareNetworkBaseUrl) {
 		URI reqUri;
 		try {
-			reqUri = new URI(solarNetworkBaseUrl);
+			reqUri = new URI(eniwareNetworkBaseUrl);
 		} catch ( URISyntaxException e ) {
-			throw new IllegalArgumentException("Malformed SolarNetwork URL", e);
+			throw new IllegalArgumentException("Malformed EniwareNetwork URL", e);
 		}
 
 		// verify NIM VM running
@@ -126,7 +126,7 @@ public class CloudSolarNodeImageMakerBiz implements SolarNodeImageMakerBiz, Main
 
 	@Override
 	public String getDisplayName() {
-		return "Cloud SolarNodeImageMaker Integration";
+		return "Cloud EniwareEdgeImageMaker Integration";
 	}
 
 	private String getNimAuthorizationKey(URI reqUri, SecurityToken token) {
@@ -177,7 +177,7 @@ public class CloudSolarNodeImageMakerBiz implements SolarNodeImageMakerBiz, Main
 		String snHost = uriHost(reqUri);
 		AuthorizationV2Builder authBuilder = userBiz.createAuthorizationV2Builder(token.getUserId(),
 				token.getToken(), now);
-		authBuilder.path("/solaruser/api/v1/sec/whoami").host(snHost);
+		authBuilder.path("/eniwareuser/api/v1/sec/whoami").host(snHost);
 		if ( log.isDebugEnabled() ) {
 			log.debug("Pre-signing /whoami request canonical request data:\n{}\n\nSigning key: {}",
 					authBuilder.buildCanonicalRequestData(), authBuilder.signingKeyHex());
@@ -296,7 +296,7 @@ public class CloudSolarNodeImageMakerBiz implements SolarNodeImageMakerBiz, Main
 	}
 
 	/**
-	 * Set the name of the virtual machine to control for the SolarNode Image
+	 * Set the name of the virtual machine to control for the EniwareEdge Image
 	 * Maker.
 	 * 
 	 * @param virtualMachineName
@@ -311,7 +311,7 @@ public class CloudSolarNodeImageMakerBiz implements SolarNodeImageMakerBiz, Main
 	 * 
 	 * @param nimBaseUrl
 	 *        the base URL; defaults to
-	 *        {@literal https://apps.solarnetwork.net/solarnode-image-maker}
+	 *        {@literal https://apps.network.eniware.org/eniwareedge-image-maker}
 	 */
 	public void setNimBaseUrl(String nimBaseUrl) {
 		this.nimBaseUrl = nimBaseUrl;

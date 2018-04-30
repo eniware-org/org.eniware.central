@@ -1,14 +1,14 @@
-/* Global SolarNetwork App Support */
+/* Global EniwareNetwork App Support */
 
-var SolarReg = {
+var EniwareReg = {
 	showAlertBefore: function(el, clazz, msg) {
 	    $('<div class="alert'+(clazz.length > 0 ? ' ' +clazz : '')
 	    		+'"><button type="button" class="close" data-dismiss="alert">×</button>'
 	    		+msg +'</div>').insertBefore(el);
 	},
 	
-	solarUserURL : function(relativeURL) {
-		return $('meta[name=solarUserRootURL]').attr('content') + relativeURL;
+	eniwareUserURL : function(relativeURL) {
+		return $('meta[name=eniwareUserRootURL]').attr('content') + relativeURL;
 	},
 
 	csrfData : (function() {
@@ -24,11 +24,11 @@ var SolarReg = {
  * @param {XMLHttpRequest} [xhr] The XHR object to set the CSR request header on.
  * @return The CSRF value.
  */
-SolarReg.csrf = function(xhr) {
+EniwareReg.csrf = function(xhr) {
 	 if ( xhr && typeof xhr.setRequestHeader === 'function' ) {
-		 xhr.setRequestHeader(SolarReg.csrfData.headerName, SolarReg.csrfData.token);
+		 xhr.setRequestHeader(EniwareReg.csrfData.headerName, EniwareReg.csrfData.token);
 	 }
-	 return SolarReg.csrfData.token;
+	 return EniwareReg.csrfData.token;
 };
 
 $(document).ready(function() {

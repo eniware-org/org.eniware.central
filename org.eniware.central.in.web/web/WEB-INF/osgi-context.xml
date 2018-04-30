@@ -11,22 +11,22 @@
 	<!-- Service References -->
 	
 	<osgi:reference id="dataCollectorBiz" sticky="false"
-		interface="net.solarnetwork.central.in.biz.DataCollectorBiz"/>
+		interface="org.eniware.central.in.biz.DataCollectorBiz"/>
 	
 	<osgi:reference id="registrationBiz" sticky="false"
-		interface="net.solarnetwork.central.user.biz.RegistrationBiz"/>
+		interface="org.eniware.central.user.biz.RegistrationBiz"/>
 	
 	<osgi:reference id="networkIdentityBiz" sticky="false"
-		interface="net.solarnetwork.central.in.biz.NetworkIdentityBiz"/>
+		interface="org.eniware.central.in.biz.NetworkIdentityBiz"/>
 	
-	<osgi:reference id="solarNodeDao"
-		interface="net.solarnetwork.central.dao.SolarNodeDao"/>
+	<osgi:reference id="eniwareEdgeDao"
+		interface="org.eniware.central.dao.EniwareEdgeDao"/>
 
 	<osgi:reference id="instructorBizRef" availability="optional" sticky="false" 
-		interface="net.solarnetwork.central.instructor.biz.InstructorBiz">
+		interface="org.eniware.central.instructor.biz.InstructorBiz">
 		<osgi:listener ref="instructorBiz" bind-method="onBind" unbind-method="onUnbind"/>
 	</osgi:reference>
 	
-	<osgi:list id="pingTests" availability="optional" interface="net.solarnetwork.central.domain.PingTest"/>
+	<osgi:list id="pingTests" availability="optional" interface="org.eniware.central.domain.PingTest"/>
 	
 </beans>

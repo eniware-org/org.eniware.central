@@ -110,11 +110,11 @@ $(document).ready(function() {
 			}
 		}
 		
-		$.getJSON(SolarReg.solarUserURL('/sec/billing/invoices/' +invoice.id), function(json) {
+		$.getJSON(EniwareReg.eniwareUserURL('/sec/billing/invoices/' +invoice.id), function(json) {
 			console.log('Got invoice detail: %o', json);
 			populateInvoiceItemDetails(modal.find('table.invoice-items'), (json ? json.data : null));
 			modal.find('a.invoice-render')
-				.attr('href', SolarReg.solarUserURL('/sec/billing/invoices/' +invoice.id +'/render'));
+				.attr('href', EniwareReg.eniwareUserURL('/sec/billing/invoices/' +invoice.id +'/render'));
 		});
 		
 		modal.modal('show');
@@ -193,7 +193,7 @@ $(document).ready(function() {
 	
 	function loadInvoicePage(pageNum) {
 		console.log('Want page %d', pageNum);
-		$.getJSON(SolarReg.solarUserURL('/sec/billing/invoices/list?unpaid=false&offset=' 
+		$.getJSON(EniwareReg.eniwareUserURL('/sec/billing/invoices/list?unpaid=false&offset=' 
 				+(pageNum * invoicePagination.pageSize)
 				+'&max=' +invoicePagination.pageSize), function(json) {
 			console.log('Got invoices: %o', json);
@@ -228,12 +228,12 @@ $(document).ready(function() {
 
 		
 		/*
-		$.getJSON(SolarReg.solarUserURL('/sec/billing/systemInfo'), function(json) {
+		$.getJSON(EniwareReg.eniwareUserURL('/sec/billing/systemInfo'), function(json) {
 			console.log('Got billing info: %o', json);
 		});
 		*/
 		// get unpaid invoices
-		$.getJSON(SolarReg.solarUserURL('/sec/billing/invoices/list?unpaid=true'), function(json) {
+		$.getJSON(EniwareReg.eniwareUserURL('/sec/billing/invoices/list?unpaid=true'), function(json) {
 			console.log('Got unpaid invoices: %o', json);
 			var haveUnpaid = renderInvoiceTable('#outstanding-invoice-list-table', null, 
 					'.outstandingInvoiceListCount', json);

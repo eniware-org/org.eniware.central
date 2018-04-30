@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNetwork Central Cloud
+Bundle-Name: EniwareNetwork Central Cloud
 Bundle-SymbolicName: org.eniware.central.common.cloud
 Bundle-Version: 1.0.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: 
  org.eniware.central.cloud.biz;version="1.0.0",

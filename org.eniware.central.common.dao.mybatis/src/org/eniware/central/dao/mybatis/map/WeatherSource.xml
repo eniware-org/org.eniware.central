@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed Nov 05 09:48:44 NZDT 2014-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.solarnetwork.central.dao.mybatis.WeatherSource">
+<mapper namespace="org.eniware.central.dao.mybatis.WeatherSource">
 
 	<insert id="insert-WeatherSource" parameterType="WeatherSource">
 		<selectKey keyProperty="id" resultType="long" order="BEFORE"> 
-              SELECT nextval('solarnet.solarnet_seq') AS id 
+              SELECT nextval('eniwarenet.eniwarenet_seq') AS id 
 		</selectKey>
-		INSERT INTO solarnet.sn_weather_source 
+		INSERT INTO eniwarenet.sn_weather_source 
 			(id
 			<if test="created != null">, created</if>
 			, sname)
@@ -19,7 +19,7 @@
 
 	<update id="update-WeatherSource" parameterType="WeatherSource">
 		UPDATE 
-			solarnet.sn_weather_source
+			eniwarenet.sn_weather_source
 		SET
 			sname = #{name}
 		WHERE
@@ -42,7 +42,7 @@
 		SELECT
 			<include refid="fragment-WeatherSource-full-result"/>
 		FROM
-			solarnet.sn_weather_source wsource
+			eniwarenet.sn_weather_source wsource
 		WHERE
 			wsource.id = #{id}
 	</select>
@@ -51,7 +51,7 @@
 		SELECT
 			<include refid="fragment-WeatherSource-full-result"/>
 		FROM
-			solarnet.sn_weather_source wsource
+			eniwarenet.sn_weather_source wsource
 		WHERE
 			wsource.sname = #{name,javaType=string,jdbcType=VARCHAR}
 	</select>

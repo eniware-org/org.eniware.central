@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNet Development User PKI
+Bundle-Name: EniwareNet Development User PKI
 Bundle-SymbolicName: org.eniware.central.user.pki.dev
 Bundle-Version: 1.3.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: 
  javax.net.ssl,

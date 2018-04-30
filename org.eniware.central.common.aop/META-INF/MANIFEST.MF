@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNet Common AOP
+Bundle-Name: EniwareNet Common AOP
 Bundle-SymbolicName: org.eniware.central.common.aop
 Bundle-Version: 1.0.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .,build/eclipse/
 Import-Package: 

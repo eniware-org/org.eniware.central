@@ -297,7 +297,7 @@ public class BasicSecurityPolicy implements SecurityPolicy, Serializable {
 	 * @param minALocationPrecision
 	 *        If specified, a minimum location precision that is allowed.
 	 * @param nodeMetadataPaths
-	 *        The {@code SolarNodeMetadata} paths to restrict to, or
+	 *        The {@code EniwareEdgeMetadata} paths to restrict to, or
 	 *        {@code null} for no restriction.
 	 * @param userMetadataPaths
 	 *        The {@code UserNodeMetadata} paths to restrict to, or {@code null}

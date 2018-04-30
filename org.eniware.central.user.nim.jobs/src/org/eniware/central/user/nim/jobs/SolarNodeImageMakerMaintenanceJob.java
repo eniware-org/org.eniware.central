@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.eniware.central.biz.MaintenanceSubscriber;
 import org.eniware.central.scheduler.JobSupport;
-import org.eniware.central.user.nim.biz.SolarNodeImageMakerBiz;
+import org.eniware.central.user.nim.biz.EniwareEdgeImageMakerBiz;
 import org.eniware.util.OptionalServiceCollection;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
@@ -21,9 +21,9 @@ import org.osgi.service.event.EventAdmin;
  * 
  * @version 1.0
  */
-public class SolarNodeImageMakerMaintenanceJob extends JobSupport {
+public class EniwareEdgeImageMakerMaintenanceJob extends JobSupport {
 
-	private final OptionalServiceCollection<SolarNodeImageMakerBiz> services;
+	private final OptionalServiceCollection<EniwareEdgeImageMakerBiz> services;
 
 	/**
 	 * Constructor.
@@ -33,8 +33,8 @@ public class SolarNodeImageMakerMaintenanceJob extends JobSupport {
 	 * @param services
 	 *        the services to manage
 	 */
-	public SolarNodeImageMakerMaintenanceJob(EventAdmin eventAdmin,
-			OptionalServiceCollection<SolarNodeImageMakerBiz> services) {
+	public EniwareEdgeImageMakerMaintenanceJob(EventAdmin eventAdmin,
+			OptionalServiceCollection<EniwareEdgeImageMakerBiz> services) {
 		super(eventAdmin);
 		setJobGroup("NIM");
 		setMaximumWaitMs(TimeUnit.MINUTES.toMillis(10));
@@ -43,7 +43,7 @@ public class SolarNodeImageMakerMaintenanceJob extends JobSupport {
 
 	@Override
 	protected boolean handleJob(Event job) throws Exception {
-		for ( SolarNodeImageMakerBiz service : services.services() ) {
+		for ( EniwareEdgeImageMakerBiz service : services.services() ) {
 			if ( service instanceof MaintenanceSubscriber ) {
 				((MaintenanceSubscriber) service).performServiceMaintenance(Collections.emptyMap());
 			}

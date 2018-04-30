@@ -1,12 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNetwork Central Viz Web
+Bundle-Name: EniwareNetwork Central Viz Web
 Bundle-SymbolicName: org.eniware.central.viz.web
 Bundle-Version: 1.7.1
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Classpath: .,build/eclipse
-Web-ContextPath: solarviz
+Web-ContextPath: eniwareviz
 Import-Package: 
  javax.el;version="[1.0,4.0)",
  javax.servlet;version="2.5.0",

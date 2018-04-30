@@ -2,7 +2,7 @@
     <wb-module deploy-name="org.eniware.central.user.web">
         <wb-resource deploy-path="/" source-path="/web"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="java-output-path" value="/net.solarnetwork.central.dras.web/build/eclipse"/>
-        <property name="context-root" value="/solaruser"/>
+        <property name="java-output-path" value="/org.eniware.central.dras.web/build/eclipse"/>
+        <property name="context-root" value="/eniwareuser"/>
     </wb-module>
 </project-modules>

@@ -11,12 +11,12 @@
 	<!-- Service References -->
 
 	<reference id="billingBiz"
-		interface="net.solarnetwork.central.user.billing.biz.BillingBiz"
+		interface="org.eniware.central.user.billing.biz.BillingBiz"
 		filter="(!(secured=true))"/>
 	
 	<!-- Published Services -->
 
-	<service ref="aopBillingBiz" interface="net.solarnetwork.central.user.billing.biz.BillingBiz" ranking="10">
+	<service ref="aopBillingBiz" interface="org.eniware.central.user.billing.biz.BillingBiz" ranking="10">
 		<service-properties>
 			<entry key="secured" value="true"/>
 		</service-properties>
@@ -26,11 +26,11 @@
 
 	<aop:aspectj-autoproxy/>
 
-	<bean id="billingSecurityAspect" class="net.solarnetwork.central.user.billing.aop.BillingSecurityAspect">
+	<bean id="billingSecurityAspect" class="org.eniware.central.user.billing.aop.BillingSecurityAspect">
 		<argument ref="userNodeDao"/>
 	</bean>
 		
-	<bean id="aopBillingBiz" class="net.solarnetwork.central.user.billing.support.DelegatingBillingBiz">
+	<bean id="aopBillingBiz" class="org.eniware.central.user.billing.support.DelegatingBillingBiz">
 		<argument ref="billingBiz"/>
 	</bean>
 

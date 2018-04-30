@@ -9,8 +9,8 @@ package org.eniware.central.support;
 import org.eniware.central.domain.BaseIdentity;
 import org.eniware.central.domain.Location;
 import org.eniware.central.domain.NodeGroupInformation;
-import org.eniware.central.domain.SolarCapability;
-import org.eniware.central.domain.SolarNodeGroupCapability;
+import org.eniware.central.domain.EniwareCapability;
+import org.eniware.central.domain.EniwareEdgeGroupCapability;
 
 /**
  * Simple implementation of {@link NodeGroupInformation}.
@@ -22,7 +22,7 @@ public class SimpleNodeGroupInformation extends BaseIdentity implements NodeGrou
 
 	private String name;
 	private Location location;
-	private SolarCapability capability;
+	private EniwareCapability capability;
 
 	/**
 	 * Default constructor.
@@ -37,7 +37,7 @@ public class SimpleNodeGroupInformation extends BaseIdentity implements NodeGrou
 	 * @param group the group to copy values from.
 	 * @param location the location
 	 */
-	public SimpleNodeGroupInformation(String name, SolarNodeGroupCapability capability, 
+	public SimpleNodeGroupInformation(String name, EniwareEdgeGroupCapability capability, 
 			Location location) {
 		setId(capability.getGroupId());
 		this.name = name;

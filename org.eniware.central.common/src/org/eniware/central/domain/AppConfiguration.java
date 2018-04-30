@@ -15,15 +15,15 @@ import java.util.Map;
  */
 public interface AppConfiguration {
 
-	/** Service URL name for the SolarUser app. */
-	String SOLARUSER_SERVICE_NAME = "solaruser";
+	/** Service URL name for the EniwareUser app. */
+	String ENIWAREUSER_SERVICE_NAME = "eniwareuser";
 
-	/** Service URL name for the SolarQuery app. */
-	String SOLARQUERY_SERVICE_NAME = "solarquery";
+	/** Service URL name for the EniwareQuery app. */
+	String ENIWAREQUERY_SERVICE_NAME = "eniwarequery";
 
 	/**
 	 * Service URL name for a user-facing "dashboard" specific to a single
-	 * SolarNode.
+	 * EniwareEdge.
 	 * 
 	 * <p>
 	 * This URL can reasonably be expected to support a <code>nodeId</code>
@@ -34,14 +34,14 @@ public interface AppConfiguration {
 
 	/**
 	 * Service URL name for a user-facing "dashboard" specific to a single
-	 * SolarNode.
+	 * EniwareEdge.
 	 * 
 	 * <p>
 	 * This URL can reasonably be expected to support a <code>nodeId</code>
 	 * variable.
 	 * </p>
 	 */
-	String SOLARNDOE_DATAVIEW_SERVICE_NAME = "node-dataview";
+	String ENIWARENDOE_DATAVIEW_SERVICE_NAME = "node-dataview";
 
 	/**
 	 * Get a mapping of named service URLs.
@@ -58,7 +58,7 @@ public interface AppConfiguration {
 	 * URL values are permitted to contain <em>variables</em> in the form
 	 * <code>{var}</code> that consumers of the URLs can replace with
 	 * appropriate values. The variable names must be named so their intended
-	 * use is obvious, for example <code>nodeId</code> for a SolarNode ID.
+	 * use is obvious, for example <code>nodeId</code> for a EniwareEdge ID.
 	 * </p>
 	 * 
 	 * <p>

@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNet User
+Bundle-Name: EniwareNet User
 Bundle-SymbolicName: org.eniware.central.user
 Bundle-Version: 1.27.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: 
  org.eniware.central.user.biz;version="1.16.0",

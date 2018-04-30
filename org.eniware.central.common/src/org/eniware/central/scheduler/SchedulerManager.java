@@ -9,7 +9,7 @@ package org.eniware.central.scheduler;
 import java.util.Collection;
 
 /**
- * API for management of the SolarNet scheduler.
+ * API for management of the EniwareNet scheduler.
  * @version 1.0
  * @since 1.37
  */

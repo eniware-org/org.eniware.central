@@ -51,7 +51,7 @@
 		</p>
 		<div class="alert alert-info alert-dismissible" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="<fmt:message key='close.label'/>"><span aria-hidden="true">&times;</span></button>
-			<fmt:message key='my-nodes.solarnode.link.help'/>
+			<fmt:message key='my-nodes.eniwareedge.link.help'/>
 		</div>
 		<table class="table">
 			<thead>
@@ -432,7 +432,7 @@
 						<div class="tz-picker-container"></div>
 					</fieldset>
 					<fieldset class="form-horizontal" id="edit-node-location-details" 
-						data-lookup-url="<c:url context="/solarquery" value='/api/v1/pub/location'/>">
+						data-lookup-url="<c:url context="/eniwarequery" value='/api/v1/pub/location'/>">
 						<p><fmt:message key='my-nodes.edit-node.choose-location.intro'/></p>
 						<div class="form-group">
 				 			<label class="col-sm-3 control-label" for="edit-node-location-postal-code"><fmt:message key='location.postalCode.label'/></label>

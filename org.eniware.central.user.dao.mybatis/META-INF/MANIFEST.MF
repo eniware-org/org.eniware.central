@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarUser MyBatis DAO
+Bundle-Name: EniwareUser MyBatis DAO
 Bundle-SymbolicName: org.eniware.central.user.dao.mybatis
 Bundle-Version: 1.10.1
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: 
  org.eniware.central.user.dao.mybatis;version="1.8.0",

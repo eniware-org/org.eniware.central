@@ -19,7 +19,7 @@
 		on getting component-scan to work in PDE. We are required to add are Eclipse build
 		path to the Bundle-Classpath value. -->
 
-	<!--ctx:component-scan base-package="net.solarnetwork.central.viz.web"/-->
+	<!--ctx:component-scan base-package="org.eniware.central.viz.web"/-->
 
 	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
 

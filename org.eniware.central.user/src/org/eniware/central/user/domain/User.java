@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import org.eniware.central.domain.BaseEntity;
-import org.eniware.central.domain.SolarLocation;
+import org.eniware.central.domain.EniwareLocation;
 import org.eniware.util.JsonUtils;
 import org.eniware.util.SerializeIgnore;
 
@@ -36,7 +36,7 @@ public class User extends BaseEntity implements UserInfo {
 	private Long locationId = null;
 
 	private String internalDataJson;
-	private SolarLocation location;
+	private EniwareLocation location;
 
 	private Set<String> roles;
 
@@ -116,7 +116,7 @@ public class User extends BaseEntity implements UserInfo {
 	 * 
 	 * <p>
 	 * This will return a {@code TimeZone} for the configured location's
-	 * {@link SolarLocation#getTimeZoneId()}.
+	 * {@link EniwareLocation#getTimeZoneId()}.
 	 * <p>
 	 * 
 	 * @return the TimeZone, or {@literal null} if none available
@@ -169,7 +169,7 @@ public class User extends BaseEntity implements UserInfo {
 	 */
 	@SerializeIgnore
 	@JsonIgnore
-	public SolarLocation getLocation() {
+	public EniwareLocation getLocation() {
 		return location;
 	}
 
@@ -185,7 +185,7 @@ public class User extends BaseEntity implements UserInfo {
 	 *        the location to set
 	 * @since 1.4
 	 */
-	public void setLocation(SolarLocation location) {
+	public void setLocation(EniwareLocation location) {
 		this.location = location;
 		if ( location != null && location.getId() != null ) {
 			this.locationId = location.getId();

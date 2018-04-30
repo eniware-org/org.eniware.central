@@ -10,7 +10,7 @@ import java.io.Serializable;
 import org.joda.time.DateTime;
 
 /**
- * Base class for SolarNetwork entities using string primary keys.
+ * Base class for EniwareNetwork entities using string primary keys.
  * @version 1.0
  */
 public class BaseStringEntity extends BaseStringIdentity implements Entity<String>, Cloneable,

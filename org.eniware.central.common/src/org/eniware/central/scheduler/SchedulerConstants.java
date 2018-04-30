@@ -28,19 +28,19 @@ package org.eniware.central.scheduler;
 public final class SchedulerConstants {
 
 	/** Topic for a job request notification. */
-	public static final String TOPIC_JOB_REQUEST = "net/solarnetwork/central/scheduler/JOB_REQUEST";
+	public static final String TOPIC_JOB_REQUEST = "net/eniwarenetwork/central/scheduler/JOB_REQUEST";
 
 	/** Topic for a job complete notification. */
-	public static final String TOPIC_JOB_COMPLETE = "net/solarnetwork/central/scheduler/JOB_COMPLETE";
+	public static final String TOPIC_JOB_COMPLETE = "net/eniwarenetwork/central/scheduler/JOB_COMPLETE";
 
 	/** Topic for a job failure notification. */
-	public static final String TOPIC_JOB_FAILURE = "net/solarnetwork/central/scheduler/JOB_FAILURE";
+	public static final String TOPIC_JOB_FAILURE = "net/eniwarenetwork/central/scheduler/JOB_FAILURE";
 
 	/** Topic of event sent when scheduler ready. */
-	public static final String TOPIC_SCHEDULER_READY = "net/solarnetwork/central/scheduler/SCHEDULER_READY";
+	public static final String TOPIC_SCHEDULER_READY = "net/eniwarenetwork/central/scheduler/SCHEDULER_READY";
 
 	///** Topic for a job notification. */
-	//public static final String TOPIC_JOB = "net/solarnetwork/central/scheduler/JOB";
+	//public static final String TOPIC_JOB = "net/eniwarenetwork/central/scheduler/JOB";
 
 	/** A unique ID for the job. */
 	public static final String JOB_ID = "JobId";

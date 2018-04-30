@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarUser Billing AOP
+Bundle-Name: EniwareUser Billing AOP
 Bundle-SymbolicName: org.eniware.central.user.billing.aop
 Bundle-Version: 0.2.0
 Bundle-ClassPath: .,build/eclipse/
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Fragment-Host: org.eniware.central.user.aop;bundle-version="1.7.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: 

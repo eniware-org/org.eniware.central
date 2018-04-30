@@ -19,7 +19,7 @@ import org.eniware.web.security.AuthenticationScheme;
 import org.eniware.web.security.WebConstants;
 
 /**
- * Entry point for SolarNetworkWS authentication.
+ * Entry point for EniwareNetworkWS authentication.
  
  * @version 1.3
  */

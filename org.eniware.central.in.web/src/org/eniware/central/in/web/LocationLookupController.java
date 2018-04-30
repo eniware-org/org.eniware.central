@@ -12,7 +12,7 @@ import javax.validation.Valid;
 import org.eniware.central.in.biz.DataCollectorBiz;
 import org.eniware.web.domain.Response;
 
-import org.eniware.central.dao.SolarNodeDao;
+import org.eniware.central.dao.EniwareEdgeDao;
 import org.eniware.central.domain.EntityMatch;
 import org.eniware.central.domain.SourceLocationMatch;
 import org.eniware.central.support.SourceLocationFilter;
@@ -63,8 +63,8 @@ public class LocationLookupController {
 	 * 
 	 * @param dataCollectorBiz
 	 *        the {@link DataCollectorBiz} to use
-	 * @param solarNodeDao
-	 *        the {@link SolarNodeDao} to use
+	 * @param eniwareEdgeDao
+	 *        the {@link EniwareEdgeDao} to use
 	 */
 	@Autowired
 	public LocationLookupController(DataCollectorBiz dataCollectorBiz) {

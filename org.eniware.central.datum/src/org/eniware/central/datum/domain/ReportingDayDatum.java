@@ -26,7 +26,7 @@ public class ReportingDayDatum extends DayDatum implements ReportingDatum {
 	private Float longitude;
 
 	/* (non-Javadoc)
-	 * @see net.sf.solarnetwork.central.domain.ReportingDatum#getLocalDate()
+	 * @see net.sf.eniwarenetwork.central.domain.ReportingDatum#getLocalDate()
 	 */
 	public LocalDate getLocalDate() {
 		if ( super.getCreated() == null ) {
@@ -41,7 +41,7 @@ public class ReportingDayDatum extends DayDatum implements ReportingDatum {
 	}
 
 	/* (non-Javadoc)
-	 * @see net.sf.solarnetwork.central.domain.ReportingDatum#getLocalTime()
+	 * @see net.sf.eniwarenetwork.central.domain.ReportingDatum#getLocalTime()
 	 */
 	public LocalTime getLocalTime() {
 		return null;

@@ -32,11 +32,11 @@ public class RegistrationSecurityAspect extends AuthorizationSupport {
 		super(userNodeDao);
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*RegistrationBiz.renewNodeCertificate(..)) && args(userNode, ..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*RegistrationBiz.renewNodeCertificate(..)) && args(userNode, ..)")
 	public void renewNodeCertificate(UserNode userNode) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*RegistrationBiz.getPendingNodeCertificateRenewal(..)) && args(userNode, ..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*RegistrationBiz.getPendingNodeCertificateRenewal(..)) && args(userNode, ..)")
 	public void getPendingNodeCertificateRenewal(UserNode userNode) {
 	}
 

@@ -25,7 +25,7 @@ public class ReportingPriceDatum extends PriceDatum implements ReportingDatum {
 	private String unit = null;
 	
 	/* (non-Javadoc)
-	 * @see net.sf.solarnetwork.central.domain.ReportingDatum#getLocalDate()
+	 * @see net.sf.eniwarenetwork.central.domain.ReportingDatum#getLocalDate()
 	 */
 	public LocalDate getLocalDate() {
 		if ( localDateTime == null ) {
@@ -35,7 +35,7 @@ public class ReportingPriceDatum extends PriceDatum implements ReportingDatum {
 	}
 
 	/* (non-Javadoc)
-	 * @see net.sf.solarnetwork.central.domain.ReportingDatum#getLocalTime()
+	 * @see net.sf.eniwarenetwork.central.domain.ReportingDatum#getLocalTime()
 	 */
 	public LocalTime getLocalTime() {
 		if ( localDateTime == null ) {

@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNet Central Instructor AOP
+Bundle-Name: EniwareNet Central Instructor AOP
 Bundle-SymbolicName: org.eniware.central.instructor.aop
 Bundle-Version: 1.6.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .,build/eclipse/
 Import-Package: 

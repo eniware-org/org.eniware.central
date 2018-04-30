@@ -10,16 +10,16 @@
 
 	<!-- Service References -->
 
-	<reference id="userNodeDao" interface="net.solarnetwork.central.user.dao.UserNodeDao"/>
+	<reference id="userNodeDao" interface="org.eniware.central.user.dao.UserNodeDao"/>
 
-	<reference id="solarNodeMetadataBiz"
-		interface="net.solarnetwork.central.biz.SolarNodeMetadataBiz"
+	<reference id="eniwareEdgeMetadataBiz"
+		interface="org.eniware.central.biz.EniwareEdgeMetadataBiz"
 		filter="(!(aop=true))"/>
 	
 	<!-- Published Services -->
 
-	<service ref="aopSolarNodeMetadataBiz" 
-			interface="net.solarnetwork.central.biz.SolarNodeMetadataBiz" ranking="10">
+	<service ref="aopEniwareEdgeMetadataBiz" 
+			interface="org.eniware.central.biz.EniwareEdgeMetadataBiz" ranking="10">
 		<service-properties>
 			<entry key="aop" value="true"/>
 		</service-properties>
@@ -29,12 +29,12 @@
 
 	<aop:aspectj-autoproxy/>
 
-	<bean id="solarNodeMetadataSecurityAspect" class="net.solarnetwork.central.aop.SolarNodeMetadataSecurityAspect">
+	<bean id="eniwareEdgeMetadataSecurityAspect" class="org.eniware.central.aop.EniwareEdgeMetadataSecurityAspect">
 		<argument ref="userNodeDao"/>
 	</bean>
 	
-	<bean id="aopSolarNodeMetadataBiz" class="net.solarnetwork.central.support.DelegatingSolarNodeMetadataBiz">
-		<argument ref="solarNodeMetadataBiz"/>
+	<bean id="aopEniwareEdgeMetadataBiz" class="org.eniware.central.support.DelegatingEniwareEdgeMetadataBiz">
+		<argument ref="eniwareEdgeMetadataBiz"/>
 	</bean>
 	
 </blueprint>

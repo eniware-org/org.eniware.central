@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNetwork SolarNode Image Maker Cloud Integration
+Bundle-Name: EniwareNetwork EniwareEdge Image Maker Cloud Integration
 Bundle-SymbolicName: org.eniware.central.user.nim.cloud
 Bundle-Version: 1.0.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: 
  com.fasterxml.jackson.core;version="[2.4,3.0)",

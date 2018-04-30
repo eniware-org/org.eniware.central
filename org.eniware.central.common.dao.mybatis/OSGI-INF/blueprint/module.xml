@@ -26,23 +26,23 @@
 	
 	<!-- Published Services -->
 	
-	<!--service ref="hardwareDao" interface="net.solarnetwork.central.dao.HardwareDao"/>
+	<!--service ref="hardwareDao" interface="org.eniware.central.dao.HardwareDao"/>
 	
-	<service ref="hardwareControlDao" interface="net.solarnetwork.central.dao.HardwareControlDao"/-->
+	<service ref="hardwareControlDao" interface="org.eniware.central.dao.HardwareControlDao"/-->
 	
-	<service ref="networkAssociationDao" interface="net.solarnetwork.central.dao.NetworkAssociationDao" ranking="5"/>
+	<service ref="networkAssociationDao" interface="org.eniware.central.dao.NetworkAssociationDao" ranking="5"/>
 
-	<service ref="solarLocationDao" interface="net.solarnetwork.central.dao.SolarLocationDao" ranking="5"/>
+	<service ref="eniwareLocationDao" interface="org.eniware.central.dao.EniwareLocationDao" ranking="5"/>
 	
-	<service ref="solarNodeDao" interface="net.solarnetwork.central.dao.SolarNodeDao" ranking="5"/>
+	<service ref="eniwareEdgeDao" interface="org.eniware.central.dao.EniwareEdgeDao" ranking="5"/>
 
-	<service ref="solarNodeMetadataDao" interface="net.solarnetwork.central.dao.SolarNodeMetadataDao" ranking="5"/>
+	<service ref="eniwareEdgeMetadataDao" interface="org.eniware.central.dao.EniwareEdgeMetadataDao" ranking="5"/>
 
-	<service ref="priceLocationDao" interface="net.solarnetwork.central.dao.PriceLocationDao" ranking="5"/>
+	<service ref="priceLocationDao" interface="org.eniware.central.dao.PriceLocationDao" ranking="5"/>
 
-	<service ref="weatherLocationDao" interface="net.solarnetwork.central.dao.WeatherLocationDao" ranking="5"/>
+	<service ref="weatherLocationDao" interface="org.eniware.central.dao.WeatherLocationDao" ranking="5"/>
 
-	<service ref="weatherSourceDao" interface="net.solarnetwork.central.dao.WeatherSourceDao" ranking="5"/>
+	<service ref="weatherSourceDao" interface="org.eniware.central.dao.WeatherSourceDao" ranking="5"/>
 
 	<service ref="sqlSessionFactory" interface="org.apache.ibatis.session.SqlSessionFactory">
 		<service-properties>
@@ -56,43 +56,43 @@
 	<!-- Use Java @Transactional annotations to declare transactions. -->
 	<tx:annotation-driven transaction-manager="txManager"/>
 
-	<!--bean id="hardwareDao" class="net.solarnetwork.central.dao.mybatis.MyBatisHardwareDao">
+	<!--bean id="hardwareDao" class="org.eniware.central.dao.mybatis.MyBatisHardwareDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
-	<bean id="hardwareControlDao" class="net.solarnetwork.central.dao.mybatis.MyBatisHardwareControlDao">
+	<bean id="hardwareControlDao" class="org.eniware.central.dao.mybatis.MyBatisHardwareControlDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean-->
 	
-	<bean id="networkAssociationDao" class="net.solarnetwork.central.dao.mybatis.MyBatisNetworkAssociationDao">
+	<bean id="networkAssociationDao" class="org.eniware.central.dao.mybatis.MyBatisNetworkAssociationDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 
-	<bean id="solarLocationDao" class="net.solarnetwork.central.dao.mybatis.MyBatisSolarLocationDao">
+	<bean id="eniwareLocationDao" class="org.eniware.central.dao.mybatis.MyBatisEniwareLocationDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
-	<bean id="solarNodeDao" class="net.solarnetwork.central.dao.mybatis.MyBatisSolarNodeDao">
+	<bean id="eniwareEdgeDao" class="org.eniware.central.dao.mybatis.MyBatisEniwareEdgeDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
-	<bean id="solarNodeMetadataDao" class="net.solarnetwork.central.dao.mybatis.MyBatisSolarNodeMetadataDao">
+	<bean id="eniwareEdgeMetadataDao" class="org.eniware.central.dao.mybatis.MyBatisEniwareEdgeMetadataDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
-	<bean id="priceLocationDao" class="net.solarnetwork.central.dao.mybatis.MyBatisPriceLocationDao">
+	<bean id="priceLocationDao" class="org.eniware.central.dao.mybatis.MyBatisPriceLocationDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
-	<bean id="priceSourceDao" class="net.solarnetwork.central.dao.mybatis.MyBatisPriceSourceDao">
+	<bean id="priceSourceDao" class="org.eniware.central.dao.mybatis.MyBatisPriceSourceDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
-	<bean id="weatherLocationDao" class="net.solarnetwork.central.dao.mybatis.MyBatisWeatherLocationDao">
+	<bean id="weatherLocationDao" class="org.eniware.central.dao.mybatis.MyBatisWeatherLocationDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
-	<bean id="weatherSourceDao" class="net.solarnetwork.central.dao.mybatis.MyBatisWeatherSourceDao">
+	<bean id="weatherSourceDao" class="org.eniware.central.dao.mybatis.MyBatisWeatherSourceDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
@@ -100,39 +100,39 @@
 		<property name="dataSource" ref="dataSource"/>
 		<property name="typeAliases">
 			<list>
-				<value>net.solarnetwork.domain.NetworkAssociationDetails</value>
-				<value>net.solarnetwork.central.domain.PriceLocation</value>
-				<value>net.solarnetwork.central.domain.PriceSource</value>
-				<value>net.solarnetwork.central.domain.SolarLocation</value>
-				<value>net.solarnetwork.central.domain.SolarNode</value>
-				<value>net.solarnetwork.central.domain.SolarNodeMetadata</value>
-				<value>net.solarnetwork.central.domain.SolarNodeMetadataMatch</value>
-				<value>net.solarnetwork.central.domain.WeatherLocation</value>
-				<value>net.solarnetwork.central.domain.WeatherSource</value>
+				<value>org.eniware.domain.NetworkAssociationDetails</value>
+				<value>org.eniware.central.domain.PriceLocation</value>
+				<value>org.eniware.central.domain.PriceSource</value>
+				<value>org.eniware.central.domain.EniwareLocation</value>
+				<value>org.eniware.central.domain.EniwareEdge</value>
+				<value>org.eniware.central.domain.EniwareEdgeMetadata</value>
+				<value>org.eniware.central.domain.EniwareEdgeMetadataMatch</value>
+				<value>org.eniware.central.domain.WeatherLocation</value>
+				<value>org.eniware.central.domain.WeatherSource</value>
 			</list>
 		</property>
 		<property name="typeHandlers">
 			<list>
-				<bean class="net.solarnetwork.central.dao.mybatis.type.JodaDateTimeTypeHandler"/>
-				<bean class="net.solarnetwork.central.dao.mybatis.type.JodaLocalDateTimeTypeHandler"/>
-				<bean class="net.solarnetwork.central.dao.mybatis.type.JodaLocalDateTypeHandler"/>
-				<bean class="net.solarnetwork.central.dao.mybatis.type.JodaLocalTimeTypeHandler"/>
+				<bean class="org.eniware.central.dao.mybatis.type.JodaDateTimeTypeHandler"/>
+				<bean class="org.eniware.central.dao.mybatis.type.JodaLocalDateTimeTypeHandler"/>
+				<bean class="org.eniware.central.dao.mybatis.type.JodaLocalDateTypeHandler"/>
+				<bean class="org.eniware.central.dao.mybatis.type.JodaLocalTimeTypeHandler"/>
 			</list>
 		</property>
 		<property name="mapperLocations">
 			<!-- Note: the order of these elements is significant because of inter-resource includes -->
 			<list>
-				<value>classpath:/net/solarnetwork/central/dao/mybatis/map/NetworkAssociation.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/dao/mybatis/map/NetworkAssociation.xml</value>
 				
-				<value>classpath:/net/solarnetwork/central/dao/mybatis/map/SolarLocation.xml</value>
-				<value>classpath:/net/solarnetwork/central/dao/mybatis/map/SolarNode.xml</value>
-				<value>classpath:/net/solarnetwork/central/dao/mybatis/map/SolarNodeMetadata.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/dao/mybatis/map/EniwareLocation.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/dao/mybatis/map/EniwareEdge.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/dao/mybatis/map/EniwareEdgeMetadata.xml</value>
 				
-				<value>classpath:/net/solarnetwork/central/dao/mybatis/map/PriceSource.xml</value>
-				<value>classpath:/net/solarnetwork/central/dao/mybatis/map/PriceLocation.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/dao/mybatis/map/PriceSource.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/dao/mybatis/map/PriceLocation.xml</value>
 
-				<value>classpath:/net/solarnetwork/central/dao/mybatis/map/WeatherSource.xml</value>
-				<value>classpath:/net/solarnetwork/central/dao/mybatis/map/WeatherLocation.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/dao/mybatis/map/WeatherSource.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/dao/mybatis/map/WeatherLocation.xml</value>
 			</list>
 		</property>
 	</bean>

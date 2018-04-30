@@ -41,10 +41,10 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.eniware.central.ValidationException;
-import org.eniware.central.dao.SolarLocationDao;
-import org.eniware.central.dao.SolarNodeDao;
-import org.eniware.central.domain.SolarLocation;
-import org.eniware.central.domain.SolarNode;
+import org.eniware.central.dao.EniwareLocationDao;
+import org.eniware.central.dao.EniwareEdgeDao;
+import org.eniware.central.domain.EniwareLocation;
+import org.eniware.central.domain.EniwareEdge;
 import org.eniware.central.in.biz.NetworkIdentityBiz;
 import org.eniware.central.instructor.biz.InstructorBiz;
 import org.eniware.central.instructor.domain.Instruction;
@@ -152,8 +152,8 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 	private UserNodeConfirmationDao userNodeConfirmationDao;
 	private UserNodeCertificateDao userNodeCertificateDao;
 	private Validator userValidator;
-	private SolarNodeDao solarNodeDao;
-	private SolarLocationDao solarLocationDao;
+	private EniwareEdgeDao eniwareEdgeDao;
+	private EniwareLocationDao eniwareLocationDao;
 	private NetworkIdentityBiz networkIdentityBiz;
 	private PasswordEncoder passwordEncoder;
 	private Set<String> confirmedUserRoles = DEFAULT_CONFIRMED_USER_ROLES;
@@ -170,8 +170,8 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 
 	private Period invitationExpirationPeriod = new Period(0, 0, 1, 0, 0, 0, 0, 0); // 1 week
 	private Period nodeCertificateRenewalPeriod = new Period(0, 3, 0, 0, 0, 0, 0, 0); // 3 months
-	private String defaultSolarLocationName = "Unknown";
-	private String networkCertificateSubjectDNFormat = "UID=%s,O=SolarNetwork";
+	private String defaultEniwareLocationName = "Unknown";
+	private String networkCertificateSubjectDNFormat = "UID=%s,O=EniwareNetwork";
 
 	private User getCurrentUser() {
 		String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -846,28 +846,28 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 					AuthorizationException.Reason.REGISTRATION_ALREADY_CONFIRMED);
 		}
 
-		// find or create SolarLocation now, for country + time zone
-		SolarLocation loc = solarLocationDao.getSolarLocationForTimeZone(conf.getCountry(),
+		// find or create EniwareLocation now, for country + time zone
+		EniwareLocation loc = eniwareLocationDao.getEniwareLocationForTimeZone(conf.getCountry(),
 				conf.getTimeZoneId());
 		if ( loc == null ) {
 			// create location now
-			loc = new SolarLocation();
+			loc = new EniwareLocation();
 			loc.setName(conf.getCountry() + " - " + conf.getTimeZoneId());
 			loc.setCountry(conf.getCountry());
 			loc.setTimeZoneId(conf.getTimeZoneId());
-			loc = solarLocationDao.get(solarLocationDao.store(loc));
+			loc = eniwareLocationDao.get(eniwareLocationDao.store(loc));
 		}
 		assert loc != null;
 
-		// create SolarNode now, and allow using a pre-populated node ID, and possibly pre-existing
-		final Long nodeId = (conf.getNodeId() == null ? solarNodeDao.getUnusedNodeId()
+		// create EniwareEdge now, and allow using a pre-populated node ID, and possibly pre-existing
+		final Long nodeId = (conf.getNodeId() == null ? eniwareEdgeDao.getUnusedNodeId()
 				: conf.getNodeId());
-		SolarNode node = solarNodeDao.get(nodeId);
+		EniwareEdge node = eniwareEdgeDao.get(nodeId);
 		if ( node == null ) {
-			node = new SolarNode();
+			node = new EniwareEdge();
 			node.setId(nodeId);
 			node.setLocation(loc);
-			solarNodeDao.store(node);
+			eniwareEdgeDao.store(node);
 		}
 
 		// create UserNode now if it doesn't already exist
@@ -1204,12 +1204,12 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 		this.invitationExpirationPeriod = invitationExpirationPeriod;
 	}
 
-	public String getDefaultSolarLocationName() {
-		return defaultSolarLocationName;
+	public String getDefaultEniwareLocationName() {
+		return defaultEniwareLocationName;
 	}
 
-	public void setDefaultSolarLocationName(String defaultSolarLocationName) {
-		this.defaultSolarLocationName = defaultSolarLocationName;
+	public void setDefaultEniwareLocationName(String defaultEniwareLocationName) {
+		this.defaultEniwareLocationName = defaultEniwareLocationName;
 	}
 
 	public void setUserDao(UserDao userDao) {
@@ -1228,12 +1228,12 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 		this.userValidator = userValidator;
 	}
 
-	public void setSolarNodeDao(SolarNodeDao solarNodeDao) {
-		this.solarNodeDao = solarNodeDao;
+	public void setEniwareEdgeDao(EniwareEdgeDao eniwareEdgeDao) {
+		this.eniwareEdgeDao = eniwareEdgeDao;
 	}
 
-	public void setSolarLocationDao(SolarLocationDao solarLocationDao) {
-		this.solarLocationDao = solarLocationDao;
+	public void setEniwareLocationDao(EniwareLocationDao eniwareLocationDao) {
+		this.eniwareLocationDao = eniwareLocationDao;
 	}
 
 	public void setNetworkIdentityBiz(NetworkIdentityBiz networkIdentityBiz) {

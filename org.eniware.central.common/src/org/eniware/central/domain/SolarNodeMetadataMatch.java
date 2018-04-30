@@ -7,14 +7,14 @@
 package org.eniware.central.domain;
 
 /**
- * A "match" to a {@link SolarNodeMetadata}.
+ * A "match" to a {@link EniwareEdgeMetadata}.
  * 
- * Although this class extends {@link SolarNodeMetadata} that is merely an
+ * Although this class extends {@link EniwareEdgeMetadata} that is merely an
  * implementation detail.
  * @version 1.0
  * @since 1.32
  */
-public class SolarNodeMetadataMatch extends SolarNodeMetadata implements SolarNodeMetadataFilterMatch {
+public class EniwareEdgeMetadataMatch extends EniwareEdgeMetadata implements EniwareEdgeMetadataFilterMatch {
 
 	private static final long serialVersionUID = 8790622698968823231L;
 

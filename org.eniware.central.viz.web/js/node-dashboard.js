@@ -1,7 +1,7 @@
 var nodeId = -1;
 var featureConsumption = false;
 var featureGridPrice = false;
-var sourceId = 'Solar';
+var sourceId = 'Eniware';
 var consumptionSourceId = 'Main';
 var priceSourceId;
 var priceLocationId;

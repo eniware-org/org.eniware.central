@@ -16,7 +16,7 @@
 
 	<!-- Configuration -->
 	
-	<osgix:cm-properties id="cfg" persistent-id="net.solarnetwork.central.user.nim.jobs">
+	<osgix:cm-properties id="cfg" persistent-id="org.eniware.central.user.nim.jobs">
 		<beans:prop key="NodeImageMakerMaintenance.jobCron">0 12 * * * ?</beans:prop>
 		<beans:prop key="NodeImageMakerMaintenance.maximumWaitMs">600000</beans:prop>
 	</osgix:cm-properties>
@@ -27,9 +27,9 @@
 
 	<reference id="eventAdmin" interface="org.osgi.service.event.EventAdmin"/>
 	
-	<bean id="nimBizList" class="net.solarnetwork.util.DynamicServiceTracker">
+	<bean id="nimBizList" class="org.eniware.util.DynamicServiceTracker">
 		<property name="bundleContext" ref="bundleContext"/>
-		<property name="serviceFilter" value="(&amp;(objectClass=net.solarnetwork.central.user.nim.biz.SolarNodeImageMakerBiz)(objectClass=net.solarnetwork.central.biz.MaintenanceSubscriber))"/>
+		<property name="serviceFilter" value="(&amp;(objectClass=org.eniware.central.user.nim.biz.EniwareEdgeImageMakerBiz)(objectClass=org.eniware.central.biz.MaintenanceSubscriber))"/>
 	</bean>
 	
 	<!-- Published Services -->
@@ -38,7 +38,7 @@
 		<service-properties>
 			<entry key="#{T(org.osgi.service.event.EventConstants).EVENT_TOPIC}">
 				<array value-type="java.lang.String">
-					<value>#{T(net.solarnetwork.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
+					<value>#{T(org.eniware.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
 					<value>#{nimMaintenanceJob.jobTopic}</value>
 				</array>
 			</entry>
@@ -47,13 +47,13 @@
 
 	<!-- Supporting Services -->
 
-	<bean id="nimMaintenanceJob" class="net.solarnetwork.central.user.nim.jobs.SolarNodeImageMakerMaintenanceJob">
+	<bean id="nimMaintenanceJob" class="org.eniware.central.user.nim.jobs.EniwareEdgeImageMakerMaintenanceJob">
 		<argument ref="eventAdmin"/>
 		<argument ref="nimBizList"/>
 		<property name="jobCron" value="${NodeImageMakerMaintenance.jobCron}"/>
 		<property name="maximumWaitMs" value="${NodeImageMakerMaintenance.maximumWaitMs}"/>
 		<property name="jobId" value="NodeImageMakerMaintenance"/>
-		<property name="jobTopic" value="net/solarnetwork/central/user/nim/NodeImageMakerMaintenance"/>
+		<property name="jobTopic" value="net/eniwarenetwork/central/user/nim/NodeImageMakerMaintenance"/>
 	</bean>
 
 </blueprint>

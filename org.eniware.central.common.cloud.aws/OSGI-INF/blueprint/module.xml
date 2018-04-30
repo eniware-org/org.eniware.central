@@ -13,12 +13,12 @@
 	
 	<!-- Published Services -->
 	
-	<osgix:managed-service-factory factory-pid="net.solarnetwork.central.cloud.aws.biz.AwsVirtualMachineBiz"
+	<osgix:managed-service-factory factory-pid="org.eniware.central.cloud.aws.biz.AwsVirtualMachineBiz"
 			autowire-on-update="true" update-method="init">
 		<osgix:interfaces>
-			<beans:value>net.solarnetwork.central.cloud.biz.VirtualMachineBiz</beans:value>
+			<beans:value>org.eniware.central.cloud.biz.VirtualMachineBiz</beans:value>
 		</osgix:interfaces>
-		<bean class="net.solarnetwork.central.cloud.aws.biz.AwsVirtualMachineBiz" init-method="init"/>
+		<bean class="org.eniware.central.cloud.aws.biz.AwsVirtualMachineBiz" init-method="init"/>
 	</osgix:managed-service-factory>
 	
 </blueprint>

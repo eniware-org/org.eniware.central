@@ -23,7 +23,7 @@ public class ReportingWeatherDatum extends WeatherDatum implements ReportingDatu
 	private LocalDateTime localDateTime;
 	
 	/* (non-Javadoc)
-	 * @see net.sf.solarnetwork.central.domain.ReportingDatum#getLocalDate()
+	 * @see net.sf.eniwarenetwork.central.domain.ReportingDatum#getLocalDate()
 	 */
 	public LocalDate getLocalDate() {
 		if ( localDateTime == null ) {
@@ -33,7 +33,7 @@ public class ReportingWeatherDatum extends WeatherDatum implements ReportingDatu
 	}
 
 	/* (non-Javadoc)
-	 * @see net.sf.solarnetwork.central.domain.ReportingDatum#getLocalTime()
+	 * @see net.sf.eniwarenetwork.central.domain.ReportingDatum#getLocalTime()
 	 */
 	public LocalTime getLocalTime() {
 		if ( localDateTime == null ) {

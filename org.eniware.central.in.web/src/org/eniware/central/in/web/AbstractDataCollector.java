@@ -15,8 +15,8 @@ import org.eniware.central.instructor.biz.InstructorBiz;
 import org.eniware.central.security.AuthenticatedNode;
 import org.eniware.central.security.SecurityException;
 
-import org.eniware.central.dao.SolarNodeDao;
-import org.eniware.central.domain.SolarNode;
+import org.eniware.central.dao.EniwareEdgeDao;
+import org.eniware.central.domain.EniwareEdge;
 import org.eniware.central.instructor.domain.Instruction;
 import org.eniware.util.JodaDateFormatEditor;
 import org.eniware.util.OptionalServiceTracker;
@@ -71,7 +71,7 @@ public abstract class AbstractDataCollector {
 			DATE_TIME_FORMAT, ParseMode.DateTime);
 
 	private DataCollectorBiz dataCollectorBiz;
-	private SolarNodeDao solarNodeDao;
+	private EniwareEdgeDao eniwareEdgeDao;
 	private String viewName = DEFAULT_VIEW_NAME;
 
 	@Resource
@@ -114,16 +114,16 @@ public abstract class AbstractDataCollector {
 	}
 
 	/**
-	 * Add a SolarNode's TimeZone to the result model.
+	 * Add a EniwareEdge's TimeZone to the result model.
 	 * 
 	 * @param nodeId
 	 *        the node ID
 	 * @param model
 	 *        the model
-	 * @return the SolarNode entity
+	 * @return the EniwareEdge entity
 	 */
-	protected SolarNode setupNodeTimeZone(Long nodeId, Model model) {
-		SolarNode node = solarNodeDao.get(nodeId);
+	protected EniwareEdge setupNodeTimeZone(Long nodeId, Model model) {
+		EniwareEdge node = eniwareEdgeDao.get(nodeId);
 		model.asMap().remove("weatherDatum");
 		if ( node != null ) {
 			model.addAttribute(MODEL_KEY_NODE_TZ, node.getTimeZone());
@@ -165,18 +165,18 @@ public abstract class AbstractDataCollector {
 	}
 
 	/**
-	 * @return the solarNodeDao
+	 * @return the eniwareEdgeDao
 	 */
-	public SolarNodeDao getSolarNodeDao() {
-		return solarNodeDao;
+	public EniwareEdgeDao getEniwareEdgeDao() {
+		return eniwareEdgeDao;
 	}
 
 	/**
-	 * @param solarNodeDao
-	 *        the solarNodeDao to set
+	 * @param eniwareEdgeDao
+	 *        the eniwareEdgeDao to set
 	 */
-	public void setSolarNodeDao(SolarNodeDao solarNodeDao) {
-		this.solarNodeDao = solarNodeDao;
+	public void setEniwareEdgeDao(EniwareEdgeDao eniwareEdgeDao) {
+		this.eniwareEdgeDao = eniwareEdgeDao;
 	}
 
 	/**

@@ -15,8 +15,8 @@ import java.util.Map;
 
 import org.eniware.central.domain.Aggregation;
 import org.eniware.central.domain.Location;
-import org.eniware.central.domain.SolarLocation;
-import org.eniware.central.domain.SolarNodeMetadataFilter;
+import org.eniware.central.domain.EniwareLocation;
+import org.eniware.central.domain.EniwareEdgeMetadataFilter;
 import org.eniware.central.domain.SortDescriptor;
 import org.eniware.central.support.MutableSortDescriptor;
 import org.joda.time.DateTime;
@@ -30,9 +30,9 @@ import org.joda.time.DateTime;
 public class DatumFilterCommand implements LocationDatumFilter, NodeDatumFilter,
 		AggregateNodeDatumFilter, GeneralLocationDatumFilter, AggregateGeneralLocationDatumFilter,
 		GeneralNodeDatumFilter, AggregateGeneralNodeDatumFilter, GeneralLocationDatumMetadataFilter,
-		GeneralNodeDatumMetadataFilter, SolarNodeMetadataFilter {
+		GeneralNodeDatumMetadataFilter, EniwareEdgeMetadataFilter {
 
-	private final SolarLocation location;
+	private final EniwareLocation location;
 	private DateTime startDate;
 	private DateTime endDate;
 	private boolean mostRecent = false;
@@ -54,7 +54,7 @@ public class DatumFilterCommand implements LocationDatumFilter, NodeDatumFilter,
 	 */
 	public DatumFilterCommand() {
 		super();
-		location = new SolarLocation();
+		location = new EniwareLocation();
 	}
 
 	/**
@@ -65,10 +65,10 @@ public class DatumFilterCommand implements LocationDatumFilter, NodeDatumFilter,
 	 */
 	public DatumFilterCommand(Location loc) {
 		super();
-		if ( loc instanceof SolarLocation ) {
-			location = (SolarLocation) loc;
+		if ( loc instanceof EniwareLocation ) {
+			location = (EniwareLocation) loc;
 		} else {
-			location = new SolarLocation(loc);
+			location = new EniwareLocation(loc);
 		}
 	}
 

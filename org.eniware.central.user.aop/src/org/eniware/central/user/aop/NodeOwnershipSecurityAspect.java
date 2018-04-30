@@ -39,23 +39,23 @@ public class NodeOwnershipSecurityAspect extends AuthorizationSupport {
 		this.userDao = userDao;
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*NodeOwnershipBiz.pending*(..)) && args(email)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*NodeOwnershipBiz.pending*(..)) && args(email)")
 	public void pendingRequestsForEmail(String email) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*NodeOwnershipBiz.requestNodeOwnershipTransfer(..)) && args(userId,nodeId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*NodeOwnershipBiz.requestNodeOwnershipTransfer(..)) && args(userId,nodeId,..)")
 	public void requestTransfer(Long userId, Long nodeId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*NodeOwnershipBiz.getNodeOwnershipTransfer(..)) && args(userId,nodeId)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*NodeOwnershipBiz.getNodeOwnershipTransfer(..)) && args(userId,nodeId)")
 	public void getTransfer(Long userId, Long nodeId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*NodeOwnershipBiz.cancel*(..)) && args(userId,nodeId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*NodeOwnershipBiz.cancel*(..)) && args(userId,nodeId,..)")
 	public void cancelTransferRequest(Long userId, Long nodeId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*NodeOwnershipBiz.confirm*(..)) && args(userId,nodeId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*NodeOwnershipBiz.confirm*(..)) && args(userId,nodeId,..)")
 	public void confirmTransferRequest(Long userId, Long nodeId) {
 	}
 

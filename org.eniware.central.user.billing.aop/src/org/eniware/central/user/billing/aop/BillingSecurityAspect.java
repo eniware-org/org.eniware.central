@@ -33,19 +33,19 @@ public class BillingSecurityAspect extends AuthorizationSupport {
 		super(userNodeDao);
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.billing.biz.*BillingBiz.*ForUser(..)) && args(userId, ..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.billing.biz.*BillingBiz.*ForUser(..)) && args(userId, ..)")
 	public void forUserAccess(Long userId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.billing.biz.*BillingBiz.getInvoice(..)) && args(userId, ..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.billing.biz.*BillingBiz.getInvoice(..)) && args(userId, ..)")
 	public void getInvoice(Long userId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.billing.biz.*BillingBiz.renderInvoice(..)) && args(userId, ..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.billing.biz.*BillingBiz.renderInvoice(..)) && args(userId, ..)")
 	public void renderInvoice(Long userId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.billing.biz.*BillingBiz.findFilteredInvoices(..)) && args(filter, ..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.billing.biz.*BillingBiz.findFilteredInvoices(..)) && args(filter, ..)")
 	public void findFilteredInvoices(InvoiceFilter filter) {
 	}
 

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed Nov 05 09:48:43 NZDT 2014-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.solarnetwork.central.dao.mybatis.PriceSource">
+<mapper namespace="org.eniware.central.dao.mybatis.PriceSource">
 
 	<insert id="insert-PriceSource" parameterType="PriceSource">
 		<selectKey keyProperty="id" resultType="long" order="BEFORE"> 
-              SELECT nextval('solarnet.solarnet_seq') AS id 
+              SELECT nextval('eniwarenet.eniwarenet_seq') AS id 
 		</selectKey>
-		INSERT INTO solarnet.sn_price_source 
+		INSERT INTO eniwarenet.sn_price_source 
 			(id
 			<if test="created != null">, created</if>
 			, sname)
@@ -19,7 +19,7 @@
 
 	<update id="update-PriceSource" parameterType="PriceSource">
 		UPDATE 
-			solarnet.sn_price_source
+			eniwarenet.sn_price_source
 		SET
 			sname = #{name}
 		WHERE
@@ -42,7 +42,7 @@
 		SELECT
 			<include refid="fragment-PriceSource-full-result"/>
 		FROM
-			solarnet.sn_price_source psource
+			eniwarenet.sn_price_source psource
 		WHERE
 			psource.id = #{id}
 	</select>
@@ -51,7 +51,7 @@
 		SELECT
 			<include refid="fragment-PriceSource-full-result"/>
 		FROM
-			solarnet.sn_price_source psource
+			eniwarenet.sn_price_source psource
 		WHERE
 			psource.sname = #{name,javaType=string,jdbcType=VARCHAR}
 	</select>
@@ -62,10 +62,10 @@
 		SELECT
 			<include refid="fragment-PriceSource-full-result"/>
 		FROM
-			solarnet.sn_price_source psource
+			eniwarenet.sn_price_source psource
 		<where>
 			<if test="fts != null">
-				psource.fts_default @@ solarcommon.plainto_prefix_tsquery(#{fts,javaType=string,jdbcType=VARCHAR})
+				psource.fts_default @@ eniwarecommon.plainto_prefix_tsquery(#{fts,javaType=string,jdbcType=VARCHAR})
 			</if>
 		</where>
 		ORDER BY

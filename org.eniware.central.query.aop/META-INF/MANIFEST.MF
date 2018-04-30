@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNet Query AOP
+Bundle-Name: EniwareNet Query AOP
 Bundle-SymbolicName: org.eniware.central.query.aop
 Bundle-Version: 1.9.1
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .,build/eclipse/
 Import-Package: 

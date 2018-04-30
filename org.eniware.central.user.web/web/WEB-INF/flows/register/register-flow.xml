@@ -3,8 +3,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 	
-	<var name="user" class="net.solarnetwork.central.user.domain.User" />
-	<var name="mailHelper" class="net.solarnetwork.central.mail.support.MailServiceHelper"/>
+	<var name="user" class="org.eniware.central.user.domain.User" />
+	<var name="mailHelper" class="org.eniware.central.mail.support.MailServiceHelper"/>
 	
 	<view-state id="start" view="registration/start" model="user">
 		<transition on="next" to="review" />
@@ -22,7 +22,7 @@
 				user.name, user.email)" result="flowScope.mailAddress"/>
 			<evaluate expression="flowScope.mailHelper.createResourceDataSource(
 				resourceBundle.registrationConfirmMailSubject, 
-				'/net/solarnetwork/central/reg/web/confirm-register.txt',
+				'/net/eniwarenetwork/central/reg/web/confirm-register.txt',
 				externalContext.locale, 
 				user,
 				receipt,
@@ -34,7 +34,7 @@
 	<end-state id="done" view="registration/submitted" />
 	
 	<global-transitions>
-		<transition on-exception="net.solarnetwork.central.security.AuthorizationException" to="start"/>
+		<transition on-exception="org.eniware.central.security.AuthorizationException" to="start"/>
 	</global-transitions>
 	
 </flow>

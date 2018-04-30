@@ -50,7 +50,7 @@ public class JdbcQueryAuditor implements QueryAuditor {
 	public static final long DEFAULT_CONNECTION_RECOVERY_DELAY = 15000;
 
 	/** The default value for the {@code nodeSourceIncrementSql} property. */
-	public static final String DEFAULT_NODE_SOURCE_INCREMENT_SQL = "{call solaragg.aud_inc_datum_query_count(?, ?, ?, ?)}";
+	public static final String DEFAULT_NODE_SOURCE_INCREMENT_SQL = "{call eniwareagg.aud_inc_datum_query_count(?, ?, ?, ?)}";
 
 	/**
 	 * A regular expression that matches if a JDBC statement is a

@@ -15,7 +15,7 @@ import java.util.zip.GZIPInputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eniware.central.RepeatableTaskException;
-import org.eniware.central.dao.SolarNodeDao;
+import org.eniware.central.dao.EniwareEdgeDao;
 import org.eniware.central.instructor.domain.Instruction;
 import org.eniware.central.instructor.domain.InstructionState;
 import org.eniware.central.support.JsonUtils;
@@ -74,16 +74,16 @@ public class BulkJsonDataCollector extends AbstractDataCollector {
 	 * 
 	 * @param dataCollectorBiz
 	 *        the {@link DataCollectorBiz} to use
-	 * @param solarNodeDao
-	 *        the {@link SolarNodeDao} to use
+	 * @param eniwareEdgeDao
+	 *        the {@link EniwareEdgeDao} to use
 	 * @param objectMapper
 	 *        the {@link ObjectMapper} to use
 	 */
 	@Autowired
-	public BulkJsonDataCollector(DataCollectorBiz dataCollectorBiz, SolarNodeDao solarNodeDao,
+	public BulkJsonDataCollector(DataCollectorBiz dataCollectorBiz, EniwareEdgeDao eniwareEdgeDao,
 			ObjectMapper objectMapper) {
 		setDataCollectorBiz(dataCollectorBiz);
-		setSolarNodeDao(solarNodeDao);
+		setEniwareEdgeDao(eniwareEdgeDao);
 		this.objectMapper = objectMapper;
 	}
 
@@ -292,7 +292,7 @@ public class BulkJsonDataCollector extends AbstractDataCollector {
 		if ( className == null ) {
 			return null;
 		}
-		className = "net.solarnetwork.central.datum.domain." + className;
+		className = "org.eniware.central.datum.domain." + className;
 
 		Class<?> datumClass = null;
 		Object datum = null;

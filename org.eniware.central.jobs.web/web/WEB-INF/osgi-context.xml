@@ -13,6 +13,6 @@
 
 	<!-- Configuration -->
 
-	<osgi:reference id="schedulerManager" interface="net.solarnetwork.central.scheduler.SchedulerManager"/>
+	<osgi:reference id="schedulerManager" interface="org.eniware.central.scheduler.SchedulerManager"/>
 
 </beans>

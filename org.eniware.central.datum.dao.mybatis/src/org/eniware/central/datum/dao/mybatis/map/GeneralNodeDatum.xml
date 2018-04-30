@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!--Converted at: Thu Nov 13 07:30:21 NZDT 2014-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.solarnetwork.central.datum.dao.mybatis.GeneralNodeDatum">
+<mapper namespace="org.eniware.central.datum.dao.mybatis.GeneralNodeDatum">
 
 	<parameterMap id="pmap-GeneralNodeDatum" type="GeneralNodeDatum">
 		<parameter property="created" jdbcType="TIMESTAMP" mode="IN"/>
@@ -12,11 +12,11 @@
 	</parameterMap>
 
 	<update id="insert-GeneralNodeDatum" parameterMap="pmap-GeneralNodeDatum" statementType="CALLABLE">
-		{call solardatum.store_datum(?, ?, ?, ?, ?)}
+		{call eniwaredatum.store_datum(?, ?, ?, ?, ?)}
 	</update>
 	
 	<update id="update-GeneralNodeDatum" parameterMap="pmap-GeneralNodeDatum" statementType="CALLABLE">
-		{call solardatum.store_datum(?, ?, ?, ?, ?)}
+		{call eniwaredatum.store_datum(?, ?, ?, ?, ?)}
 	</update>
 	
 	<sql id="fragment-GeneralNodeDatum-full-result">
@@ -47,7 +47,7 @@
 		SELECT
 			<include refid="fragment-GeneralNodeDatum-full-result"/>
 		FROM
-			solardatum.da_datum_data datum
+			eniwaredatum.da_datum_data datum
 		WHERE
 			datum.node_id = #{nodeId}
 			AND datum.ts = #{created}
@@ -55,7 +55,7 @@
 	</select>
 
 	<select id="find-general-distinct-sources" resultType="string" statementType="CALLABLE">
-		{call solardatum.find_available_sources(#{node,jdbcType=BIGINT}, #{start,jdbcType=TIMESTAMP}, #{end,jdbcType=TIMESTAMP})}
+		{call eniwaredatum.find_available_sources(#{node,jdbcType=BIGINT}, #{start,jdbcType=TIMESTAMP}, #{end,jdbcType=TIMESTAMP})}
 	</select>
 	
 	<parameterMap id="pmap-reportable-interval" type="map">
@@ -68,34 +68,34 @@
 	</parameterMap>
 
 	<update id="find-general-reportable-interval" parameterMap="pmap-reportable-interval" statementType="CALLABLE">
-		{call solardatum.find_reportable_interval(?, ?, ?, ?, ?, ?)}
+		{call eniwaredatum.find_reportable_interval(?, ?, ?, ?, ?, ?)}
 	</update>
 
 	<!-- 
 		FilterableDao support 
 	-->
 
-	<resultMap id="GeneralNodeDatumMatchResult" type="ReportingGeneralNodeDatum" extends="net.solarnetwork.central.datum.dao.mybatis.GeneralNodeDatum.GeneralNodeDatumFullResult">
+	<resultMap id="GeneralNodeDatumMatchResult" type="ReportingGeneralNodeDatum" extends="org.eniware.central.datum.dao.mybatis.GeneralNodeDatum.GeneralNodeDatumFullResult">
 		<result property="localDateTime" column="datum_local_date"/>
 	</resultMap>
-	<resultMap id="GeneralNodeDatumDirectMatchResult" type="GeneralNodeDatumMatch" extends="net.solarnetwork.central.datum.dao.mybatis.GeneralNodeDatum.GeneralNodeDatumDirectResult"/>
+	<resultMap id="GeneralNodeDatumDirectMatchResult" type="GeneralNodeDatumMatch" extends="org.eniware.central.datum.dao.mybatis.GeneralNodeDatum.GeneralNodeDatumDirectResult"/>
 
 	<select id="find-general-most-recent" resultMap="GeneralNodeDatumDirectMatchResult" statementType="CALLABLE">
 		<choose>
 			<when test="filter.userIds != null">
-				{call solaruser.find_most_recent_datum_for_user(
-					#{filter.userIds,jdbcType=ARRAY,typeHandler=net.solarnetwork.central.dao.mybatis.type.LongArrayTypeHandler}
+				{call eniwareuser.find_most_recent_datum_for_user(
+					#{filter.userIds,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.LongArrayTypeHandler}
 				)}
 			</when>
 			<when test="filter.nodeIds.length > 1 and filter.sourceId == null">
-				{call solardatum.find_most_recent(
-					#{filter.nodeIds,jdbcType=ARRAY,typeHandler=net.solarnetwork.central.dao.mybatis.type.LongArrayTypeHandler}
+				{call eniwaredatum.find_most_recent(
+					#{filter.nodeIds,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.LongArrayTypeHandler}
 				)}
 			</when>
 			<otherwise>
-				{call solardatum.find_most_recent(
+				{call eniwaredatum.find_most_recent(
 					#{filter.nodeId,jdbcType=BIGINT}, 
-					#{filter.sourceIds,jdbcType=ARRAY,typeHandler=net.solarnetwork.central.dao.mybatis.type.TextArrayTypeHandler}
+					#{filter.sourceIds,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.TextArrayTypeHandler}
 				)}
 			</otherwise>
 		</choose>
@@ -130,9 +130,9 @@
 			<include refid="fragment-GeneralNodeDatum-full-result"/>
 			, datum.ts AT TIME ZONE COALESCE(loc.time_zone, 'UTC') AS datum_local_date
 		FROM
-			solardatum.da_datum_data datum
-		LEFT OUTER JOIN solarnet.sn_node node ON node.node_id = datum.node_id
-		LEFT OUTER JOIN solarnet.sn_loc loc ON loc.id = node.loc_id
+			eniwaredatum.da_datum_data datum
+		LEFT OUTER JOIN eniwarenet.ew_edge node ON node.node_id = datum.node_id
+		LEFT OUTER JOIN eniwarenet.sn_loc loc ON loc.id = node.loc_id
 		<include refid="fragment-findall-GeneralNodeDatum-GeneralNodeDatumMatch-where"/>
 		ORDER BY
 		<choose>
@@ -155,19 +155,19 @@
 	<select id="findall-GeneralNodeDatum-GeneralNodeDatumMatch-count" resultType="long">
 		SELECT count(datum.ts)
 		FROM
-			solardatum.da_datum_data datum
+			eniwaredatum.da_datum_data datum
 		<include refid="fragment-findall-GeneralNodeDatum-GeneralNodeDatumMatch-where"/>
 	</select>
 	
 	<!-- Audit support -->
 	
 	<update id="find-general-audit-interval" parameterMap="pmap-reportable-interval" statementType="CALLABLE">
-		{call solaragg.find_audit_datum_interval(?, ?, ?, ?, ?, ?)}
+		{call eniwareagg.find_audit_datum_interval(?, ?, ?, ?, ?, ?)}
 	</update>
 
 	<select id="find-general-audit-hourly-prop-count" resultType="long">
 		SELECT SUM(CAST(aud.prop_count AS BIGINT))
-		FROM solaragg.aud_datum_hourly aud
+		FROM eniwareagg.aud_datum_hourly aud
 		<where>
 			<if test="nodeIds != null and nodeIds.length > 0">
 				AND aud.node_id IN
@@ -218,21 +218,21 @@
 	<select id="find-general-reporting-most-recent" resultMap="ReportingGeneralNodeDatumDirectResult" statementType="CALLABLE">
 		<choose>
 			<when test="aggregation == 'Hour'">
-				{call solaragg.find_most_recent_hourly(
+				{call eniwareagg.find_most_recent_hourly(
 					#{filter.nodeId,jdbcType=BIGINT}, 
-					#{filter.sourceIds,jdbcType=ARRAY,typeHandler=net.solarnetwork.central.dao.mybatis.type.TextArrayTypeHandler}
+					#{filter.sourceIds,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.TextArrayTypeHandler}
 				)}
 			</when>
 			<when test="aggregation == 'Day'">
-				{call solaragg.find_most_recent_daily(
+				{call eniwareagg.find_most_recent_daily(
 					#{filter.nodeId,jdbcType=BIGINT}, 
-					#{filter.sourceIds,jdbcType=ARRAY,typeHandler=net.solarnetwork.central.dao.mybatis.type.TextArrayTypeHandler}
+					#{filter.sourceIds,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.TextArrayTypeHandler}
 				)}
 			</when>
 			<otherwise>
-				{call solaragg.find_most_recent_monthly(
+				{call eniwareagg.find_most_recent_monthly(
 					#{filter.nodeId,jdbcType=BIGINT}, 
-					#{filter.sourceIds,jdbcType=ARRAY,typeHandler=net.solarnetwork.central.dao.mybatis.type.TextArrayTypeHandler}
+					#{filter.sourceIds,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.TextArrayTypeHandler}
 				)}
 			</otherwise>
 		</choose>
@@ -279,9 +279,9 @@
 	</sql>
 
 	<sql id="fragment-findall-ReportingGeneralNodeDatum-minuteagg-where">
-		solaragg.find_agg_datum_minute(
+		eniwareagg.find_agg_datum_minute(
 			#{filter.nodeId,jdbcType=BIGINT},
-			#{filter.sourceIds,jdbcType=ARRAY,typeHandler=net.solarnetwork.central.dao.mybatis.type.TextArrayTypeHandler},
+			#{filter.sourceIds,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.TextArrayTypeHandler},
 			#{start,jdbcType=TIMESTAMP}::timestamptz,
 			#{end,jdbcType=TIMESTAMP}::timestamptz,
 			#{filter.aggregation.level}
@@ -290,9 +290,9 @@
 
 	<sql id="fragment-findall-ReportingGeneralNodeDatum-agg-where">
 		#{filter.nodeId,jdbcType=BIGINT},
-		#{filter.sourceIds,jdbcType=ARRAY,typeHandler=net.solarnetwork.central.dao.mybatis.type.TextArrayTypeHandler}
+		#{filter.sourceIds,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.TextArrayTypeHandler}
 		<if test="filter.dataPathElements != null">
-			,#{filter.dataPathElements,jdbcType=ARRAY,typeHandler=net.solarnetwork.central.dao.mybatis.type.TextArrayTypeHandler}
+			,#{filter.dataPathElements,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.TextArrayTypeHandler}
 		</if>
 		<if test="filter != null and filter.startDate != null and filter.endDate != null">
 			,#{filter.startDate,jdbcType=TIMESTAMP}::timestamptz
@@ -315,7 +315,7 @@
 	<select id="findall-GeneralNodeDatum-ReportingGeneralNodeDatum-Hour-count" resultType="long">
 		SELECT count(datum.ts_start)
 		FROM
-			solaragg.agg_datum_hourly_data datum
+			eniwareagg.agg_datum_hourly_data datum
 		<include refid="fragment-findall-ReportingGeneralNodeDatum-where"/>
 	</select>
 	
@@ -323,7 +323,7 @@
 		SELECT
 			<include refid="fragment-GeneralNodeDatum-aggregation-result"/>
 		FROM
-			solaragg.agg_datum_hourly_data datum
+			eniwareagg.agg_datum_hourly_data datum
 		<include refid="fragment-findall-ReportingGeneralNodeDatum-where"/>
 		<include refid="fragment-findall-ReportingGeneralNodeDatum-order"/>
 	</select>
@@ -334,7 +334,7 @@
 		SELECT
 			<include refid="fragment-GeneralNodeDatum-aggregation-result"/>
 		FROM
-			solaragg.find_agg_datum_hod(
+			eniwareagg.find_agg_datum_hod(
 				<include refid="fragment-findall-ReportingGeneralNodeDatum-agg-where"/>
 			) AS datum
 		<include refid="fragment-findall-ReportingGeneralNodeDatum-order"/>
@@ -346,7 +346,7 @@
 		SELECT
 			<include refid="fragment-GeneralNodeDatum-aggregation-result"/>
 		FROM
-			solaragg.find_agg_datum_seasonal_hod(
+			eniwareagg.find_agg_datum_seasonal_hod(
 				<include refid="fragment-findall-ReportingGeneralNodeDatum-agg-where"/>
 			) AS datum
 		<include refid="fragment-findall-ReportingGeneralNodeDatum-order"/>
@@ -357,7 +357,7 @@
 	<select id="findall-GeneralNodeDatum-ReportingGeneralNodeDatum-Day-count" resultType="long">
 		SELECT count(datum.ts_start)
 		FROM
-			solaragg.agg_datum_daily_data datum
+			eniwareagg.agg_datum_daily_data datum
 		<include refid="fragment-findall-ReportingGeneralNodeDatum-where"/>
 	</select>
 	
@@ -365,7 +365,7 @@
 		SELECT
 			<include refid="fragment-GeneralNodeDatum-aggregation-result"/>
 		FROM
-			solaragg.agg_datum_daily_data datum
+			eniwareagg.agg_datum_daily_data datum
 		<include refid="fragment-findall-ReportingGeneralNodeDatum-where"/>
 		<include refid="fragment-findall-ReportingGeneralNodeDatum-order"/>
 	</select>
@@ -376,7 +376,7 @@
 		SELECT
 			<include refid="fragment-GeneralNodeDatum-aggregation-result"/>
 		FROM
-			solaragg.find_agg_datum_dow(
+			eniwareagg.find_agg_datum_dow(
 				<include refid="fragment-findall-ReportingGeneralNodeDatum-agg-where"/>
 			) AS datum
 		<include refid="fragment-findall-ReportingGeneralNodeDatum-order"/>
@@ -388,7 +388,7 @@
 		SELECT
 			<include refid="fragment-GeneralNodeDatum-aggregation-result"/>
 		FROM
-			solaragg.find_agg_datum_seasonal_dow(
+			eniwareagg.find_agg_datum_seasonal_dow(
 				<include refid="fragment-findall-ReportingGeneralNodeDatum-agg-where"/>
 			) AS datum
 		<include refid="fragment-findall-ReportingGeneralNodeDatum-order"/>
@@ -399,7 +399,7 @@
 	<select id="findall-GeneralNodeDatum-ReportingGeneralNodeDatum-Month-count" resultType="long">
 		SELECT count(datum.ts_start)
 		FROM
-			solaragg.agg_datum_monthly_data datum
+			eniwareagg.agg_datum_monthly_data datum
 		<include refid="fragment-findall-ReportingGeneralNodeDatum-where"/>
 	</select>
 	
@@ -407,7 +407,7 @@
 		SELECT
 			<include refid="fragment-GeneralNodeDatum-aggregation-result"/>
 		FROM
-			solaragg.agg_datum_monthly_data datum
+			eniwareagg.agg_datum_monthly_data datum
 		<include refid="fragment-findall-ReportingGeneralNodeDatum-where"/>
 		<include refid="fragment-findall-ReportingGeneralNodeDatum-order"/>
 	</select>
@@ -418,7 +418,7 @@
 		SELECT
 			<include refid="fragment-GeneralNodeDatum-aggregation-result"/>
 		FROM
-			solaragg.calc_running_datum_total(
+			eniwareagg.calc_running_datum_total(
 				<include refid="fragment-findall-ReportingGeneralNodeDatum-agg-where"/>
 			) AS datum
 	</select>

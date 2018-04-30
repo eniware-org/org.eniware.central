@@ -13,7 +13,7 @@
 
 	<!-- Service References -->
 	
-	<reference id="userDao" interface="net.solarnetwork.central.user.dao.UserDao"/>
+	<reference id="userDao" interface="org.eniware.central.user.dao.UserDao"/>
 	
 	<reference id="transactionManager"
 		interface="org.springframework.transaction.PlatformTransactionManager"
@@ -21,7 +21,7 @@
 
 	<!-- Published Services -->
 	
-	<service ref="daoBillingBiz" interface="net.solarnetwork.central.user.billing.biz.BillingBiz"/>
+	<service ref="daoBillingBiz" interface="org.eniware.central.user.billing.biz.BillingBiz"/>
 	
 	<!-- Supporting Services -->
 	
@@ -29,13 +29,13 @@
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 
 
-	<bean id="daoBillingBiz" class="net.solarnetwork.central.user.billing.biz.dao.DaoBillingBiz">
-		<osgix:managed-properties persistent-id="net.solarnetwork.central.user.billing.biz.dao.DaoBillingBiz" autowire-on-update="true"/>
+	<bean id="daoBillingBiz" class="org.eniware.central.user.billing.biz.dao.DaoBillingBiz">
+		<osgix:managed-properties persistent-id="org.eniware.central.user.billing.biz.dao.DaoBillingBiz" autowire-on-update="true"/>
 		<argument ref="userDao"/>
 		<argument>
-			<bean class="net.solarnetwork.util.DynamicServiceTracker">
+			<bean class="org.eniware.util.DynamicServiceTracker">
 				<property name="bundleContext" ref="bundleContext"/>
-				<property name="serviceClassName" value="net.solarnetwork.central.user.billing.biz.BillingSystem"/>
+				<property name="serviceClassName" value="org.eniware.central.user.billing.biz.BillingSystem"/>
 			</bean>
 		</argument>
 	</bean>

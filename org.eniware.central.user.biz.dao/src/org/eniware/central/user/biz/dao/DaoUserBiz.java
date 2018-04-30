@@ -11,10 +11,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eniware.central.dao.SolarLocationDao;
-import org.eniware.central.dao.SolarNodeDao;
-import org.eniware.central.domain.SolarLocation;
-import org.eniware.central.domain.SolarNode;
+import org.eniware.central.dao.EniwareLocationDao;
+import org.eniware.central.dao.EniwareEdgeDao;
+import org.eniware.central.domain.EniwareLocation;
+import org.eniware.central.domain.EniwareEdge;
 import org.eniware.central.security.AuthorizationException;
 import org.eniware.central.security.BasicSecurityPolicy;
 import org.eniware.central.security.SecurityPolicy;
@@ -59,8 +59,8 @@ public class DaoUserBiz implements UserBiz, NodeOwnershipBiz {
 	private UserNodeConfirmationDao userNodeConfirmationDao;
 	private UserNodeCertificateDao userNodeCertificateDao;
 	private UserAuthTokenDao userAuthTokenDao;
-	private SolarLocationDao solarLocationDao;
-	private SolarNodeDao solarNodeDao;
+	private EniwareLocationDao eniwareLocationDao;
+	private EniwareEdgeDao eniwareEdgeDao;
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
@@ -117,18 +117,18 @@ public class DaoUserBiz implements UserBiz, NodeOwnershipBiz {
 		// and if so assign that location (if not already assigned). If no location matches, create
 		// a new location and assign that.
 		if ( entry.getNodeLocation() != null ) {
-			SolarNode node = entity.getNode();
-			SolarLocation norm = SolarLocation.normalizedLocation(entry.getNodeLocation());
-			SolarLocation locEntity = solarLocationDao.getSolarLocationForLocation(norm);
+			EniwareEdge node = entity.getNode();
+			EniwareLocation norm = EniwareLocation.normalizedLocation(entry.getNodeLocation());
+			EniwareLocation locEntity = eniwareLocationDao.getEniwareLocationForLocation(norm);
 			if ( locEntity == null ) {
-				log.debug("Saving new SolarLocation {}", locEntity);
-				locEntity = solarLocationDao.get(solarLocationDao.store(norm));
+				log.debug("Saving new EniwareLocation {}", locEntity);
+				locEntity = eniwareLocationDao.get(eniwareLocationDao.store(norm));
 			}
 			if ( locEntity.getId().equals(node.getLocationId()) == false ) {
 				log.debug("Updating node {} location from {} to {}", node.getId(), node.getLocationId(),
 						locEntity.getId());
 				node.setLocationId(locEntity.getId());
-				solarNodeDao.store(node);
+				eniwareEdgeDao.store(node);
 			}
 		}
 
@@ -425,12 +425,12 @@ public class DaoUserBiz implements UserBiz, NodeOwnershipBiz {
 		this.userAuthTokenDao = userAuthTokenDao;
 	}
 
-	public void setSolarLocationDao(SolarLocationDao solarLocationDao) {
-		this.solarLocationDao = solarLocationDao;
+	public void setEniwareLocationDao(EniwareLocationDao eniwareLocationDao) {
+		this.eniwareLocationDao = eniwareLocationDao;
 	}
 
-	public void setSolarNodeDao(SolarNodeDao solarNodeDao) {
-		this.solarNodeDao = solarNodeDao;
+	public void setEniwareEdgeDao(EniwareEdgeDao eniwareEdgeDao) {
+		this.eniwareEdgeDao = eniwareEdgeDao;
 	}
 
 	public void setUserAlertDao(UserAlertDao userAlertDao) {

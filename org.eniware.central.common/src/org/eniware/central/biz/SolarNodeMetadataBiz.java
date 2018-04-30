@@ -9,8 +9,8 @@ package org.eniware.central.biz;
 import java.util.List;
 
 import org.eniware.central.domain.FilterResults;
-import org.eniware.central.domain.SolarNodeMetadataFilter;
-import org.eniware.central.domain.SolarNodeMetadataFilterMatch;
+import org.eniware.central.domain.EniwareEdgeMetadataFilter;
+import org.eniware.central.domain.EniwareEdgeMetadataFilterMatch;
 import org.eniware.central.domain.SortDescriptor;
 import org.eniware.domain.GeneralDatumMetadata;
 
@@ -19,7 +19,7 @@ import org.eniware.domain.GeneralDatumMetadata;
  * @version 1.0
  * @since 1.32
  */
-public interface SolarNodeMetadataBiz {
+public interface EniwareEdgeMetadataBiz {
 
 	/**
 	 * Add metadata to a specific node. If metadata already exists for the given
@@ -31,7 +31,7 @@ public interface SolarNodeMetadataBiz {
 	 * @param meta
 	 *        the metadata to add
 	 */
-	void addSolarNodeMetadata(Long nodeId, GeneralDatumMetadata meta);
+	void addEniwareEdgeMetadata(Long nodeId, GeneralDatumMetadata meta);
 
 	/**
 	 * Store metadata to a specific node, replacing any existing metadata with
@@ -42,7 +42,7 @@ public interface SolarNodeMetadataBiz {
 	 * @param meta
 	 *        the metadata to store
 	 */
-	void storeSolarNodeMetadata(Long nodeId, GeneralDatumMetadata meta);
+	void storeEniwareEdgeMetadata(Long nodeId, GeneralDatumMetadata meta);
 
 	/**
 	 * Remove all metadata to a specific node.
@@ -50,7 +50,7 @@ public interface SolarNodeMetadataBiz {
 	 * @param nodeId
 	 *        the node ID to remove from
 	 */
-	void removeSolarNodeMetadata(Long nodeId);
+	void removeEniwareEdgeMetadata(Long nodeId);
 
 	/**
 	 * Search for node metadata.
@@ -65,7 +65,7 @@ public interface SolarNodeMetadataBiz {
 	 *        an optional maximum number of returned results
 	 * @return the results, never <em>null</em>
 	 */
-	FilterResults<SolarNodeMetadataFilterMatch> findSolarNodeMetadata(SolarNodeMetadataFilter criteria,
+	FilterResults<EniwareEdgeMetadataFilterMatch> findEniwareEdgeMetadata(EniwareEdgeMetadataFilter criteria,
 			List<SortDescriptor> sortDescriptors, Integer offset, Integer max);
 
 }

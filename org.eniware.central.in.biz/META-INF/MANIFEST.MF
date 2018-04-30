@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNetwork In Biz
+Bundle-Name: EniwareNetwork In Biz
 Bundle-SymbolicName: org.eniware.central.in.biz
 Bundle-Version: 1.16.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: 
  org.eniware.central.in.biz;version="1.12.0"

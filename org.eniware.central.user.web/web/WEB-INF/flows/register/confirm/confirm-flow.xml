@@ -16,7 +16,7 @@
 	<end-state id="error" view="registration/confirm/error"/>
 	
 	<global-transitions>
-		<transition on-exception="net.solarnetwork.central.security.AuthorizationException" to="error"/>
+		<transition on-exception="org.eniware.central.security.AuthorizationException" to="error"/>
 	</global-transitions>
 	
 </flow>

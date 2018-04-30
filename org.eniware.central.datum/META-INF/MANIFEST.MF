@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNetwork Central Datum
+Bundle-Name: EniwareNetwork Central Datum
 Bundle-SymbolicName: org.eniware.central.datum
 Bundle-Version: 1.22.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: 
  org.eniware.central.datum.biz;version="1.2.0",

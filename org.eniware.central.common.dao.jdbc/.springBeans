@@ -11,7 +11,7 @@
 	</configs>
 	<configSets>
 		<configSet>
-			<name><![CDATA[SolarNetwork JDBC]]></name>
+			<name><![CDATA[EniwareNetwork JDBC]]></name>
 			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
 			<incomplete>false</incomplete>
 			<configs>

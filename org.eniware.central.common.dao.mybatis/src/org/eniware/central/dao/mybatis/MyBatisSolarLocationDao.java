@@ -9,46 +9,46 @@ package org.eniware.central.dao.mybatis;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eniware.central.dao.SolarLocationDao;
+import org.eniware.central.dao.EniwareLocationDao;
 import org.eniware.central.dao.mybatis.support.BaseMyBatisFilterableDao;
 import org.eniware.central.domain.Location;
 import org.eniware.central.domain.LocationMatch;
-import org.eniware.central.domain.SolarLocation;
+import org.eniware.central.domain.EniwareLocation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * MyBatis implementation of {@link SolarLocationDao}.
+ * MyBatis implementation of {@link EniwareLocationDao}.
  * @version 1.0
  */
-public class MyBatisSolarLocationDao extends
-		BaseMyBatisFilterableDao<SolarLocation, LocationMatch, Location, Long> implements
-		SolarLocationDao {
+public class MyBatisEniwareLocationDao extends
+		BaseMyBatisFilterableDao<EniwareLocation, LocationMatch, Location, Long> implements
+		EniwareLocationDao {
 
-	/** The query name used for {@link #getSolarLocationForName(String)}. */
-	public static final String QUERY_FOR_NAME = "find-SolarLocation-for-name";
+	/** The query name used for {@link #getEniwareLocationForName(String)}. */
+	public static final String QUERY_FOR_NAME = "find-EniwareLocation-for-name";
 
 	/**
 	 * The query name used for
-	 * {@link #getSolarLocationForTimeZone(String, String)}.
+	 * {@link #getEniwareLocationForTimeZone(String, String)}.
 	 */
-	public static final String QUERY_FOR_COUNTRY_TIME_ZONE = "find-SolarLocation-for-country-timezone";
+	public static final String QUERY_FOR_COUNTRY_TIME_ZONE = "find-EniwareLocation-for-country-timezone";
 
 	/**
-	 * The query name used for {@link #getSolarLocationForLocation(Location)}.
+	 * The query name used for {@link #getEniwareLocationForLocation(Location)}.
 	 */
-	public static final String QUERY_FOR_EXACT_LOCATION = "find-SolarLocation-for-location";
+	public static final String QUERY_FOR_EXACT_LOCATION = "find-EniwareLocation-for-location";
 
 	/**
 	 * Default constructor.
 	 */
-	public MyBatisSolarLocationDao() {
-		super(SolarLocation.class, Long.class, LocationMatch.class);
+	public MyBatisEniwareLocationDao() {
+		super(EniwareLocation.class, Long.class, LocationMatch.class);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public SolarLocation getSolarLocationForTimeZone(String country, String timeZoneId) {
+	public EniwareLocation getEniwareLocationForTimeZone(String country, String timeZoneId) {
 		Map<String, String> params = new HashMap<String, String>(2);
 		params.put("country", country);
 		params.put("timeZoneId", timeZoneId);
@@ -57,7 +57,7 @@ public class MyBatisSolarLocationDao extends
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public SolarLocation getSolarLocationForLocation(Location criteria) {
+	public EniwareLocation getEniwareLocationForLocation(Location criteria) {
 		return selectFirst(QUERY_FOR_EXACT_LOCATION, criteria);
 	}
 

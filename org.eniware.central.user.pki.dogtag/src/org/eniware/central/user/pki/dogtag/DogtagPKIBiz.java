@@ -70,7 +70,7 @@ public class DogtagPKIBiz implements NodePKIBiz, PingTest {
 	private XmlSupport xmlSupport = new XmlSupport();
 	private CertificateService certificateService;
 	private RestOperations restOps;
-	private String dogtagProfileId = "SolarNode";
+	private String dogtagProfileId = "EniwareEdge";
 	private String dogtagRenewalProfileId = "caManualRenewal";
 	private XPathExpression csrRequestIdXPath;
 	private Map<String, XPathExpression> csrInfoMapping;
@@ -228,7 +228,7 @@ public class DogtagPKIBiz implements NodePKIBiz, PingTest {
 	//	  <CertRequestInfo>
 	//	    <requestType>renewal</requestType>
 	//	    <requestStatus>pending</requestStatus>
-	//	    <requestURL>https://ca.solarnetworkdev.net:8443/ca/rest/73</requestURL>
+	//	    <requestURL>https://ca.eniwarenetworkdev.net:8443/ca/rest/73</requestURL>
 	//	    <certRequestType>pkcs10</certRequestType>
 	//	    <operationResult>success</operationResult>
 	//	  </CertRequestInfo>

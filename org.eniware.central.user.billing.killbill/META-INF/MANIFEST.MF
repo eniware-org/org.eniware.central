@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarUser Billing Killbill
+Bundle-Name: EniwareUser Billing Killbill
 Bundle-SymbolicName: org.eniware.central.user.billing.killbill
 Bundle-Version: 0.3.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: 
  org.eniware.central.user.billing.killbill;version="0.3.0",

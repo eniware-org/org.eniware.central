@@ -17,23 +17,23 @@
 	
 	<!-- Published Services -->
 	
-	<service ref="userDao" interface="net.solarnetwork.central.user.dao.UserDao" ranking="5"/>
+	<service ref="userDao" interface="org.eniware.central.user.dao.UserDao" ranking="5"/>
 
-	<service ref="userAlertDao" interface="net.solarnetwork.central.user.dao.UserAlertDao" ranking="5"/>
+	<service ref="userAlertDao" interface="org.eniware.central.user.dao.UserAlertDao" ranking="5"/>
 
-	<service ref="userAlertSituationDao" interface="net.solarnetwork.central.user.dao.UserAlertSituationDao" ranking="5"/>
+	<service ref="userAlertSituationDao" interface="org.eniware.central.user.dao.UserAlertSituationDao" ranking="5"/>
 
-	<service ref="userAuthTokenDao" interface="net.solarnetwork.central.user.dao.UserAuthTokenDao" ranking="5"/>
+	<service ref="userAuthTokenDao" interface="org.eniware.central.user.dao.UserAuthTokenDao" ranking="5"/>
 
-	<service ref="userMetadataDao" interface="net.solarnetwork.central.user.dao.UserMetadataDao" ranking="5"/>
+	<service ref="userMetadataDao" interface="org.eniware.central.user.dao.UserMetadataDao" ranking="5"/>
 
-	<service ref="userNodeCertificateDao" interface="net.solarnetwork.central.user.dao.UserNodeCertificateDao" ranking="5"/>
+	<service ref="userNodeCertificateDao" interface="org.eniware.central.user.dao.UserNodeCertificateDao" ranking="5"/>
 
-	<service ref="userNodeConfirmationDao" interface="net.solarnetwork.central.user.dao.UserNodeConfirmationDao" ranking="5"/>
+	<service ref="userNodeConfirmationDao" interface="org.eniware.central.user.dao.UserNodeConfirmationDao" ranking="5"/>
 
-	<service ref="userNodeDao" interface="net.solarnetwork.central.user.dao.UserNodeDao" ranking="5"/>
+	<service ref="userNodeDao" interface="org.eniware.central.user.dao.UserNodeDao" ranking="5"/>
 	
-	<!--service ref="userNodeHardwareControlDao" interface="net.solarnetwork.central.user.dao.UserNodeHardwareControlDao" ranking="5"/-->
+	<!--service ref="userNodeHardwareControlDao" interface="org.eniware.central.user.dao.UserNodeHardwareControlDao" ranking="5"/-->
 
 	<service ref="sqlSessionFactory" interface="org.apache.ibatis.session.SqlSessionFactory">
 		<service-properties>
@@ -47,39 +47,39 @@
 	<!-- Use Java @Transactional annotations to declare transactions. -->
 	<tx:annotation-driven transaction-manager="txManager"/>
 
-	<bean id="userDao" class="net.solarnetwork.central.user.dao.mybatis.MyBatisUserDao">
+	<bean id="userDao" class="org.eniware.central.user.dao.mybatis.MyBatisUserDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
-	<bean id="userAlertDao" class="net.solarnetwork.central.user.dao.mybatis.MyBatisUserAlertDao">
+	<bean id="userAlertDao" class="org.eniware.central.user.dao.mybatis.MyBatisUserAlertDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
-	<bean id="userAlertSituationDao" class="net.solarnetwork.central.user.dao.mybatis.MyBatisUserAlertSituationDao">
+	<bean id="userAlertSituationDao" class="org.eniware.central.user.dao.mybatis.MyBatisUserAlertSituationDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
-	<bean id="userAuthTokenDao" class="net.solarnetwork.central.user.dao.mybatis.MyBatisUserAuthTokenDao">
+	<bean id="userAuthTokenDao" class="org.eniware.central.user.dao.mybatis.MyBatisUserAuthTokenDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
-	<bean id="userMetadataDao" class="net.solarnetwork.central.user.dao.mybatis.MyBatisUserMetadataDao">
+	<bean id="userMetadataDao" class="org.eniware.central.user.dao.mybatis.MyBatisUserMetadataDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
-	<bean id="userNodeConfirmationDao" class="net.solarnetwork.central.user.dao.mybatis.MyBatisUserNodeConfirmationDao">
+	<bean id="userNodeConfirmationDao" class="org.eniware.central.user.dao.mybatis.MyBatisUserNodeConfirmationDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
-	<bean id="userNodeCertificateDao" class="net.solarnetwork.central.user.dao.mybatis.MyBatisUserNodeCertificateDao">
+	<bean id="userNodeCertificateDao" class="org.eniware.central.user.dao.mybatis.MyBatisUserNodeCertificateDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
-	<bean id="userNodeDao" class="net.solarnetwork.central.user.dao.mybatis.MyBatisUserNodeDao">
+	<bean id="userNodeDao" class="org.eniware.central.user.dao.mybatis.MyBatisUserNodeDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
-	<!--bean id="userNodeHardwareControlDao" class="net.solarnetwork.central.user.dao.mybatis.MyBatisUserNodeHardwareControlDao">
+	<!--bean id="userNodeHardwareControlDao" class="org.eniware.central.user.dao.mybatis.MyBatisUserNodeHardwareControlDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean-->
 	
@@ -87,45 +87,45 @@
 		<property name="dataSource" ref="dataSource"/>
 		<property name="typeAliases">
 			<list>
-				<value>net.solarnetwork.central.domain.SolarLocation</value>
-				<value>net.solarnetwork.central.domain.SolarNode</value>
-				<value>net.solarnetwork.central.user.domain.User</value>
-				<value>net.solarnetwork.central.user.domain.UserMatch</value>
-				<value>net.solarnetwork.central.user.domain.UserMetadataEntity</value>
-				<value>net.solarnetwork.central.user.domain.UserMetadataMatch</value>
-				<value>net.solarnetwork.central.user.domain.UserAlert</value>
-				<value>net.solarnetwork.central.user.domain.UserAlertSituation</value>
-				<value>net.solarnetwork.central.user.domain.UserAuthToken</value>
-				<value>net.solarnetwork.central.user.domain.UserNode</value>
-				<value>net.solarnetwork.central.user.domain.UserNodePK</value>
-				<value>net.solarnetwork.central.user.domain.UserNodeCertificate</value>
-				<value>net.solarnetwork.central.user.domain.UserNodeConfirmation</value>
-				<value>net.solarnetwork.central.user.domain.UserNodeTransfer</value>
+				<value>org.eniware.central.domain.EniwareLocation</value>
+				<value>org.eniware.central.domain.EniwareEdge</value>
+				<value>org.eniware.central.user.domain.User</value>
+				<value>org.eniware.central.user.domain.UserMatch</value>
+				<value>org.eniware.central.user.domain.UserMetadataEntity</value>
+				<value>org.eniware.central.user.domain.UserMetadataMatch</value>
+				<value>org.eniware.central.user.domain.UserAlert</value>
+				<value>org.eniware.central.user.domain.UserAlertSituation</value>
+				<value>org.eniware.central.user.domain.UserAuthToken</value>
+				<value>org.eniware.central.user.domain.UserNode</value>
+				<value>org.eniware.central.user.domain.UserNodePK</value>
+				<value>org.eniware.central.user.domain.UserNodeCertificate</value>
+				<value>org.eniware.central.user.domain.UserNodeConfirmation</value>
+				<value>org.eniware.central.user.domain.UserNodeTransfer</value>
 			</list>
 		</property>
 		<property name="typeHandlers">
 			<list>
-				<bean class="net.solarnetwork.central.dao.mybatis.type.JodaDateTimeTypeHandler"/>
-				<bean class="net.solarnetwork.central.dao.mybatis.type.JodaLocalDateTimeTypeHandler"/>
-				<bean class="net.solarnetwork.central.dao.mybatis.type.JodaLocalDateTypeHandler"/>
-				<bean class="net.solarnetwork.central.dao.mybatis.type.JodaLocalTimeTypeHandler"/>
+				<bean class="org.eniware.central.dao.mybatis.type.JodaDateTimeTypeHandler"/>
+				<bean class="org.eniware.central.dao.mybatis.type.JodaLocalDateTimeTypeHandler"/>
+				<bean class="org.eniware.central.dao.mybatis.type.JodaLocalDateTypeHandler"/>
+				<bean class="org.eniware.central.dao.mybatis.type.JodaLocalTimeTypeHandler"/>
 			</list>
 		</property>
 		<property name="mapperLocations">
 			<!-- Note: the order of these elements is significant because of inter-resource includes -->
 			<list>
-				<value>classpath:/net/solarnetwork/central/dao/mybatis/map/SolarLocation.xml</value>
-				<value>classpath:/net/solarnetwork/central/dao/mybatis/map/SolarNode.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/dao/mybatis/map/EniwareLocation.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/dao/mybatis/map/EniwareEdge.xml</value>
 
-				<value>classpath:/net/solarnetwork/central/user/dao/mybatis/map/User.xml</value>
-				<value>classpath:/net/solarnetwork/central/user/dao/mybatis/map/UserAlert.xml</value>
-				<value>classpath:/net/solarnetwork/central/user/dao/mybatis/map/UserAlertSituation.xml</value>
-				<value>classpath:/net/solarnetwork/central/user/dao/mybatis/map/UserAuthToken.xml</value>
-				<value>classpath:/net/solarnetwork/central/user/dao/mybatis/map/UserMetadataEntity.xml</value>
-				<value>classpath:/net/solarnetwork/central/user/dao/mybatis/map/UserNodeCertificate.xml</value>
-				<value>classpath:/net/solarnetwork/central/user/dao/mybatis/map/UserNode.xml</value>
-				<value>classpath:/net/solarnetwork/central/user/dao/mybatis/map/UserNodeConfirmation.xml</value>
-				<value>classpath:/net/solarnetwork/central/user/dao/mybatis/map/UserNodeTransfer.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/user/dao/mybatis/map/User.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/user/dao/mybatis/map/UserAlert.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/user/dao/mybatis/map/UserAlertSituation.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/user/dao/mybatis/map/UserAuthToken.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/user/dao/mybatis/map/UserMetadataEntity.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/user/dao/mybatis/map/UserNodeCertificate.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/user/dao/mybatis/map/UserNode.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/user/dao/mybatis/map/UserNodeConfirmation.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/user/dao/mybatis/map/UserNodeTransfer.xml</value>
 			</list>
 		</property>
 	</bean>

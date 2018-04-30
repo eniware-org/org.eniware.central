@@ -25,16 +25,16 @@
 
 	<!-- Service References -->
 
-	<reference id="userNodeDao" interface="net.solarnetwork.central.user.dao.UserNodeDao"/>
+	<reference id="userNodeDao" interface="org.eniware.central.user.dao.UserNodeDao"/>
 
 	<reference id="queryBiz"
-		interface="net.solarnetwork.central.query.biz.QueryBiz"
+		interface="org.eniware.central.query.biz.QueryBiz"
 		filter="(!(aop=true))"/>
 	
 	<!-- Published Services -->
 
 	<service ref="aopQueryBiz" 
-			interface="net.solarnetwork.central.query.biz.QueryBiz" ranking="10">
+			interface="org.eniware.central.query.biz.QueryBiz" ranking="10">
 		<service-properties>
 			<entry key="aop" value="true"/>
 		</service-properties>
@@ -44,7 +44,7 @@
 
 	<aop:aspectj-autoproxy/>
 
-	<bean id="querySecurityAspect" class="net.solarnetwork.central.query.aop.QuerySecurityAspect">
+	<bean id="querySecurityAspect" class="org.eniware.central.query.aop.QuerySecurityAspect">
 		<argument ref="userNodeDao"/>
 		<property name="nodeIdNotRequiredSet">
 			<set>
@@ -54,7 +54,7 @@
 		</property>
 	</bean>
 	
-	<bean id="aopQueryBiz" class="net.solarnetwork.central.query.support.DelegatingQueryBiz">
+	<bean id="aopQueryBiz" class="org.eniware.central.query.support.DelegatingQueryBiz">
 		<argument ref="queryBiz"/>
 	</bean>
 

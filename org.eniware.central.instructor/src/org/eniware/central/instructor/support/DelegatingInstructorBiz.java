@@ -1,7 +1,7 @@
 /* ==================================================================
  * DelegatingInstructorBiz.java - Nov 27, 2012 7:37:48 AM
  * 
- * Copyright 2007-2012 SolarNetwork.net Dev Team
+ * Copyright 2007-2012 EniwareNetwork.net Dev Team
  * 
  * This program is free software; you can redistribute it and/or 
  * modify it under the terms of the GNU General Public License as 

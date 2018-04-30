@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNetwork SolarNode Image Maker Cloud Jobs
+Bundle-Name: EniwareNetwork EniwareEdge Image Maker Cloud Jobs
 Bundle-SymbolicName: org.eniware.central.user.nim.jobs
 Bundle-Version: 1.0.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: 
  org.eclipse.gemini.blueprint.compendium.cm;version="[2.0,3.0)",

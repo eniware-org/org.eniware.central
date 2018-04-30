@@ -16,7 +16,7 @@
 
 	<!-- Configuration -->
 	
-	<osgix:cm-properties id="cfg" persistent-id="net.solarnetwork.central.user.pki.dogtag">
+	<osgix:cm-properties id="cfg" persistent-id="org.eniware.central.user.pki.dogtag">
 		<beans:prop key="dogtag.keystore.path">classpath:/dogtag-client.jks</beans:prop>
 		<beans:prop key="dogtag.keystore.pass">changeit</beans:prop>
 	</osgix:cm-properties>
@@ -25,31 +25,31 @@
 	
 	<!-- Service References -->
 	
-	<reference id="certificateService" interface="net.solarnetwork.support.CertificateService"/>
+	<reference id="certificateService" interface="org.eniware.support.CertificateService"/>
 		
 	<!-- Published Services -->
 	
 	<service ref="dogtagPKIBiz" ranking="1">
 		<interfaces>
-			<value>net.solarnetwork.central.user.biz.NodePKIBiz</value>
-			<value>net.solarnetwork.central.domain.PingTest</value>
+			<value>org.eniware.central.user.biz.NodePKIBiz</value>
+			<value>org.eniware.central.domain.PingTest</value>
 		</interfaces>
 	</service>
 	
-	<service ref="restFactory" interface="net.solarnetwork.central.domain.PingTest"/>
+	<service ref="restFactory" interface="org.eniware.central.domain.PingTest"/>
 	
 	<!-- Supporting Services -->
 
-	<bean id="restFactory" class="net.solarnetwork.central.user.pki.dogtag.SSLContextFactory">
+	<bean id="restFactory" class="org.eniware.central.user.pki.dogtag.SSLContextFactory">
 		<property name="keystoreResource" value="${dogtag.keystore.path}"/>
 		<property name="keystorePassword" value="${dogtag.keystore.pass}"/>
 	</bean>
 	
 	<bean id="restOperations" factory-ref="restFactory" factory-method="createRestOps" />
 
-	<bean id="dogtagPKIBiz" class="net.solarnetwork.central.user.pki.dogtag.DogtagPKIBiz">
-		<osgix:managed-properties persistent-id="net.solarnetwork.central.user.pki.dogtag.DogtagPKIBiz" autowire-on-update="true"/>
-		<property name="baseUrl" value="https://ca.solarnetworkdev.net:8443"/>
+	<bean id="dogtagPKIBiz" class="org.eniware.central.user.pki.dogtag.DogtagPKIBiz">
+		<osgix:managed-properties persistent-id="org.eniware.central.user.pki.dogtag.DogtagPKIBiz" autowire-on-update="true"/>
+		<property name="baseUrl" value="https://ca.eniwarenetworkdev.net:8443"/>
 		<property name="certificateService" ref="certificateService"/>
 		<property name="restOps" ref="restOperations"/>
 	</bean>

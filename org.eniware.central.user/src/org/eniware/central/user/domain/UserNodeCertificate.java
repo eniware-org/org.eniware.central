@@ -18,7 +18,7 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 
 import org.eniware.central.domain.Entity;
-import org.eniware.central.domain.SolarNode;
+import org.eniware.central.domain.EniwareEdge;
 import org.eniware.support.CertificateException;
 import org.eniware.util.SerializeIgnore;
 import org.joda.time.DateTime;
@@ -46,7 +46,7 @@ public class UserNodeCertificate implements Entity<UserNodePK>, Cloneable, Seria
 	private String requestId;
 
 	private User user;
-	private SolarNode node;
+	private EniwareEdge node;
 
 	/**
 	 * Get the node certificate from a keystore. The certificate is expected to
@@ -269,11 +269,11 @@ public class UserNodeCertificate implements Entity<UserNodePK>, Cloneable, Seria
 
 	@JsonIgnore
 	@SerializeIgnore
-	public SolarNode getNode() {
+	public EniwareEdge getNode() {
 		return node;
 	}
 
-	public void setNode(SolarNode node) {
+	public void setNode(EniwareEdge node) {
 		this.node = node;
 	}
 

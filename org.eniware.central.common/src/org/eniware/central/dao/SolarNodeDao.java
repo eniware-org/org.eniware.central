@@ -6,13 +6,13 @@
 
 package org.eniware.central.dao;
 
-import org.eniware.central.domain.SolarNode;
+import org.eniware.central.domain.EniwareEdge;
 
 /**
- * DAO API for SolarNode data.
+ * DAO API for EniwareEdge data.
  * @version $Revision$ $Date$
  */
-public interface SolarNodeDao extends GenericDao<SolarNode, Long> {
+public interface EniwareEdgeDao extends GenericDao<EniwareEdge, Long> {
 
 	/**
 	 * Get an unused node ID value.

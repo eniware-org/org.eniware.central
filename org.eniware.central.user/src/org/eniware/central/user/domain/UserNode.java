@@ -7,16 +7,16 @@
 package org.eniware.central.user.domain;
 
 import org.eniware.central.domain.BaseEntity;
-import org.eniware.central.domain.SolarLocation;
-import org.eniware.central.domain.SolarNode;
+import org.eniware.central.domain.EniwareLocation;
+import org.eniware.central.domain.EniwareEdge;
 
 /**
- * A solar node with user details.
+ * A eniware node with user details.
  * 
  * <p>
- * This object augments a {@link SolarNode} with additional information that
+ * This object augments a {@link EniwareEdge} with additional information that
  * nodes themselves are not concerned with, but users are. This allows the
- * {@link SolarNode} object to remain lightweight.
+ * {@link EniwareEdge} object to remain lightweight.
  * </p>
  * 
  * @version 1.3
@@ -30,7 +30,7 @@ public class UserNode extends BaseEntity {
 	private boolean requiresAuthorization = false;
 
 	private User user;
-	private SolarNode node;
+	private EniwareEdge node;
 
 	// transient
 	private UserNodeCertificate certificate;
@@ -51,7 +51,7 @@ public class UserNode extends BaseEntity {
 	 * @param node
 	 *        the node
 	 */
-	public UserNode(User user, SolarNode node) {
+	public UserNode(User user, EniwareEdge node) {
 		super();
 		setUser(user);
 		setNode(node);
@@ -99,11 +99,11 @@ public class UserNode extends BaseEntity {
 		this.user = user;
 	}
 
-	public SolarNode getNode() {
+	public EniwareEdge getNode() {
 		return node;
 	}
 
-	public void setNode(SolarNode node) {
+	public void setNode(EniwareEdge node) {
 		this.node = node;
 	}
 
@@ -128,7 +128,7 @@ public class UserNode extends BaseEntity {
 	 * 
 	 * @return
 	 */
-	public SolarLocation getNodeLocation() {
+	public EniwareLocation getNodeLocation() {
 		return (node != null ? node.getLocation() : null);
 	}
 

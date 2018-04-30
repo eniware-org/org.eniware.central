@@ -12,7 +12,7 @@ package org.eniware.central.web.domain;
  * @version 1.1
  * @param <T>
  *        the object type
- * @deprecated use the net.solarnetwork.web.domain.Response class directly
+ * @deprecated use the org.eniware.web.domain.Response class directly
  */
 @Deprecated
 public class Response<T> extends org.eniware.web.domain.Response<T> {

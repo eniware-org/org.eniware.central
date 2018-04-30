@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * Domain object for node related info.
  * @version 1.1
  */
-public class SolarNode extends BaseEntity implements Cloneable, Serializable, NodeIdentity {
+public class EniwareEdge extends BaseEntity implements Cloneable, Serializable, NodeIdentity {
 
 	private static final long serialVersionUID = -1478837853706836739L;
 
@@ -27,12 +27,12 @@ public class SolarNode extends BaseEntity implements Cloneable, Serializable, No
 
 	@SerializeIgnore
 	@JsonIgnore
-	private SolarLocation location;
+	private EniwareLocation location;
 
 	/**
 	 * Default constructor.
 	 */
-	public SolarNode() {
+	public EniwareEdge() {
 		super();
 	}
 
@@ -46,7 +46,7 @@ public class SolarNode extends BaseEntity implements Cloneable, Serializable, No
 	 * @param timeZoneId
 	 *        the time zone ID
 	 */
-	public SolarNode(Long id, Long locationId) {
+	public EniwareEdge(Long id, Long locationId) {
 		super();
 		setId(id);
 		setCreated(new DateTime());
@@ -55,12 +55,12 @@ public class SolarNode extends BaseEntity implements Cloneable, Serializable, No
 
 	@Override
 	public String toString() {
-		return "SolarNode{id=" + getId() + ",locationId=" + this.locationId + '}';
+		return "EniwareEdge{id=" + getId() + ",locationId=" + this.locationId + '}';
 	}
 
 	/**
 	 * Get a {@link TimeZone} instance for this node's
-	 * {@link SolarLocation#getTimeZoneId()}.
+	 * {@link EniwareLocation#getTimeZoneId()}.
 	 * 
 	 * @return the TimeZone
 	 */
@@ -86,11 +86,11 @@ public class SolarNode extends BaseEntity implements Cloneable, Serializable, No
 	}
 
 	@JsonIgnore
-	public SolarLocation getLocation() {
+	public EniwareLocation getLocation() {
 		return location;
 	}
 
-	public void setLocation(SolarLocation location) {
+	public void setLocation(EniwareLocation location) {
 		this.location = location;
 		if ( location != null && location.getId() != null ) {
 			this.locationId = location.getId();

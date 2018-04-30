@@ -36,7 +36,7 @@
 		    	<property name="propertySerializerRegistrar" ref="xmlPropertySerializerRegistrar"/>
 			    <property name="classNamesAllowedForNesting">
 					<set>
-						<value>net.solarnetwork</value>
+						<value>org.eniware</value>
 					</set>
 				</property>
 			</bean>
@@ -130,7 +130,7 @@
 		<property name="propertySerializerRegistrar" ref="propertySerializerRegistrar"/>
 		<property name="classNamesAllowedForNesting">
 			<set>
-				<value>net.solarnetwork</value>
+				<value>org.eniware</value>
 			</set>
 		</property>
 	</bean>

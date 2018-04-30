@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 /**
- * Metadata about a {@link SolarNode}.
+ * Metadata about a {@link EniwareEdge}.
  * 
  * <b>Note</b> that {@link JsonUtils#getObjectFromJSON(String, Class)} is used
  * to manage the JSON value passed to {@link #setMetaJson(String)}.
@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
  */
 @JsonIgnoreProperties("id")
 @JsonPropertyOrder({ "nodeId", "created", "updated" })
-public class SolarNodeMetadata extends BaseEntity implements NodeMetadata, Cloneable, Serializable {
+public class EniwareEdgeMetadata extends BaseEntity implements NodeMetadata, Cloneable, Serializable {
 
 	private static final long serialVersionUID = 7366747359583724835L;
 

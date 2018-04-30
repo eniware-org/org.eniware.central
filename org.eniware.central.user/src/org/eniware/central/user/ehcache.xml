@@ -5,6 +5,6 @@
     xsi:schemaLocation="
         http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd">
 
-	<persistence directory="${java.io.tmpdir}/net.solarnetwork.central.user"/>
+	<persistence directory="${java.io.tmpdir}/org.eniware.central.user"/>
 
 </config>

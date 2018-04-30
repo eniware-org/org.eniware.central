@@ -26,12 +26,12 @@
 		filter="(db=central)"/>
 	
  	<reference id="nodeInstructionDao" 
- 		interface="net.solarnetwork.central.instructor.dao.NodeInstructionDao"/>
+ 		interface="org.eniware.central.instructor.dao.NodeInstructionDao"/>
 	
 	<!-- Published Services -->
 	
 	<service ref="daoInstructorBiz" 
-		interface="net.solarnetwork.central.instructor.biz.InstructorBiz" 
+		interface="org.eniware.central.instructor.biz.InstructorBiz" 
 		ranking="1"/>
 	
 	<!-- Supporting Services -->
@@ -43,6 +43,6 @@
 		on getting component-scan to work in PDE. We are required to add are Eclipse build
 		path to the Bundle-Classpath value. -->
 	<ctx:annotation-config/>
-	<ctx:component-scan base-package="net.solarnetwork.central.instructor.biz.dao"/>
+	<ctx:component-scan base-package="org.eniware.central.instructor.biz.dao"/>
 	
 </blueprint>

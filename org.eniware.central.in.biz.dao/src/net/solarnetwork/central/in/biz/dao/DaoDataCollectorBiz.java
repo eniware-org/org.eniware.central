@@ -4,15 +4,15 @@
  * ==================================================================
  */
 
-package net.solarnetwork.central.in.biz.dao;
+package org.eniware.central.in.biz.dao;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eniware.central.biz.SolarNodeMetadataBiz;
+import org.eniware.central.biz.EniwareEdgeMetadataBiz;
 import org.eniware.central.dao.PriceLocationDao;
-import org.eniware.central.dao.SolarLocationDao;
-import org.eniware.central.dao.SolarNodeDao;
+import org.eniware.central.dao.EniwareLocationDao;
+import org.eniware.central.dao.EniwareEdgeDao;
 import org.eniware.central.dao.WeatherLocationDao;
 import org.eniware.central.datum.biz.DatumMetadataBiz;
 import org.eniware.central.datum.dao.GeneralLocationDatumDao;
@@ -37,9 +37,9 @@ import org.eniware.central.datum.domain.WeatherDatum;
 import org.eniware.central.domain.FilterResults;
 import org.eniware.central.domain.Location;
 import org.eniware.central.domain.LocationMatch;
-import org.eniware.central.domain.SolarNode;
-import org.eniware.central.domain.SolarNodeMetadataFilter;
-import org.eniware.central.domain.SolarNodeMetadataFilterMatch;
+import org.eniware.central.domain.EniwareEdge;
+import org.eniware.central.domain.EniwareEdgeMetadataFilter;
+import org.eniware.central.domain.EniwareEdgeMetadataFilterMatch;
 import org.eniware.central.domain.SortDescriptor;
 import org.eniware.central.domain.SourceLocation;
 import org.eniware.central.domain.SourceLocationMatch;
@@ -80,11 +80,11 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class DaoDataCollectorBiz implements DataCollectorBiz {
 
-	private SolarNodeDao solarNodeDao = null;
+	private EniwareEdgeDao eniwareEdgeDao = null;
 	private PriceLocationDao priceLocationDao = null;
 	private WeatherLocationDao weatherLocationDao = null;
-	private SolarLocationDao solarLocationDao = null;
-	private SolarNodeMetadataBiz solarNodeMetadataBiz;
+	private EniwareLocationDao eniwareLocationDao = null;
+	private EniwareEdgeMetadataBiz eniwareEdgeMetadataBiz;
 	private GeneralNodeDatumDao generalNodeDatumDao = null;
 	private GeneralLocationDatumDao generalLocationDatumDao = null;
 	private DatumMetadataBiz datumMetadataBiz = null;
@@ -280,7 +280,7 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	@Override
-	public void addSolarNodeMetadata(Long nodeId, GeneralDatumMetadata meta) {
+	public void addEniwareEdgeMetadata(Long nodeId, GeneralDatumMetadata meta) {
 		if ( meta == null || ((meta.getTags() == null || meta.getTags().isEmpty())
 				&& (meta.getInfo() == null || meta.getInfo().isEmpty())
 				&& (meta.getPropertyInfo() == null || meta.getPropertyInfo().isEmpty())) ) {
@@ -301,11 +301,11 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 			}
 			throw new AuthorizationException(Reason.ACCESS_DENIED, nodeId);
 		}
-		solarNodeMetadataBiz.addSolarNodeMetadata(nodeId, meta);
+		eniwareEdgeMetadataBiz.addEniwareEdgeMetadata(nodeId, meta);
 	}
 
-	private SolarNodeMetadataFilter solarNodeMetadataCriteriaForcedToAuthenticatedNode(
-			final SolarNodeMetadataFilter criteria) {
+	private EniwareEdgeMetadataFilter eniwareEdgeMetadataCriteriaForcedToAuthenticatedNode(
+			final EniwareEdgeMetadataFilter criteria) {
 		// verify node ID with security
 		AuthenticatedNode authNode = getAuthenticatedNode();
 		if ( authNode == null ) {
@@ -323,11 +323,11 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 	}
 
 	@Override
-	public FilterResults<SolarNodeMetadataFilterMatch> findSolarNodeMetadata(
-			SolarNodeMetadataFilter criteria, final List<SortDescriptor> sortDescriptors,
+	public FilterResults<EniwareEdgeMetadataFilterMatch> findEniwareEdgeMetadata(
+			EniwareEdgeMetadataFilter criteria, final List<SortDescriptor> sortDescriptors,
 			final Integer offset, final Integer max) {
-		return solarNodeMetadataBiz.findSolarNodeMetadata(
-				solarNodeMetadataCriteriaForcedToAuthenticatedNode(criteria), sortDescriptors, offset,
+		return eniwareEdgeMetadataBiz.findEniwareEdgeMetadata(
+				eniwareEdgeMetadataCriteriaForcedToAuthenticatedNode(criteria), sortDescriptors, offset,
 				max);
 	}
 
@@ -409,7 +409,7 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
 	public List<LocationMatch> findLocations(Location criteria) {
-		FilterResults<LocationMatch> matches = solarLocationDao.findFiltered(criteria, null,
+		FilterResults<LocationMatch> matches = eniwareLocationDao.findFiltered(criteria, null,
 				limitFilterOffset(null), limitFilterMaximum(null));
 		List<LocationMatch> resultList = new ArrayList<LocationMatch>(matches.getReturnedResultCount());
 		for ( LocationMatch m : matches.getResults() ) {
@@ -449,7 +449,7 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 	private GeneralLocationDatum preprocessDayDatum(DayDatum datum) {
 		// fill in location ID if not provided
 		if ( datum.getLocationId() == null ) {
-			SolarNode node = solarNodeDao.get(datum.getNodeId());
+			EniwareEdge node = eniwareEdgeDao.get(datum.getNodeId());
 			if ( node != null ) {
 				datum.setLocationId(node.getWeatherLocationId());
 			}
@@ -466,7 +466,7 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 	private GeneralLocationDatum preprocessWeatherDatum(WeatherDatum datum) {
 		// fill in location ID if not provided
 		if ( datum.getLocationId() == null ) {
-			SolarNode node = solarNodeDao.get(datum.getNodeId());
+			EniwareEdge node = eniwareEdgeDao.get(datum.getNodeId());
 			if ( node != null ) {
 				datum.setLocationId(node.getWeatherLocationId());
 			}
@@ -509,20 +509,20 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 		return mapper;
 	}
 
-	public SolarNodeDao getSolarNodeDao() {
-		return solarNodeDao;
+	public EniwareEdgeDao getEniwareEdgeDao() {
+		return eniwareEdgeDao;
 	}
 
 	/**
-	 * Set the {@link SolarNodeDao} so location information can be added to
+	 * Set the {@link EniwareEdgeDao} so location information can be added to
 	 * {@link DayDatum} and {@link WeatherDatum} objects if they are missing
 	 * that information when passed to {@link #postDatum(Datum)}.
 	 * 
-	 * @param solarNodeDao
+	 * @param eniwareEdgeDao
 	 *        the DAO to use
 	 */
-	public void setSolarNodeDao(SolarNodeDao solarNodeDao) {
-		this.solarNodeDao = solarNodeDao;
+	public void setEniwareEdgeDao(EniwareEdgeDao eniwareEdgeDao) {
+		this.eniwareEdgeDao = eniwareEdgeDao;
 	}
 
 	public PriceLocationDao getPriceLocationDao() {
@@ -541,12 +541,12 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 		this.weatherLocationDao = weatherLocationDao;
 	}
 
-	public SolarLocationDao getSolarLocationDao() {
-		return solarLocationDao;
+	public EniwareLocationDao getEniwareLocationDao() {
+		return eniwareLocationDao;
 	}
 
-	public void setSolarLocationDao(SolarLocationDao solarLocationDao) {
-		this.solarLocationDao = solarLocationDao;
+	public void setEniwareLocationDao(EniwareLocationDao eniwareLocationDao) {
+		this.eniwareLocationDao = eniwareLocationDao;
 	}
 
 	public int getFilteredResultsLimit() {
@@ -587,19 +587,19 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 	 * @return the service, or {@literal null} if not configured
 	 * @since 2.1
 	 */
-	public SolarNodeMetadataBiz getSolarNodeMetadataBiz() {
-		return solarNodeMetadataBiz;
+	public EniwareEdgeMetadataBiz getEniwareEdgeMetadataBiz() {
+		return eniwareEdgeMetadataBiz;
 	}
 
 	/**
 	 * Set the node metadata biz to use.
 	 * 
-	 * @param solarNodeMetadataBiz
+	 * @param eniwareEdgeMetadataBiz
 	 *        the service to set
 	 * @since 2.1
 	 */
-	public void setSolarNodeMetadataBiz(SolarNodeMetadataBiz solarNodeMetadataBiz) {
-		this.solarNodeMetadataBiz = solarNodeMetadataBiz;
+	public void setEniwareEdgeMetadataBiz(EniwareEdgeMetadataBiz eniwareEdgeMetadataBiz) {
+		this.eniwareEdgeMetadataBiz = eniwareEdgeMetadataBiz;
 	}
 
 }

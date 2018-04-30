@@ -9,7 +9,7 @@ package org.eniware.central.security;
 import org.springframework.security.core.userdetails.User;
 
 /**
- * Extension of Spring Security's {@link User} object to add SolarNetwork
+ * Extension of Spring Security's {@link User} object to add EniwareNetwork
  * attributes.
  
  * @version 1.1
@@ -24,7 +24,7 @@ public class AuthenticatedUser extends User implements SecurityUser {
 
 	/**
 	 * Construct from existing {@link User} and
-	 * {@link net.solarnetwork.central.user.domain.User} objects.
+	 * {@link org.eniware.central.user.domain.User} objects.
 	 * 
 	 * @param user
 	 *        the user

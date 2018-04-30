@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNetwork Central DAO User Biz
+Bundle-Name: EniwareNetwork Central DAO User Biz
 Bundle-SymbolicName: org.eniware.central.user.biz.dao
 Bundle-Version: 1.17.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.eniware.central.user.biz.dao;version="1.7.1"
 Import-Package: 

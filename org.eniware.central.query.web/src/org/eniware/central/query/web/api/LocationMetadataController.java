@@ -15,7 +15,7 @@ import org.eniware.web.domain.Response;
 import org.eniware.central.datum.domain.DatumFilterCommand;
 import org.eniware.central.datum.domain.GeneralLocationDatumMetadataFilterMatch;
 import org.eniware.central.domain.FilterResults;
-import org.eniware.central.domain.SolarLocation;
+import org.eniware.central.domain.EniwareLocation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -70,11 +70,11 @@ public class LocationMetadataController extends WebServiceControllerSupport {
 	@RequestMapping(value = { "", "/", "/query" }, method = RequestMethod.GET)
 	public Response<?> findGeneralLocations(
 			@RequestParam(value = "query", required = false) String query, DatumFilterCommand command) {
-		SolarLocation loc;
+		EniwareLocation loc;
 		if ( command != null ) {
-			loc = new SolarLocation(command.getLocation());
+			loc = new EniwareLocation(command.getLocation());
 		} else {
-			loc = new SolarLocation();
+			loc = new EniwareLocation();
 		}
 		if ( query != null ) {
 			loc.setRegion(query);

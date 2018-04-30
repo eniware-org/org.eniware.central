@@ -17,7 +17,7 @@
 <c:set var="sourceId">
 	<c:choose>
 		<c:when test='${param["sourceId"] != null}'>${param["sourceId"]}</c:when>
-		<c:otherwise>Solar</c:otherwise>
+		<c:otherwise>Eniware</c:otherwise>
 	</c:choose>
 </c:set>
 <c:set var="priceSourceId">
@@ -80,8 +80,8 @@
 		<src>/js/jqplot-plugins/jqplot.pointLabels.js</src>
 		<%--src>/js/date.js</src --%>
 		
-		<src>/js-lib/solarnetwork-d3.js</src>		
-		<src>/js-lib/solarnetwork-d3-datum.js</src>
+		<src>/js-lib/eniwarenetwork-d3.js</src>		
+		<src>/js-lib/eniwarenetwork-d3-datum.js</src>
 
 		<src>/js/node-dashboard.js</src>
 	</pack:script>

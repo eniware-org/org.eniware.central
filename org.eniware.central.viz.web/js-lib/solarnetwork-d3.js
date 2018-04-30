@@ -2,7 +2,7 @@
 (function() {
 'use strict';
 /**
- * @namespace the SolarNetwork namespace
+ * @namespace the EniwareNetwork namespace
  * @require d3 3.0
  * @require queue 1.0
  */
@@ -10,20 +10,20 @@ var sn = {
 	version : '0.0.7',
 	
 	/**
-	 * @namespace the SolarNetwork chart namespace.
+	 * @namespace the EniwareNetwork chart namespace.
 	 */
 	chart : {},
 	
 	config : {
 		debug : false,
-		host : 'data.solarnetwork.net',
+		host : 'data.network.eniware.org',
 		tls : (function() {
 			return (window !== undefined 
 				&& window.location.protocol !== undefined 
 				&& window.location.protocol.toLowerCase().indexOf('https') === 0 ? true : false);
 		}()),
-		path : '/solarquery',
-		solarUserPath : '/solaruser',
+		path : '/eniwarequery',
+		eniwareUserPath : '/eniwareuser',
 		secureQuery : false
 	},
 	
@@ -282,7 +282,7 @@ sn.dateAscending = function(left, right) {
 };
 
 /**
- * Take SolarNetwork raw JSON data result and return a d3-friendly normalized array of data.
+ * Take EniwareNetwork raw JSON data result and return a d3-friendly normalized array of data.
  * The 'sources' parameter can be either undefined or an empty Array, which will be populated
  * with the list of found {@code sourceId} values from the raw JSON data. 
  * 
@@ -614,7 +614,7 @@ sn.nodeUrlHelper = function(nodeId) {
 		},
 		
 		/**
-		 * Generate a SolarNet {@code /datum/query} URL.
+		 * Generate a EniwareNet {@code /datum/query} URL.
 		 * 
 		 * @param type {String} a single supported datum type, or an Array of datum types, to query for
 		 * @param startDate {Date} the starting date for the query, or <em>null</em> to omit
@@ -651,7 +651,7 @@ sn.nodeUrlHelper = function(nodeId) {
 		},
 		
 		/**
-		 * Generate a SolarNet {@code /datum/list} URL.
+		 * Generate a EniwareNet {@code /datum/list} URL.
 		 * 
 		 * @param type {String} a single supported datum type, or an Array of datum types, to query for
 		 * @param startDate {Date} the starting date for the query, or <em>null</em> to omit
@@ -708,7 +708,7 @@ sn.nodeUrlHelper = function(nodeId) {
 		},
 		
 		nodeDashboard : function(source) {
-			return ('http://' +sn.config.host +'/solarviz/node-dashboard.do?nodeId=' +nodeId
+			return ('http://' +sn.config.host +'/eniwareviz/node-dashboard.do?nodeId=' +nodeId
 				 +(source === undefined ? '' : '&consumptionSourceId='+source));
 		}
 	};
@@ -1204,7 +1204,7 @@ sn.pixelWidth = function(selector) {
  * Generate a seasonal data set, suitable for line and bar charts.
  * 
  * @param {Object[]} dataArray the raw input data
- * @param {Object} sourceIdDataTypeMap object with source ID property names with associated SolarNet DataType
+ * @param {Object} sourceIdDataTypeMap object with source ID property names with associated EniwareNet DataType
  *                 values, to use to map each raw source ID into its associated data type
  * @param {sn.Configuration} [excludeSources] the source IDs to exclude
  * @param {String[]} [yAxisProperties] the raw input data properties to include in the output data objects,

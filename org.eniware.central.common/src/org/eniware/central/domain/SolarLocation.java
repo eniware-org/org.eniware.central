@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * A location entity.
  * @version 1.4
  */
-public class SolarLocation extends BaseEntity implements Cloneable, Serializable, Location,
+public class EniwareLocation extends BaseEntity implements Cloneable, Serializable, Location,
 		LocationMatch {
 
 	private static final long serialVersionUID = -3752573628286835489L;
@@ -40,7 +40,7 @@ public class SolarLocation extends BaseEntity implements Cloneable, Serializable
 	/**
 	 * Default constructor.
 	 */
-	public SolarLocation() {
+	public EniwareLocation() {
 		super();
 	}
 
@@ -50,7 +50,7 @@ public class SolarLocation extends BaseEntity implements Cloneable, Serializable
 	 * @param loc
 	 *        the location to copy
 	 */
-	public SolarLocation(Location loc) {
+	public EniwareLocation(Location loc) {
 		super();
 		setName(loc.getName());
 		setCountry(loc.getCountry());
@@ -101,16 +101,16 @@ public class SolarLocation extends BaseEntity implements Cloneable, Serializable
 	}
 
 	/**
-	 * Return a new SolarLocation with normalized values from another Location.
+	 * Return a new EniwareLocation with normalized values from another Location.
 	 * 
 	 * @param loc
 	 *        the location to normalize
 	 * @return the normalized location
 	 * @since 1.3
 	 */
-	public static SolarLocation normalizedLocation(Location loc) {
+	public static EniwareLocation normalizedLocation(Location loc) {
 		assert loc != null;
-		SolarLocation norm = new SolarLocation();
+		EniwareLocation norm = new EniwareLocation();
 		if ( loc.getName() != null ) {
 			String name = loc.getName().trim();
 			if ( name.length() > 0 ) {
@@ -209,7 +209,7 @@ public class SolarLocation extends BaseEntity implements Cloneable, Serializable
 
 	@Override
 	public String toString() {
-		return "SolarLocation{id=" + (getId() == null ? "" : getId()) + ",name="
+		return "EniwareLocation{id=" + (getId() == null ? "" : getId()) + ",name="
 				+ (name == null ? "" : name) + '}';
 	}
 

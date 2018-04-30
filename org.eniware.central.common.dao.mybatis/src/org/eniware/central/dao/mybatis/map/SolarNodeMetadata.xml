@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?><!--Converted at: Thu Nov 13 07:30:21 NZDT 2014-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.solarnetwork.central.datum.dao.mybatis.SolarNodeMetadata">
+<mapper namespace="org.eniware.central.datum.dao.mybatis.EniwareEdgeMetadata">
 
-	<parameterMap id="pmap-SolarNodeMetadata" type="SolarNodeMetadata">
+	<parameterMap id="pmap-EniwareEdgeMetadata" type="EniwareEdgeMetadata">
 		<parameter property="created" jdbcType="TIMESTAMP" mode="IN"/>
 		<parameter property="nodeId" jdbcType="BIGINT" mode="IN"/>
 		<parameter property="metaJson" jdbcType="VARCHAR" mode="IN"/>
 	</parameterMap>
 
-	<update id="insert-SolarNodeMetadata" parameterMap="pmap-SolarNodeMetadata" statementType="CALLABLE">
-		{call solarnet.store_node_meta(?, ?, ?)}
+	<update id="insert-EniwareEdgeMetadata" parameterMap="pmap-EniwareEdgeMetadata" statementType="CALLABLE">
+		{call eniwarenet.store_node_meta(?, ?, ?)}
 	</update>
 	
-	<update id="update-SolarNodeMetadata" parameterMap="pmap-SolarNodeMetadata" statementType="CALLABLE">
-		{call solarnet.store_node_meta(?, ?, ?)}
+	<update id="update-EniwareEdgeMetadata" parameterMap="pmap-EniwareEdgeMetadata" statementType="CALLABLE">
+		{call eniwarenet.store_node_meta(?, ?, ?)}
 	</update>
 	
-	<delete id="delete-SolarNodeMetadata" parameterType="long">
-		DELETE FROM solarnet.sn_node_meta
+	<delete id="delete-EniwareEdgeMetadata" parameterType="long">
+		DELETE FROM eniwarenet.ew_edge_meta
 		WHERE node_id = #{id}
 	</delete>
 	
-	<sql id="fragment-SolarNodeMetadata-full-result">
+	<sql id="fragment-EniwareEdgeMetadata-full-result">
 		nmeta.node_id AS node_meta_node_id,
 		nmeta.created AS node_meta_created,
 		nmeta.updated AS node_meta_updated,
 		nmeta.jdata AS node_meta_jdata
 	</sql>
 	
-	<resultMap id="SolarNodeMetadataFullResult" type="SolarNodeMetadata">
+	<resultMap id="EniwareEdgeMetadataFullResult" type="EniwareEdgeMetadata">
 		<id property="nodeId" column="node_meta_node_id"/>
 		<id property="created" column="node_meta_created"/>
 		<result property="updated" column="node_meta_updated"/>
 		<result property="metaJson" column="node_meta_jdata"/>
 	</resultMap>
 	
-	<select id="get-SolarNodeMetadata-for-id" parameterType="long" resultMap="SolarNodeMetadataFullResult">
+	<select id="get-EniwareEdgeMetadata-for-id" parameterType="long" resultMap="EniwareEdgeMetadataFullResult">
 		SELECT
-			<include refid="fragment-SolarNodeMetadata-full-result"/>
+			<include refid="fragment-EniwareEdgeMetadata-full-result"/>
 		FROM
-			solarnet.sn_node_meta nmeta
+			eniwarenet.ew_edge_meta nmeta
 		WHERE
 			nmeta.node_id = #{id}
 	</select>
@@ -49,23 +49,23 @@
 		FilterableDao support 
 	-->
 
-	<resultMap id="SolarNodeMetadataMatchResult" type="SolarNodeMetadataMatch" extends="net.solarnetwork.central.datum.dao.mybatis.SolarNodeMetadata.SolarNodeMetadataFullResult"/>
+	<resultMap id="EniwareEdgeMetadataMatchResult" type="EniwareEdgeMetadataMatch" extends="org.eniware.central.datum.dao.mybatis.EniwareEdgeMetadata.EniwareEdgeMetadataFullResult"/>
 
-	<sql id="fragment-findall-SolarNodeMetadata-SolarNodeMetadataMatch-where">
+	<sql id="fragment-findall-EniwareEdgeMetadata-EniwareEdgeMetadataMatch-where">
 		<where>
 			<if test="filter.nodeIds != null and filter.nodeIds.length > 0">
-				AND nmeta.node_id = ANY(#{filter.nodeIds,jdbcType=ARRAY,typeHandler=net.solarnetwork.central.dao.mybatis.type.LongArrayTypeHandler})
+				AND nmeta.node_id = ANY(#{filter.nodeIds,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.LongArrayTypeHandler})
 			</if>
 		</where>
 	</sql>
 
 
-	<select id="findall-SolarNodeMetadata-SolarNodeMetadataMatch" resultMap="SolarNodeMetadataMatchResult" fetchSize="50" resultSetType="FORWARD_ONLY">
+	<select id="findall-EniwareEdgeMetadata-EniwareEdgeMetadataMatch" resultMap="EniwareEdgeMetadataMatchResult" fetchSize="50" resultSetType="FORWARD_ONLY">
 		SELECT
-			<include refid="fragment-SolarNodeMetadata-full-result"/>
+			<include refid="fragment-EniwareEdgeMetadata-full-result"/>
 		FROM
-			solarnet.sn_node_meta nmeta
-		<include refid="fragment-findall-SolarNodeMetadata-SolarNodeMetadataMatch-where"/>
+			eniwarenet.ew_edge_meta nmeta
+		<include refid="fragment-findall-EniwareEdgeMetadata-EniwareEdgeMetadataMatch-where"/>
 		ORDER BY
 		<choose>
 			<when test="SortDescriptors != null and SortDescriptors.size &gt; 0">
@@ -82,11 +82,11 @@
 		</choose>
 	</select>
 
-	<select id="findall-SolarNodeMetadata-SolarNodeMetadataMatch-count" resultType="long">
+	<select id="findall-EniwareEdgeMetadata-EniwareEdgeMetadataMatch-count" resultType="long">
 		SELECT count(nmeta.created)
 		FROM
-			solarnet.sn_node_meta nmeta
-		<include refid="fragment-findall-SolarNodeMetadata-SolarNodeMetadataMatch-where"/>
+			eniwarenet.ew_edge_meta nmeta
+		<include refid="fragment-findall-EniwareEdgeMetadata-EniwareEdgeMetadataMatch-where"/>
 	</select>
 
 </mapper>

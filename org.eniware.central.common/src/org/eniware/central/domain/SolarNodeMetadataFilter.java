@@ -7,11 +7,11 @@
 package org.eniware.central.domain;
 
 /**
- * Filter API for {@link SolarNodeMetadata}
+ * Filter API for {@link EniwareEdgeMetadata}
  * @version 1.0
  * @since 1.32
  */
-public interface SolarNodeMetadataFilter extends Filter {
+public interface EniwareEdgeMetadataFilter extends Filter {
 
 	/**
 	 * Get the first node ID. This returns the first available node ID from the

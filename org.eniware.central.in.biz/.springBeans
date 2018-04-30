@@ -10,7 +10,7 @@
 	</configs>
 	<configSets>
 		<configSet>
-			<name><![CDATA[SolarIn Biz]]></name>
+			<name><![CDATA[EniwareIn Biz]]></name>
 			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
 			<incomplete>false</incomplete>
 			<configs>

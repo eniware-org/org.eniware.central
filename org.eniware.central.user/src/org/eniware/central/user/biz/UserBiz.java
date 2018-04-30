@@ -9,7 +9,7 @@ package org.eniware.central.user.biz;
 import java.util.List;
 import java.util.Set;
 
-import org.eniware.central.domain.SolarNode;
+import org.eniware.central.domain.EniwareEdge;
 import org.eniware.central.security.AuthorizationException;
 import org.eniware.central.security.SecurityPolicy;
 import org.eniware.central.user.domain.User;
@@ -68,7 +68,7 @@ public interface UserBiz {
 	 * Update a specific node belonging to a specific user.
 	 * 
 	 * <p>
-	 * The {@link SolarNode#getId()} and {@link User#getId()} values are
+	 * The {@link EniwareEdge#getId()} and {@link User#getId()} values are
 	 * expected to be set on the entry object.
 	 * </p>
 	 * 

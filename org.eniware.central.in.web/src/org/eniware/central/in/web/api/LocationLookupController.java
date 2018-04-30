@@ -17,7 +17,7 @@ import org.eniware.web.domain.Response;
 
 import org.eniware.central.ValidationException;
 import org.eniware.central.domain.FilterResults;
-import org.eniware.central.domain.SolarLocation;
+import org.eniware.central.domain.EniwareLocation;
 import org.eniware.central.domain.SourceLocationMatch;
 import org.eniware.central.in.web.GenericSourceLocationFilter.LocationType;
 import org.eniware.central.support.PriceLocationFilter;
@@ -76,11 +76,11 @@ public class LocationLookupController extends WebServiceControllerSupport {
 	@RequestMapping(value = { "", "/", "/query" }, method = RequestMethod.GET, params = "!type")
 	public Response<FilterResults<GeneralLocationDatumMetadataFilterMatch>> findGeneralLocationMetadata(
 			@RequestParam(value = "query", required = false) String query, DatumFilterCommand command) {
-		SolarLocation loc;
+		EniwareLocation loc;
 		if ( command != null ) {
-			loc = new SolarLocation(command.getLocation());
+			loc = new EniwareLocation(command.getLocation());
 		} else {
-			loc = new SolarLocation();
+			loc = new EniwareLocation();
 		}
 		if ( query != null ) {
 			loc.setRegion(query);

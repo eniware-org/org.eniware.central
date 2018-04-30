@@ -42,47 +42,47 @@ public class UserSecurityAspect extends AuthorizationSupport {
 		this.userAuthTokenDao = userAuthTokenDao;
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserBiz.getUser*(..)) && args(userId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.getUser*(..)) && args(userId,..)")
 	public void readUser(Long userId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserBiz.getPendingUserNodeConfirmations(..)) && args(userId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.getPendingUserNodeConfirmations(..)) && args(userId,..)")
 	public void readUserNodeConfirmations(Long userId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserBiz.getAllUserAuthTokens(..)) && args(userId,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.getAllUserAuthTokens(..)) && args(userId,..)")
 	public void readerUserAuthTokens(Long userId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserBiz.getUserNode(..)) && args(userId,nodeId)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.getUserNode(..)) && args(userId,nodeId)")
 	public void readUserNode(Long userId, Long nodeId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserBiz.getArchivedUserNodes(..)) && args(userId)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.getArchivedUserNodes(..)) && args(userId)")
 	public void readArchivedUserNodes(Long userId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserBiz.updateUserNodeArchivedStatus(..)) && args(userId,nodeIds,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.updateUserNodeArchivedStatus(..)) && args(userId,nodeIds,..)")
 	public void updateArchivedUserNodes(Long userId, Long[] nodeIds) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserBiz.generateUserAuthToken(..)) && args(userId,type,nodeIds)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.generateUserAuthToken(..)) && args(userId,type,nodeIds)")
 	public void generateAuthToken(Long userId, UserAuthTokenType type, Set<Long> nodeIds) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserBiz.deleteUserAuthToken(..)) && args(userId,token)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.deleteUserAuthToken(..)) && args(userId,token)")
 	public void deleteAuthToken(Long userId, String token) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserBiz.updateUserAuthToken*(..)) && args(userId,token,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.updateUserAuthToken*(..)) && args(userId,token,..)")
 	public void updateAuthToken(Long userId, String token) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserBiz.createAuthorizationV2Builder(..)) && args(userId,token,..)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.createAuthorizationV2Builder(..)) && args(userId,token,..)")
 	public void createAuthorizationV2Builder(Long userId, String token) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* net.solarnetwork.central.user.biz.*UserBiz.saveUserNode(..)) && args(entry)")
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.saveUserNode(..)) && args(entry)")
 	public void updateUserNode(UserNode entry) {
 	}
 

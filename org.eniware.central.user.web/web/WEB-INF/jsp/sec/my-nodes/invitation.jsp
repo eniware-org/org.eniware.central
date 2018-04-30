@@ -3,7 +3,7 @@
 </p>
 <div class="alert alert-info alert-dismissible" role="alert">
 	<button type="button" class="close" data-dismiss="alert" aria-label="<fmt:message key='close.label'/>"><span aria-hidden="true">&times;</span></button>
-	<fmt:message key='my-nodes.solarnode.link.help'/>
+	<fmt:message key='my-nodes.eniwareedge.link.help'/>
 </div>
 <pre class="well">${details.confirmationKey}</pre>
 <h3></h3>

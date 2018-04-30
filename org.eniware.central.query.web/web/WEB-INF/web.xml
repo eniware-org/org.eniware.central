@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2002-2006 Solarnetwork.net Dev Team
+  Copyright (c) 2002-2006 Eniwarenetwork.net Dev Team
   
   This program is free software; you can redistribute it and/or 
   modify it under the terms of the GNU General Public License as 
@@ -24,12 +24,12 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 
-	<display-name>SolarNetwork Web Query Server</display-name>
-    <description>SolarNetwork Web Query Server</description>
+	<display-name>EniwareNetwork Web Query Server</display-name>
+    <description>EniwareNetwork Web Query Server</description>
 
 	<context-param>
 		<param-name>contextClass</param-name>
-		<param-value>net.solarnetwork.web.gemini.NonValidatingServerOsgiBundleXmlWebApplicationContext</param-value>
+		<param-value>org.eniware.web.gemini.NonValidatingServerOsgiBundleXmlWebApplicationContext</param-value>
 	</context-param>
 	
 	<context-param>
@@ -97,7 +97,7 @@
 	</listener>
 
 	<servlet>
-		<servlet-name>solarquery</servlet-name>
+		<servlet-name>eniwarequery</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
@@ -107,7 +107,7 @@
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>solarquery</servlet-name>
+		<servlet-name>eniwarequery</servlet-name>
 		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
 

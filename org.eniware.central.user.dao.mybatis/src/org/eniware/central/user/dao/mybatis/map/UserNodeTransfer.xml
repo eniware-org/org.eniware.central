@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.solarnetwork.central.user.dao.mybatis.UserNodeTransfer">
+<mapper namespace="org.eniware.central.user.dao.mybatis.UserNodeTransfer">
 
-	<cache-ref namespace="net.solarnetwork.central.user.dao.mybatis.UserNode"/>
+	<cache-ref namespace="org.eniware.central.user.dao.mybatis.UserNode"/>
 
 	<update id="store-UserNodeTransfer" statementType="CALLABLE">
-		{call solaruser.store_user_node_xfer(
+		{call eniwareuser.store_user_node_xfer(
 			#{nodeId, mode=IN, jdbcType=BIGINT}, 
 			#{userId, mode=IN, jdbcType=BIGINT}, 
 			#{email, mode=IN, jdbcType=VARCHAR}
@@ -14,7 +14,7 @@
 	</update>
 	
 	<update id="delete-UserNodeTransfer" parameterType="UserNodePK">
-		DELETE FROM solaruser.user_node_xfer
+		DELETE FROM eniwareuser.user_node_xfer
 		WHERE
 			user_id = #{userId}
 			AND node_id = #{nodeId}
@@ -32,24 +32,24 @@
 		<id property="nodeId" column="unxfer_node_id"/>
 		<result property="created" column="unxfer_created"/>
 		<result property="email" column="unxfer_recipient"/>
-		<association property="user" resultMap="net.solarnetwork.central.user.dao.mybatis.User.UserFullResult"/>
-		<association property="node" resultMap="net.solarnetwork.central.dao.mybatis.SolarNode.SolarNodeFullResult"/>
+		<association property="user" resultMap="org.eniware.central.user.dao.mybatis.User.UserFullResult"/>
+		<association property="node" resultMap="org.eniware.central.dao.mybatis.EniwareEdge.EniwareEdgeFullResult"/>
 	</resultMap>
 	
 	<select id="get-UserNodeTransfer-for-id" parameterType="UserNodePK" resultMap="UserNodeTransferFullResult">
 		SELECT
 			<include refid="fragment-UserNodeTransfer-full-result"/>,
-			<include refid="net.solarnetwork.central.dao.mybatis.SolarNode.fragment-SolarNode-share-result"/>,
-			<include refid="net.solarnetwork.central.dao.mybatis.SolarLocation.fragment-SolarLocation-public-result"/>,
-			<include refid="net.solarnetwork.central.user.dao.mybatis.User.fragment-User-share-result"/>
+			<include refid="org.eniware.central.dao.mybatis.EniwareEdge.fragment-EniwareEdge-share-result"/>,
+			<include refid="org.eniware.central.dao.mybatis.EniwareLocation.fragment-EniwareLocation-public-result"/>,
+			<include refid="org.eniware.central.user.dao.mybatis.User.fragment-User-share-result"/>
 		FROM
-			solaruser.user_node_xfer unxfer
+			eniwareuser.user_node_xfer unxfer
 		INNER JOIN
-			solarnet.sn_node n ON n.node_id = unxfer.node_id
+			eniwarenet.ew_edge n ON n.node_id = unxfer.node_id
 		INNER JOIN
-			solarnet.sn_loc l ON l.id = n.loc_id
+			eniwarenet.sn_loc l ON l.id = n.loc_id
 		INNER JOIN
-			solaruser.user_user u ON u.id = unxfer.user_id
+			eniwareuser.user_user u ON u.id = unxfer.user_id
 		WHERE
 			unxfer.user_id = #{userId}
 			AND unxfer.node_id = #{nodeId}
@@ -58,17 +58,17 @@
 	<select id="find-UserNodeTransfer-for-email" parameterType="string" resultMap="UserNodeTransferFullResult">
 		SELECT
 			<include refid="fragment-UserNodeTransfer-full-result"/>,
-			<include refid="net.solarnetwork.central.dao.mybatis.SolarNode.fragment-SolarNode-share-result"/>,
-			<include refid="net.solarnetwork.central.dao.mybatis.SolarLocation.fragment-SolarLocation-public-result"/>,
-			<include refid="net.solarnetwork.central.user.dao.mybatis.User.fragment-User-share-result"/>
+			<include refid="org.eniware.central.dao.mybatis.EniwareEdge.fragment-EniwareEdge-share-result"/>,
+			<include refid="org.eniware.central.dao.mybatis.EniwareLocation.fragment-EniwareLocation-public-result"/>,
+			<include refid="org.eniware.central.user.dao.mybatis.User.fragment-User-share-result"/>
 		FROM
-			solaruser.user_node_xfer unxfer
+			eniwareuser.user_node_xfer unxfer
 		INNER JOIN
-			solarnet.sn_node n ON n.node_id = unxfer.node_id
+			eniwarenet.ew_edge n ON n.node_id = unxfer.node_id
 		INNER JOIN
-			solarnet.sn_loc l ON l.id = n.loc_id
+			eniwarenet.sn_loc l ON l.id = n.loc_id
 		INNER JOIN
-			solaruser.user_user u ON u.id = unxfer.user_id
+			eniwareuser.user_user u ON u.id = unxfer.user_id
 		WHERE
 			unxfer.recipient = #{email}
 		ORDER BY

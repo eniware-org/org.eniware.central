@@ -129,7 +129,7 @@ public class SSLContextFactory implements PingTest {
 
 	@Override
 	public String getPingTestName() {
-		return "SolarNetwork CA Agent Certificate";
+		return "EniwareNetwork CA Agent Certificate";
 	}
 
 	@Override

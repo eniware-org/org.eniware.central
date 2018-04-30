@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNet Datum Aggregation
+Bundle-Name: EniwareNet Datum Aggregation
 Bundle-SymbolicName: org.eniware.central.datum.agg
 Bundle-Version: 1.5.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: 
  javax.sql,

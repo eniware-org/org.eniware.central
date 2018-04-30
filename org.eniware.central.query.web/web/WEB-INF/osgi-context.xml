@@ -13,7 +13,7 @@
 
 	<!-- Configuration -->
 
-	<osgix:cm-properties id="query.web.cfg" persistent-id="net.solarnetwork.central.query.web">
+	<osgix:cm-properties id="query.web.cfg" persistent-id="org.eniware.central.query.web">
 		<prop key="JSONView.indentAmount">0</prop>
 	</osgix:cm-properties>
 	
@@ -26,34 +26,34 @@
 		filter="(db=central)"/>
 	
 	<osgi:reference id="appConfigBiz"
-		interface="net.solarnetwork.central.biz.AppConfigurationBiz"
+		interface="org.eniware.central.biz.AppConfigurationBiz"
 		filter="(app=query)"/>
 	
-	<osgi:reference id="solarNodeDao"
-		interface="net.solarnetwork.central.dao.SolarNodeDao"/>
+	<osgi:reference id="eniwareEdgeDao"
+		interface="org.eniware.central.dao.EniwareEdgeDao"/>
 
 	<osgi:reference id="datumMetadtaBiz" sticky="false"
-		interface="net.solarnetwork.central.datum.biz.DatumMetadataBiz"/>
+		interface="org.eniware.central.datum.biz.DatumMetadataBiz"/>
 	
 	<osgi:reference id="userBiz" sticky="false"
-		interface="net.solarnetwork.central.user.biz.UserBiz" />
+		interface="org.eniware.central.user.biz.UserBiz" />
 
-	<osgi:reference id="solarNodeMetadataBiz" sticky="false"
-		interface="net.solarnetwork.central.biz.SolarNodeMetadataBiz" />
+	<osgi:reference id="eniwareEdgeMetadataBiz" sticky="false"
+		interface="org.eniware.central.biz.EniwareEdgeMetadataBiz" />
 
 	<osgi:reference id="userMetadataBiz" sticky="false"
-		interface="net.solarnetwork.central.user.biz.UserMetadataBiz" />
+		interface="org.eniware.central.user.biz.UserMetadataBiz" />
 
-	<osgi:list id="pingTests" availability="optional" interface="net.solarnetwork.central.domain.PingTest"/>
+	<osgi:list id="pingTests" availability="optional" interface="org.eniware.central.domain.PingTest"/>
 	
 	<bean id="queryBiz" class="org.eniware.central.query.support.AuditingQueryBiz">
 		<constructor-arg>
-			<osgi:reference sticky="false" interface="net.solarnetwork.central.query.biz.QueryBiz"/>
+			<osgi:reference sticky="false" interface="org.eniware.central.query.biz.QueryBiz"/>
 		</constructor-arg>
 		<constructor-arg>
 			<bean class="org.eniware.util.DynamicServiceTracker">
 				<property name="bundleContext" ref="bundleContext"/>
-				<property name="serviceClassName" value="net.solarnetwork.central.query.biz.QueryAuditor"/>
+				<property name="serviceClassName" value="org.eniware.central.query.biz.QueryAuditor"/>
 			</bean>
 		</constructor-arg>
 	</bean>

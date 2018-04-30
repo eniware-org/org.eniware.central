@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!--Converted at: Thu Nov 13 07:30:21 NZDT 2014-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.solarnetwork.central.datum.dao.mybatis.GeneralNodeDatumMetadata">
+<mapper namespace="org.eniware.central.datum.dao.mybatis.GeneralNodeDatumMetadata">
 
 	<parameterMap id="pmap-GeneralNodeDatumMetadata" type="GeneralNodeDatumMetadata">
 		<parameter property="created" jdbcType="TIMESTAMP" mode="IN"/>
@@ -11,15 +11,15 @@
 	</parameterMap>
 
 	<update id="insert-GeneralNodeDatumMetadata" parameterMap="pmap-GeneralNodeDatumMetadata" statementType="CALLABLE">
-		{call solardatum.store_meta(?, ?, ?, ?)}
+		{call eniwaredatum.store_meta(?, ?, ?, ?)}
 	</update>
 	
 	<update id="update-GeneralNodeDatumMetadata" parameterMap="pmap-GeneralNodeDatumMetadata" statementType="CALLABLE">
-		{call solardatum.store_meta(?, ?, ?, ?)}
+		{call eniwaredatum.store_meta(?, ?, ?, ?)}
 	</update>
 	
 	<delete id="delete-GeneralNodeDatumMetadata" parameterType="NodeSourcePK">
-		DELETE FROM solardatum.da_meta
+		DELETE FROM eniwaredatum.da_meta
 		WHERE node_id = #{nodeId} 
 			AND source_id = #{sourceId}
 	</delete>
@@ -42,7 +42,7 @@
 	</resultMap>
 	
 	<resultMap id="GeneralNodeDatumMetadataFullResult" type="GeneralNodeDatumMetadata"
-		extends="net.solarnetwork.central.datum.dao.mybatis.GeneralNodeDatumMetadata.GeneralNodeDatumMetadataPKResult">
+		extends="org.eniware.central.datum.dao.mybatis.GeneralNodeDatumMetadata.GeneralNodeDatumMetadataPKResult">
 		<id property="nodeId" column="meta_node_id"/>
 		<id property="sourceId" column="meta_source_id"/>
 		<id property="created" column="meta_created"/>
@@ -54,7 +54,7 @@
 		SELECT
 			<include refid="fragment-GeneralNodeDatumMetadata-full-result"/>
 		FROM
-			solardatum.da_meta meta
+			eniwaredatum.da_meta meta
 		WHERE
 			meta.node_id = #{nodeId}
 			AND meta.source_id = #{sourceId}
@@ -64,15 +64,15 @@
 		FilterableDao support 
 	-->
 
-	<resultMap id="GeneralNodeDatumMetadataMatchResult" type="GeneralNodeDatumMetadataMatch" extends="net.solarnetwork.central.datum.dao.mybatis.GeneralNodeDatumMetadata.GeneralNodeDatumMetadataFullResult"/>
+	<resultMap id="GeneralNodeDatumMetadataMatchResult" type="GeneralNodeDatumMetadataMatch" extends="org.eniware.central.datum.dao.mybatis.GeneralNodeDatumMetadata.GeneralNodeDatumMetadataFullResult"/>
 
 	<sql id="fragment-findall-GeneralNodeDatumMetadata-GeneralNodeDatumMetadataMatch-where">
 		<where>
 			<if test="filter.sourceIds != null and filter.sourceIds.length > 0">
-				AND meta.source_id = ANY(#{filter.sourceIds,jdbcType=ARRAY,typeHandler=net.solarnetwork.central.dao.mybatis.type.TextArrayTypeHandler})
+				AND meta.source_id = ANY(#{filter.sourceIds,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.TextArrayTypeHandler})
 			</if>
 			<if test="filter.nodeIds != null and filter.nodeIds.length > 0">
-				AND meta.node_id = ANY(#{filter.nodeIds,jdbcType=ARRAY,typeHandler=net.solarnetwork.central.dao.mybatis.type.LongArrayTypeHandler})
+				AND meta.node_id = ANY(#{filter.nodeIds,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.LongArrayTypeHandler})
 			</if>
 		</where>
 	</sql>
@@ -82,7 +82,7 @@
 		SELECT
 			<include refid="fragment-GeneralNodeDatumMetadata-full-result"/>
 		FROM
-			solardatum.da_meta meta
+			eniwaredatum.da_meta meta
 		<include refid="fragment-findall-GeneralNodeDatumMetadata-GeneralNodeDatumMetadataMatch-where"/>
 		ORDER BY
 		<choose>
@@ -104,7 +104,7 @@
 	<select id="findall-GeneralNodeDatumMetadata-GeneralNodeDatumMetadataMatch-count" resultType="long">
 		SELECT count(meta.created)
 		FROM
-			solardatum.da_meta meta
+			eniwaredatum.da_meta meta
 		<include refid="fragment-findall-GeneralNodeDatumMetadata-GeneralNodeDatumMetadataMatch-where"/>
 	</select>
 
@@ -112,8 +112,8 @@
 		SELECT
 			<include refid="fragment-GeneralNodeDatumMetadata-pk-result"/>
 		FROM
-			solardatum.find_sources_for_meta(
-				#{nodeIds,jdbcType=ARRAY,typeHandler=net.solarnetwork.central.dao.mybatis.type.LongArrayTypeHandler},
+			eniwaredatum.find_sources_for_meta(
+				#{nodeIds,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.LongArrayTypeHandler},
 				#{filter}) meta
 		ORDER BY meta.node_id, meta.source_id
 	</select>

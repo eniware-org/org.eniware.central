@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SolarNetwork Central Security
+Bundle-Name: EniwareNetwork Central Security
 Bundle-SymbolicName: org.eniware.central.common.security
 Bundle-Version: 1.13.0
-Bundle-Vendor: SolarNetwork
+Bundle-Vendor: EniwareNetwork
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: 
  org.eniware.central.security;version="1.11.0",

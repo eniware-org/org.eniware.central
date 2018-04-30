@@ -23,7 +23,7 @@ public class PriceLocation extends BaseEntity implements Cloneable, Serializable
 	private String name;
 	private String currency;
 	private String unit;
-	private SolarLocation location;
+	private EniwareLocation location;
 	private PriceSource source;
 	private String sourceData;
 
@@ -94,11 +94,11 @@ public class PriceLocation extends BaseEntity implements Cloneable, Serializable
 		this.sourceData = sourceData;
 	}
 
-	public SolarLocation getLocation() {
+	public EniwareLocation getLocation() {
 		return location;
 	}
 
-	public void setLocation(SolarLocation location) {
+	public void setLocation(EniwareLocation location) {
 		this.location = location;
 	}
 

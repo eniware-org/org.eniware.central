@@ -12,7 +12,7 @@ import java.security.cert.X509Certificate;
 import org.eniware.support.CertificateService;
 
 /**
- * API for managing SolarNode PKI from within SolarUser.
+ * API for managing EniwareEdge PKI from within EniwareUser.
  * 
  * @version 1.1
  */

@@ -19,7 +19,7 @@
 
 	<!-- Configuration -->
 	
-	<osgix:cm-properties id="cfg" persistent-id="net.solarnetwork.central.datum.agg">
+	<osgix:cm-properties id="cfg" persistent-id="org.eniware.central.datum.agg">
 		<beans:prop key="staleNodeDatumProcessor.maximumRowCount">200</beans:prop>
 		<beans:prop key="staleNodeDatumProcessor.taskCount">4</beans:prop>
 		<beans:prop key="staleLocationDatumProcessor.maximumRowCount">200</beans:prop>
@@ -42,69 +42,69 @@
 	
 	<!-- Supporting Services -->
 	
-	<bean id="staleGeneralNodeDatumProcessorHourly" class="net.solarnetwork.central.datum.agg.StaleGeneralNodeDatumProcessor">
+	<bean id="staleGeneralNodeDatumProcessorHourly" class="org.eniware.central.datum.agg.StaleGeneralNodeDatumProcessor">
 		<argument ref="eventAdmin"/>
 		<argument ref="jdbcOps"/>
 		<property name="maximumRowCount" value="${staleNodeDatumProcessor.maximumRowCount}"/>
 		<property name="taskCount" value="${staleNodeDatumProcessor.taskCount}"/>
 		<property name="jobCron" value="${staleGeneralNodeDatumProcessor.hourly.jobCron}"/>
 		<property name="jobId" value="StaleGeneralNodeDatumProcessorHourly"/>
-		<property name="jobTopic" value="net/solarnetwork/central/datum/agg/StaleGeneralNodeDatumProcessor"/>
+		<property name="jobTopic" value="net/eniwarenetwork/central/datum/agg/StaleGeneralNodeDatumProcessor"/>
 		<property name="aggregateProcessType" value="h"/>
 	</bean>
 	
-	<bean id="staleGeneralNodeDatumProcessorDaily" class="net.solarnetwork.central.datum.agg.StaleGeneralNodeDatumProcessor">
+	<bean id="staleGeneralNodeDatumProcessorDaily" class="org.eniware.central.datum.agg.StaleGeneralNodeDatumProcessor">
 		<argument ref="eventAdmin"/>
 		<argument ref="jdbcOps"/>
 		<property name="maximumRowCount" value="${staleNodeDatumProcessor.maximumRowCount}"/>
 		<property name="taskCount" value="${staleNodeDatumProcessor.taskCount}"/>
 		<property name="jobCron" value="${staleGeneralNodeDatumProcessor.daily.jobCron}"/>
 		<property name="jobId" value="StaleGeneralNodeDatumProcessorDaily"/>
-		<property name="jobTopic" value="net/solarnetwork/central/datum/agg/StaleGeneralNodeDatumProcessor"/>
+		<property name="jobTopic" value="net/eniwarenetwork/central/datum/agg/StaleGeneralNodeDatumProcessor"/>
 		<property name="aggregateProcessType" value="d"/>
 	</bean>
 	
-	<bean id="staleGeneralNodeDatumProcessorMonthly" class="net.solarnetwork.central.datum.agg.StaleGeneralNodeDatumProcessor">
+	<bean id="staleGeneralNodeDatumProcessorMonthly" class="org.eniware.central.datum.agg.StaleGeneralNodeDatumProcessor">
 		<argument ref="eventAdmin"/>
 		<argument ref="jdbcOps"/>
 		<property name="maximumRowCount" value="${staleNodeDatumProcessor.maximumRowCount}"/>
 		<property name="taskCount" value="${staleNodeDatumProcessor.taskCount}"/>
 		<property name="jobCron" value="${staleGeneralNodeDatumProcessor.monthly.jobCron}"/>
 		<property name="jobId" value="StaleGeneralNodeDatumProcessorMonthly"/>
-		<property name="jobTopic" value="net/solarnetwork/central/datum/agg/StaleGeneralNodeDatumProcessor"/>
+		<property name="jobTopic" value="net/eniwarenetwork/central/datum/agg/StaleGeneralNodeDatumProcessor"/>
 		<property name="aggregateProcessType" value="m"/>
 	</bean>
 	
-	<bean id="staleGeneralLocationDatumProcessorHourly" class="net.solarnetwork.central.datum.agg.StaleGeneralLocationDatumProcessor">
+	<bean id="staleGeneralLocationDatumProcessorHourly" class="org.eniware.central.datum.agg.StaleGeneralLocationDatumProcessor">
 		<argument ref="eventAdmin"/>
 		<argument ref="jdbcOps"/>
 		<property name="maximumRowCount" value="${staleLocationDatumProcessor.maximumRowCount}"/>
 		<property name="taskCount" value="${staleLocationDatumProcessor.taskCount}"/>
 		<property name="jobCron" value="${staleGeneralLocationDatumProcessor.hourly.jobCron}"/>
 		<property name="jobId" value="StaleGeneralLocationDatumProcessorHourly"/>
-		<property name="jobTopic" value="net/solarnetwork/central/datum/agg/StaleGeneralLocationDatumProcessor"/>
+		<property name="jobTopic" value="net/eniwarenetwork/central/datum/agg/StaleGeneralLocationDatumProcessor"/>
 		<property name="aggregateProcessType" value="h"/>
 	</bean>
 	
-	<bean id="staleGeneralLocationDatumProcessorDaily" class="net.solarnetwork.central.datum.agg.StaleGeneralLocationDatumProcessor">
+	<bean id="staleGeneralLocationDatumProcessorDaily" class="org.eniware.central.datum.agg.StaleGeneralLocationDatumProcessor">
 		<argument ref="eventAdmin"/>
 		<argument ref="jdbcOps"/>
 		<property name="maximumRowCount" value="${staleLocationDatumProcessor.maximumRowCount}"/>
 		<property name="taskCount" value="${staleLocationDatumProcessor.taskCount}"/>
 		<property name="jobCron" value="${staleGeneralLocationDatumProcessor.daily.jobCron}"/>
 		<property name="jobId" value="StaleGeneralLocationDatumProcessorDaily"/>
-		<property name="jobTopic" value="net/solarnetwork/central/datum/agg/StaleGeneralLocationDatumProcessor"/>
+		<property name="jobTopic" value="net/eniwarenetwork/central/datum/agg/StaleGeneralLocationDatumProcessor"/>
 		<property name="aggregateProcessType" value="d"/>
 	</bean>
 	
-	<bean id="staleGeneralLocationDatumProcessorMonthly" class="net.solarnetwork.central.datum.agg.StaleGeneralLocationDatumProcessor">
+	<bean id="staleGeneralLocationDatumProcessorMonthly" class="org.eniware.central.datum.agg.StaleGeneralLocationDatumProcessor">
 		<argument ref="eventAdmin"/>
 		<argument ref="jdbcOps"/>
 		<property name="maximumRowCount" value="${staleLocationDatumProcessor.maximumRowCount}"/>
 		<property name="taskCount" value="${staleLocationDatumProcessor.taskCount}"/>
 		<property name="jobCron" value="${staleGeneralLocationDatumProcessor.monthly.jobCron}"/>
 		<property name="jobId" value="StaleGeneralLocationDatumProcessorMonthly"/>
-		<property name="jobTopic" value="net/solarnetwork/central/datum/agg/StaleGeneralLocationDatumProcessor"/>
+		<property name="jobTopic" value="net/eniwarenetwork/central/datum/agg/StaleGeneralLocationDatumProcessor"/>
 		<property name="aggregateProcessType" value="m"/>
 	</bean>
 	
@@ -114,7 +114,7 @@
 		<service-properties>
 			<entry key="#{T(org.osgi.service.event.EventConstants).EVENT_TOPIC}">
 				<array value-type="java.lang.String">
-					<value>#{T(net.solarnetwork.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
+					<value>#{T(org.eniware.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
 					<value>#{staleGeneralNodeDatumProcessorHourly.jobTopic}</value>
 				</array>
 			</entry>
@@ -125,7 +125,7 @@
 		<service-properties>
 			<entry key="#{T(org.osgi.service.event.EventConstants).EVENT_TOPIC}">
 				<array value-type="java.lang.String">
-					<value>#{T(net.solarnetwork.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
+					<value>#{T(org.eniware.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
 					<value>#{staleGeneralNodeDatumProcessorDaily.jobTopic}</value>
 				</array>
 			</entry>
@@ -136,7 +136,7 @@
 		<service-properties>
 			<entry key="#{T(org.osgi.service.event.EventConstants).EVENT_TOPIC}">
 				<array value-type="java.lang.String">
-					<value>#{T(net.solarnetwork.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
+					<value>#{T(org.eniware.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
 					<value>#{staleGeneralNodeDatumProcessorMonthly.jobTopic}</value>
 				</array>
 			</entry>
@@ -147,7 +147,7 @@
 		<service-properties>
 			<entry key="#{T(org.osgi.service.event.EventConstants).EVENT_TOPIC}">
 				<array value-type="java.lang.String">
-					<value>#{T(net.solarnetwork.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
+					<value>#{T(org.eniware.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
 					<value>#{staleGeneralLocationDatumProcessorHourly.jobTopic}</value>
 				</array>
 			</entry>
@@ -158,7 +158,7 @@
 		<service-properties>
 			<entry key="#{T(org.osgi.service.event.EventConstants).EVENT_TOPIC}">
 				<array value-type="java.lang.String">
-					<value>#{T(net.solarnetwork.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
+					<value>#{T(org.eniware.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
 					<value>#{staleGeneralLocationDatumProcessorDaily.jobTopic}</value>
 				</array>
 			</entry>
@@ -169,7 +169,7 @@
 		<service-properties>
 			<entry key="#{T(org.osgi.service.event.EventConstants).EVENT_TOPIC}">
 				<array value-type="java.lang.String">
-					<value>#{T(net.solarnetwork.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
+					<value>#{T(org.eniware.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
 					<value>#{staleGeneralLocationDatumProcessorMonthly.jobTopic}</value>
 				</array>
 			</entry>

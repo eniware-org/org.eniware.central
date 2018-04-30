@@ -10,7 +10,7 @@
 	</configs>
 	<configSets>
 		<configSet>
-			<name><![CDATA[SolarQuery Webapp]]></name>
+			<name><![CDATA[EniwareQuery Webapp]]></name>
 			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
 			<incomplete>false</incomplete>
 			<configs>
