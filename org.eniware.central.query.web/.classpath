@@ -11,5 +11,6 @@
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.eniware.central.common.web"/>
 	<classpathentry kind="lib" path="/eniware-osgi-target/platform/joda-time-2.9.7.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eniware.central.user.web"/>
 	<classpathentry kind="output" path="web/WEB-INF/classes"/>
 </classpath>
