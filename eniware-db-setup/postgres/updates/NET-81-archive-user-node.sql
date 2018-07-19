@@ -1,2 +1,2 @@
-ALTER TABLE solaruser.user_node 
+ALTER TABLE solaruser.user_Edge 
 ADD COLUMN archived BOOLEAN NOT NULL DEFAULT FALSE;

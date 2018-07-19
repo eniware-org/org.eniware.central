@@ -3,7 +3,7 @@
 import datumAggregate from 'datum/datumAggregate';
 
 /**
- * Aggregate rows of datum records for a single node ID and any number of source IDs
+ * Aggregate rows of datum records for a single Edge ID and any number of source IDs
  * across a fixed time span into smaller time "slots". For example a time span might
  * be 24 hours while the time slots are 15minutes.
  *

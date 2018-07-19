@@ -39,11 +39,11 @@ public class SecurityPolicySerializer extends StdSerializer<SecurityPolicy> {
 			return;
 		}
 		generator.writeStartObject();
-		if ( policy.getNodeIds() != null && !policy.getNodeIds().isEmpty() ) {
-			generator.writeArrayFieldStart("nodeIds");
+		if ( policy.getEdgeIds() != null && !policy.getEdgeIds().isEmpty() ) {
+			generator.writeArrayFieldStart("EdgeIds");
 
-			// maintain node IDs in natural sort order
-			Long[] ids = policy.getNodeIds().toArray(new Long[policy.getNodeIds().size()]);
+			// maintain Edge IDs in natural sort order
+			Long[] ids = policy.getEdgeIds().toArray(new Long[policy.getEdgeIds().size()]);
 			Arrays.sort(ids);
 			for ( Long id : ids ) {
 				generator.writeNumber(id);
@@ -81,10 +81,10 @@ public class SecurityPolicySerializer extends StdSerializer<SecurityPolicy> {
 			generator.writeEndArray();
 		}
 
-		Set<String> nodeMetadataPaths = policy.getNodeMetadataPaths();
-		if ( nodeMetadataPaths != null && !nodeMetadataPaths.isEmpty() ) {
-			generator.writeArrayFieldStart("nodeMetadataPaths");
-			for ( String path : nodeMetadataPaths ) {
+		Set<String> EdgeMetadataPaths = policy.getEdgeMetadataPaths();
+		if ( EdgeMetadataPaths != null && !EdgeMetadataPaths.isEmpty() ) {
+			generator.writeArrayFieldStart("EdgeMetadataPaths");
+			for ( String path : EdgeMetadataPaths ) {
 				generator.writeString(path);
 			}
 			generator.writeEndArray();

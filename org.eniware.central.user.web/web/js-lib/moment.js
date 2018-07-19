@@ -391,7 +391,7 @@
 
     function loadLocale(name) {
         var oldLocale = null;
-        // TODO: Find a better way to register and load all the locales in Node
+        // TODO: Find a better way to register and load all the locales in Edge
         if (!locales[name] && (typeof module !== 'undefined') &&
                 module && module.exports) {
             try {

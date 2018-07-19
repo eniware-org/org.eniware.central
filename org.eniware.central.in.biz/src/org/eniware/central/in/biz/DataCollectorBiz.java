@@ -12,9 +12,9 @@ import org.eniware.central.datum.domain.Datum;
 import org.eniware.central.datum.domain.GeneralLocationDatum;
 import org.eniware.central.datum.domain.GeneralLocationDatumMetadataFilter;
 import org.eniware.central.datum.domain.GeneralLocationDatumMetadataFilterMatch;
-import org.eniware.central.datum.domain.GeneralNodeDatum;
-import org.eniware.central.datum.domain.GeneralNodeDatumMetadataFilter;
-import org.eniware.central.datum.domain.GeneralNodeDatumMetadataFilterMatch;
+import org.eniware.central.datum.domain.GeneralEdgeDatum;
+import org.eniware.central.datum.domain.GeneralEdgeDatumMetadataFilter;
+import org.eniware.central.datum.domain.GeneralEdgeDatumMetadataFilterMatch;
 import org.eniware.central.domain.FilterResults;
 import org.eniware.central.domain.Location;
 import org.eniware.central.domain.LocationMatch;
@@ -26,7 +26,7 @@ import org.eniware.central.domain.SourceLocationMatch;
 import org.eniware.domain.GeneralDatumMetadata;
 
 /**
- * API for collecting data from eniware nodes.
+ * API for collecting data from eniware Edges.
  * 
  * <p>
  * Serves as a transactional facade to posting data into central system.
@@ -44,7 +44,7 @@ public interface DataCollectorBiz {
 	 * @param datum
 	 *        the data to persist
 	 * @return the persisted entity
-	 * @deprecated See {@link #postGeneralNodeDatum(Iterable)}
+	 * @deprecated See {@link #postGeneralEdgeDatum(Iterable)}
 	 */
 	@Deprecated
 	<D extends Datum> D postDatum(D datum);
@@ -56,18 +56,18 @@ public interface DataCollectorBiz {
 	 *        the collection of datum
 	 * @return the persisted entities, ordered in iterator order of
 	 *         {@code datums}
-	 * @deprecated See {@link #postGeneralNodeDatum(Iterable)}
+	 * @deprecated See {@link #postGeneralEdgeDatum(Iterable)}
 	 */
 	@Deprecated
 	List<Datum> postDatum(Iterable<Datum> datums);
 
 	/**
-	 * Post a collection of {@link GeneralNodeDatum} in a single transaction.
+	 * Post a collection of {@link GeneralEdgeDatum} in a single transaction.
 	 * 
 	 * @param datums
 	 *        the collection of datums
 	 */
-	void postGeneralNodeDatum(Iterable<GeneralNodeDatum> datums);
+	void postGeneralEdgeDatum(Iterable<GeneralEdgeDatum> datums);
 
 	/**
 	 * Post a collection of {@link GeneralLocationDatum} in a single
@@ -80,38 +80,38 @@ public interface DataCollectorBiz {
 	void postGeneralLocationDatum(Iterable<GeneralLocationDatum> datums);
 
 	/**
-	 * Add metadata to a specific node and source. If metadata already exists
-	 * for the given node and source, the values will be merged such that tags
+	 * Add metadata to a specific Edge and source. If metadata already exists
+	 * for the given Edge and source, the values will be merged such that tags
 	 * are only added and only new info values will be added.
 	 * 
-	 * @param nodeId
-	 *        the node ID to add to
+	 * @param EdgeId
+	 *        the Edge ID to add to
 	 * @param sourceId
 	 *        the source ID to add to
 	 * @param meta
 	 *        the metadata to add
 	 */
-	void addGeneralNodeDatumMetadata(Long nodeId, String sourceId, GeneralDatumMetadata meta);
+	void addGeneralEdgeDatumMetadata(Long EdgeId, String sourceId, GeneralDatumMetadata meta);
 
 	/**
-	 * Add metadata to a specific node.
+	 * Add metadata to a specific Edge.
 	 * 
 	 * <p>
-	 * If metadata already exists for the given node and source, the values will
+	 * If metadata already exists for the given Edge and source, the values will
 	 * be merged such that tags are only added and only new info values will be
 	 * added.
 	 * </p>
 	 * 
-	 * @param nodeId
-	 *        the node ID to add to
+	 * @param EdgeId
+	 *        the Edge ID to add to
 	 * @param meta
 	 *        the metadata to add
 	 * @since 1.5
 	 */
-	void addEniwareEdgeMetadata(Long nodeId, GeneralDatumMetadata meta);
+	void addEniwareEdgeMetadata(Long EdgeId, GeneralDatumMetadata meta);
 
 	/**
-	 * Search for node metadata.
+	 * Search for Edge metadata.
 	 * 
 	 * @param criteria
 	 *        the search criteria
@@ -140,8 +140,8 @@ public interface DataCollectorBiz {
 	 *        an optional maximum number of returned results
 	 * @return the results, never <em>null</em>
 	 */
-	FilterResults<GeneralNodeDatumMetadataFilterMatch> findGeneralNodeDatumMetadata(
-			GeneralNodeDatumMetadataFilter criteria, List<SortDescriptor> sortDescriptors,
+	FilterResults<GeneralEdgeDatumMetadataFilterMatch> findGeneralEdgeDatumMetadata(
+			GeneralEdgeDatumMetadataFilter criteria, List<SortDescriptor> sortDescriptors,
 			Integer offset, Integer max);
 
 	/**

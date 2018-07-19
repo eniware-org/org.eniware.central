@@ -25,7 +25,7 @@
 
 	<!-- Service References -->
 
-	<reference id="userNodeDao" interface="org.eniware.central.user.dao.UserNodeDao"/>
+	<reference id="userEdgeDao" interface="org.eniware.central.user.dao.UserEdgeDao"/>
 
 	<reference id="datumMetadataBiz"
 		interface="org.eniware.central.datum.biz.DatumMetadataBiz"
@@ -45,7 +45,7 @@
 	<aop:aspectj-autoproxy/>
 
 	<bean id="datumMetadataSecurityAspect" class="org.eniware.central.datum.aop.DatumMetadataSecurityAspect">
-		<argument ref="userNodeDao"/>
+		<argument ref="userEdgeDao"/>
 	</bean>
 	
 	<bean id="aopDatumMetadataBiz" class="org.eniware.central.datum.support.DelegatingDatumMetadataBiz">

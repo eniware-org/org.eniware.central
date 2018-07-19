@@ -14,7 +14,7 @@ import org.joda.time.LocalDate;
  */
 public final class ReportableIntervalCommand {
 
-	private Long nodeId;
+	private Long EdgeId;
 	private ReportableIntervalType[] types;
 	private LocalDate start;
 	private LocalDate end;
@@ -31,12 +31,12 @@ public final class ReportableIntervalCommand {
 		this.types = new ReportableIntervalType[] { type };
 	}
 
-	public Long getNodeId() {
-		return nodeId;
+	public Long getEdgeId() {
+		return EdgeId;
 	}
 
-	public void setNodeId(Long nodeId) {
-		this.nodeId = nodeId;
+	public void setEdgeId(Long EdgeId) {
+		this.EdgeId = EdgeId;
 	}
 
 	public LocalDate getStart() {

@@ -26,7 +26,6 @@ Import-Package:
  javax.sql,
  org.sf.packtag.servlet;version="3.7",
  org.sf.packtag.tag;version="3.7",
- org.eniware.web.support;version="1.7",
  org.aopalliance.aop;version="[1.0,2.0)",
  org.apache.el;version="[7.0,9.0)";resolution:=optional,
  org.apache.el.lang;version="[7.0,9.0)";resolution:=optional,

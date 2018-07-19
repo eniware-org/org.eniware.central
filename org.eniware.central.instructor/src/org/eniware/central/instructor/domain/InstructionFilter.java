@@ -18,19 +18,19 @@ import org.eniware.central.domain.Filter;
 public interface InstructionFilter extends Filter {
 
 	/**
-	 * Filter based on a node ID.
+	 * Filter based on a Edge ID.
 	 * 
-	 * @return the node ID
+	 * @return the Edge ID
 	 */
-	Long getNodeId();
+	Long getEdgeId();
 
 	/**
-	 * Get an array of node IDs.
+	 * Get an array of Edge IDs.
 	 * 
-	 * @return array of node IDs (may be {@literal null})
+	 * @return array of Edge IDs (may be {@literal null})
 	 * @since 1.2
 	 */
-	public Long[] getNodeIds();
+	public Long[] getEdgeIds();
 
 	/**
 	 * Get an array of instruction IDs.

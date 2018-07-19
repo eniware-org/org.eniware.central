@@ -38,7 +38,7 @@ public final class ReportableInterval {
 	 * @param interval
 	 *        the interval
 	 * @param tz
-	 *        the node's time zone (may be <em>null</em>)
+	 *        the Edge's time zone (may be <em>null</em>)
 	 */
 	public ReportableInterval(ReadableInterval interval, TimeZone tz) {
 		this.interval = interval;

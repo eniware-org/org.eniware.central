@@ -11,11 +11,11 @@ import org.eniware.central.domain.EniwareLocation;
 import org.eniware.central.domain.EniwareEdge;
 
 /**
- * A eniware node with user details.
+ * A eniware Edge with user details.
  * 
  * <p>
  * This object augments a {@link EniwareEdge} with additional information that
- * nodes themselves are not concerned with, but users are. This allows the
+ * Edges themselves are not concerned with, but users are. This allows the
  * {@link EniwareEdge} object to remain lightweight.
  * </p>
  * 
@@ -30,7 +30,7 @@ public class UserEdge extends BaseEntity {
 	private boolean requiresAuthorization = false;
 
 	private User user;
-	private EniwareEdge node;
+	private EniwareEdge Edge;
 
 	// transient
 	private UserEdgeCertificate certificate;
@@ -44,17 +44,17 @@ public class UserEdge extends BaseEntity {
 	}
 
 	/**
-	 * Construct for a user and node.
+	 * Construct for a user and Edge.
 	 * 
 	 * @param user
 	 *        the user
-	 * @param node
-	 *        the node
+	 * @param Edge
+	 *        the Edge
 	 */
-	public UserEdge(User user, EniwareEdge node) {
+	public UserEdge(User user, EniwareEdge Edge) {
 		super();
 		setUser(user);
-		setNode(node);
+		setEdge(Edge);
 	}
 
 	public String getDescription() {
@@ -74,16 +74,16 @@ public class UserEdge extends BaseEntity {
 	}
 
 	/**
-	 * Get the node ID and associated name, if available, as a string. If no
-	 * name is available, this method returns just the node ID.
+	 * Get the Edge ID and associated name, if available, as a string. If no
+	 * name is available, this method returns just the Edge ID.
 	 * 
-	 * @return The node ID and name as a string.
+	 * @return The Edge ID and name as a string.
 	 * @since 1.3
 	 */
 	public String getIdAndName() {
 		StringBuilder buf = new StringBuilder();
-		if ( node != null ) {
-			buf.append(node.getId());
+		if ( Edge != null ) {
+			buf.append(Edge.getId());
 		}
 		if ( name != null && name.length() > 0 ) {
 			buf.append(" - ").append(name);
@@ -99,12 +99,12 @@ public class UserEdge extends BaseEntity {
 		this.user = user;
 	}
 
-	public EniwareEdge getNode() {
-		return node;
+	public EniwareEdge getEdge() {
+		return Edge;
 	}
 
-	public void setNode(EniwareEdge node) {
-		this.node = node;
+	public void setEdge(EniwareEdge Edge) {
+		this.Edge = Edge;
 	}
 
 	public UserEdgeCertificate getCertificate() {
@@ -128,8 +128,8 @@ public class UserEdge extends BaseEntity {
 	 * 
 	 * @return
 	 */
-	public EniwareLocation getNodeLocation() {
-		return (node != null ? node.getLocation() : null);
+	public EniwareLocation getEdgeLocation() {
+		return (Edge != null ? Edge.getLocation() : null);
 	}
 
 	public UserEdgeTransfer getTransfer() {

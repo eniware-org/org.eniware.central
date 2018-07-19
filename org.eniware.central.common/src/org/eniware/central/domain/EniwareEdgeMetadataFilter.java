@@ -14,19 +14,19 @@ package org.eniware.central.domain;
 public interface EniwareEdgeMetadataFilter extends Filter {
 
 	/**
-	 * Get the first node ID. This returns the first available node ID from the
-	 * {@link #getNodeIds()} array, or <em>null</em> if not available.
+	 * Get the first Edge ID. This returns the first available Edge ID from the
+	 * {@link #getEdgeIds()} array, or <em>null</em> if not available.
 	 * 
-	 * @return the node ID, or <em>null</em> if not available
+	 * @return the Edge ID, or <em>null</em> if not available
 	 */
-	public Long getNodeId();
+	public Long getEdgeId();
 
 	/**
-	 * Get an array of node IDs.
+	 * Get an array of Edge IDs.
 	 * 
-	 * @return array of node IDs (may be <em>null</em>)
+	 * @return array of Edge IDs (may be <em>null</em>)
 	 */
-	public Long[] getNodeIds();
+	public Long[] getEdgeIds();
 
 	/**
 	 * Get the first tag. This returns the first available tag from the

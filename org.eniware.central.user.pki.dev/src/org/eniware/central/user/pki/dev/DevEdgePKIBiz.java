@@ -75,7 +75,7 @@ public class DevEdgePKIBiz implements EdgePKIBiz {
 	 * Also, if a new CA certificate is generated, a {@code central-trust.jks}
 	 * keystore will be created with a password {@code dev123} that contains
 	 * just the CA certificate. This is designed to be configured as the
-	 * developer node's trust store, to allow posting to the development EniwareIn
+	 * developer Edge's trust store, to allow posting to the development EniwareIn
 	 * service.
 	 * </p>
 	 */
@@ -167,10 +167,10 @@ public class DevEdgePKIBiz implements EdgePKIBiz {
 					trustStore.setCertificateEntry(CA_ALIAS, caCert);
 					out = new BufferedOutputStream(new FileOutputStream(trustKeyStoreFile));
 					trustStore.store(out, WEBSERVER_KEYSTORE_PASSWORD.toCharArray());
-					log.info("Development node trust keystore saved to {}",
+					log.info("Development Edge trust keystore saved to {}",
 							trustKeyStoreFile.getAbsolutePath());
 				} catch ( Exception e ) {
-					log.error("Error saving node trust KeyStore [{}]", trustKeyStoreFile, e);
+					log.error("Error saving Edge trust KeyStore [{}]", trustKeyStoreFile, e);
 				} finally {
 					if ( out != null ) {
 						try {
@@ -292,7 +292,7 @@ public class DevEdgePKIBiz implements EdgePKIBiz {
 		try {
 			return (X509Certificate) keyStore.getCertificate(alias);
 		} catch ( KeyStoreException e ) {
-			throw new CertificateException("Error opening node certificate", e);
+			throw new CertificateException("Error opening Edge certificate", e);
 		}
 	}
 
@@ -300,11 +300,11 @@ public class DevEdgePKIBiz implements EdgePKIBiz {
 		try {
 			return (PrivateKey) keyStore.getKey(alias, getKeyStorePassword().toCharArray());
 		} catch ( UnrecoverableKeyException e ) {
-			throw new CertificateException("Error opening node certificate", e);
+			throw new CertificateException("Error opening Edge certificate", e);
 		} catch ( KeyStoreException e ) {
-			throw new CertificateException("Error opening node certificate", e);
+			throw new CertificateException("Error opening Edge certificate", e);
 		} catch ( NoSuchAlgorithmException e ) {
-			throw new CertificateException("Error opening node certificate", e);
+			throw new CertificateException("Error opening Edge certificate", e);
 		}
 	}
 
@@ -323,9 +323,9 @@ public class DevEdgePKIBiz implements EdgePKIBiz {
 			saveKeyStore(keyStore);
 			return (X509Certificate) cert;
 		} catch ( NoSuchAlgorithmException e ) {
-			throw new CertificateException("Error setting up node key pair", e);
+			throw new CertificateException("Error setting up Edge key pair", e);
 		} catch ( KeyStoreException e ) {
-			throw new CertificateException("Error setting up node key pair", e);
+			throw new CertificateException("Error setting up Edge key pair", e);
 		}
 	}
 

@@ -1,7 +1,7 @@
 CREATE SCHEMA solarnet;
 
 CREATE SEQUENCE solarnet.solarnet_seq;
-CREATE SEQUENCE solarnet.node_seq;
+CREATE SEQUENCE solarnet.Edge_seq;
 
 /* =========================================================================
    =========================================================================
@@ -84,53 +84,53 @@ CREATE INDEX sn_weather_loc_fts_default_idx ON solarnet.sn_weather_loc USING gin
 
 /* =========================================================================
    =========================================================================
-   NODE
+   Edge
    =========================================================================
    ========================================================================= */
 
-CREATE TABLE solarnet.sn_node (
-	node_id			BIGINT NOT NULL DEFAULT nextval('solarnet.node_seq'),
+CREATE TABLE solarnet.sn_Edge (
+	Edge_id			BIGINT NOT NULL DEFAULT nextval('solarnet.Edge_seq'),
 	created			TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	loc_id			BIGINT NOT NULL,
 	wloc_id			BIGINT,
-	node_name		CHARACTER VARYING(128),
-	PRIMARY KEY (node_id),
-	CONSTRAINT sn_node_loc_fk FOREIGN KEY (loc_id)
+	Edge_name		CHARACTER VARYING(128),
+	PRIMARY KEY (Edge_id),
+	CONSTRAINT sn_Edge_loc_fk FOREIGN KEY (loc_id)
 		REFERENCES solarnet.sn_loc (id) MATCH SIMPLE
 		ON UPDATE NO ACTION ON DELETE NO ACTION,
-	CONSTRAINT sn_node_weather_loc_fk FOREIGN KEY (wloc_id)
+	CONSTRAINT sn_Edge_weather_loc_fk FOREIGN KEY (wloc_id)
 		REFERENCES solarnet.sn_weather_loc (id)
 		ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
 /******************************************************************************
- * TABLE solarnet.sn_node_meta
+ * TABLE solarnet.sn_Edge_meta
  *
- * Stores JSON metadata specific to a node.
+ * Stores JSON metadata specific to a Edge.
  */
-CREATE TABLE solarnet.sn_node_meta (
-  node_id 			bigint NOT NULL,
+CREATE TABLE solarnet.sn_Edge_meta (
+  Edge_id 			bigint NOT NULL,
   created 			timestamp with time zone NOT NULL,
   updated 			timestamp with time zone NOT NULL,
   jdata				jsonb NOT NULL,
-  CONSTRAINT sn_node_meta_pkey PRIMARY KEY (node_id),
-  CONSTRAINT sn_node_meta_node_fk FOREIGN KEY (node_id)
-        REFERENCES solarnet.sn_node (node_id) MATCH SIMPLE
+  CONSTRAINT sn_Edge_meta_pkey PRIMARY KEY (Edge_id),
+  CONSTRAINT sn_Edge_meta_Edge_fk FOREIGN KEY (Edge_id)
+        REFERENCES solarnet.sn_Edge (Edge_id) MATCH SIMPLE
         ON UPDATE NO ACTION ON DELETE CASCADE
 );
 
 /******************************************************************************
- * FUNCTION solarnet.store_node_meta(timestamptz, bigint, text)
+ * FUNCTION solarnet.store_Edge_meta(timestamptz, bigint, text)
  *
- * Add or update node metadata.
+ * Add or update Edge metadata.
  *
  * @param cdate the creation date to use
- * @param node the node ID
+ * @param Edge the Edge ID
  * @param jdata the metadata to store
  */
-CREATE OR REPLACE FUNCTION solarnet.store_node_meta(
+CREATE OR REPLACE FUNCTION solarnet.store_Edge_meta(
 	cdate timestamp with time zone,
-	node bigint,
+	Edge bigint,
 	jdata text)
   RETURNS void LANGUAGE plpgsql VOLATILE AS
 $BODY$
@@ -138,38 +138,38 @@ DECLARE
 	udate timestamp with time zone := now();
 	jdata_json jsonb := jdata::jsonb;
 BEGIN
-	INSERT INTO solarnet.sn_node_meta(node_id, created, updated, jdata)
-	VALUES (node, cdate, udate, jdata_json)
-	ON CONFLICT (node_id) DO UPDATE
+	INSERT INTO solarnet.sn_Edge_meta(Edge_id, created, updated, jdata)
+	VALUES (Edge, cdate, udate, jdata_json)
+	ON CONFLICT (Edge_id) DO UPDATE
 	SET jdata = EXCLUDED.jdata, updated = EXCLUDED.updated;
 END;
 $BODY$;
 
-CREATE OR REPLACE FUNCTION solarnet.get_node_local_timestamp(timestamp with time zone, bigint)
+CREATE OR REPLACE FUNCTION solarnet.get_Edge_local_timestamp(timestamp with time zone, bigint)
   RETURNS timestamp without time zone AS
 $BODY$
 	SELECT $1 AT TIME ZONE l.time_zone
-	FROM solarnet.sn_node n
+	FROM solarnet.sn_Edge n
 	INNER JOIN solarnet.sn_loc l ON l.id = n.loc_id
-	WHERE n.node_id = $2
+	WHERE n.Edge_id = $2
 $BODY$
   LANGUAGE 'sql' STABLE;
 
 /******************************************************************************
- * FUNCTION solarnet.get_node_timezone(bigint)
+ * FUNCTION solarnet.get_Edge_timezone(bigint)
  *
- * Return a node's time zone.
+ * Return a Edge's time zone.
  *
- * @param bigint the node ID
+ * @param bigint the Edge ID
  * @return time zone name, e.g. 'Pacific/Auckland'
  */
-CREATE OR REPLACE FUNCTION solarnet.get_node_timezone(bigint)
+CREATE OR REPLACE FUNCTION solarnet.get_Edge_timezone(bigint)
   RETURNS text AS
 $BODY$
 	SELECT l.time_zone
-	FROM solarnet.sn_node n
+	FROM solarnet.sn_Edge n
 	INNER JOIN solarnet.sn_loc l ON l.id = n.loc_id
-	WHERE n.node_id = $1
+	WHERE n.Edge_id = $1
 $BODY$
   LANGUAGE 'sql' STABLE;
 

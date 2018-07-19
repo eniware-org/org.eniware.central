@@ -66,10 +66,10 @@ public class UserAlertController extends ControllerSupport {
 		this.queryBiz = queryBiz;
 	}
 
-	@ModelAttribute("nodeDataAlertTypes")
-	public List<UserAlertType> nodeDataAlertTypes() {
+	@ModelAttribute("EdgeDataAlertTypes")
+	public List<UserAlertType> EdgeDataAlertTypes() {
 		// now now, only one alert type!
-		return Collections.singletonList(UserAlertType.NodeStaleData);
+		return Collections.singletonList(UserAlertType.EdgeStaleData);
 	}
 
 	@ModelAttribute("alertStatuses")
@@ -89,56 +89,56 @@ public class UserAlertController extends ControllerSupport {
 		final SecurityUser user = SecurityUtils.getCurrentUser();
 		List<UserAlert> alerts = userAlertBiz.userAlertsForUser(user.getUserId());
 		if ( alerts != null ) {
-			List<UserAlert> nodeDataAlerts = new ArrayList<UserAlert>(alerts.size());
+			List<UserAlert> EdgeDataAlerts = new ArrayList<UserAlert>(alerts.size());
 			for ( UserAlert alert : alerts ) {
 				switch (alert.getType()) {
-					case NodeStaleData:
-						nodeDataAlerts.add(alert);
+					case EdgeStaleData:
+						EdgeDataAlerts.add(alert);
 						break;
 				}
 			}
-			model.addAttribute("nodeDataAlerts", nodeDataAlerts);
+			model.addAttribute("EdgeDataAlerts", EdgeDataAlerts);
 		}
-		model.addAttribute("userNodes", userBiz.getUserNodes(user.getUserId()));
+		model.addAttribute("userEdges", userBiz.getUserEdges(user.getUserId()));
 		return "alerts/view-alerts";
 	}
 
 	/**
-	 * Get all available sources for a given node ID.
+	 * Get all available sources for a given Edge ID.
 	 * 
-	 * @param nodeId
-	 *        The ID of the node to get all available sources for.
+	 * @param EdgeId
+	 *        The ID of the Edge to get all available sources for.
 	 * @param start
 	 *        An optional start date to limit the query to.
 	 * @param end
 	 *        An optional end date to limit the query to.
 	 * @return The found sources.
 	 */
-	@RequestMapping(value = "/node/{nodeId}/sources", method = RequestMethod.GET)
+	@RequestMapping(value = "/Edge/{EdgeId}/sources", method = RequestMethod.GET)
 	@ResponseBody
-	public Response<List<String>> availableSourcesForNode(@PathVariable("nodeId") Long nodeId,
+	public Response<List<String>> availableSourcesForEdge(@PathVariable("EdgeId") Long EdgeId,
 			@RequestParam(value = "start", required = false) DateTime start,
 			@RequestParam(value = "end", required = false) DateTime end) {
-		Set<String> sources = queryBiz.getAvailableSources(nodeId, start, end);
+		Set<String> sources = queryBiz.getAvailableSources(EdgeId, start, end);
 		List<String> sourceList = new ArrayList<String>(sources);
 		return response(sourceList);
 	}
 
 	/**
-	 * Get <em>active</em> situations for a given node.
+	 * Get <em>active</em> situations for a given Edge.
 	 * 
-	 * @param nodeId
-	 *        The ID of the node to get the sitautions for.
+	 * @param EdgeId
+	 *        The ID of the Edge to get the sitautions for.
 	 * @param locale
 	 *        The request locale.
 	 * @return The alerts with active situations.
 	 * @since 1.1
 	 */
-	@RequestMapping(value = "/node/{nodeId}/situations", method = RequestMethod.GET)
+	@RequestMapping(value = "/Edge/{EdgeId}/situations", method = RequestMethod.GET)
 	@ResponseBody
-	public Response<List<UserAlert>> activeSituationsNode(@PathVariable("nodeId") Long nodeId,
+	public Response<List<UserAlert>> activeSituationsEdge(@PathVariable("EdgeId") Long EdgeId,
 			Locale locale) {
-		List<UserAlert> results = userAlertBiz.alertSituationsForNode(nodeId);
+		List<UserAlert> results = userAlertBiz.alertSituationsForEdge(EdgeId);
 		for ( UserAlert alert : results ) {
 			populateUsefulAlertOptions(alert, locale);
 		}
@@ -191,11 +191,11 @@ public class UserAlertController extends ControllerSupport {
 		final SecurityUser user = SecurityUtils.getCurrentUser();
 		UserAlert alert = new UserAlert();
 		alert.setId(model.getId());
-		alert.setNodeId(model.getNodeId());
+		alert.setEdgeId(model.getEdgeId());
 		alert.setUserId(user.getUserId());
 		alert.setCreated(new DateTime());
 		alert.setStatus(model.getStatus() == null ? UserAlertStatus.Active : model.getStatus());
-		alert.setType(model.getType() == null ? UserAlertType.NodeStaleData : model.getType());
+		alert.setType(model.getType() == null ? UserAlertType.EdgeStaleData : model.getType());
 
 		// reset validTo date to now, so alert re-processed
 		alert.setValidTo(new DateTime());

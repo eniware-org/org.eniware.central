@@ -22,7 +22,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.eniware.central.datum.domain.Datum;
 import org.eniware.central.datum.domain.HardwareControlDatum;
 import org.eniware.central.in.biz.DataCollectorBiz;
-import org.eniware.central.security.AuthenticatedNode;
+import org.eniware.central.security.AuthenticatedEdge;
 import org.eniware.central.security.SecurityException;
 import org.eniware.domain.EdgeControlPropertyType;
 
@@ -50,12 +50,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Controller for accepting bulk upload XML documents.
  * 
  * <p>
- * This controller expects an {@link AuthenticatedNode} to be available on each
- * request for securely processing node data.
+ * This controller expects an {@link AuthenticatedEdge} to be available on each
+ * request for securely processing Edge data.
  * </p>
  * 
  * @version 1.1
- * @deprecated see {@link BulkJsonDataCollector}
+ * @deprecated see {@link BulkJsonEdgeCollector}
  */
 @Deprecated
 @Controller
@@ -65,10 +65,10 @@ public class BulkDataCollector extends AbstractDataCollector {
 	/** The InstructionStatus element name. */
 	public static final String INSTRUCTION_STATUS_ELEMENT_NAME = "InstructionStatus";
 
-	/** The NodeControlInfo element name. */
-	public static final String NODE_CONTROL_INFO_ELEMENT_NAME = "NodeControlInfo";
+	/** The EdgeControlInfo element name. */
+	public static final String Edge_CONTROL_INFO_ELEMENT_NAME = "EdgeControlInfo";
 
-	private static final String NODE_ID_GLOBAL_PARAM = "nodeId";
+	private static final String Edge_ID_GLOBAL_PARAM = "EdgeId";
 
 	/**
 	 * Default constructor.
@@ -111,7 +111,7 @@ public class BulkDataCollector extends AbstractDataCollector {
 	@RequestMapping(method = RequestMethod.POST)
 	public String postData(@RequestHeader(value = "Content-Encoding", required = false) String encoding,
 			InputStream in, Model model) throws IOException {
-		AuthenticatedNode authNode = getAuthenticatedNode(false);
+		AuthenticatedEdge authEdge = getAuthenticatedEdge(false);
 
 		InputStream input = in;
 		if ( encoding != null && encoding.toLowerCase().contains("gzip") ) {
@@ -147,11 +147,11 @@ public class BulkDataCollector extends AbstractDataCollector {
 								globalAttributes.put(reader.getAttributeLocalName(i),
 										reader.getAttributeValue(i));
 							}
-							if ( authNode != null ) {
-								// set nodeId to authenticated node ID
-								Long nodeId = authNode.getNodeId();
-								if ( nodeId != null ) {
-									globalAttributes.put(NODE_ID_GLOBAL_PARAM, authNode.getNodeId());
+							if ( authEdge != null ) {
+								// set EdgeId to authenticated Edge ID
+								Long EdgeId = authEdge.getEdgeId();
+								if ( EdgeId != null ) {
+									globalAttributes.put(Edge_ID_GLOBAL_PARAM, authEdge.getEdgeId());
 								}
 							}
 							rootFound = true;
@@ -176,8 +176,8 @@ public class BulkDataCollector extends AbstractDataCollector {
 			}
 		}
 
-		if ( authNode != null ) {
-			defaultHandleNodeInstructions(authNode.getNodeId(), model);
+		if ( authEdge != null ) {
+			defaultHandleEdgeInstructions(authEdge.getEdgeId(), model);
 		}
 
 		return getViewName();
@@ -232,8 +232,8 @@ public class BulkDataCollector extends AbstractDataCollector {
 		if ( className.equals(INSTRUCTION_STATUS_ELEMENT_NAME) ) {
 			// handle instruction status specially
 			return handleInstructionStatusElement(reader, attributes);
-		} else if ( className.equals(NODE_CONTROL_INFO_ELEMENT_NAME) ) {
-			return handleNodeControlInfoElement(reader, attributes);
+		} else if ( className.equals(Edge_CONTROL_INFO_ELEMENT_NAME) ) {
+			return handleEdgeControlInfoElement(reader, attributes);
 		}
 		className = "org.eniware.central.datum.domain." + className;
 		Datum datum = null;
@@ -299,7 +299,7 @@ public class BulkDataCollector extends AbstractDataCollector {
 		return datum;
 	}
 
-	private Object handleNodeControlInfoElement(XMLStreamReader reader, Map<String, Object> attributes)
+	private Object handleEdgeControlInfoElement(XMLStreamReader reader, Map<String, Object> attributes)
 			throws XMLStreamException {
 		HardwareControlDatum datum = null;
 		String controlId = reader.getAttributeValue(null, "controlId");

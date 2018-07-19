@@ -22,7 +22,7 @@ import org.eniware.web.security.AuthorizationV2Builder;
 public interface UserAuthTokenDao extends GenericDao<UserAuthToken, String> {
 
 	/**
-	 * Find a list of all UserNodeAuthToken objects for a particular user.
+	 * Find a list of all UserEdgeAuthToken objects for a particular user.
 	 * 
 	 * @param user
 	 *        the user ID to get all tokens for

@@ -66,7 +66,7 @@
 				<bean class="org.eniware.util.JodaLocalDateSerializer"/>
 				<bean class="org.eniware.util.JodaLocalDateTimeSerializer"/>
 				<bean class="org.eniware.util.JodaLocalTimeSerializer"/>
-				<bean class="org.eniware.central.support.NodeMetadataSerializer"/>
+				<bean class="org.eniware.central.support.EdgeMetadataSerializer"/>
 				<bean class="org.eniware.central.user.support.UserMetadataSerializer"/>
 			</list>
 		</property>

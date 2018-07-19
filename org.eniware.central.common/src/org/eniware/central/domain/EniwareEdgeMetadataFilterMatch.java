@@ -11,6 +11,6 @@ package org.eniware.central.domain;
  * @version 1.0
  * @since 1.32
  */
-public interface EniwareEdgeMetadataFilterMatch extends NodeMetadata, FilterMatch<Long> {
+public interface EniwareEdgeMetadataFilterMatch extends EdgeMetadata, FilterMatch<Long> {
 
 }

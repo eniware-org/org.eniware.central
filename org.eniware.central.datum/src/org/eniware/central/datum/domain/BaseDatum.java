@@ -11,7 +11,7 @@ import java.io.Serializable;
 import org.eniware.central.domain.BaseEntity;
 
 /**
- * Abstract base class for {@link NodeDatum} implementations.
+ * Abstract base class for {@link EdgeDatum} implementations.
  
  * @version $Revision$ $Date$
  */

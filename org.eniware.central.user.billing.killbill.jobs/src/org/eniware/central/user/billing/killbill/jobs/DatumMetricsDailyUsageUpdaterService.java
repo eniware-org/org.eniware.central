@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 import javax.cache.Cache;
 
 import org.eniware.central.dao.EniwareLocationDao;
-import org.eniware.central.datum.dao.GeneralNodeDatumDao;
+import org.eniware.central.datum.dao.GeneralEdgeDatumDao;
 import org.eniware.central.datum.domain.DatumFilterCommand;
 import org.eniware.central.domain.FilterResults;
 import org.eniware.central.domain.EniwareLocation;
@@ -80,29 +80,29 @@ import org.slf4j.LoggerFactory;
  * </p>
  * 
  * <p>
- * All nodes associated with their EniwareNetwork account will be subscribed to a
- * Killbill bundle using a bundle external key based on the node's ID (e.g.
+ * All Edges associated with their EniwareNetwork account will be subscribed to a
+ * Killbill bundle using a bundle external key based on the Edge's ID (e.g.
  * {@literal IN_234}, see {@link #setBundleKeyTemplate(String)}). The bundle is
  * expected to contain a subscription to the {@code basePlanName} configured on
  * this service. If the bundle does not exist, it will be created with a single
  * subscription to {@code basePlanName}. The subscription
  * <code>requestedDate</code> will be set to the earliest available datum date
- * for the node, essentially starting the plan when the node first posts data.
+ * for the Edge, essentially starting the plan when the Edge first posts data.
  * The subscription billing day will be set to the {@code accountBillCycleDay}
  * configured on this service.
  * </p>
  * 
  * <p>
- * For each node, daily aggregate usage data will be posted to Killbill using
- * the <code>property_count</code> datum audit data available for that node (see
- * {@link GeneralNodeDatumDao#getAuditPropertyCountTotal()}). This service will
+ * For each Edge, daily aggregate usage data will be posted to Killbill using
+ * the <code>property_count</code> datum audit data available for that Edge (see
+ * {@link GeneralEdgeDatumDao#getAuditPropertyCountTotal()}). This service will
  * calculate the usage for all days before the current one and post the usage
  * records to Killbill. The usage unit will be the {@code usageUnitName}
  * configured on this service.
  * </p>
  * 
  * <p>
- * When all nodes for a given user have been processed, the current date is
+ * When all Edges for a given user have been processed, the current date is
  * saved in the user's billing data key
  * {@link #KILLBILL_MOST_RECENT_USAGE_KEYS_DATA_PROP}. The next time this
  * service runs it will use that date as the earliest day to upload usage data
@@ -127,7 +127,7 @@ public class DatumMetricsDailyUsageUpdaterService {
 
 	/**
 	 * The billing data key that holds a {@code Map} of "most recent usage date"
-	 * to start from, using node IDs as keys and {@literal YYYY-MM-DD} formatted
+	 * to start from, using Edge IDs as keys and {@literal YYYY-MM-DD} formatted
 	 * date values.
 	 */
 	public static final String KILLBILL_MOST_RECENT_USAGE_KEYS_DATA_PROP = "kb_mrUsageDates";
@@ -160,15 +160,15 @@ public class DatumMetricsDailyUsageUpdaterService {
 	public static final String DEFAULT_USAGE_UNIT_NAME = "DatumMetrics";
 
 	/** The custom field name for a EniwareEdge ID. */
-	public static final String CUSTOM_FIELD_NODE_ID = "nodeId";
+	public static final String CUSTOM_FIELD_Edge_ID = "EdgeId";
 
 	/** The default value for the account tags property. */
 	public static final Set<String> DEFAULT_ACCOUNT_TAGS = Collections.singleton("MANUAL_PAY");
 
 	private final EniwareLocationDao locationDao;
-	private final GeneralNodeDatumDao nodeDatumDao;
+	private final GeneralEdgeDatumDao EdgeDatumDao;
 	private final UserDao userDao;
-	private final UserEdgeDao userNodeDao;
+	private final UserEdgeDao userEdgeDao;
 	private final KillbillClient client;
 	private int batchSize = DEFAULT_BATCH_SIZE;
 	private Map<String, String> countryCurrencyMap = DEFAULT_CURRENCY_MAP;
@@ -208,19 +208,19 @@ public class DatumMetricsDailyUsageUpdaterService {
 	 *        the {@link EniwareLocationDao} to use
 	 * @param userDao
 	 *        the {@link UserDao} to use
-	 * @param userNodeDao
+	 * @param userEdgeDao
 	 *        the {@link UserEdgeDao} to use
-	 * @param nodeDatumDao
-	 *        the {@link GeneralNodeDatumDao} to use
+	 * @param EdgeDatumDao
+	 *        the {@link GeneralEdgeDatumDao} to use
 	 * @param client
 	 *        the {@link KillbillClient} to use
 	 */
 	public DatumMetricsDailyUsageUpdaterService(EniwareLocationDao locationDao, UserDao userDao,
-			UserEdgeDao userNodeDao, GeneralNodeDatumDao nodeDatumDao, KillbillClient client) {
+			UserEdgeDao userEdgeDao, GeneralEdgeDatumDao EdgeDatumDao, KillbillClient client) {
 		this.locationDao = locationDao;
 		this.userDao = userDao;
-		this.userNodeDao = userNodeDao;
-		this.nodeDatumDao = nodeDatumDao;
+		this.userEdgeDao = userEdgeDao;
+		this.EdgeDatumDao = EdgeDatumDao;
 		this.client = client;
 	}
 
@@ -360,14 +360,14 @@ public class DatumMetricsDailyUsageUpdaterService {
 					client.addPaymentMethodToAccount(account, paymentMethodData, true));
 		}
 
-		// get or create bundles for all nodes
+		// get or create bundles for all Edges
 		DateTimeZone timeZone = DateTimeZone.forTimeZone(timeZoneForAccount(account));
-		List<UserEdge> userNodes = userNodeDao
-				.findUserNodesForUser((user instanceof User ? (User) user : userDao.get(user.getId())));
+		List<UserEdge> userEdges = userEdgeDao
+				.findUserEdgesForUser((user instanceof User ? (User) user : userDao.get(user.getId())));
 
-		Map<String, String> nodeMostRecentUsagekeys = mostRecentUsageKeys(user);
-		for ( UserEdge userNode : userNodes ) {
-			processOneUserNode(account, userNode, timeZone, nodeMostRecentUsagekeys);
+		Map<String, String> EdgeMostRecentUsagekeys = mostRecentUsageKeys(user);
+		for ( UserEdge userEdge : userEdges ) {
+			processOneUserEdge(account, userEdge, timeZone, EdgeMostRecentUsagekeys);
 		}
 	}
 
@@ -381,12 +381,12 @@ public class DatumMetricsDailyUsageUpdaterService {
 		return map;
 	}
 
-	private void processOneUserNode(Account account, UserEdge userNode, DateTimeZone timeZone,
-			Map<String, String> nodeMostRecentUsageDateKeys) {
-		// get the range of available audit data for this node, to help know when to start/stop
-		ReadableInterval auditInterval = nodeDatumDao.getAuditInterval(userNode.getNode().getId(), null);
-		String mostRecentUsageDate = nodeMostRecentUsageDateKeys
-				.get(userNode.getNode().getId().toString());
+	private void processOneUserEdge(Account account, UserEdge userEdge, DateTimeZone timeZone,
+			Map<String, String> EdgeMostRecentUsageDateKeys) {
+		// get the range of available audit data for this Edge, to help know when to start/stop
+		ReadableInterval auditInterval = EdgeDatumDao.getAuditInterval(userEdge.getEdge().getId(), null);
+		String mostRecentUsageDate = EdgeMostRecentUsageDateKeys
+				.get(userEdge.getEdge().getId().toString());
 
 		DateTime usageStartDay = null;
 		if ( mostRecentUsageDate != null ) {
@@ -396,8 +396,8 @@ public class DatumMetricsDailyUsageUpdaterService {
 			usageStartDay = auditInterval.getStart().withZone(timeZone).dayOfMonth().roundFloorCopy();
 		}
 		if ( usageStartDay == null ) {
-			log.debug("No usage start date available for user {} node {}", userNode.getUser().getEmail(),
-					userNode.getNode().getId());
+			log.debug("No usage start date available for user {} Edge {}", userEdge.getUser().getEmail(),
+					userEdge.getEdge().getId());
 			return;
 		}
 
@@ -413,16 +413,16 @@ public class DatumMetricsDailyUsageUpdaterService {
 			usageEndDay = usageEndDay.minusDays(1);
 		}
 
-		// got usage start date; get the bundle for this node
+		// got usage start date; get the bundle for this Edge
 		List<UsageRecord> recordsToAdd = new ArrayList<>();
 		DateTime usageCurrDay = new DateTime(usageStartDay);
 		DatumFilterCommand criteria = new DatumFilterCommand();
-		criteria.setNodeId(userNode.getNode().getId());
+		criteria.setEdgeId(userEdge.getEdge().getId());
 		while ( usageCurrDay.isBefore(usageEndDay) ) {
 			DateTime nextDay = usageCurrDay.plusDays(1);
 			criteria.setStartDate(usageCurrDay);
 			criteria.setEndDate(nextDay);
-			long dayUsage = nodeDatumDao.getAuditPropertyCountTotal(criteria);
+			long dayUsage = EdgeDatumDao.getAuditPropertyCountTotal(criteria);
 			if ( dayUsage > 0 ) {
 				UsageRecord record = new UsageRecord();
 				record.setRecordDate(usageCurrDay.toLocalDate());
@@ -434,34 +434,34 @@ public class DatumMetricsDailyUsageUpdaterService {
 
 		String nextStartDate = ISO_DATE_FORMATTER.print(usageEndDay.toLocalDate());
 		if ( !recordsToAdd.isEmpty() ) {
-			Bundle bundle = bundleForUserNode(userNode, account);
+			Bundle bundle = bundleForUserEdge(userEdge, account);
 			Subscription subscription = (bundle != null ? bundle.subscriptionWithPlanName(basePlanName)
 					: null);
 			if ( subscription == null ) {
 				return;
 			}
 			if ( log.isInfoEnabled() ) {
-				log.info("Adding {} {} usage to user {} node {} between {} and {}", recordsToAdd.size(),
-						this.usageUnitName, userNode.getUser().getEmail(), userNode.getNode().getId(),
+				log.info("Adding {} {} usage to user {} Edge {} between {} and {}", recordsToAdd.size(),
+						this.usageUnitName, userEdge.getUser().getEmail(), userEdge.getEdge().getId(),
 						usageStartDay.toLocalDate(), usageEndDay.toLocalDate());
 			}
 			client.addUsage(subscription, nextStartDate, this.usageUnitName, recordsToAdd);
 		} else if ( log.isDebugEnabled() ) {
-			log.debug("No {} usage to add for user {} node {} between {} and {}", this.usageUnitName,
-					userNode.getUser().getEmail(), userNode.getNode().getId(),
+			log.debug("No {} usage to add for user {} Edge {} between {} and {}", this.usageUnitName,
+					userEdge.getUser().getEmail(), userEdge.getEdge().getId(),
 					usageStartDay.toLocalDate(), usageEndDay.toLocalDate());
 		}
 
 		// store the last processed date so we can pick up there next time
 		if ( mostRecentUsageDate == null || !mostRecentUsageDate.equals(nextStartDate) ) {
-			nodeMostRecentUsageDateKeys.put(userNode.getNode().getId().toString(), nextStartDate);
-			userDao.storeInternalData(userNode.getUser().getId(), Collections.singletonMap(
-					KILLBILL_MOST_RECENT_USAGE_KEYS_DATA_PROP, nodeMostRecentUsageDateKeys));
+			EdgeMostRecentUsageDateKeys.put(userEdge.getEdge().getId().toString(), nextStartDate);
+			userDao.storeInternalData(userEdge.getUser().getId(), Collections.singletonMap(
+					KILLBILL_MOST_RECENT_USAGE_KEYS_DATA_PROP, EdgeMostRecentUsageDateKeys));
 		}
 	}
 
-	private Bundle bundleForUserNode(UserEdge userNode, Account account) {
-		final String bundleKey = String.format(this.bundleKeyTemplate, userNode.getNode().getId());
+	private Bundle bundleForUserEdge(UserEdge userEdge, Account account) {
+		final String bundleKey = String.format(this.bundleKeyTemplate, userEdge.getEdge().getId());
 		Bundle bundle = client.bundleForExternalKey(account, bundleKey);
 		if ( bundle == null ) {
 			// create it now
@@ -478,8 +478,8 @@ public class DatumMetricsDailyUsageUpdaterService {
 
 			// find requestedDate based on earliest data date
 			DateTime oldestPostedDatumDate = null;
-			ReadableInterval dataInterval = nodeDatumDao
-					.getReportableInterval(userNode.getNode().getId(), null);
+			ReadableInterval dataInterval = EdgeDatumDao
+					.getReportableInterval(userEdge.getEdge().getId(), null);
 			if ( dataInterval != null && dataInterval.getStart() != null ) {
 				oldestPostedDatumDate = dataInterval.getStart();
 			}
@@ -488,27 +488,27 @@ public class DatumMetricsDailyUsageUpdaterService {
 					.withZone(DateTimeZone.forTimeZone(timeZoneForAccount(account))).toLocalDate()
 					: null);
 			String bundleId = client.createBundle(account, requestedDate, bundle);
-			log.info("Created bundle {} with ID {} with plan {} for user {} node {}", bundleKey,
-					bundleId, basePlanName, userNode.getUser().getEmail(), userNode.getNode().getId());
+			log.info("Created bundle {} with ID {} with plan {} for user {} Edge {}", bundleKey,
+					bundleId, basePlanName, userEdge.getUser().getEmail(), userEdge.getEdge().getId());
 
 			// to pick up subscription ID; re-get bundle now
 			bundle = client.bundleForExternalKey(account, bundleKey);
 
-			// add node ID as metadata to the subscription
+			// add Edge ID as metadata to the subscription
 			Subscription sub = (bundle != null && bundle.getSubscriptions() != null
 					&& !bundle.getSubscriptions().isEmpty() ? bundle.getSubscriptions().get(0) : null);
 			if ( sub != null ) {
-				CustomField field = new CustomField(CUSTOM_FIELD_NODE_ID,
-						userNode.getNode().getId().toString());
+				CustomField field = new CustomField(CUSTOM_FIELD_Edge_ID,
+						userEdge.getEdge().getId().toString());
 				String fieldListId = client.createSubscriptionCustomFields(
 						bundle.getSubscriptions().get(0).getSubscriptionId(),
 						Collections.singletonList(field));
-				log.debug("Added user {} node ID {} custom field {} to subscription {}",
-						userNode.getUser().getEmail(), userNode.getNode().getId(), fieldListId);
+				log.debug("Added user {} Edge ID {} custom field {} to subscription {}",
+						userEdge.getUser().getEmail(), userEdge.getEdge().getId(), fieldListId);
 			} else {
 				log.warn(
-						"Subscription ID not available for bundle {}; cannot add nodeId {} custom field",
-						bundleId, userNode.getNode().getId());
+						"Subscription ID not available for bundle {}; cannot add EdgeId {} custom field",
+						bundleId, userEdge.getEdge().getId());
 			}
 
 		}
@@ -652,7 +652,7 @@ public class DatumMetricsDailyUsageUpdaterService {
 	 * Set the string format template to use when generating a bundle key.
 	 * 
 	 * <p>
-	 * This template is expected to accept a single string parameter (a node's
+	 * This template is expected to accept a single string parameter (a Edge's
 	 * ID).
 	 * </p>
 	 * 

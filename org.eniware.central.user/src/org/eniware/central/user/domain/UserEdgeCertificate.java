@@ -25,7 +25,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * A user node certificate. The certificate is expected to be in X.509 format.
+ * A user Edge certificate. The certificate is expected to be in X.509 format.
  * 
  * @version 1.2
  */
@@ -36,8 +36,8 @@ public class UserEdgeCertificate implements Entity<UserEdgePK>, Cloneable, Seria
 	/** The expected format of the keystore data. */
 	public static final String KEYSTORE_TYPE = "pkcs12";
 
-	/** The alias of the node certificate in the keystore. */
-	public static final String KEYSTORE_NODE_ALIAS = "node";
+	/** The alias of the Edge certificate in the keystore. */
+	public static final String KEYSTORE_Edge_ALIAS = "Edge";
 
 	private UserEdgePK id = new UserEdgePK();
 	private DateTime created;
@@ -46,40 +46,40 @@ public class UserEdgeCertificate implements Entity<UserEdgePK>, Cloneable, Seria
 	private String requestId;
 
 	private User user;
-	private EniwareEdge node;
+	private EniwareEdge Edge;
 
 	/**
-	 * Get the node certificate from a keystore. The certificate is expected to
-	 * be available on the {@link #KEYSTORE_NODE_ALIAS} alias.
+	 * Get the Edge certificate from a keystore. The certificate is expected to
+	 * be available on the {@link #KEYSTORE_Edge_ALIAS} alias.
 	 * 
 	 * @param keyStore
 	 *        the keystore
 	 * @return the certificate, or <em>null</em> if not available
 	 */
-	public X509Certificate getNodeCertificate(KeyStore keyStore) {
-		X509Certificate nodeCert;
+	public X509Certificate getEdgeCertificate(KeyStore keyStore) {
+		X509Certificate EdgeCert;
 		try {
-			nodeCert = (X509Certificate) keyStore.getCertificate(KEYSTORE_NODE_ALIAS);
+			EdgeCert = (X509Certificate) keyStore.getCertificate(KEYSTORE_Edge_ALIAS);
 		} catch ( KeyStoreException e ) {
-			throw new CertificateException("Error opening node certificate", e);
+			throw new CertificateException("Error opening Edge certificate", e);
 		}
-		return nodeCert;
+		return EdgeCert;
 	}
 
 	/**
-	 * Get the node certificate chain from a keystoer. The certificate is
-	 * expected to be available on the {@link #KEYSTORE_NODE_ALIAS} alias.
+	 * Get the Edge certificate chain from a keystoer. The certificate is
+	 * expected to be available on the {@link #KEYSTORE_Edge_ALIAS} alias.
 	 * 
 	 * @param keyStore
 	 *        the keystore
 	 * @return the certificate chain, or <em>null</em> if not available
 	 */
-	public X509Certificate[] getNodeCertificateChain(KeyStore keyStore) {
+	public X509Certificate[] getEdgeCertificateChain(KeyStore keyStore) {
 		Certificate[] chain;
 		try {
-			chain = keyStore.getCertificateChain(KEYSTORE_NODE_ALIAS);
+			chain = keyStore.getCertificateChain(KEYSTORE_Edge_ALIAS);
 		} catch ( KeyStoreException e ) {
-			throw new CertificateException("Error opening node certificate", e);
+			throw new CertificateException("Error opening Edge certificate", e);
 		}
 		if ( chain == null || chain.length < 1 ) {
 			return null;
@@ -135,25 +135,25 @@ public class UserEdgeCertificate implements Entity<UserEdgePK>, Cloneable, Seria
 	}
 
 	/**
-	 * Convenience getter for {@link UserEdgePK#getNodeId()}.
+	 * Convenience getter for {@link UserEdgePK#getEdgeId()}.
 	 * 
-	 * @return the nodeId
+	 * @return the EdgeId
 	 */
-	public Long getNodeId() {
-		return (id == null ? null : id.getNodeId());
+	public Long getEdgeId() {
+		return (id == null ? null : id.getEdgeId());
 	}
 
 	/**
-	 * Convenience setter for {@link UserEdgePK#setNodeId(Long)}.
+	 * Convenience setter for {@link UserEdgePK#setEdgeId(Long)}.
 	 * 
-	 * @param nodeId
-	 *        the nodeId to set
+	 * @param EdgeId
+	 *        the EdgeId to set
 	 */
-	public void setNodeId(Long nodeId) {
+	public void setEdgeId(Long EdgeId) {
 		if ( id == null ) {
 			id = new UserEdgePK();
 		}
-		id.setNodeId(nodeId);
+		id.setEdgeId(EdgeId);
 	}
 
 	/**
@@ -236,7 +236,7 @@ public class UserEdgeCertificate implements Entity<UserEdgePK>, Cloneable, Seria
 
 	@Override
 	public String toString() {
-		return "UserNodeCertificate{" + id + "}";
+		return "UserEdgeCertificate{" + id + "}";
 	}
 
 	@JsonIgnore
@@ -269,12 +269,12 @@ public class UserEdgeCertificate implements Entity<UserEdgePK>, Cloneable, Seria
 
 	@JsonIgnore
 	@SerializeIgnore
-	public EniwareEdge getNode() {
-		return node;
+	public EniwareEdge getEdge() {
+		return Edge;
 	}
 
-	public void setNode(EniwareEdge node) {
-		this.node = node;
+	public void setEdge(EniwareEdge Edge) {
+		this.Edge = Edge;
 	}
 
 	/**

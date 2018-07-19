@@ -15,7 +15,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * A node ownership transfer request. This entity is associated with the node
+ * A Edge ownership transfer request. This entity is associated with the Edge
  * requesting the transfer. The request is sent to the email address provided on
  * this entity.
  * 
@@ -30,7 +30,7 @@ public class UserEdgeTransfer implements Entity<UserEdgePK>, Cloneable, Serializ
 	private String email;
 
 	private User user;
-	private EniwareEdge node;
+	private EniwareEdge Edge;
 
 	/**
 	 * Default constructor.
@@ -44,20 +44,20 @@ public class UserEdgeTransfer implements Entity<UserEdgePK>, Cloneable, Serializ
 	 * 
 	 * @param userId
 	 *        The user ID.
-	 * @param nodeId
-	 *        The node ID.
+	 * @param EdgeId
+	 *        The Edge ID.
 	 * @param email
 	 *        The email.
 	 */
-	public UserEdgeTransfer(Long userId, Long nodeId, String email) {
+	public UserEdgeTransfer(Long userId, Long EdgeId, String email) {
 		super();
 		setUserId(userId);
-		setNodeId(nodeId);
+		setEdgeId(EdgeId);
 		setEmail(email);
 	}
 
 	/**
-	 * Get the email of the requested new owner of the node.
+	 * Get the email of the requested new owner of the Edge.
 	 * 
 	 * @return The email address.
 	 */
@@ -66,7 +66,7 @@ public class UserEdgeTransfer implements Entity<UserEdgePK>, Cloneable, Serializ
 	}
 
 	/**
-	 * Set the email of the requested new owner of the node.
+	 * Set the email of the requested new owner of the Edge.
 	 * 
 	 * @param email
 	 *        The email address to set.
@@ -85,25 +85,25 @@ public class UserEdgeTransfer implements Entity<UserEdgePK>, Cloneable, Serializ
 	}
 
 	/**
-	 * Convenience getter for {@link UserEdgePK#getNodeId()}.
+	 * Convenience getter for {@link UserEdgePK#getEdgeId()}.
 	 * 
-	 * @return the nodeId
+	 * @return the EdgeId
 	 */
-	public Long getNodeId() {
-		return (id == null ? null : id.getNodeId());
+	public Long getEdgeId() {
+		return (id == null ? null : id.getEdgeId());
 	}
 
 	/**
-	 * Convenience setter for {@link UserEdgePK#setNodeId(Long)}.
+	 * Convenience setter for {@link UserEdgePK#setEdgeId(Long)}.
 	 * 
-	 * @param nodeId
-	 *        the nodeId to set
+	 * @param EdgeId
+	 *        the EdgeId to set
 	 */
-	public void setNodeId(Long nodeId) {
+	public void setEdgeId(Long EdgeId) {
 		if ( id == null ) {
 			id = new UserEdgePK();
 		}
-		id.setNodeId(nodeId);
+		id.setEdgeId(EdgeId);
 	}
 
 	/**
@@ -186,7 +186,7 @@ public class UserEdgeTransfer implements Entity<UserEdgePK>, Cloneable, Serializ
 
 	@Override
 	public String toString() {
-		return "UserNodeTransfer{" + id + "}";
+		return "UserEdgeTransfer{" + id + "}";
 	}
 
 	public User getUser() {
@@ -197,12 +197,12 @@ public class UserEdgeTransfer implements Entity<UserEdgePK>, Cloneable, Serializ
 		this.user = user;
 	}
 
-	public EniwareEdge getNode() {
-		return node;
+	public EniwareEdge getEdge() {
+		return Edge;
 	}
 
-	public void setNode(EniwareEdge node) {
-		this.node = node;
+	public void setEdge(EniwareEdge Edge) {
+		this.Edge = Edge;
 	}
 
 }

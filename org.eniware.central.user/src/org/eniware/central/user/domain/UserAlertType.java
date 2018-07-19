@@ -13,7 +13,7 @@ package org.eniware.central.user.domain;
  */
 public enum UserAlertType {
 
-	/** A node has not posted data in a while. */
-	NodeStaleData;
+	/** A Edge has not posted data in a while. */
+	EdgeStaleData;
 
 }

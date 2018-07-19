@@ -21,9 +21,9 @@ import org.joda.time.DateTime;
  * @deprecated use {@link DatumFilterCommand}
  */
 @Deprecated
-public class DatumQueryCommand implements Cachable, AggregateNodeDatumFilter {
+public class DatumQueryCommand implements Cachable, AggregateEdgeDatumFilter {
 
-	private Long[] nodeIds;
+	private Long[] EdgeIds;
 	private String[] sourceIds;
 	private Long[] locationIds;
 	private DateTime startDate;
@@ -38,7 +38,7 @@ public class DatumQueryCommand implements Cachable, AggregateNodeDatumFilter {
 
 	@Override
 	public String getCacheKey() {
-		String data = Arrays.toString(nodeIds) + Arrays.toString(sourceIds)
+		String data = Arrays.toString(EdgeIds) + Arrays.toString(sourceIds)
 				+ Arrays.toString(locationIds) + startDate + endDate + aggregate + mostRecent + precision
 				+ resultOffset + resultMax + datumType + properties;
 		return DigestUtils.sha1Hex(data);
@@ -57,8 +57,8 @@ public class DatumQueryCommand implements Cachable, AggregateNodeDatumFilter {
 	@Override
 	public Map<String, ?> getFilter() {
 		Map<String, Object> filter = new LinkedHashMap<String, Object>();
-		if ( nodeIds != null ) {
-			filter.put("nodeIds", nodeIds);
+		if ( EdgeIds != null ) {
+			filter.put("EdgeIds", EdgeIds);
 		}
 		if ( sourceIds != null ) {
 			filter.put("sourceIds", sourceIds);
@@ -92,36 +92,36 @@ public class DatumQueryCommand implements Cachable, AggregateNodeDatumFilter {
 	}
 
 	/**
-	 * Set a single node ID.
+	 * Set a single Edge ID.
 	 * 
 	 * <p>
-	 * This is a convenience method for requests that use a single node ID at a
-	 * time. The node ID is still stored on the {@code nodeIds} array, just as
+	 * This is a convenience method for requests that use a single Edge ID at a
+	 * time. The Edge ID is still stored on the {@code EdgeIds} array, just as
 	 * the first value. Calling this method replaces any existing
-	 * {@code nodeIds} value with a new array containing just the ID passed into
+	 * {@code EdgeIds} value with a new array containing just the ID passed into
 	 * this method.
 	 * </p>
 	 * 
-	 * @param nodeId
-	 *        the ID of the node
+	 * @param EdgeId
+	 *        the ID of the Edge
 	 */
-	public void setNodeId(Long nodeId) {
-		this.nodeIds = new Long[] { nodeId };
+	public void setEdgeId(Long EdgeId) {
+		this.EdgeIds = new Long[] { EdgeId };
 	}
 
 	/**
-	 * Get the first node ID.
+	 * Get the first Edge ID.
 	 * 
 	 * <p>
-	 * This returns the first available node ID from the {@code nodeIds} array,
+	 * This returns the first available Edge ID from the {@code EdgeIds} array,
 	 * or <em>null</em> if not available.
 	 * </p>
 	 * 
-	 * @return the first node ID
+	 * @return the first Edge ID
 	 */
 	@Override
-	public Long getNodeId() {
-		return this.nodeIds == null || this.nodeIds.length < 1 ? null : this.nodeIds[0];
+	public Long getEdgeId() {
+		return this.EdgeIds == null || this.EdgeIds.length < 1 ? null : this.EdgeIds[0];
 	}
 
 	/**
@@ -135,8 +135,8 @@ public class DatumQueryCommand implements Cachable, AggregateNodeDatumFilter {
 	 * into this method.
 	 * </p>
 	 * 
-	 * @param nodeId
-	 *        the ID of the node
+	 * @param EdgeId
+	 *        the ID of the Edge
 	 */
 	public void setSourceId(String sourceId) {
 		this.sourceIds = new String[] { sourceId };
@@ -150,7 +150,7 @@ public class DatumQueryCommand implements Cachable, AggregateNodeDatumFilter {
 	 * array, or <em>null</em> if not available.
 	 * </p>
 	 * 
-	 * @return the first node ID
+	 * @return the first Edge ID
 	 */
 	public Long getLocationId() {
 		return this.locationIds == null || this.locationIds.length < 1 ? null : this.locationIds[0];
@@ -167,8 +167,8 @@ public class DatumQueryCommand implements Cachable, AggregateNodeDatumFilter {
 	 * into this method.
 	 * </p>
 	 * 
-	 * @param nodeId
-	 *        the ID of the node
+	 * @param EdgeId
+	 *        the ID of the Edge
 	 */
 	public void setLocationId(Long locationId) {
 		this.locationIds = new Long[] { locationId };
@@ -182,7 +182,7 @@ public class DatumQueryCommand implements Cachable, AggregateNodeDatumFilter {
 	 * array, or <em>null</em> if not available.
 	 * </p>
 	 * 
-	 * @return the first node ID
+	 * @return the first Edge ID
 	 */
 	@Override
 	public String getSourceId() {
@@ -231,8 +231,8 @@ public class DatumQueryCommand implements Cachable, AggregateNodeDatumFilter {
 	}
 
 	@Override
-	public Long[] getNodeIds() {
-		return nodeIds;
+	public Long[] getEdgeIds() {
+		return EdgeIds;
 	}
 
 	@Override
@@ -244,8 +244,8 @@ public class DatumQueryCommand implements Cachable, AggregateNodeDatumFilter {
 		this.sourceIds = sourceIds;
 	}
 
-	public void setNodeIds(Long[] nodeIds) {
-		this.nodeIds = nodeIds;
+	public void setEdgeIds(Long[] EdgeIds) {
+		this.EdgeIds = EdgeIds;
 	}
 
 	@Override

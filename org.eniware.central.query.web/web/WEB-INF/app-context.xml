@@ -26,13 +26,13 @@
 				<bean class="org.eniware.util.JodaLocalDateSerializer"/>
 				<bean class="org.eniware.util.JodaLocalDateTimeSerializer"/>
 				<bean class="org.eniware.util.JodaLocalTimeSerializer"/>
-				<bean class="org.eniware.central.support.NodeMetadataSerializer"/>
+				<bean class="org.eniware.central.support.EdgeMetadataSerializer"/>
 				<bean class="org.eniware.central.user.support.UserMetadataSerializer"/>
 			</list>
 		</property>
 	</bean>
 	
-	<bean id="generalNodeDatumSerializer" class="org.eniware.central.datum.support.GeneralNodeDatumMapPropertySerializer"/>
+	<bean id="generalEdgeDatumSerializer" class="org.eniware.central.datum.support.GeneralEdgeDatumMapPropertySerializer"/>
 
 	<bean id="propertySerializerRegistrar"
 		class="org.eniware.util.PropertySerializerRegistrar">
@@ -65,9 +65,9 @@
 				<entry key="org.springframework.validation.BeanPropertyBindingResult">
 					<bean class="org.eniware.util.BindingResultSerializer"/>
 				</entry>
-				<entry key="org.eniware.central.datum.domain.GeneralNodeDatum" value-ref="generalNodeDatumSerializer"/>
-				<entry key="org.eniware.central.datum.domain.GeneralNodeDatumMatch" value-ref="generalNodeDatumSerializer"/>
-				<entry key="org.eniware.central.datum.domain.ReportingGeneralNodeDatum" value-ref="generalNodeDatumSerializer"/>
+				<entry key="org.eniware.central.datum.domain.GeneralEdgeDatum" value-ref="generalEdgeDatumSerializer"/>
+				<entry key="org.eniware.central.datum.domain.GeneralEdgeDatumMatch" value-ref="generalEdgeDatumSerializer"/>
+				<entry key="org.eniware.central.datum.domain.ReportingGeneralEdgeDatum" value-ref="generalEdgeDatumSerializer"/>
 			</map>
 		</property>
 	</bean>

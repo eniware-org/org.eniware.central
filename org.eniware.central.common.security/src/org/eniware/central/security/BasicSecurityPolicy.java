@@ -45,13 +45,13 @@ public class BasicSecurityPolicy implements SecurityPolicy, Serializable {
 		private static final Map<LocationPrecision, Set<LocationPrecision>> MAX_LOCATION_PRECISION_CACHE = new HashMap<LocationPrecision, Set<LocationPrecision>>(
 				16);
 
-		private Set<Long> nodeIds;
+		private Set<Long> EdgeIds;
 		private Set<String> sourceIds;
 		private Set<Aggregation> aggregations;
 		private Set<LocationPrecision> locationPrecisions;
 		private Aggregation minAggregation;
 		private LocationPrecision minLocationPrecision;
-		private Set<String> nodeMetadataPaths;
+		private Set<String> EdgeMetadataPaths;
 		private Set<String> userMetadataPaths;
 
 		public Builder withPolicy(SecurityPolicy policy) {
@@ -60,8 +60,8 @@ public class BasicSecurityPolicy implements SecurityPolicy, Serializable {
 						.withMinAggregation(policy.getMinAggregation())
 						.withLocationPrecisions(policy.getLocationPrecisions())
 						.withMinLocationPrecision(policy.getMinLocationPrecision())
-						.withNodeIds(policy.getNodeIds()).withSourceIds(policy.getSourceIds())
-						.withNodeMetadataPaths(policy.getNodeMetadataPaths())
+						.withEdgeIds(policy.getEdgeIds()).withSourceIds(policy.getSourceIds())
+						.withEdgeMetadataPaths(policy.getEdgeMetadataPaths())
 						.withUserMetadataPaths(policy.getUserMetadataPaths());
 			}
 			return this;
@@ -71,9 +71,9 @@ public class BasicSecurityPolicy implements SecurityPolicy, Serializable {
 			if ( policy != null ) {
 				Builder b = this.withMergedAggregations(policy.getAggregations())
 						.withMergedLocationPrecisions(policy.getLocationPrecisions())
-						.withMergedNodeIds(policy.getNodeIds())
+						.withMergedEdgeIds(policy.getEdgeIds())
 						.withMergedSourceIds(policy.getSourceIds())
-						.withMergedNodeMetadataPaths(policy.getNodeMetadataPaths())
+						.withMergedEdgeMetadataPaths(policy.getEdgeMetadataPaths())
 						.withMergedUserMetadataPaths(policy.getUserMetadataPaths());
 				if ( policy.getMinAggregation() != null ) {
 					b = b.withMinAggregation(policy.getMinAggregation());
@@ -86,15 +86,15 @@ public class BasicSecurityPolicy implements SecurityPolicy, Serializable {
 			return this;
 		}
 
-		public Builder withNodeIds(Set<Long> nodeIds) {
-			this.nodeIds = (nodeIds == null || nodeIds.isEmpty() ? null
-					: Collections.unmodifiableSet(nodeIds));
+		public Builder withEdgeIds(Set<Long> EdgeIds) {
+			this.EdgeIds = (EdgeIds == null || EdgeIds.isEmpty() ? null
+					: Collections.unmodifiableSet(EdgeIds));
 			return this;
 		}
 
-		public Builder withNodeMetadataPaths(Set<String> nodeMetadataPaths) {
-			this.nodeMetadataPaths = (nodeMetadataPaths == null || nodeMetadataPaths.isEmpty() ? null
-					: Collections.unmodifiableSet(nodeMetadataPaths));
+		public Builder withEdgeMetadataPaths(Set<String> EdgeMetadataPaths) {
+			this.EdgeMetadataPaths = (EdgeMetadataPaths == null || EdgeMetadataPaths.isEmpty() ? null
+					: Collections.unmodifiableSet(EdgeMetadataPaths));
 			return this;
 		}
 
@@ -120,26 +120,26 @@ public class BasicSecurityPolicy implements SecurityPolicy, Serializable {
 			return this;
 		}
 
-		public Builder withMergedNodeIds(Set<Long> nodeIds) {
-			Set<Long> set = nodeIds;
-			if ( this.nodeIds != null && !this.nodeIds.isEmpty() ) {
-				set = new LinkedHashSet<Long>(this.nodeIds);
-				if ( nodeIds != null ) {
-					set.addAll(nodeIds);
+		public Builder withMergedEdgeIds(Set<Long> EdgeIds) {
+			Set<Long> set = EdgeIds;
+			if ( this.EdgeIds != null && !this.EdgeIds.isEmpty() ) {
+				set = new LinkedHashSet<Long>(this.EdgeIds);
+				if ( EdgeIds != null ) {
+					set.addAll(EdgeIds);
 				}
 			}
-			return withNodeIds(set);
+			return withEdgeIds(set);
 		}
 
-		public Builder withMergedNodeMetadataPaths(Set<String> nodeMetadataPaths) {
-			Set<String> set = nodeMetadataPaths;
-			if ( this.nodeMetadataPaths != null && !this.nodeMetadataPaths.isEmpty() ) {
-				set = new LinkedHashSet<String>(this.nodeMetadataPaths);
-				if ( nodeMetadataPaths != null ) {
-					set.addAll(nodeMetadataPaths);
+		public Builder withMergedEdgeMetadataPaths(Set<String> EdgeMetadataPaths) {
+			Set<String> set = EdgeMetadataPaths;
+			if ( this.EdgeMetadataPaths != null && !this.EdgeMetadataPaths.isEmpty() ) {
+				set = new LinkedHashSet<String>(this.EdgeMetadataPaths);
+				if ( EdgeMetadataPaths != null ) {
+					set.addAll(EdgeMetadataPaths);
 				}
 			}
-			return withNodeMetadataPaths(set);
+			return withEdgeMetadataPaths(set);
 		}
 
 		public Builder withMergedUserMetadataPaths(Set<String> userMetadataPaths) {
@@ -263,27 +263,27 @@ public class BasicSecurityPolicy implements SecurityPolicy, Serializable {
 		}
 
 		public BasicSecurityPolicy build() {
-			return new BasicSecurityPolicy(nodeIds, sourceIds, buildAggregations(), minAggregation,
-					buildLocationPrecisions(), minLocationPrecision, nodeMetadataPaths,
+			return new BasicSecurityPolicy(EdgeIds, sourceIds, buildAggregations(), minAggregation,
+					buildLocationPrecisions(), minLocationPrecision, EdgeMetadataPaths,
 					userMetadataPaths);
 		}
 
 	}
 
-	private final Set<Long> nodeIds;
+	private final Set<Long> EdgeIds;
 	private final Set<String> sourceIds;
 	private final Set<Aggregation> aggregations;
 	private final Set<LocationPrecision> locationPrecisions;
 	private final Aggregation minAggregation;
 	private final LocationPrecision minLocationPrecision;
-	private final Set<String> nodeMetadataPaths;
+	private final Set<String> EdgeMetadataPaths;
 	private final Set<String> userMetadataPaths;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param nodeIds
-	 *        The node IDs to restrict to, or {@code null} for no restriction.
+	 * @param EdgeIds
+	 *        The Edge IDs to restrict to, or {@code null} for no restriction.
 	 * @param sourceIds
 	 *        The source ID to restrict to, or {@code null} for no restriction.
 	 * @param aggregations
@@ -296,31 +296,31 @@ public class BasicSecurityPolicy implements SecurityPolicy, Serializable {
 	 *        restriction.
 	 * @param minALocationPrecision
 	 *        If specified, a minimum location precision that is allowed.
-	 * @param nodeMetadataPaths
+	 * @param EdgeMetadataPaths
 	 *        The {@code EniwareEdgeMetadata} paths to restrict to, or
 	 *        {@code null} for no restriction.
 	 * @param userMetadataPaths
-	 *        The {@code UserNodeMetadata} paths to restrict to, or {@code null}
+	 *        The {@code UserEdgeMetadata} paths to restrict to, or {@code null}
 	 *        for no restriction.
 	 */
-	public BasicSecurityPolicy(Set<Long> nodeIds, Set<String> sourceIds, Set<Aggregation> aggregations,
+	public BasicSecurityPolicy(Set<Long> EdgeIds, Set<String> sourceIds, Set<Aggregation> aggregations,
 			Aggregation minAggregation, Set<LocationPrecision> locationPrecisions,
-			LocationPrecision minLocationPrecision, Set<String> nodeMetadataPaths,
+			LocationPrecision minLocationPrecision, Set<String> EdgeMetadataPaths,
 			Set<String> userMetadataPaths) {
 		super();
-		this.nodeIds = nodeIds;
+		this.EdgeIds = EdgeIds;
 		this.sourceIds = sourceIds;
 		this.aggregations = aggregations;
 		this.minAggregation = minAggregation;
 		this.locationPrecisions = locationPrecisions;
 		this.minLocationPrecision = minLocationPrecision;
-		this.nodeMetadataPaths = nodeMetadataPaths;
+		this.EdgeMetadataPaths = EdgeMetadataPaths;
 		this.userMetadataPaths = userMetadataPaths;
 	}
 
 	@Override
-	public Set<Long> getNodeIds() {
-		return nodeIds;
+	public Set<Long> getEdgeIds() {
+		return EdgeIds;
 	}
 
 	@Override
@@ -349,8 +349,8 @@ public class BasicSecurityPolicy implements SecurityPolicy, Serializable {
 	}
 
 	@Override
-	public Set<String> getNodeMetadataPaths() {
-		return nodeMetadataPaths;
+	public Set<String> getEdgeMetadataPaths() {
+		return EdgeMetadataPaths;
 	}
 
 	@Override
@@ -366,9 +366,9 @@ public class BasicSecurityPolicy implements SecurityPolicy, Serializable {
 		result = prime * result + ((locationPrecisions == null) ? 0 : locationPrecisions.hashCode());
 		result = prime * result + ((minAggregation == null) ? 0 : minAggregation.hashCode());
 		result = prime * result + ((minLocationPrecision == null) ? 0 : minLocationPrecision.hashCode());
-		result = prime * result + ((nodeIds == null) ? 0 : nodeIds.hashCode());
+		result = prime * result + ((EdgeIds == null) ? 0 : EdgeIds.hashCode());
 		result = prime * result + ((sourceIds == null) ? 0 : sourceIds.hashCode());
-		result = prime * result + ((nodeMetadataPaths == null) ? 0 : nodeMetadataPaths.hashCode());
+		result = prime * result + ((EdgeMetadataPaths == null) ? 0 : EdgeMetadataPaths.hashCode());
 		result = prime * result + ((userMetadataPaths == null) ? 0 : userMetadataPaths.hashCode());
 		return result;
 	}
@@ -405,11 +405,11 @@ public class BasicSecurityPolicy implements SecurityPolicy, Serializable {
 		if ( minLocationPrecision != other.minLocationPrecision ) {
 			return false;
 		}
-		if ( nodeIds == null ) {
-			if ( other.nodeIds != null ) {
+		if ( EdgeIds == null ) {
+			if ( other.EdgeIds != null ) {
 				return false;
 			}
-		} else if ( !nodeIds.equals(other.nodeIds) ) {
+		} else if ( !EdgeIds.equals(other.EdgeIds) ) {
 			return false;
 		}
 		if ( sourceIds == null ) {
@@ -419,11 +419,11 @@ public class BasicSecurityPolicy implements SecurityPolicy, Serializable {
 		} else if ( !sourceIds.equals(other.sourceIds) ) {
 			return false;
 		}
-		if ( nodeMetadataPaths == null ) {
-			if ( other.nodeMetadataPaths != null ) {
+		if ( EdgeMetadataPaths == null ) {
+			if ( other.EdgeMetadataPaths != null ) {
 				return false;
 			}
-		} else if ( !nodeMetadataPaths.equals(other.nodeMetadataPaths) ) {
+		} else if ( !EdgeMetadataPaths.equals(other.EdgeMetadataPaths) ) {
 			return false;
 		}
 		if ( userMetadataPaths == null ) {

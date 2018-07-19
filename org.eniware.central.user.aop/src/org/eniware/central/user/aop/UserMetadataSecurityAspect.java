@@ -32,11 +32,11 @@ public class UserMetadataSecurityAspect extends AuthorizationSupport {
 	/**
 	 * Constructor.
 	 * 
-	 * @param userNodeDao
-	 *        the UserNodeDao to use
+	 * @param userEdgeDao
+	 *        the UserEdgeDao to use
 	 */
-	public UserMetadataSecurityAspect(UserEdgeDao userNodeDao) {
-		super(userNodeDao);
+	public UserMetadataSecurityAspect(UserEdgeDao userEdgeDao) {
+		super(userEdgeDao);
 		AntPathMatcher antMatch = new AntPathMatcher();
 		antMatch.setCachePatterns(false);
 		antMatch.setCaseSensitive(true);
@@ -88,7 +88,7 @@ public class UserMetadataSecurityAspect extends AuthorizationSupport {
 			requireUserReadAccess(userId);
 		}
 
-		// node ID passes, execute query and then filter based on security policy if necessary
+		// Edge ID passes, execute query and then filter based on security policy if necessary
 		Object result = pjp.proceed();
 
 		SecurityPolicy policy = getActiveSecurityPolicy();

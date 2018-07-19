@@ -6,8 +6,8 @@
 
 package org.eniware.central.query.biz;
 
-import org.eniware.central.datum.domain.GeneralNodeDatumFilter;
-import org.eniware.central.datum.domain.GeneralNodeDatumPK;
+import org.eniware.central.datum.domain.GeneralEdgeDatumFilter;
+import org.eniware.central.datum.domain.GeneralEdgeDatumPK;
 import org.eniware.central.domain.FilterMatch;
 import org.eniware.central.domain.FilterResults;
 
@@ -19,14 +19,14 @@ import org.eniware.central.domain.FilterResults;
 public interface QueryAuditor {
 
 	/**
-	 * Audit the results of a general node datum query.
+	 * Audit the results of a general Edge datum query.
 	 * 
 	 * @param filter
 	 *        the criteria used for the query
 	 * @param results
 	 *        the query results
 	 */
-	<T extends FilterMatch<GeneralNodeDatumPK>> void auditNodeDatumFilterResults(
-			GeneralNodeDatumFilter filter, FilterResults<T> results);
+	<T extends FilterMatch<GeneralEdgeDatumPK>> void auditEdgeDatumFilterResults(
+			GeneralEdgeDatumFilter filter, FilterResults<T> results);
 
 }

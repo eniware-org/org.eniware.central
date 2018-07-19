@@ -13,7 +13,7 @@
 
 	<!-- Service References -->
 	
-	<reference id="nodePKIBiz" interface="org.eniware.central.user.biz.NodePKIBiz"/>
+	<reference id="EdgePKIBiz" interface="org.eniware.central.user.biz.EdgePKIBiz"/>
 	<reference id="instructorBiz" interface="org.eniware.central.instructor.biz.InstructorBiz"/>
 	<reference id="certificateService" interface="org.eniware.support.CertificateService"/>
 	
@@ -22,9 +22,9 @@
 	<reference id="userAlertSituationDao" interface="org.eniware.central.user.dao.UserAlertSituationDao"/>
 	<reference id="userAuthTokenDao" interface="org.eniware.central.user.dao.UserAuthTokenDao"/>
 	<reference id="userMetadataDao" interface="org.eniware.central.user.dao.UserMetadataDao"/>
-	<reference id="userNodeDao" interface="org.eniware.central.user.dao.UserNodeDao"/>
-	<reference id="userNodeCertificateDao" interface="org.eniware.central.user.dao.UserNodeCertificateDao"/>
-	<reference id="userNodeConfirmationDao" interface="org.eniware.central.user.dao.UserNodeConfirmationDao"/>
+	<reference id="userEdgeDao" interface="org.eniware.central.user.dao.UserEdgeDao"/>
+	<reference id="userEdgeCertificateDao" interface="org.eniware.central.user.dao.UserEdgeCertificateDao"/>
+	<reference id="userEdgeConfirmationDao" interface="org.eniware.central.user.dao.UserEdgeConfirmationDao"/>
 	
 	<reference id="userValidator" interface="org.springframework.validation.Validator"
 		availability="optional"
@@ -54,7 +54,7 @@
 		ranking="1">
 		<interfaces>
 			<value>org.eniware.central.user.biz.UserBiz</value>
-			<value>org.eniware.central.user.biz.NodeOwnershipBiz</value>
+			<value>org.eniware.central.user.biz.EdgeOwnershipBiz</value>
 		</interfaces>
 	</service>
 	
@@ -83,16 +83,16 @@
 	<bean id="daoRegistrationBiz" class="org.eniware.central.user.biz.dao.DaoRegistrationBiz">
 		<osgix:managed-properties persistent-id="org.eniware.central.user.biz.dao.DaoRegistrationBiz" autowire-on-update="true"/>
 		<property name="userDao" ref="userDao"/>
-		<property name="userNodeDao" ref="userNodeDao"/>
-		<property name="userNodeConfirmationDao" ref="userNodeConfirmationDao"/>
-		<property name="userNodeCertificateDao" ref="userNodeCertificateDao"/>
+		<property name="userEdgeDao" ref="userEdgeDao"/>
+		<property name="userEdgeConfirmationDao" ref="userEdgeConfirmationDao"/>
+		<property name="userEdgeCertificateDao" ref="userEdgeCertificateDao"/>
 		<property name="userValidator" ref="userValidator"/>
 		<property name="eniwareEdgeDao" ref="eniwareEdgeDao"/>
 		<property name="eniwareLocationDao" ref="eniwareLocationDao"/>
 		<property name="networkIdentityBiz" ref="networkIdentityBiz"/>
 		<property name="passwordEncoder" ref="passwordEncoder"/>
 		<property name="emailThrottleCache" ref="emailThrottleCache"/>
-		<property name="nodePKIBiz" ref="nodePKIBiz"/>
+		<property name="EdgePKIBiz" ref="EdgePKIBiz"/>
 		<property name="instructorBiz" ref="instructorBiz"/>
 		<property name="certificateService" ref="certificateService"/>
 	</bean>
@@ -100,9 +100,9 @@
 	<bean id="daoUserBiz" class="org.eniware.central.user.biz.dao.DaoUserBiz">
 		<property name="userDao" ref="userDao"/>
 		<property name="userAlertDao" ref="userAlertDao"/>
-		<property name="userNodeDao" ref="userNodeDao"/>
-		<property name="userNodeConfirmationDao" ref="userNodeConfirmationDao"/>
-		<property name="userNodeCertificateDao" ref="userNodeCertificateDao"/>
+		<property name="userEdgeDao" ref="userEdgeDao"/>
+		<property name="userEdgeConfirmationDao" ref="userEdgeConfirmationDao"/>
+		<property name="userEdgeCertificateDao" ref="userEdgeCertificateDao"/>
 		<property name="userAuthTokenDao" ref="userAuthTokenDao"/>
 		<property name="eniwareEdgeDao" ref="eniwareEdgeDao"/>
 		<property name="eniwareLocationDao" ref="eniwareLocationDao"/>

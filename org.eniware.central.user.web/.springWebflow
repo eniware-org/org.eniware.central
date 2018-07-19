@@ -8,8 +8,8 @@
 			<name><![CDATA[confirm-flow]]></name>
 		</config>
 		<config>
-			<file>web/WEB-INF/flows/my-nodes/my-nodes-flow.xml</file>
-			<name><![CDATA[my-nodes-flow]]></name>
+			<file>web/WEB-INF/flows/my-Edges/my-Edges-flow.xml</file>
+			<name><![CDATA[my-Edges-flow]]></name>
 		</config>
 		<config>
 			<file>web/WEB-INF/flows/register/register-flow.xml</file>

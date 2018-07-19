@@ -19,8 +19,8 @@
 	<osgix:cm-properties id="central.query.cfg" persistent-id="org.eniware.central.query">
 		<beans:prop key="BasicAppConfigurationBiz.serviceUrls">
 			eniwarequery = data.network.eniware.orgs.mobi/:8080s.mobi/:8080eniwarequery,
-			node-dashboard = data.network.eniware.orgs.mobi/:8080s.mobi/:8080node-dashboard,
-			node-dataview = data.network.eniware.orgs.mobi/:8080s.mobi/:8080node-dataview?nodeId={nodeId}
+			Edge-dashboard = data.network.eniware.orgs.mobi/:8080s.mobi/:8080Edge-dashboard,
+			Edge-dataview = data.network.eniware.orgs.mobi/:8080s.mobi/:8080Edge-dataview?EdgeId={EdgeId}
 		</beans:prop>
 	</osgix:cm-properties>
 

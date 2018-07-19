@@ -110,13 +110,13 @@ DECLARE
 	loc_tz text;
 BEGIN
 	IF st IS NOT NULL OR en IS NOT NULL THEN
-		-- get the node TZ for local date/time
+		-- get the Edge TZ for local date/time
 		SELECT l.time_zone FROM solarnet.sn_loc l
 		WHERE l.id = loc
 		INTO loc_tz;
 
 		IF NOT FOUND THEN
-			RAISE NOTICE 'Loc % has no time zone, will use UTC.', node;
+			RAISE NOTICE 'Loc % has no time zone, will use UTC.', Edge;
 			loc_tz := 'UTC';
 		END IF;
 	END IF;
@@ -259,7 +259,7 @@ var filter = searchFilter(criteria),
 	matcher,
 	resultRec = {};
 
-if ( !filter.rootNode ) {
+if ( !filter.rootEdge ) {
 	plv8.elog(NOTICE, 'Malformed search filter:', criteria);
 	return;
 }

@@ -10,7 +10,7 @@ import org.eniware.central.dao.GenericDao;
 import org.eniware.central.user.domain.UserEdgeHardwareControl;
 
 /**
- * DAO API for UserNodeHardwareControl objects.
+ * DAO API for UserEdgeHardwareControl objects.
  * 
  * @version $Revision$
  */

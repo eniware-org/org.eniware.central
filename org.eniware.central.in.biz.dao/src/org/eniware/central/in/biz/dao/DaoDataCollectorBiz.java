@@ -16,7 +16,7 @@ import org.eniware.central.dao.EniwareEdgeDao;
 import org.eniware.central.dao.WeatherLocationDao;
 import org.eniware.central.datum.biz.DatumMetadataBiz;
 import org.eniware.central.datum.dao.GeneralLocationDatumDao;
-import org.eniware.central.datum.dao.GeneralNodeDatumDao;
+import org.eniware.central.datum.dao.GeneralEdgeDatumDao;
 import org.eniware.central.datum.domain.ConsumptionDatum;
 import org.eniware.central.datum.domain.Datum;
 import org.eniware.central.datum.domain.DatumFilterCommand;
@@ -25,12 +25,12 @@ import org.eniware.central.datum.domain.GeneralLocationDatum;
 import org.eniware.central.datum.domain.GeneralLocationDatumMetadataFilter;
 import org.eniware.central.datum.domain.GeneralLocationDatumMetadataFilterMatch;
 import org.eniware.central.datum.domain.GeneralLocationDatumPK;
-import org.eniware.central.datum.domain.GeneralNodeDatum;
-import org.eniware.central.datum.domain.GeneralNodeDatumMetadataFilter;
-import org.eniware.central.datum.domain.GeneralNodeDatumMetadataFilterMatch;
-import org.eniware.central.datum.domain.GeneralNodeDatumPK;
+import org.eniware.central.datum.domain.GeneralEdgeDatum;
+import org.eniware.central.datum.domain.GeneralEdgeDatumMetadataFilter;
+import org.eniware.central.datum.domain.GeneralEdgeDatumMetadataFilterMatch;
+import org.eniware.central.datum.domain.GeneralEdgeDatumPK;
 import org.eniware.central.datum.domain.LocationDatum;
-import org.eniware.central.datum.domain.NodeDatum;
+import org.eniware.central.datum.domain.EdgeDatum;
 import org.eniware.central.datum.domain.PowerDatum;
 import org.eniware.central.datum.domain.PriceDatum;
 import org.eniware.central.datum.domain.WeatherDatum;
@@ -44,7 +44,7 @@ import org.eniware.central.domain.SortDescriptor;
 import org.eniware.central.domain.SourceLocation;
 import org.eniware.central.domain.SourceLocationMatch;
 import org.eniware.central.in.biz.DataCollectorBiz;
-import org.eniware.central.security.AuthenticatedNode;
+import org.eniware.central.security.AuthenticatedEdge;
 import org.eniware.central.security.AuthorizationException;
 import org.eniware.central.security.SecurityException;
 import org.eniware.central.security.AuthorizationException.Reason;
@@ -62,18 +62,18 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Implementation of {@link DataCollectorBiz} using {@link GeneralNodeDatumDao}
+ * Implementation of {@link DataCollectorBiz} using {@link GeneralEdgeDatumDao}
  * and {@link GeneralLocationDatumDao} APIs to persist the data.
  * 
  * <p>
- * This service expects all calls into {@link #postGeneralNodeDatum(Iterable)}
+ * This service expects all calls into {@link #postGeneralEdgeDatum(Iterable)}
  * and {@link #postGeneralLocationDatum(Iterable)} to provide a
- * {@link AuthenticatedNode} via the normal Spring Security
- * {@link SecurityContextHolder} API. Any attempt to post data for a node
- * different from the currently authenticated node will result in a
- * {@link SecurityException}. If a {@link NodeDatum} is posted with a
- * <em>null</em> {@link NodeDatum#getNodeId()} value, this service will set the
- * node ID to the authenticated node ID automatically.
+ * {@link AuthenticatedEdge} via the normal Spring Security
+ * {@link SecurityContextHolder} API. Any attempt to post data for a Edge
+ * different from the currently authenticated Edge will result in a
+ * {@link SecurityException}. If a {@link EdgeDatum} is posted with a
+ * <em>null</em> {@link EdgeDatum#getEdgeId()} value, this service will set the
+ * Edge ID to the authenticated Edge ID automatically.
  * </p>
  *
  * @version 2.1
@@ -85,7 +85,7 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 	private WeatherLocationDao weatherLocationDao = null;
 	private EniwareLocationDao eniwareLocationDao = null;
 	private EniwareEdgeMetadataBiz eniwareEdgeMetadataBiz;
-	private GeneralNodeDatumDao generalNodeDatumDao = null;
+	private GeneralEdgeDatumDao generalEdgeDatumDao = null;
 	private GeneralLocationDatumDao generalLocationDatumDao = null;
 	private DatumMetadataBiz datumMetadataBiz = null;
 	private int filteredResultsLimit = 250;
@@ -117,26 +117,26 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 			throw new IllegalArgumentException("Datum must not be null");
 		}
 
-		// verify node ID with security
-		AuthenticatedNode authNode = getAuthenticatedNode();
-		if ( authNode == null ) {
+		// verify Edge ID with security
+		AuthenticatedEdge authEdge = getAuthenticatedEdge();
+		if ( authEdge == null ) {
 			throw new AuthorizationException(Reason.ANONYMOUS_ACCESS_DENIED, null);
 		}
-		if ( datum instanceof NodeDatum ) {
-			NodeDatum nd = (NodeDatum) datum;
-			if ( nd.getNodeId() == null ) {
+		if ( datum instanceof EdgeDatum ) {
+			EdgeDatum nd = (EdgeDatum) datum;
+			if ( nd.getEdgeId() == null ) {
 				if ( log.isDebugEnabled() ) {
-					log.debug("Setting nodeId property to authenticated node ID " + authNode.getNodeId()
+					log.debug("Setting EdgeId property to authenticated Edge ID " + authEdge.getEdgeId()
 							+ " on datum " + datum);
 				}
 				BeanWrapper wrapper = PropertyAccessorFactory.forBeanPropertyAccess(nd);
-				wrapper.setPropertyValue("nodeId", authNode.getNodeId());
-			} else if ( !nd.getNodeId().equals(authNode.getNodeId()) ) {
+				wrapper.setPropertyValue("EdgeId", authEdge.getEdgeId());
+			} else if ( !nd.getEdgeId().equals(authEdge.getEdgeId()) ) {
 				if ( log.isWarnEnabled() ) {
-					log.warn("Illegal datum post by node " + authNode.getNodeId() + " as node "
-							+ nd.getNodeId());
+					log.warn("Illegal datum post by Edge " + authEdge.getEdgeId() + " as Edge "
+							+ nd.getEdgeId());
 				}
-				throw new AuthorizationException(Reason.ACCESS_DENIED, nd.getNodeId());
+				throw new AuthorizationException(Reason.ACCESS_DENIED, nd.getEdgeId());
 			}
 		}
 
@@ -157,16 +157,16 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 						| ((pk.getSourceId().hashCode() & 0xFF) << 32)
 						| (pk.getCreated().minusYears(40).getMillis() & 0xFFFFFFFF);
 			} else {
-				GeneralNodeDatum g = preprocessDatum(datum);
-				GeneralNodeDatum entity = checkForNodeDatumByDate(g.getNodeId(), g.getCreated(),
+				GeneralEdgeDatum g = preprocessDatum(datum);
+				GeneralEdgeDatum entity = checkForEdgeDatumByDate(g.getEdgeId(), g.getCreated(),
 						g.getSourceId());
-				GeneralNodeDatumPK pk;
+				GeneralEdgeDatumPK pk;
 				if ( entity == null ) {
-					pk = generalNodeDatumDao.store(g);
+					pk = generalEdgeDatumDao.store(g);
 				} else {
 					pk = entity.getId();
 				}
-				entityId = ((pk.getNodeId().longValue() & 0x7FFFFF) << 40)
+				entityId = ((pk.getEdgeId().longValue() & 0x7FFFFF) << 40)
 						| ((pk.getSourceId().hashCode() & 0xFF) << 32)
 						| (pk.getCreated().minusYears(40).getMillis() & 0xFFFFFFFF);
 			}
@@ -207,26 +207,26 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	@Override
-	public void postGeneralNodeDatum(Iterable<GeneralNodeDatum> datums) {
+	public void postGeneralEdgeDatum(Iterable<GeneralEdgeDatum> datums) {
 		if ( datums == null ) {
 			return;
 		}
-		// verify node ID with security
-		AuthenticatedNode authNode = getAuthenticatedNode();
-		if ( authNode == null ) {
+		// verify Edge ID with security
+		AuthenticatedEdge authEdge = getAuthenticatedEdge();
+		if ( authEdge == null ) {
 			throw new AuthorizationException(Reason.ANONYMOUS_ACCESS_DENIED, null);
 		}
-		for ( GeneralNodeDatum d : datums ) {
-			if ( d.getNodeId() == null ) {
-				d.setNodeId(authNode.getNodeId());
-			} else if ( !d.getNodeId().equals(authNode.getNodeId()) ) {
+		for ( GeneralEdgeDatum d : datums ) {
+			if ( d.getEdgeId() == null ) {
+				d.setEdgeId(authEdge.getEdgeId());
+			} else if ( !d.getEdgeId().equals(authEdge.getEdgeId()) ) {
 				if ( log.isWarnEnabled() ) {
-					log.warn("Illegal datum post by node " + authNode.getNodeId() + " as node "
-							+ d.getNodeId());
+					log.warn("Illegal datum post by Edge " + authEdge.getEdgeId() + " as Edge "
+							+ d.getEdgeId());
 				}
-				throw new AuthorizationException(Reason.ACCESS_DENIED, d.getNodeId());
+				throw new AuthorizationException(Reason.ACCESS_DENIED, d.getEdgeId());
 			}
-			generalNodeDatumDao.store(d);
+			generalEdgeDatumDao.store(d);
 		}
 	}
 
@@ -236,9 +236,9 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 		if ( datums == null ) {
 			return;
 		}
-		// verify node ID with security
-		AuthenticatedNode authNode = getAuthenticatedNode();
-		if ( authNode == null ) {
+		// verify Edge ID with security
+		AuthenticatedEdge authEdge = getAuthenticatedEdge();
+		if ( authEdge == null ) {
 			throw new AuthorizationException(Reason.ANONYMOUS_ACCESS_DENIED, null);
 		}
 		for ( GeneralLocationDatum d : datums ) {
@@ -252,7 +252,7 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	@Override
-	public void addGeneralNodeDatumMetadata(Long nodeId, final String sourceId,
+	public void addGeneralEdgeDatumMetadata(Long EdgeId, final String sourceId,
 			final GeneralDatumMetadata meta) {
 		if ( sourceId == null || meta == null
 				|| ((meta.getTags() == null || meta.getTags().isEmpty())
@@ -261,64 +261,64 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 			return;
 		}
 
-		// verify node ID with security
-		AuthenticatedNode authNode = getAuthenticatedNode();
-		if ( authNode == null ) {
+		// verify Edge ID with security
+		AuthenticatedEdge authEdge = getAuthenticatedEdge();
+		if ( authEdge == null ) {
 			throw new AuthorizationException(Reason.ANONYMOUS_ACCESS_DENIED, null);
 		}
-		if ( nodeId == null ) {
-			nodeId = authNode.getNodeId();
-		} else if ( nodeId.equals(authNode.getNodeId()) == false ) {
+		if ( EdgeId == null ) {
+			EdgeId = authEdge.getEdgeId();
+		} else if ( EdgeId.equals(authEdge.getEdgeId()) == false ) {
 			if ( log.isWarnEnabled() ) {
-				log.warn("Illegal datum metadata post by node " + authNode.getNodeId() + " as node "
-						+ nodeId);
+				log.warn("Illegal datum metadata post by Edge " + authEdge.getEdgeId() + " as Edge "
+						+ EdgeId);
 			}
-			throw new AuthorizationException(Reason.ACCESS_DENIED, nodeId);
+			throw new AuthorizationException(Reason.ACCESS_DENIED, EdgeId);
 		}
-		datumMetadataBiz.addGeneralNodeDatumMetadata(nodeId, sourceId, meta);
+		datumMetadataBiz.addGeneralEdgeDatumMetadata(EdgeId, sourceId, meta);
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	@Override
-	public void addEniwareEdgeMetadata(Long nodeId, GeneralDatumMetadata meta) {
+	public void addEniwareEdgeMetadata(Long EdgeId, GeneralDatumMetadata meta) {
 		if ( meta == null || ((meta.getTags() == null || meta.getTags().isEmpty())
 				&& (meta.getInfo() == null || meta.getInfo().isEmpty())
 				&& (meta.getPropertyInfo() == null || meta.getPropertyInfo().isEmpty())) ) {
 			return;
 		}
 
-		// verify node ID with security
-		AuthenticatedNode authNode = getAuthenticatedNode();
-		if ( authNode == null ) {
+		// verify Edge ID with security
+		AuthenticatedEdge authEdge = getAuthenticatedEdge();
+		if ( authEdge == null ) {
 			throw new AuthorizationException(Reason.ANONYMOUS_ACCESS_DENIED, null);
 		}
-		if ( nodeId == null ) {
-			nodeId = authNode.getNodeId();
-		} else if ( nodeId.equals(authNode.getNodeId()) == false ) {
+		if ( EdgeId == null ) {
+			EdgeId = authEdge.getEdgeId();
+		} else if ( EdgeId.equals(authEdge.getEdgeId()) == false ) {
 			if ( log.isWarnEnabled() ) {
-				log.warn("Illegal node metadata post by node " + authNode.getNodeId() + " as node "
-						+ nodeId);
+				log.warn("Illegal Edge metadata post by Edge " + authEdge.getEdgeId() + " as Edge "
+						+ EdgeId);
 			}
-			throw new AuthorizationException(Reason.ACCESS_DENIED, nodeId);
+			throw new AuthorizationException(Reason.ACCESS_DENIED, EdgeId);
 		}
-		eniwareEdgeMetadataBiz.addEniwareEdgeMetadata(nodeId, meta);
+		eniwareEdgeMetadataBiz.addEniwareEdgeMetadata(EdgeId, meta);
 	}
 
-	private EniwareEdgeMetadataFilter eniwareEdgeMetadataCriteriaForcedToAuthenticatedNode(
+	private EniwareEdgeMetadataFilter eniwareEdgeMetadataCriteriaForcedToAuthenticatedEdge(
 			final EniwareEdgeMetadataFilter criteria) {
-		// verify node ID with security
-		AuthenticatedNode authNode = getAuthenticatedNode();
-		if ( authNode == null ) {
+		// verify Edge ID with security
+		AuthenticatedEdge authEdge = getAuthenticatedEdge();
+		if ( authEdge == null ) {
 			throw new AuthorizationException(Reason.ANONYMOUS_ACCESS_DENIED, null);
 		}
-		if ( criteria.getNodeId() != null && authNode.getNodeId().equals(criteria.getNodeId()) ) {
+		if ( criteria.getEdgeId() != null && authEdge.getEdgeId().equals(criteria.getEdgeId()) ) {
 			return criteria;
 		}
 		if ( !(criteria instanceof DatumFilterCommand) ) {
 			throw new AuthorizationException(Reason.ANONYMOUS_ACCESS_DENIED, null);
 		}
 		DatumFilterCommand dfc = (DatumFilterCommand) criteria;
-		dfc.setNodeId(authNode.getNodeId());
+		dfc.setEdgeId(authEdge.getEdgeId());
 		return dfc;
 	}
 
@@ -327,35 +327,35 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 			EniwareEdgeMetadataFilter criteria, final List<SortDescriptor> sortDescriptors,
 			final Integer offset, final Integer max) {
 		return eniwareEdgeMetadataBiz.findEniwareEdgeMetadata(
-				eniwareEdgeMetadataCriteriaForcedToAuthenticatedNode(criteria), sortDescriptors, offset,
+				eniwareEdgeMetadataCriteriaForcedToAuthenticatedEdge(criteria), sortDescriptors, offset,
 				max);
 	}
 
-	private GeneralNodeDatumMetadataFilter metadataCriteriaForcedToAuthenticatedNode(
-			final GeneralNodeDatumMetadataFilter criteria) {
-		// verify node ID with security
-		AuthenticatedNode authNode = getAuthenticatedNode();
-		if ( authNode == null ) {
+	private GeneralEdgeDatumMetadataFilter metadataCriteriaForcedToAuthenticatedEdge(
+			final GeneralEdgeDatumMetadataFilter criteria) {
+		// verify Edge ID with security
+		AuthenticatedEdge authEdge = getAuthenticatedEdge();
+		if ( authEdge == null ) {
 			throw new AuthorizationException(Reason.ANONYMOUS_ACCESS_DENIED, null);
 		}
-		if ( criteria.getNodeId() != null && authNode.getNodeId().equals(criteria.getNodeId()) ) {
+		if ( criteria.getEdgeId() != null && authEdge.getEdgeId().equals(criteria.getEdgeId()) ) {
 			return criteria;
 		}
 		if ( !(criteria instanceof DatumFilterCommand) ) {
 			throw new AuthorizationException(Reason.ANONYMOUS_ACCESS_DENIED, null);
 		}
 		DatumFilterCommand dfc = (DatumFilterCommand) criteria;
-		dfc.setNodeId(authNode.getNodeId());
+		dfc.setEdgeId(authEdge.getEdgeId());
 		return dfc;
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
-	public FilterResults<GeneralNodeDatumMetadataFilterMatch> findGeneralNodeDatumMetadata(
-			final GeneralNodeDatumMetadataFilter criteria, final List<SortDescriptor> sortDescriptors,
+	public FilterResults<GeneralEdgeDatumMetadataFilterMatch> findGeneralEdgeDatumMetadata(
+			final GeneralEdgeDatumMetadataFilter criteria, final List<SortDescriptor> sortDescriptors,
 			final Integer offset, final Integer max) {
-		return datumMetadataBiz.findGeneralNodeDatumMetadata(
-				metadataCriteriaForcedToAuthenticatedNode(criteria), sortDescriptors, offset, max);
+		return datumMetadataBiz.findGeneralEdgeDatumMetadata(
+				metadataCriteriaForcedToAuthenticatedEdge(criteria), sortDescriptors, offset, max);
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
@@ -418,12 +418,12 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 		return resultList;
 	}
 
-	private AuthenticatedNode getAuthenticatedNode() {
+	private AuthenticatedEdge getAuthenticatedEdge() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if ( auth != null ) {
 			Object principal = auth.getPrincipal();
-			if ( principal instanceof AuthenticatedNode ) {
-				return (AuthenticatedNode) principal;
+			if ( principal instanceof AuthenticatedEdge ) {
+				return (AuthenticatedEdge) principal;
 			}
 		}
 		return null;
@@ -441,17 +441,17 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 		return result;
 	}
 
-	private GeneralNodeDatum preprocessDatum(Datum datum) {
-		GeneralNodeDatum result = getGeneralDatumMapper().mapDatum(datum);
+	private GeneralEdgeDatum preprocessDatum(Datum datum) {
+		GeneralEdgeDatum result = getGeneralDatumMapper().mapDatum(datum);
 		return result;
 	}
 
 	private GeneralLocationDatum preprocessDayDatum(DayDatum datum) {
 		// fill in location ID if not provided
 		if ( datum.getLocationId() == null ) {
-			EniwareEdge node = eniwareEdgeDao.get(datum.getNodeId());
-			if ( node != null ) {
-				datum.setLocationId(node.getWeatherLocationId());
+			EniwareEdge Edge = eniwareEdgeDao.get(datum.getEdgeId());
+			if ( Edge != null ) {
+				datum.setLocationId(Edge.getWeatherLocationId());
 			}
 		}
 		GeneralLocationDatum g = getGeneralDatumMapper().mapLocationDatum(datum);
@@ -466,21 +466,21 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 	private GeneralLocationDatum preprocessWeatherDatum(WeatherDatum datum) {
 		// fill in location ID if not provided
 		if ( datum.getLocationId() == null ) {
-			EniwareEdge node = eniwareEdgeDao.get(datum.getNodeId());
-			if ( node != null ) {
-				datum.setLocationId(node.getWeatherLocationId());
+			EniwareEdge Edge = eniwareEdgeDao.get(datum.getEdgeId());
+			if ( Edge != null ) {
+				datum.setLocationId(Edge.getWeatherLocationId());
 			}
 		}
 		GeneralLocationDatum g = getGeneralDatumMapper().mapLocationDatum(datum);
 		return g;
 	}
 
-	private GeneralNodeDatum checkForNodeDatumByDate(Long nodeId, DateTime date, String sourceId) {
-		GeneralNodeDatumPK pk = new GeneralNodeDatumPK();
+	private GeneralEdgeDatum checkForEdgeDatumByDate(Long EdgeId, DateTime date, String sourceId) {
+		GeneralEdgeDatumPK pk = new GeneralEdgeDatumPK();
 		pk.setCreated(date);
-		pk.setNodeId(nodeId);
+		pk.setEdgeId(EdgeId);
 		pk.setSourceId(sourceId == null ? "" : sourceId);
-		GeneralNodeDatum entity = generalNodeDatumDao.get(pk);
+		GeneralEdgeDatum entity = generalEdgeDatumDao.get(pk);
 		return entity;
 	}
 
@@ -557,12 +557,12 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 		this.filteredResultsLimit = filteredResultsLimit;
 	}
 
-	public GeneralNodeDatumDao getGeneralNodeDatumDao() {
-		return generalNodeDatumDao;
+	public GeneralEdgeDatumDao getGeneralEdgeDatumDao() {
+		return generalEdgeDatumDao;
 	}
 
-	public void setGeneralNodeDatumDao(GeneralNodeDatumDao generalNodeDatumDao) {
-		this.generalNodeDatumDao = generalNodeDatumDao;
+	public void setGeneralEdgeDatumDao(GeneralEdgeDatumDao generalEdgeDatumDao) {
+		this.generalEdgeDatumDao = generalEdgeDatumDao;
 	}
 
 	public DatumMetadataBiz getDatumMetadataBiz() {
@@ -582,7 +582,7 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 	}
 
 	/**
-	 * Get the configured node metadata biz.
+	 * Get the configured Edge metadata biz.
 	 * 
 	 * @return the service, or {@literal null} if not configured
 	 * @since 2.1
@@ -592,7 +592,7 @@ public class DaoDataCollectorBiz implements DataCollectorBiz {
 	}
 
 	/**
-	 * Set the node metadata biz to use.
+	 * Set the Edge metadata biz to use.
 	 * 
 	 * @param eniwareEdgeMetadataBiz
 	 *        the service to set

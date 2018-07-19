@@ -63,8 +63,8 @@ public class DelegatingUserAlertBiz implements UserAlertBiz {
 	}
 
 	@Override
-	public List<UserAlert> alertSituationsForNode(Long nodeId) {
-		return delegate.alertSituationsForNode(nodeId);
+	public List<UserAlert> alertSituationsForEdge(Long EdgeId) {
+		return delegate.alertSituationsForEdge(EdgeId);
 	}
 
 	@Override

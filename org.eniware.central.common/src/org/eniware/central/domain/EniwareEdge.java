@@ -14,10 +14,10 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * Domain object for node related info.
+ * Domain object for Edge related info.
  * @version 1.1
  */
-public class EniwareEdge extends BaseEntity implements Cloneable, Serializable, NodeIdentity {
+public class EniwareEdge extends BaseEntity implements Cloneable, Serializable, EdgeIdentity {
 
 	private static final long serialVersionUID = -1478837853706836739L;
 
@@ -59,7 +59,7 @@ public class EniwareEdge extends BaseEntity implements Cloneable, Serializable, 
 	}
 
 	/**
-	 * Get a {@link TimeZone} instance for this node's
+	 * Get a {@link TimeZone} instance for this Edge's
 	 * {@link EniwareLocation#getTimeZoneId()}.
 	 * 
 	 * @return the TimeZone

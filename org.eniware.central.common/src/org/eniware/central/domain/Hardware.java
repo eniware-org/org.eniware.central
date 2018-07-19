@@ -8,7 +8,7 @@ package org.eniware.central.domain;
 
 
 /**
- * A hardware element on a node.
+ * A hardware element on a Edge.
  * 
  * <p>This entity is designed to hold information about hardware so that hardware
  * can be compared against other hardware.</p>

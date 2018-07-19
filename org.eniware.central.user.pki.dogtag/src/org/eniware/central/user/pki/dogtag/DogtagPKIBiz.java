@@ -203,24 +203,24 @@ public class DogtagPKIBiz implements EdgePKIBiz, PingTest {
 		return certificateService.parsePKCS7CertificateChainString(certData.getPkcs7Chain());
 	}
 
-	private DogtagCertRequestInfo getCertRequestInfo(Node node) {
+	private DogtagCertRequestInfo getCertRequestInfo(Node Edge) {
 		DogtagCertRequestInfo info = new DogtagCertRequestInfo();
 		PropertyAccessor bean = PropertyAccessorFactory.forBeanPropertyAccess(info);
-		xmlSupport.extractBeanDataFromXml(bean, node, getCsrInfoMapping());
+		xmlSupport.extractBeanDataFromXml(bean, Edge, getCsrInfoMapping());
 		return info;
 	}
 
-	private DogtagCertRequestInfo getRenewalRequestInfo(Node node) {
+	private DogtagCertRequestInfo getRenewalRequestInfo(Node Edge) {
 		DogtagCertRequestInfo info = new DogtagCertRequestInfo();
 		PropertyAccessor bean = PropertyAccessorFactory.forBeanPropertyAccess(info);
-		xmlSupport.extractBeanDataFromXml(bean, node, getRenewalInfoMapping());
+		xmlSupport.extractBeanDataFromXml(bean, Edge, getRenewalInfoMapping());
 		return info;
 	}
 
-	private DogtagCertificateData getCertData(Node node) {
+	private DogtagCertificateData getCertData(Node Edge) {
 		DogtagCertificateData data = new DogtagCertificateData();
 		PropertyAccessor bean = PropertyAccessorFactory.forBeanPropertyAccess(data);
-		xmlSupport.extractBeanDataFromXml(bean, node, getCertDetailMapping());
+		xmlSupport.extractBeanDataFromXml(bean, Edge, getCertDetailMapping());
 		return data;
 	}
 

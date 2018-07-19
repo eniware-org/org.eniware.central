@@ -7,10 +7,10 @@ package org.eniware.central.query.support;
 
 import java.util.List;
 
-import org.eniware.central.datum.domain.AggregateGeneralNodeDatumFilter;
-import org.eniware.central.datum.domain.GeneralNodeDatumFilter;
-import org.eniware.central.datum.domain.GeneralNodeDatumFilterMatch;
-import org.eniware.central.datum.domain.ReportingGeneralNodeDatumMatch;
+import org.eniware.central.datum.domain.AggregateGeneralEdgeDatumFilter;
+import org.eniware.central.datum.domain.GeneralEdgeDatumFilter;
+import org.eniware.central.datum.domain.GeneralEdgeDatumFilterMatch;
+import org.eniware.central.datum.domain.ReportingGeneralEdgeDatumMatch;
 import org.eniware.central.domain.FilterResults;
 import org.eniware.central.domain.SortDescriptor;
 import org.eniware.central.query.biz.QueryAuditor;
@@ -45,27 +45,27 @@ public class AuditingQueryBiz extends DelegatingQueryBiz {
 	}
 
 	@Override
-	public FilterResults<GeneralNodeDatumFilterMatch> findFilteredGeneralNodeDatum(
-			GeneralNodeDatumFilter filter, List<SortDescriptor> sortDescriptors, Integer offset,
+	public FilterResults<GeneralEdgeDatumFilterMatch> findFilteredGeneralEdgeDatum(
+			GeneralEdgeDatumFilter filter, List<SortDescriptor> sortDescriptors, Integer offset,
 			Integer max) {
-		FilterResults<GeneralNodeDatumFilterMatch> results = super.findFilteredGeneralNodeDatum(filter,
+		FilterResults<GeneralEdgeDatumFilterMatch> results = super.findFilteredGeneralEdgeDatum(filter,
 				sortDescriptors, offset, max);
 		QueryAuditor auditor = getQueryAuditor();
 		if ( auditor != null ) {
-			auditor.auditNodeDatumFilterResults(filter, results);
+			auditor.auditEdgeDatumFilterResults(filter, results);
 		}
 		return results;
 	}
 
 	@Override
-	public FilterResults<ReportingGeneralNodeDatumMatch> findFilteredAggregateGeneralNodeDatum(
-			AggregateGeneralNodeDatumFilter filter, List<SortDescriptor> sortDescriptors, Integer offset,
+	public FilterResults<ReportingGeneralEdgeDatumMatch> findFilteredAggregateGeneralEdgeDatum(
+			AggregateGeneralEdgeDatumFilter filter, List<SortDescriptor> sortDescriptors, Integer offset,
 			Integer max) {
-		FilterResults<ReportingGeneralNodeDatumMatch> results = super.findFilteredAggregateGeneralNodeDatum(
+		FilterResults<ReportingGeneralEdgeDatumMatch> results = super.findFilteredAggregateGeneralEdgeDatum(
 				filter, sortDescriptors, offset, max);
 		QueryAuditor auditor = getQueryAuditor();
 		if ( auditor != null ) {
-			auditor.auditNodeDatumFilterResults(filter, results);
+			auditor.auditEdgeDatumFilterResults(filter, results);
 		}
 		return results;
 	}

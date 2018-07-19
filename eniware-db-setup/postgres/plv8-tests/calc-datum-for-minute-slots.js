@@ -1,5 +1,5 @@
-function calc_datum_minute_time_slots(node, sources, start_ts, span, slotsecs, tolerance) {
-//	IN node bigint, 									108
+function calc_datum_minute_time_slots(Edge, sources, start_ts, span, slotsecs, tolerance) {
+//	IN Edge bigint, 									108
 //	IN sources text[], 									['Main']
 //	IN start_ts timestamp with time zone, 				Date(...)
 //	IN span interval, 									'01:00:00' for 1 hour
@@ -24,17 +24,17 @@ function intervalMs(intervalValue) {
 	return null;
 }
 
-function logMessage(nodeId, sourceId, ts, msg) {
+function logMessage(EdgeId, sourceId, ts, msg) {
 	if ( ignoreLogMessages ) {
 		return;
 	}
 	var msg;
 	if ( !logInsertStmt ) {
-		logInsertStmt = plv8.prepare('INSERT INTO solaragg.agg_messages (node_id, source_id, ts, msg) VALUES ($1, $2, $3, $4)', 
+		logInsertStmt = plv8.prepare('INSERT INTO solaragg.agg_messages (Edge_id, source_id, ts, msg) VALUES ($1, $2, $3, $4)', 
 			['bigint', 'text', 'timestamp with time zone', 'text']);
 	}
 	var dbMsg = Array.prototype.slice.call(arguments, 3).join(' ');
-	logInsertStmt.execute([nodeId, sourceId, ts, dbMsg]);
+	logInsertStmt.execute([EdgeId, sourceId, ts, dbMsg]);
 }
 
 function calculateAccumulatingValue(rec, r, val, prevVal, prop, ms) {
@@ -51,7 +51,7 @@ function calculateAccumulatingValue(rec, r, val, prevVal, prop, ms) {
 			// don't treat this as a negative accumulation in this case if diff non trivial;
 			(prevVal > 0 && (!avgObj || avgObj.average < 1) && val < (prevVal * 0.015))
 			) {
-		logMessage(node, r.source_id, new Date(rec.tsms), 'Forcing node prevVal', prevVal, 'to 0, val =', val);
+		logMessage(Edge, r.source_id, new Date(rec.tsms), 'Forcing Edge prevVal', prevVal, 'to 0, val =', val);
 		prevVal = 0;
 	}
 	diff = (val - prevVal);
@@ -67,7 +67,7 @@ function calculateAccumulatingValue(rec, r, val, prevVal, prop, ms) {
 		}
 	}
 	if ( offsetT > 100 ) {
-		logMessage(node, r.source_id, new Date(rec.tsms), 'Rejecting diff', diff, 'offset(t)', offsetT.toFixed(1), 
+		logMessage(Edge, r.source_id, new Date(rec.tsms), 'Rejecting diff', diff, 'offset(t)', offsetT.toFixed(1), 
 			'diff(t)', sn.math.util.fixPrecision(diffT, 100), '; ravg', (avgObj ? sn.math.util.fixPrecision(avgObj.average, 100) : 'N/A'), 
 			(avgObj ? JSON.stringify(avgObj.samples.map(function(e) { return sn.math.util.fixPrecision(e, 100); })) : 'N/A'));
 		return 0;
@@ -212,11 +212,11 @@ function handleFractionalAccumulatingResult(rec, result) {
 	if ( slotMode ) {
 		stmt = plv8.prepare('SELECT source_id, tsms, percent, tdiffms, jdata FROM solaragg.find_datum_for_minute_time_slots($1, $2, $3, $4, $5, $6)', 
 				['bigint', 'text[]', 'timestamp with time zone', 'interval', 'integer', 'interval']);
-		cur = stmt.cursor([node, sources, start_ts, span, slotsecs, tolerance]);
+		cur = stmt.cursor([Edge, sources, start_ts, span, slotsecs, tolerance]);
 	} else {
 		stmt = plv8.prepare('SELECT source_id, tsms, percent, tdiffms, jdata FROM solaragg.find_datum_for_time_slot($1, $2, $3, $4, $5)', 
 				['bigint', 'text[]', 'timestamp with time zone', 'interval', 'interval']);
-		cur = stmt.cursor([node, sources, start_ts, span, tolerance]);
+		cur = stmt.cursor([Edge, sources, start_ts, span, tolerance]);
 	}
 
 	while ( rec = cur.fetch() ) {

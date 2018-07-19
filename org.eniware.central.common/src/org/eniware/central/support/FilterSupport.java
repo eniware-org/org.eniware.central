@@ -24,7 +24,7 @@ public class FilterSupport implements Filter, Serializable, EniwareEdgeMetadataF
 	private static final long serialVersionUID = 912502801129411927L;
 
 	private Long[] locationIds;
-	private Long[] nodeIds;
+	private Long[] EdgeIds;
 	private String[] sourceIds;
 	private Long[] userIds;
 	private String[] tags;
@@ -35,8 +35,8 @@ public class FilterSupport implements Filter, Serializable, EniwareEdgeMetadataF
 		if ( locationIds != null ) {
 			filter.put("locationIds", locationIds);
 		}
-		if ( nodeIds != null ) {
-			filter.put("nodeIds", nodeIds);
+		if ( EdgeIds != null ) {
+			filter.put("EdgeIds", EdgeIds);
 		}
 		if ( sourceIds != null ) {
 			filter.put("sourceIds", sourceIds);
@@ -48,52 +48,52 @@ public class FilterSupport implements Filter, Serializable, EniwareEdgeMetadataF
 	}
 
 	/**
-	 * Set a single node ID.
+	 * Set a single Edge ID.
 	 * 
-	 * This is a convenience method for requests that use a single node ID at a
-	 * time. The node ID is still stored on the {@code nodeIds} array, just as
+	 * This is a convenience method for requests that use a single Edge ID at a
+	 * time. The Edge ID is still stored on the {@code EdgeIds} array, just as
 	 * the first value. Calling this method replaces any existing
-	 * {@code nodeIds} value with a new array containing just the ID passed into
+	 * {@code EdgeIds} value with a new array containing just the ID passed into
 	 * this method.
 	 * 
-	 * @param nodeId
-	 *        the ID of the node
+	 * @param EdgeId
+	 *        the ID of the Edge
 	 */
-	public void setNodeId(Long nodeId) {
-		this.nodeIds = new Long[] { nodeId };
+	public void setEdgeId(Long EdgeId) {
+		this.EdgeIds = new Long[] { EdgeId };
 	}
 
 	/**
-	 * Get the first node ID.
+	 * Get the first Edge ID.
 	 * 
-	 * This returns the first available node ID from the {@code nodeIds} array,
+	 * This returns the first available Edge ID from the {@code EdgeIds} array,
 	 * or {@code null} if not available.
 	 * 
-	 * @return the first node ID, or {@code null}
+	 * @return the first Edge ID, or {@code null}
 	 */
 	@Override
-	public Long getNodeId() {
-		return (this.nodeIds == null || this.nodeIds.length < 1 ? null : this.nodeIds[0]);
+	public Long getEdgeId() {
+		return (this.EdgeIds == null || this.EdgeIds.length < 1 ? null : this.EdgeIds[0]);
 	}
 
 	/**
-	 * Get all node IDs to filter on.
+	 * Get all Edge IDs to filter on.
 	 * 
-	 * @return The node IDs, or {@code null}.
+	 * @return The Edge IDs, or {@code null}.
 	 */
 	@Override
-	public Long[] getNodeIds() {
-		return nodeIds;
+	public Long[] getEdgeIds() {
+		return EdgeIds;
 	}
 
 	/**
-	 * Set a list of node IDs to filter on.
+	 * Set a list of Edge IDs to filter on.
 	 * 
-	 * @param nodeIds
-	 *        The nodeIds IDs to filter on.
+	 * @param EdgeIds
+	 *        The EdgeIds IDs to filter on.
 	 */
-	public void setNodeIds(Long[] nodeIds) {
-		this.nodeIds = nodeIds;
+	public void setEdgeIds(Long[] EdgeIds) {
+		this.EdgeIds = EdgeIds;
 	}
 
 	/**
@@ -290,7 +290,7 @@ public class FilterSupport implements Filter, Serializable, EniwareEdgeMetadataF
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + Arrays.hashCode(locationIds);
-		result = prime * result + Arrays.hashCode(nodeIds);
+		result = prime * result + Arrays.hashCode(EdgeIds);
 		result = prime * result + Arrays.hashCode(sourceIds);
 		result = prime * result + Arrays.hashCode(tags);
 		result = prime * result + Arrays.hashCode(userIds);
@@ -317,7 +317,7 @@ public class FilterSupport implements Filter, Serializable, EniwareEdgeMetadataF
 		if ( !Arrays.equals(locationIds, other.locationIds) ) {
 			return false;
 		}
-		if ( !Arrays.equals(nodeIds, other.nodeIds) ) {
+		if ( !Arrays.equals(EdgeIds, other.EdgeIds) ) {
 			return false;
 		}
 		if ( !Arrays.equals(sourceIds, other.sourceIds) ) {

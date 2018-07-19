@@ -5,15 +5,15 @@
 
 	<cache/>
 
-	<select id="get-next-node-id" resultType="long" useCache="false">
-		SELECT nextval('eniwarenet.node_seq') AS id 
+	<select id="get-next-Edge-id" resultType="long" useCache="false">
+		SELECT nextval('eniwarenet.Edge_seq') AS id 
 	</select>
 
 	<insert id="insert-EniwareEdge" parameterType="EniwareEdge">
 		INSERT INTO eniwarenet.ew_edge 
-			(node_id 
+			(Edge_id 
 			<if test="created != null">,created</if>
-			, node_name, loc_id, wloc_id)
+			, Edge_name, loc_id, wloc_id)
 		VALUES
 			(#{id}
 			<if test="created != null">,#{created}</if>
@@ -24,32 +24,32 @@
 		UPDATE
 			eniwarenet.ew_edge 
 		SET
-			node_name = #{name},
+			Edge_name = #{name},
 			loc_id = #{locationId},
 			wloc_id = #{weatherLocationId}
 		WHERE
-			node_id = #{id}
+			Edge_id = #{id}
 	</update>
 
 	<sql id="fragment-EniwareEdge-full-result">
-		n.node_id AS ew_edge_node_id, 
+		n.Edge_id AS ew_edge_Edge_id, 
 		n.created AS ew_edge_created,
-		n.node_name AS ew_edge_node_name,
+		n.Edge_name AS ew_edge_Edge_name,
 		n.loc_id AS ew_edge_loc_id,
 		n.wloc_id AS ew_edge_wloc_id
 	</sql>
 
 	<sql id="fragment-EniwareEdge-share-result">
-		n.node_id AS ew_edge_node_id, 
-		n.node_name AS ew_edge_node_name,
+		n.Edge_id AS ew_edge_Edge_id, 
+		n.Edge_name AS ew_edge_Edge_name,
 		n.loc_id AS ew_edge_loc_id,
 		n.wloc_id AS ew_edge_wloc_id
 	</sql>
 
 	<resultMap id="EniwareEdgeFullResult" type="EniwareEdge">
-		<id property="id" column="ew_edge_node_id"/>
+		<id property="id" column="ew_edge_Edge_id"/>
 		<result property="created" column="ew_edge_created"/>
-		<result property="name" column="ew_edge_node_name"/>
+		<result property="name" column="ew_edge_Edge_name"/>
 		<result property="locationId" column="ew_edge_loc_id"/>
 		<result property="weatherLocationId" column="ew_edge_wloc_id"/>
 		<association property="location" resultMap="org.eniware.central.dao.mybatis.EniwareLocation.EniwareLocationFullResult"/>
@@ -64,7 +64,7 @@
 		INNER JOIN
 			eniwarenet.sn_loc l ON l.id = n.loc_id
 		WHERE
-			n.node_id = #{id}
+			n.Edge_id = #{id}
 	</select>
 	
 </mapper>

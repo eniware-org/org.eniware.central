@@ -32,13 +32,13 @@ public class UserSecurityAspect extends AuthorizationSupport {
 	/**
 	 * Constructor.
 	 * 
-	 * @param userNodeDao
-	 *        the UserNodeDao
+	 * @param userEdgeDao
+	 *        the UserEdgeDao
 	 * @param userAuthTokenDao
 	 *        the UserAuthTokenDao
 	 */
-	public UserSecurityAspect(UserEdgeDao userNodeDao, UserAuthTokenDao userAuthTokenDao) {
-		super(userNodeDao);
+	public UserSecurityAspect(UserEdgeDao userEdgeDao, UserAuthTokenDao userAuthTokenDao) {
+		super(userEdgeDao);
 		this.userAuthTokenDao = userAuthTokenDao;
 	}
 
@@ -46,28 +46,28 @@ public class UserSecurityAspect extends AuthorizationSupport {
 	public void readUser(Long userId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.getPendingUserNodeConfirmations(..)) && args(userId,..)")
-	public void readUserNodeConfirmations(Long userId) {
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.getPendingUserEdgeConfirmations(..)) && args(userId,..)")
+	public void readUserEdgeConfirmations(Long userId) {
 	}
 
 	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.getAllUserAuthTokens(..)) && args(userId,..)")
 	public void readerUserAuthTokens(Long userId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.getUserNode(..)) && args(userId,nodeId)")
-	public void readUserNode(Long userId, Long nodeId) {
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.getUserEdge(..)) && args(userId,EdgeId)")
+	public void readUserEdge(Long userId, Long EdgeId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.getArchivedUserNodes(..)) && args(userId)")
-	public void readArchivedUserNodes(Long userId) {
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.getArchivedUserEdges(..)) && args(userId)")
+	public void readArchivedUserEdges(Long userId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.updateUserNodeArchivedStatus(..)) && args(userId,nodeIds,..)")
-	public void updateArchivedUserNodes(Long userId, Long[] nodeIds) {
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.updateUserEdgeArchivedStatus(..)) && args(userId,EdgeIds,..)")
+	public void updateArchivedUserEdges(Long userId, Long[] EdgeIds) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.generateUserAuthToken(..)) && args(userId,type,nodeIds)")
-	public void generateAuthToken(Long userId, UserAuthTokenType type, Set<Long> nodeIds) {
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.generateUserAuthToken(..)) && args(userId,type,EdgeIds)")
+	public void generateAuthToken(Long userId, UserAuthTokenType type, Set<Long> EdgeIds) {
 	}
 
 	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.deleteUserAuthToken(..)) && args(userId,token)")
@@ -82,27 +82,27 @@ public class UserSecurityAspect extends AuthorizationSupport {
 	public void createAuthorizationV2Builder(Long userId, String token) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.saveUserNode(..)) && args(entry)")
-	public void updateUserNode(UserEdge entry) {
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.saveUserEdge(..)) && args(entry)")
+	public void updateUserEdge(UserEdge entry) {
 	}
 
-	@Before("readUser(userId) || readUserNodeConfirmations(userId) || readerUserAuthTokens(userId) || readArchivedUserNodes(userId)")
+	@Before("readUser(userId) || readUserEdgeConfirmations(userId) || readerUserAuthTokens(userId) || readArchivedUserEdges(userId)")
 	public void userReadAccessCheck(Long userId) {
 		requireUserReadAccess(userId);
 	}
 
-	@Before("readUserNode(userId, nodeId)")
-	public void userNodeReadAccessCheck(Long userId, Long nodeId) {
+	@Before("readUserEdge(userId, EdgeId)")
+	public void userEdgeReadAccessCheck(Long userId, Long EdgeId) {
 		// the userReadAccessCheck method will also be called
-		requireNodeWriteAccess(nodeId);
+		requireEdgeWriteAccess(EdgeId);
 	}
 
-	@Before("generateAuthToken(userId, type, nodeIds)")
-	public void userReadAccessCheck(Long userId, UserAuthTokenType type, Set<Long> nodeIds) {
+	@Before("generateAuthToken(userId, type, EdgeIds)")
+	public void userReadAccessCheck(Long userId, UserAuthTokenType type, Set<Long> EdgeIds) {
 		requireUserWriteAccess(userId);
-		if ( nodeIds != null ) {
-			for ( Long nodeId : nodeIds ) {
-				requireNodeWriteAccess(nodeId);
+		if ( EdgeIds != null ) {
+			for ( Long EdgeId : EdgeIds ) {
+				requireEdgeWriteAccess(EdgeId);
 			}
 		}
 	}
@@ -120,33 +120,33 @@ public class UserSecurityAspect extends AuthorizationSupport {
 		}
 	}
 
-	@Before("updateUserNode(entry)")
-	public void updateUserNodeAccessCheck(UserEdge entry) {
+	@Before("updateUserEdge(entry)")
+	public void updateUserEdgeAccessCheck(UserEdge entry) {
 		if ( entry.getUser() == null ) {
-			log.warn("Access DENIED to user node; no user ID");
+			log.warn("Access DENIED to user Edge; no user ID");
 			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, null);
 		}
 		requireUserWriteAccess(entry.getUser().getId());
-		if ( entry.getNode() == null ) {
-			log.warn("Access DENIED to user node; no node ID");
+		if ( entry.getEdge() == null ) {
+			log.warn("Access DENIED to user Edge; no Edge ID");
 			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, null);
 		}
-		requireNodeWriteAccess(entry.getNode().getId());
+		requireEdgeWriteAccess(entry.getEdge().getId());
 	}
 
-	@Before("updateArchivedUserNodes(userId, nodeIds)")
-	public void updateArchivedUserNodesAccessCheck(Long userId, Long[] nodeIds) {
+	@Before("updateArchivedUserEdges(userId, EdgeIds)")
+	public void updateArchivedUserEdgesAccessCheck(Long userId, Long[] EdgeIds) {
 		if ( userId == null ) {
-			log.warn("Access DENIED to user node; no user ID");
+			log.warn("Access DENIED to user Edge; no user ID");
 			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, null);
 		}
-		if ( nodeIds == null || nodeIds.length < 1 ) {
-			log.warn("Access DENIED to user nodes; no node IDs");
+		if ( EdgeIds == null || EdgeIds.length < 1 ) {
+			log.warn("Access DENIED to user Edges; no Edge IDs");
 			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, null);
 		}
 		requireUserWriteAccess(userId);
-		for ( Long nodeId : nodeIds ) {
-			requireNodeWriteAccess(nodeId);
+		for ( Long EdgeId : EdgeIds ) {
+			requireEdgeWriteAccess(EdgeId);
 		}
 	}
 

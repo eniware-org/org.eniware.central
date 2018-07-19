@@ -1,14 +1,14 @@
 -- solardatum datum functions that rely on other namespaces like solaragg
 
 /**
- * Return most recent datum records for a specific set of sources for a given node.
+ * Return most recent datum records for a specific set of sources for a given Edge.
  *
- * @param node The node ID to return results for.
+ * @param Edge The Edge ID to return results for.
  * @param sources The source IDs to return results for, or <code>null</code> for all available sources.
  * @returns Set of solardatum.da_datum records.
  */
 CREATE OR REPLACE FUNCTION solardatum.find_most_recent(
-	node bigint,
+	Edge bigint,
 	sources text[] DEFAULT NULL)
   RETURNS SETOF solardatum.da_datum_data AS
 $BODY$
@@ -17,31 +17,31 @@ $BODY$
 		-- to speed up query for sources (which can be very slow when queried directly on da_datum),
 		-- we find the most recent hour time slot in agg_datum_hourly, and then join to da_datum with that narrow time range
 		SELECT max(d.ts) as ts, d.source_id FROM solardatum.da_datum d
-		INNER JOIN (SELECT node_id, ts_start, source_id FROM solaragg.find_most_recent_hourly(node, sources)) AS days
-			ON days.node_id = d.node_id
+		INNER JOIN (SELECT Edge_id, ts_start, source_id FROM solaragg.find_most_recent_hourly(Edge, sources)) AS days
+			ON days.Edge_id = d.Edge_id
 				AND days.ts_start <= d.ts
 				AND days.ts_start + interval '1 hour' > d.ts
 				AND days.source_id = d.source_id
 		GROUP BY d.source_id
-	) AS r ON r.ts = dd.ts AND r.source_id = dd.source_id AND dd.node_id = node
+	) AS r ON r.ts = dd.ts AND r.source_id = dd.source_id AND dd.Edge_id = Edge
 	ORDER BY dd.source_id ASC;
 $BODY$
   LANGUAGE sql STABLE
   ROWS 20;
 
 /**
- * Return most recent datum records for all available sources for a given set of node IDs.
+ * Return most recent datum records for all available sources for a given set of Edge IDs.
  *
- * @param nodes An array of node IDs to return results for.
+ * @param Edges An array of Edge IDs to return results for.
  * @returns Set of solardatum.da_datum records.
  */
-CREATE OR REPLACE FUNCTION solardatum.find_most_recent(nodes bigint[])
+CREATE OR REPLACE FUNCTION solardatum.find_most_recent(Edges bigint[])
   RETURNS SETOF solardatum.da_datum_data AS
 $BODY$
 	SELECT r.*
-	FROM (SELECT unnest(nodes) AS node_id) AS n,
-	LATERAL (SELECT * FROM solardatum.find_most_recent(n.node_id)) AS r
-	ORDER BY r.node_id, r.source_id;
+	FROM (SELECT unnest(Edges) AS Edge_id) AS n,
+	LATERAL (SELECT * FROM solardatum.find_most_recent(n.Edge_id)) AS r
+	ORDER BY r.Edge_id, r.source_id;
 $BODY$
   LANGUAGE sql STABLE;
 
@@ -49,14 +49,14 @@ $BODY$
  * Add or update a datum record. The data is stored in the <code>solardatum.da_datum</code> table.
  *
  * @param cdate The datum creation date.
- * @param node The node ID.
+ * @param Edge The Edge ID.
  * @param src The source ID.
  * @param pdate The date the datum was posted to SolarNet.
  * @param jdata The datum JSON document.
  */
 CREATE OR REPLACE FUNCTION solardatum.store_datum(
 	cdate timestamp with time zone,
-	node bigint,
+	Edge bigint,
 	src text,
 	pdate timestamp with time zone,
 	jdata text)
@@ -69,9 +69,9 @@ DECLARE
 	jdata_prop_count integer := solardatum.datum_prop_count(jdata_json);
 	ts_post_hour timestamp with time zone := date_trunc('hour', ts_post);
 BEGIN
-	INSERT INTO solardatum.da_datum(ts, node_id, source_id, posted, jdata_i, jdata_a, jdata_s, jdata_t)
-	VALUES (ts_crea, node, src, ts_post, jdata_json->'i', jdata_json->'a', jdata_json->'s', solarcommon.json_array_to_text_array(jdata_json->'t'))
-	ON CONFLICT (node_id, ts, source_id) DO UPDATE
+	INSERT INTO solardatum.da_datum(ts, Edge_id, source_id, posted, jdata_i, jdata_a, jdata_s, jdata_t)
+	VALUES (ts_crea, Edge, src, ts_post, jdata_json->'i', jdata_json->'a', jdata_json->'s', solarcommon.json_array_to_text_array(jdata_json->'t'))
+	ON CONFLICT (Edge_id, ts, source_id) DO UPDATE
 	SET jdata_i = EXCLUDED.jdata_i,
 		jdata_a = EXCLUDED.jdata_a,
 		jdata_s = EXCLUDED.jdata_s,
@@ -79,9 +79,9 @@ BEGIN
 		posted = EXCLUDED.posted;
 
 	INSERT INTO solaragg.aud_datum_hourly (
-		ts_start, node_id, source_id, prop_count)
-	VALUES (ts_post_hour, node, src, jdata_prop_count)
-	ON CONFLICT (node_id, ts_start, source_id) DO UPDATE
+		ts_start, Edge_id, source_id, prop_count)
+	VALUES (ts_post_hour, Edge, src, jdata_prop_count)
+	ON CONFLICT (Edge_id, ts_start, source_id) DO UPDATE
 	SET prop_count = aud_datum_hourly.prop_count + EXCLUDED.prop_count;
 END;
 $BODY$;
@@ -90,19 +90,19 @@ $BODY$;
  * Increment a datum query count for a single source.
  *
  * @param qdate The datum query date.
- * @param node The node ID.
+ * @param Edge The Edge ID.
  * @param source The source ID.
  * @param dcount The count of datum to increment by.
  */
 CREATE OR REPLACE FUNCTION solaragg.aud_inc_datum_query_count(
 	qdate timestamp with time zone,
-	node bigint,
+	Edge bigint,
 	source text,
 	dcount integer)
 	RETURNS void LANGUAGE sql VOLATILE AS
 $BODY$
-	INSERT INTO solaragg.aud_datum_hourly(ts_start, node_id, source_id, datum_q_count)
-	VALUES (date_trunc('hour', qdate), node, source, dcount)
-	ON CONFLICT (node_id, ts_start, source_id) DO UPDATE
+	INSERT INTO solaragg.aud_datum_hourly(ts_start, Edge_id, source_id, datum_q_count)
+	VALUES (date_trunc('hour', qdate), Edge, source, dcount)
+	ON CONFLICT (Edge_id, ts_start, source_id) DO UPDATE
 	SET datum_q_count = aud_datum_hourly.datum_q_count + EXCLUDED.datum_q_count;
 $BODY$;

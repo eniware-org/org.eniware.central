@@ -5,35 +5,35 @@
 
 	<parameterMap id="pmap-EniwareEdgeMetadata" type="EniwareEdgeMetadata">
 		<parameter property="created" jdbcType="TIMESTAMP" mode="IN"/>
-		<parameter property="nodeId" jdbcType="BIGINT" mode="IN"/>
+		<parameter property="EdgeId" jdbcType="BIGINT" mode="IN"/>
 		<parameter property="metaJson" jdbcType="VARCHAR" mode="IN"/>
 	</parameterMap>
 
 	<update id="insert-EniwareEdgeMetadata" parameterMap="pmap-EniwareEdgeMetadata" statementType="CALLABLE">
-		{call eniwarenet.store_node_meta(?, ?, ?)}
+		{call eniwarenet.store_Edge_meta(?, ?, ?)}
 	</update>
 	
 	<update id="update-EniwareEdgeMetadata" parameterMap="pmap-EniwareEdgeMetadata" statementType="CALLABLE">
-		{call eniwarenet.store_node_meta(?, ?, ?)}
+		{call eniwarenet.store_Edge_meta(?, ?, ?)}
 	</update>
 	
 	<delete id="delete-EniwareEdgeMetadata" parameterType="long">
 		DELETE FROM eniwarenet.ew_edge_meta
-		WHERE node_id = #{id}
+		WHERE Edge_id = #{id}
 	</delete>
 	
 	<sql id="fragment-EniwareEdgeMetadata-full-result">
-		nmeta.node_id AS node_meta_node_id,
-		nmeta.created AS node_meta_created,
-		nmeta.updated AS node_meta_updated,
-		nmeta.jdata AS node_meta_jdata
+		nmeta.Edge_id AS Edge_meta_Edge_id,
+		nmeta.created AS Edge_meta_created,
+		nmeta.updated AS Edge_meta_updated,
+		nmeta.jdata AS Edge_meta_jdata
 	</sql>
 	
 	<resultMap id="EniwareEdgeMetadataFullResult" type="EniwareEdgeMetadata">
-		<id property="nodeId" column="node_meta_node_id"/>
-		<id property="created" column="node_meta_created"/>
-		<result property="updated" column="node_meta_updated"/>
-		<result property="metaJson" column="node_meta_jdata"/>
+		<id property="EdgeId" column="Edge_meta_Edge_id"/>
+		<id property="created" column="Edge_meta_created"/>
+		<result property="updated" column="Edge_meta_updated"/>
+		<result property="metaJson" column="Edge_meta_jdata"/>
 	</resultMap>
 	
 	<select id="get-EniwareEdgeMetadata-for-id" parameterType="long" resultMap="EniwareEdgeMetadataFullResult">
@@ -42,7 +42,7 @@
 		FROM
 			eniwarenet.ew_edge_meta nmeta
 		WHERE
-			nmeta.node_id = #{id}
+			nmeta.Edge_id = #{id}
 	</select>
 
 	<!-- 
@@ -53,8 +53,8 @@
 
 	<sql id="fragment-findall-EniwareEdgeMetadata-EniwareEdgeMetadataMatch-where">
 		<where>
-			<if test="filter.nodeIds != null and filter.nodeIds.length > 0">
-				AND nmeta.node_id = ANY(#{filter.nodeIds,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.LongArrayTypeHandler})
+			<if test="filter.EdgeIds != null and filter.EdgeIds.length > 0">
+				AND nmeta.Edge_id = ANY(#{filter.EdgeIds,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.LongArrayTypeHandler})
 			</if>
 		</where>
 	</sql>
@@ -72,12 +72,12 @@
 				 <foreach collection="SortDescriptors" item="item" separator=",">
 					<if test="item.sortKey == &quot;created&quot;">nmeta.created</if>
 					<if test="item.sortKey == &quot;updated&quot;">nmeta.updated</if>
-					<if test="item.sortKey == &quot;node&quot;">nmeta.node_id</if>
+					<if test="item.sortKey == &quot;Edge&quot;">nmeta.Edge_id</if>
 					<if test="item.descending">DESC</if>
 				</foreach>
 			</when>
 			<otherwise>
-				nmeta.node_id
+				nmeta.Edge_id
 			</otherwise>
 		</choose>
 	</select>

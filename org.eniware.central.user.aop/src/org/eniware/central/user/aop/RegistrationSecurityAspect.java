@@ -25,24 +25,24 @@ public class RegistrationSecurityAspect extends AuthorizationSupport {
 	/**
 	 * Constructor.
 	 * 
-	 * @param userNodeDao
-	 *        the UserNodeDao
+	 * @param userEdgeDao
+	 *        the UserEdgeDao
 	 */
-	public RegistrationSecurityAspect(UserEdgeDao userNodeDao) {
-		super(userNodeDao);
+	public RegistrationSecurityAspect(UserEdgeDao userEdgeDao) {
+		super(userEdgeDao);
 	}
 
-	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*RegistrationBiz.renewNodeCertificate(..)) && args(userNode, ..)")
-	public void renewNodeCertificate(UserEdge userNode) {
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*RegistrationBiz.renewEdgeCertificate(..)) && args(userEdge, ..)")
+	public void renewEdgeCertificate(UserEdge userEdge) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*RegistrationBiz.getPendingNodeCertificateRenewal(..)) && args(userNode, ..)")
-	public void getPendingNodeCertificateRenewal(UserEdge userNode) {
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*RegistrationBiz.getPendingEdgeCertificateRenewal(..)) && args(userEdge, ..)")
+	public void getPendingEdgeCertificateRenewal(UserEdge userEdge) {
 	}
 
-	@Before("renewNodeCertificate(userNode) || getPendingNodeCertificateRenewal(userNode)")
-	public void processNodeCertificateCheck(UserEdge userNode) {
-		requireNodeWriteAccess(userNode.getNode().getId());
+	@Before("renewEdgeCertificate(userEdge) || getPendingEdgeCertificateRenewal(userEdge)")
+	public void processEdgeCertificateCheck(UserEdge userEdge) {
+		requireEdgeWriteAccess(userEdge.getEdge().getId());
 	}
 
 }

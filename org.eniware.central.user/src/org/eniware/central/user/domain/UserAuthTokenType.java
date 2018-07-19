@@ -17,9 +17,9 @@ public enum UserAuthTokenType {
 	User,
 
 	/**
-	 * A read-only token, granting the bearer access to query read node data
+	 * A read-only token, granting the bearer access to query read Edge data
 	 * only.
 	 */
-	ReadNodeData;
+	ReadEdgeData;
 
 }

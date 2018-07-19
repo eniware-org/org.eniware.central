@@ -37,14 +37,14 @@ public class MyBatisUserAlertDao extends BaseMyBatisGenericDao<UserAlert, Long> 
 	/** The query name used for {@link #getAlertSituation(Long)}. */
 	public static final String QUERY_FOR_SITUATION = "get-UserAlert-with-situation";
 
-	/** The query name used for {@link #deleteAllAlertsForNode(Long, Long)}. */
-	public static final String DELETE_FOR_NODE = "delete-UserAlert-for-node";
+	/** The query name used for {@link #deleteAllAlertsForEdge(Long, Long)}. */
+	public static final String DELETE_FOR_Edge = "delete-UserAlert-for-Edge";
 
 	/** The query name used for {@link #updateValidTo(Long, DateTime)}. */
 	public static final String UPDATE_VALID_TO = "update-UserAlert-valid-to";
 
-	/** The query name used for {@link #findActiveAlertSituationsForNode(Long)}. */
-	public static final String QUERY_ACTIVE_SITUATIONS_FOR_NODE = "find-UserAlert-active-for-node";
+	/** The query name used for {@link #findActiveAlertSituationsForEdge(Long)}. */
+	public static final String QUERY_ACTIVE_SITUATIONS_FOR_Edge = "find-UserAlert-active-for-Edge";
 
 	/** The query name used for {@link #findActiveAlertSituationsForUser(Long)}. */
 	public static final String QUERY_ACTIVE_SITUATIONS_FOR_USER = "find-UserAlert-active-for-user";
@@ -82,11 +82,11 @@ public class MyBatisUserAlertDao extends BaseMyBatisGenericDao<UserAlert, Long> 
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public int deleteAllAlertsForNode(Long userId, Long nodeId) {
+	public int deleteAllAlertsForEdge(Long userId, Long EdgeId) {
 		Map<String, Object> params = new HashMap<String, Object>(2);
 		params.put("user", userId);
-		params.put("node", nodeId);
-		return getSqlSession().delete(DELETE_FOR_NODE, params);
+		params.put("Edge", EdgeId);
+		return getSqlSession().delete(DELETE_FOR_Edge, params);
 	}
 
 	@Override
@@ -112,8 +112,8 @@ public class MyBatisUserAlertDao extends BaseMyBatisGenericDao<UserAlert, Long> 
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserAlert> findActiveAlertSituationsForNode(Long nodeId) {
-		return selectList(QUERY_ACTIVE_SITUATIONS_FOR_NODE, nodeId, null, null);
+	public List<UserAlert> findActiveAlertSituationsForEdge(Long EdgeId) {
+		return selectList(QUERY_ACTIVE_SITUATIONS_FOR_Edge, EdgeId, null, null);
 	}
 
 	@Override

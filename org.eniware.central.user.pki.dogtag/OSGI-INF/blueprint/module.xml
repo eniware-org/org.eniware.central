@@ -31,7 +31,7 @@
 	
 	<service ref="dogtagPKIBiz" ranking="1">
 		<interfaces>
-			<value>org.eniware.central.user.biz.NodePKIBiz</value>
+			<value>org.eniware.central.user.biz.EdgePKIBiz</value>
 			<value>org.eniware.central.domain.PingTest</value>
 		</interfaces>
 	</service>

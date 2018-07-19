@@ -32,19 +32,19 @@ CREATE TABLE solarnet.sn_hardware_control (
 		ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
-CREATE TABLE solaruser.user_node_hardware_control (
+CREATE TABLE solaruser.user_Edge_hardware_control (
 	id				BIGINT NOT NULL DEFAULT nextval('solaruser.solaruser_seq'),
 	created			TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	node_id			BIGINT NOT NULL,
+	Edge_id			BIGINT NOT NULL,
 	source_id		CHARACTER VARYING(128) NOT NULL,
 	hwc_id			BIGINT NOT NULL,
 	disp_name		CHARACTER VARYING(128),
-	CONSTRAINT user_node_hardware_control_pkey PRIMARY KEY (id),
-	CONSTRAINT user_node_hardware_control_node_unq UNIQUE (node_id,source_id),
-	CONSTRAINT user_node_hardware_control_node_fk
-		FOREIGN KEY (node_id) REFERENCES solarnet.sn_node (node_id)
+	CONSTRAINT user_Edge_hardware_control_pkey PRIMARY KEY (id),
+	CONSTRAINT user_Edge_hardware_control_Edge_unq UNIQUE (Edge_id,source_id),
+	CONSTRAINT user_Edge_hardware_control_Edge_fk
+		FOREIGN KEY (Edge_id) REFERENCES solarnet.sn_Edge (Edge_id)
 		ON UPDATE NO ACTION ON DELETE NO ACTION,
-	CONSTRAINT user_node_hardware_control_hardware_control_fk
+	CONSTRAINT user_Edge_hardware_control_hardware_control_fk
 		FOREIGN KEY (hwc_id) REFERENCES solarnet.sn_hardware_control (id)
 		ON UPDATE NO ACTION ON DELETE NO ACTION
 );

@@ -27,13 +27,13 @@ import org.eniware.central.web.support.WebServiceControllerSupport;
 import org.eniware.web.domain.Response;
 
 /**
- * Controller for read-only node metadata access.
+ * Controller for read-only Edge metadata access.
  * 
  * @version 1.0
  */
-@Controller("v1NodeMetadataController")
-@RequestMapping({ "/api/v1/pub/nodes/meta", "/api/v1/sec/nodes/meta" })
-public class NodeMetadataController extends WebServiceControllerSupport {
+@Controller("v1EdgeMetadataController")
+@RequestMapping({ "/api/v1/pub/Edges/meta", "/api/v1/sec/Edges/meta" })
+public class EdgeMetadataController extends WebServiceControllerSupport {
 
 	private final UserBiz userBiz;
 	private final EniwareEdgeMetadataBiz eniwareEdgeMetadataBiz;
@@ -47,7 +47,7 @@ public class NodeMetadataController extends WebServiceControllerSupport {
 	 *        the EniwareEdgeMetadataBiz to use
 	 */
 	@Autowired
-	public NodeMetadataController(UserBiz userBiz, EniwareEdgeMetadataBiz eniwareEdgeMetadataBiz) {
+	public EdgeMetadataController(UserBiz userBiz, EniwareEdgeMetadataBiz eniwareEdgeMetadataBiz) {
 		super();
 		this.userBiz = userBiz;
 		this.eniwareEdgeMetadataBiz = eniwareEdgeMetadataBiz;
@@ -59,7 +59,7 @@ public class NodeMetadataController extends WebServiceControllerSupport {
 	}
 
 	/**
-	 * Find all metadata for any number of node IDs.
+	 * Find all metadata for any number of Edge IDs.
 	 * 
 	 * @param criteria
 	 *        any sort or limit criteria
@@ -69,9 +69,9 @@ public class NodeMetadataController extends WebServiceControllerSupport {
 	@RequestMapping(value = { "", "/" }, method = RequestMethod.GET)
 	public Response<FilterResults<EniwareEdgeMetadataFilterMatch>> findMetadata(
 			DatumFilterCommand criteria) {
-		if ( criteria.getNodeId() == null ) {
-			// default to all nodes for actor
-			criteria.setNodeIds(authorizedNodeIdsForCurrentActor(userBiz));
+		if ( criteria.getEdgeId() == null ) {
+			// default to all Edges for actor
+			criteria.setEdgeIds(authorizedEdgeIdsForCurrentActor(userBiz));
 		}
 		FilterResults<EniwareEdgeMetadataFilterMatch> results = eniwareEdgeMetadataBiz.findEniwareEdgeMetadata(
 				criteria, criteria.getSortDescriptors(), criteria.getOffset(), criteria.getMax());
@@ -79,15 +79,15 @@ public class NodeMetadataController extends WebServiceControllerSupport {
 	}
 
 	/**
-	 * Find all metadata for a specific node ID.
+	 * Find all metadata for a specific Edge ID.
 	 * 
 	 * @return the results
 	 */
 	@ResponseBody
-	@RequestMapping(value = { "/{nodeId}" }, method = RequestMethod.GET)
-	public Response<EniwareEdgeMetadataFilterMatch> getMetadata(@PathVariable("nodeId") Long nodeId) {
+	@RequestMapping(value = { "/{EdgeId}" }, method = RequestMethod.GET)
+	public Response<EniwareEdgeMetadataFilterMatch> getMetadata(@PathVariable("EdgeId") Long EdgeId) {
 		DatumFilterCommand criteria = new DatumFilterCommand();
-		criteria.setNodeId(nodeId);
+		criteria.setEdgeId(EdgeId);
 		FilterResults<EniwareEdgeMetadataFilterMatch> results = eniwareEdgeMetadataBiz
 				.findEniwareEdgeMetadata(criteria, null, null, null);
 		EniwareEdgeMetadataFilterMatch result = null;

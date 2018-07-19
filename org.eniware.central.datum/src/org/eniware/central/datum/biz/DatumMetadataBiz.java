@@ -11,10 +11,10 @@ import java.util.Set;
 
 import org.eniware.central.datum.domain.GeneralLocationDatumMetadataFilter;
 import org.eniware.central.datum.domain.GeneralLocationDatumMetadataFilterMatch;
-import org.eniware.central.datum.domain.GeneralNodeDatumMetadataFilter;
-import org.eniware.central.datum.domain.GeneralNodeDatumMetadataFilterMatch;
+import org.eniware.central.datum.domain.GeneralEdgeDatumMetadataFilter;
+import org.eniware.central.datum.domain.GeneralEdgeDatumMetadataFilterMatch;
 import org.eniware.central.datum.domain.LocationSourcePK;
-import org.eniware.central.datum.domain.NodeSourcePK;
+import org.eniware.central.datum.domain.EdgeSourcePK;
 import org.eniware.central.domain.FilterResults;
 import org.eniware.central.domain.SortDescriptor;
 import org.eniware.domain.GeneralDatumMetadata;
@@ -27,41 +27,41 @@ import org.eniware.domain.GeneralDatumMetadata;
 public interface DatumMetadataBiz {
 
 	/**
-	 * Add metadata to a specific node and source. If metadata already exists
-	 * for the given node and source, the values will be merged such that tags
+	 * Add metadata to a specific Edge and source. If metadata already exists
+	 * for the given Edge and source, the values will be merged such that tags
 	 * are added and info values are added or updated.
 	 * 
-	 * @param nodeId
-	 *        the node ID to add to
+	 * @param EdgeId
+	 *        the Edge ID to add to
 	 * @param sourceId
 	 *        the source ID to add to
 	 * @param meta
 	 *        the metadata to add
 	 */
-	void addGeneralNodeDatumMetadata(Long nodeId, String sourceId, GeneralDatumMetadata meta);
+	void addGeneralEdgeDatumMetadata(Long EdgeId, String sourceId, GeneralDatumMetadata meta);
 
 	/**
-	 * Store metadata to a specific node and source, replacing any existing
+	 * Store metadata to a specific Edge and source, replacing any existing
 	 * metadata with the provided metadata.
 	 * 
-	 * @param nodeId
-	 *        the node ID to add to
+	 * @param EdgeId
+	 *        the Edge ID to add to
 	 * @param sourceId
 	 *        the source ID to add to
 	 * @param meta
 	 *        the metadata to store
 	 */
-	void storeGeneralNodeDatumMetadata(Long nodeId, String sourceId, GeneralDatumMetadata meta);
+	void storeGeneralEdgeDatumMetadata(Long EdgeId, String sourceId, GeneralDatumMetadata meta);
 
 	/**
-	 * Remove all metadata to a specific node and source.
+	 * Remove all metadata to a specific Edge and source.
 	 * 
-	 * @param nodeId
-	 *        the node ID to remove from
+	 * @param EdgeId
+	 *        the Edge ID to remove from
 	 * @param sourceId
 	 *        the source ID to remove from
 	 */
-	void removeGeneralNodeDatumMetadata(Long nodeId, String sourceId);
+	void removeGeneralEdgeDatumMetadata(Long EdgeId, String sourceId);
 
 	/**
 	 * Search for datum metadata.
@@ -76,8 +76,8 @@ public interface DatumMetadataBiz {
 	 *        an optional maximum number of returned results
 	 * @return the results, never <em>null</em>
 	 */
-	FilterResults<GeneralNodeDatumMetadataFilterMatch> findGeneralNodeDatumMetadata(
-			GeneralNodeDatumMetadataFilter criteria, List<SortDescriptor> sortDescriptors,
+	FilterResults<GeneralEdgeDatumMetadataFilterMatch> findGeneralEdgeDatumMetadata(
+			GeneralEdgeDatumMetadataFilter criteria, List<SortDescriptor> sortDescriptors,
 			Integer offset, Integer max);
 
 	/**
@@ -145,15 +145,15 @@ public interface DatumMetadataBiz {
 	 * JSON pointer style paths for keys, for example {@code (/m/foo=bar)},
 	 * {@code (t=foo)}, or {@code (&(&#47;**&#47;foo=bar)(t=special))}.
 	 * 
-	 * @param nodeIds
-	 *        the node IDs to search for
+	 * @param EdgeIds
+	 *        the Edge IDs to search for
 	 * @param metadataFilter
 	 *        A metadata search filter, in LDAP search filter syntax.
-	 * @return the distinct node ID and source IDs combinations that match the
+	 * @return the distinct Edge ID and source IDs combinations that match the
 	 *         given filter (never <em>null</em>)
 	 * @since 1.2
 	 */
-	Set<NodeSourcePK> getGeneralNodeDatumMetadataFilteredSources(Long[] nodeIds, String metadataFilter);
+	Set<EdgeSourcePK> getGeneralEdgeDatumMetadataFilteredSources(Long[] EdgeIds, String metadataFilter);
 
 	/**
 	 * Find available location source IDs that match a location metadata filter.
@@ -163,10 +163,10 @@ public interface DatumMetadataBiz {
 	 * {@code (t=foo)}, or {@code (&(&#47;**&#47;foo=bar)(t=special))}.
 	 * 
 	 * @param locationIds
-	 *        the node IDs to search for
+	 *        the Edge IDs to search for
 	 * @param metadataFilter
 	 *        A metadata search filter, in LDAP search filter syntax.
-	 * @return the distinct node ID and source IDs combinations that match the
+	 * @return the distinct Edge ID and source IDs combinations that match the
 	 *         given filter (never <em>null</em>)
 	 * @since 1.2
 	 */

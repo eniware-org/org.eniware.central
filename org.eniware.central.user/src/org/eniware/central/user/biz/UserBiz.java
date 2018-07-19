@@ -40,105 +40,105 @@ public interface UserBiz {
 	User getUser(Long id) throws AuthorizationException;
 
 	/**
-	 * Get a list of nodes belonging to a specific user.
+	 * Get a list of Edges belonging to a specific user.
 	 * 
-	 * Archived nodes will not be returned (see
-	 * {@link #getArchivedUserNodes(Long)} for that).
+	 * Archived Edges will not be returned (see
+	 * {@link #getArchivedUserEdges(Long)} for that).
 	 * 
 	 * @param userId
-	 *        the ID of the user to get the nodes for
-	 * @return list of UserNode objects, or an empty list if none found
+	 *        the ID of the user to get the Edges for
+	 * @return list of UserEdge objects, or an empty list if none found
 	 */
-	List<UserEdge> getUserNodes(Long userId) throws AuthorizationException;
+	List<UserEdge> getUserEdges(Long userId) throws AuthorizationException;
 
 	/**
-	 * Get a specific node belonging to a specific user.
+	 * Get a specific Edge belonging to a specific user.
 	 * 
 	 * @param userId
-	 *        the ID of the user to get the node for
-	 * @param nodeId
-	 *        the ID of the node to get
-	 * @return the matching UserNode object
+	 *        the ID of the user to get the Edge for
+	 * @param EdgeId
+	 *        the ID of the Edge to get
+	 * @return the matching UserEdge object
 	 * @throws AuthorizationException
-	 *         if the user is not authorized to access the given node
+	 *         if the user is not authorized to access the given Edge
 	 */
-	UserEdge getUserNode(Long userId, Long nodeId) throws AuthorizationException;
+	UserEdge getUserEdge(Long userId, Long EdgeId) throws AuthorizationException;
 
 	/**
-	 * Update a specific node belonging to a specific user.
+	 * Update a specific Edge belonging to a specific user.
 	 * 
 	 * <p>
 	 * The {@link EniwareEdge#getId()} and {@link User#getId()} values are
 	 * expected to be set on the entry object.
 	 * </p>
 	 * 
-	 * @param userNodeEntry
-	 *        the UserNode data to save
-	 * @return the updated UserNode object
+	 * @param userEdgeEntry
+	 *        the UserEdge data to save
+	 * @return the updated UserEdge object
 	 * @throws AuthorizationException
-	 *         if the user is not authorized to access the given node
+	 *         if the user is not authorized to access the given Edge
 	 */
-	UserEdge saveUserNode(UserEdge userNodeEntry) throws AuthorizationException;
+	UserEdge saveUserEdge(UserEdge userEdgeEntry) throws AuthorizationException;
 
 	/**
-	 * Archive, or un-archive a user node.
+	 * Archive, or un-archive a user Edge.
 	 * 
-	 * An archived node will not be returned from {@link #getUserNodes(Long)}.
-	 * Its data will remain intact and the node can be un-archived at a future
+	 * An archived Edge will not be returned from {@link #getUserEdges(Long)}.
+	 * Its data will remain intact and the Edge can be un-archived at a future
 	 * date.
 	 * 
 	 * @param userId
-	 *        the ID of the user to update the node for
-	 * @param nodeIds
-	 *        the IDs of the nodes to update
+	 *        the ID of the user to update the Edge for
+	 * @param EdgeIds
+	 *        the IDs of the Edges to update
 	 * @param boolean
-	 *        {@code true} to archive the nodes, {@code false} to un-archive
+	 *        {@code true} to archive the Edges, {@code false} to un-archive
 	 * @throws AuthorizationException
-	 *         if the user is not authorized to access a given node
+	 *         if the user is not authorized to access a given Edge
 	 * @since 1.4
 	 */
-	void updateUserNodeArchivedStatus(Long userId, Long[] nodeIds, boolean archived)
+	void updateUserEdgeArchivedStatus(Long userId, Long[] EdgeIds, boolean archived)
 			throws AuthorizationException;
 
 	/**
-	 * Get a list of archived nodes belonging to a specific user.
+	 * Get a list of archived Edges belonging to a specific user.
 	 * 
 	 * @param userId
-	 *        the ID of the user to get the nodes for
-	 * @return list of UserNode objects, or an empty list if none found
+	 *        the ID of the user to get the Edges for
+	 * @return list of UserEdge objects, or an empty list if none found
 	 * @since 1.4
 	 */
-	List<UserEdge> getArchivedUserNodes(Long userId) throws AuthorizationException;
+	List<UserEdge> getArchivedUserEdges(Long userId) throws AuthorizationException;
 
 	/**
-	 * Get a list of pending node confirmations belonging to a specific user.
+	 * Get a list of pending Edge confirmations belonging to a specific user.
 	 * 
 	 * @param user
-	 *        the user to get the nodes for
-	 * @return list of UserNodeConfirmation objects, or an empty list if none
+	 *        the user to get the Edges for
+	 * @return list of UserEdgeConfirmation objects, or an empty list if none
 	 *         found
 	 */
-	List<UserEdgeConfirmation> getPendingUserNodeConfirmations(Long userId);
+	List<UserEdgeConfirmation> getPendingUserEdgeConfirmations(Long userId);
 
 	/**
 	 * Get a specific pending confirmation.
 	 * 
-	 * @param userNodeConfirmationId
+	 * @param userEdgeConfirmationId
 	 *        the ID of the pending confirmation
 	 * @return the pending confirmation, or <em>null</em> if not found
 	 */
-	UserEdgeConfirmation getPendingUserNodeConfirmation(Long userNodeConfirmationId);
+	UserEdgeConfirmation getPendingUserEdgeConfirmation(Long userEdgeConfirmationId);
 
 	/**
-	 * Get a specific UserNodeCertificate object.
+	 * Get a specific UserEdgeCertificate object.
 	 * 
 	 * @param userId
 	 *        the user ID
-	 * @param nodeId
-	 *        the node ID
+	 * @param EdgeId
+	 *        the Edge ID
 	 * @return the certificate, or <em>null</em> if not available
 	 */
-	UserEdgeCertificate getUserNodeCertificate(Long userId, Long nodeId);
+	UserEdgeCertificate getUserEdgeCertificate(Long userId, Long EdgeId);
 
 	/**
 	 * Generate a new, unique {@link UserAuthToken} entity and return it.
@@ -147,15 +147,15 @@ public interface UserBiz {
 	 *        the user ID to generate the token for
 	 * @param type
 	 *        the type of token to create
-	 * @param nodeIds
-	 *        an optional set of node IDs to include with the token
+	 * @param EdgeIds
+	 *        an optional set of Edge IDs to include with the token
 	 * @return the generated token
 	 * @deprecated use
 	 *             {@link #generateUserAuthToken(Long, UserAuthTokenType, SecurityPolicy)}
-	 *             with node IDs applied
+	 *             with Edge IDs applied
 	 */
 	@Deprecated
-	UserAuthToken generateUserAuthToken(Long userId, UserAuthTokenType type, Set<Long> nodeIds);
+	UserAuthToken generateUserAuthToken(Long userId, UserAuthTokenType type, Set<Long> EdgeIds);
 
 	/**
 	 * Generate a new, unique {@link UserAuthToken} entity and return it.

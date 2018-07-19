@@ -26,22 +26,22 @@ public interface AppConfiguration {
 	 * EniwareEdge.
 	 * 
 	 * <p>
-	 * This URL can reasonably be expected to support a <code>nodeId</code>
+	 * This URL can reasonably be expected to support a <code>EdgeId</code>
 	 * variable.
 	 * </p>
 	 */
-	String SOALRNODE_DASHBAORD_SERVICE_NAME = "node-dashboard";
+	String SOALREdge_DASHBAORD_SERVICE_NAME = "Edge-dashboard";
 
 	/**
 	 * Service URL name for a user-facing "dashboard" specific to a single
 	 * EniwareEdge.
 	 * 
 	 * <p>
-	 * This URL can reasonably be expected to support a <code>nodeId</code>
+	 * This URL can reasonably be expected to support a <code>EdgeId</code>
 	 * variable.
 	 * </p>
 	 */
-	String ENIWARENDOE_DATAVIEW_SERVICE_NAME = "node-dataview";
+	String ENIWARENDOE_DATAVIEW_SERVICE_NAME = "Edge-dataview";
 
 	/**
 	 * Get a mapping of named service URLs.
@@ -58,7 +58,7 @@ public interface AppConfiguration {
 	 * URL values are permitted to contain <em>variables</em> in the form
 	 * <code>{var}</code> that consumers of the URLs can replace with
 	 * appropriate values. The variable names must be named so their intended
-	 * use is obvious, for example <code>nodeId</code> for a EniwareEdge ID.
+	 * use is obvious, for example <code>EdgeId</code> for a EniwareEdge ID.
 	 * </p>
 	 * 
 	 * <p>

@@ -12,10 +12,10 @@ import java.util.Set;
 import org.eniware.central.datum.biz.DatumMetadataBiz;
 import org.eniware.central.datum.domain.GeneralLocationDatumMetadataFilter;
 import org.eniware.central.datum.domain.GeneralLocationDatumMetadataFilterMatch;
-import org.eniware.central.datum.domain.GeneralNodeDatumMetadataFilter;
-import org.eniware.central.datum.domain.GeneralNodeDatumMetadataFilterMatch;
+import org.eniware.central.datum.domain.GeneralEdgeDatumMetadataFilter;
+import org.eniware.central.datum.domain.GeneralEdgeDatumMetadataFilterMatch;
 import org.eniware.central.datum.domain.LocationSourcePK;
-import org.eniware.central.datum.domain.NodeSourcePK;
+import org.eniware.central.datum.domain.EdgeSourcePK;
 import org.eniware.central.domain.FilterResults;
 import org.eniware.central.domain.SortDescriptor;
 import org.eniware.domain.GeneralDatumMetadata;
@@ -42,25 +42,25 @@ public class DelegatingDatumMetadataBiz implements DatumMetadataBiz {
 	}
 
 	@Override
-	public void addGeneralNodeDatumMetadata(Long nodeId, String sourceId, GeneralDatumMetadata meta) {
-		delegate.addGeneralNodeDatumMetadata(nodeId, sourceId, meta);
+	public void addGeneralEdgeDatumMetadata(Long EdgeId, String sourceId, GeneralDatumMetadata meta) {
+		delegate.addGeneralEdgeDatumMetadata(EdgeId, sourceId, meta);
 	}
 
 	@Override
-	public FilterResults<GeneralNodeDatumMetadataFilterMatch> findGeneralNodeDatumMetadata(
-			GeneralNodeDatumMetadataFilter criteria, List<SortDescriptor> sortDescriptors,
+	public FilterResults<GeneralEdgeDatumMetadataFilterMatch> findGeneralEdgeDatumMetadata(
+			GeneralEdgeDatumMetadataFilter criteria, List<SortDescriptor> sortDescriptors,
 			Integer offset, Integer max) {
-		return delegate.findGeneralNodeDatumMetadata(criteria, sortDescriptors, offset, max);
+		return delegate.findGeneralEdgeDatumMetadata(criteria, sortDescriptors, offset, max);
 	}
 
 	@Override
-	public void removeGeneralNodeDatumMetadata(Long nodeId, String sourceId) {
-		delegate.removeGeneralNodeDatumMetadata(nodeId, sourceId);
+	public void removeGeneralEdgeDatumMetadata(Long EdgeId, String sourceId) {
+		delegate.removeGeneralEdgeDatumMetadata(EdgeId, sourceId);
 	}
 
 	@Override
-	public void storeGeneralNodeDatumMetadata(Long nodeId, String sourceId, GeneralDatumMetadata meta) {
-		delegate.storeGeneralNodeDatumMetadata(nodeId, sourceId, meta);
+	public void storeGeneralEdgeDatumMetadata(Long EdgeId, String sourceId, GeneralDatumMetadata meta) {
+		delegate.storeGeneralEdgeDatumMetadata(EdgeId, sourceId, meta);
 	}
 
 	@Override
@@ -88,9 +88,9 @@ public class DelegatingDatumMetadataBiz implements DatumMetadataBiz {
 	}
 
 	@Override
-	public Set<NodeSourcePK> getGeneralNodeDatumMetadataFilteredSources(Long[] nodeIds,
+	public Set<EdgeSourcePK> getGeneralEdgeDatumMetadataFilteredSources(Long[] EdgeIds,
 			String metadataFilter) {
-		return delegate.getGeneralNodeDatumMetadataFilteredSources(nodeIds, metadataFilter);
+		return delegate.getGeneralEdgeDatumMetadataFilteredSources(EdgeIds, metadataFilter);
 	}
 
 	@Override

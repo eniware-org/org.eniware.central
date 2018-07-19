@@ -314,7 +314,7 @@ BEGIN
 		INTO loc_tz;
 
 		IF NOT FOUND THEN
-			RAISE NOTICE 'Node % has no time zone, will use UTC.', stale.loc_id;
+			RAISE NOTICE 'Edge % has no time zone, will use UTC.', stale.loc_id;
 			loc_tz := 'UTC';
 		END IF;
 

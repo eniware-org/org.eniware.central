@@ -58,16 +58,16 @@ public interface UserAlertDao extends GenericDao<UserAlert, Long> {
 	List<UserAlert> findAlertsForUser(Long userId);
 
 	/**
-	 * Delete all alerts configured for a given user and node.
+	 * Delete all alerts configured for a given user and Edge.
 	 * 
 	 * @param userId
 	 *        The ID of the owner of the alerts.
-	 * @param nodeId
-	 *        The ID of the node.
+	 * @param EdgeId
+	 *        The ID of the Edge.
 	 * @return The count of alerts deleted.
 	 * @since 1.1
 	 */
-	int deleteAllAlertsForNode(Long userId, Long nodeId);
+	int deleteAllAlertsForEdge(Long userId, Long EdgeId);
 
 	/**
 	 * Get a specific alert with the most recently available active
@@ -104,16 +104,16 @@ public interface UserAlertDao extends GenericDao<UserAlert, Long> {
 	List<UserAlert> findActiveAlertSituationsForUser(Long userId);
 
 	/**
-	 * Get all available active situations for a given node. The situations are
+	 * Get all available active situations for a given Edge. The situations are
 	 * returned as {@link UserAlert} entities with the
 	 * {@link UserAlert#getSituation()} populated.
 	 * 
-	 * @param nodeId
-	 *        The ID of the node to get all active situations for.
+	 * @param EdgeId
+	 *        The ID of the Edge to get all active situations for.
 	 * @return The found alerts with active situations.
 	 * @since 1.1
 	 */
-	List<UserAlert> findActiveAlertSituationsForNode(Long nodeId);
+	List<UserAlert> findActiveAlertSituationsForEdge(Long EdgeId);
 
 	/**
 	 * Get a count of <em>active</em> alert situations for a given user.

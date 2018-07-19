@@ -15,10 +15,10 @@ import org.eniware.central.datum.domain.Datum;
 import org.eniware.central.datum.domain.DatumMappingInfo;
 import org.eniware.central.datum.domain.DayDatum;
 import org.eniware.central.datum.domain.GeneralLocationDatum;
-import org.eniware.central.datum.domain.GeneralNodeDatum;
+import org.eniware.central.datum.domain.GeneralEdgeDatum;
 import org.eniware.central.datum.domain.HardwareControlDatum;
 import org.eniware.central.datum.domain.LocationDatum;
-import org.eniware.central.datum.domain.NodeDatum;
+import org.eniware.central.datum.domain.EdgeDatum;
 import org.eniware.central.datum.domain.PowerDatum;
 import org.eniware.central.datum.domain.PriceDatum;
 import org.eniware.central.datum.domain.WeatherDatum;
@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Map {@link Datum} instances into {@link GeneralNodeDatum} instances, to help
+ * Map {@link Datum} instances into {@link GeneralEdgeDatum} instances, to help
  * migrate away from {@link Datum}.
  *
  * @version 1.1
@@ -53,14 +53,14 @@ public class GeneralDatumMapper {
 	}
 
 	/**
-	 * Map a {@link Datum} object into a {@link GeneralNodeDatum} object.
+	 * Map a {@link Datum} object into a {@link GeneralEdgeDatum} object.
 	 * 
 	 * @param datum
 	 *        The datum to map.
 	 * @return The mapped datum, or <em>null</em> if not supported.
 	 */
-	public GeneralNodeDatum mapDatum(Datum datum) {
-		GeneralNodeDatum g = null;
+	public GeneralEdgeDatum mapDatum(Datum datum) {
+		GeneralEdgeDatum g = null;
 		if ( datum instanceof ConsumptionDatum ) {
 			g = mapConsumptionDatum((ConsumptionDatum) datum);
 		} else if ( datum instanceof HardwareControlDatum ) {
@@ -72,14 +72,14 @@ public class GeneralDatumMapper {
 		return g;
 	}
 
-	private GeneralNodeDatum mapBaseGeneralNodeDatumProperties(NodeDatum datum) {
-		GeneralNodeDatum g = new GeneralNodeDatum();
+	private GeneralEdgeDatum mapBaseGeneralEdgeDatumProperties(EdgeDatum datum) {
+		GeneralEdgeDatum g = new GeneralEdgeDatum();
 		g.setCreated(datum.getCreated() != null ? datum.getCreated() : new DateTime());
-		g.setNodeId(datum.getNodeId());
+		g.setEdgeId(datum.getEdgeId());
 		return g;
 	}
 
-	private GeneralNodeDatum mapConsumptionDatum(ConsumptionDatum datum) {
+	private GeneralEdgeDatum mapConsumptionDatum(ConsumptionDatum datum) {
 		assert datum != null;
 		assert datum.getSourceId() != null;
 
@@ -91,7 +91,7 @@ public class GeneralDatumMapper {
 			samples.putAccumulatingSampleValue("wattHours", datum.getWattHourReading());
 		}
 
-		GeneralNodeDatum g = mapBaseGeneralNodeDatumProperties(datum);
+		GeneralEdgeDatum g = mapBaseGeneralEdgeDatumProperties(datum);
 		g.setSourceId(datum.getSourceId());
 		if ( samples.getSampleData() != null && samples.getSampleData().size() > 0 ) {
 			g.setSamples(samples);
@@ -99,7 +99,7 @@ public class GeneralDatumMapper {
 		return g;
 	}
 
-	private GeneralNodeDatum mapHardwareControlDatum(HardwareControlDatum datum) {
+	private GeneralEdgeDatum mapHardwareControlDatum(HardwareControlDatum datum) {
 		assert datum != null;
 
 		// The source_id value could be in form source;prop where 'prop' is a property name.
@@ -120,7 +120,7 @@ public class GeneralDatumMapper {
 			samples.putStatusSampleValue(propKey, datum.getFloatValue());
 		}
 
-		GeneralNodeDatum g = mapBaseGeneralNodeDatumProperties(datum);
+		GeneralEdgeDatum g = mapBaseGeneralEdgeDatumProperties(datum);
 		g.setSourceId(sourceId);
 		if ( samples.getSampleData() != null && samples.getSampleData().size() > 0 ) {
 			g.setSamples(samples);
@@ -128,7 +128,7 @@ public class GeneralDatumMapper {
 		return g;
 	}
 
-	private GeneralNodeDatum mapPowerDatum(PowerDatum datum) {
+	private GeneralEdgeDatum mapPowerDatum(PowerDatum datum) {
 		assert datum != null;
 		assert datum.getSourceId() != null;
 
@@ -140,7 +140,7 @@ public class GeneralDatumMapper {
 			samples.putAccumulatingSampleValue("wattHours", datum.getWattHourReading());
 		}
 
-		GeneralNodeDatum g = mapBaseGeneralNodeDatumProperties(datum);
+		GeneralEdgeDatum g = mapBaseGeneralEdgeDatumProperties(datum);
 		g.setSourceId(datum.getSourceId());
 		if ( samples.getSampleData() != null && samples.getSampleData().size() > 0 ) {
 			g.setSamples(samples);

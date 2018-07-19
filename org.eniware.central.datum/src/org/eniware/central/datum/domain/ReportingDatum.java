@@ -17,7 +17,7 @@ import org.joda.time.LocalTime;
 public interface ReportingDatum {
 
 	/**
-	 * Get a "local" date for this datum, local to the node or location
+	 * Get a "local" date for this datum, local to the Edge or location
 	 * the datum is associated with.
 	 * 
 	 * @return local date
@@ -25,7 +25,7 @@ public interface ReportingDatum {
 	public LocalDate getLocalDate();
 	
 	/**
-	 * Get a "local" time for this datum, local to the node or location
+	 * Get a "local" time for this datum, local to the Edge or location
 	 * the datum is associated with.
 	 * 
 	 * @return local time

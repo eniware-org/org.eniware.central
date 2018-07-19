@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 
 import org.eniware.central.in.biz.DataCollectorBiz;
 import org.eniware.central.instructor.biz.InstructorBiz;
-import org.eniware.central.security.AuthenticatedNode;
+import org.eniware.central.security.AuthenticatedEdge;
 import org.eniware.central.security.SecurityException;
 
 import org.eniware.central.dao.EniwareEdgeDao;
@@ -46,8 +46,8 @@ public abstract class AbstractDataCollector {
 	/** The model key for the collection of {@code Instruction} results. */
 	public static final String MODEL_KEY_INSTRUCTIONS = "instructions";
 
-	/** The model key for the node's {@code TimeZone}. */
-	public static final String MODEL_KEY_NODE_TZ = "node-tz";
+	/** The model key for the Edge's {@code TimeZone}. */
+	public static final String MODEL_KEY_Edge_TZ = "Edge-tz";
 
 	/** The date format to use for parsing dates. */
 	public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSZ";
@@ -89,7 +89,7 @@ public abstract class AbstractDataCollector {
 	}
 
 	/**
-	 * Default handling of node instructions.
+	 * Default handling of Edge instructions.
 	 * 
 	 * <p>
 	 * This method will use the configured {@link #getInstructorBiz()}, if
@@ -97,16 +97,16 @@ public abstract class AbstractDataCollector {
 	 * {@link #MODEL_KEY_INSTRUCTIONS} key.
 	 * </p>
 	 * 
-	 * @param nodeId
-	 *        the node ID to get instructions for
+	 * @param EdgeId
+	 *        the Edge ID to get instructions for
 	 * @param model
 	 *        the model
 	 */
-	protected void defaultHandleNodeInstructions(Long nodeId, Model model) {
-		// look for instructions to return for the given node
+	protected void defaultHandleEdgeInstructions(Long EdgeId, Model model) {
+		// look for instructions to return for the given Edge
 		if ( getInstructorBiz() != null && getInstructorBiz().isAvailable() ) {
 			List<Instruction> instructions = getInstructorBiz().getService()
-					.getActiveInstructionsForNode(nodeId);
+					.getActiveInstructionsForEdge(EdgeId);
 			if ( instructions.size() > 0 ) {
 				model.addAttribute(MODEL_KEY_INSTRUCTIONS, instructions);
 			}
@@ -116,19 +116,19 @@ public abstract class AbstractDataCollector {
 	/**
 	 * Add a EniwareEdge's TimeZone to the result model.
 	 * 
-	 * @param nodeId
-	 *        the node ID
+	 * @param EdgeId
+	 *        the Edge ID
 	 * @param model
 	 *        the model
 	 * @return the EniwareEdge entity
 	 */
-	protected EniwareEdge setupNodeTimeZone(Long nodeId, Model model) {
-		EniwareEdge node = eniwareEdgeDao.get(nodeId);
+	protected EniwareEdge setupEdgeTimeZone(Long EdgeId, Model model) {
+		EniwareEdge Edge = eniwareEdgeDao.get(EdgeId);
 		model.asMap().remove("weatherDatum");
-		if ( node != null ) {
-			model.addAttribute(MODEL_KEY_NODE_TZ, node.getTimeZone());
+		if ( Edge != null ) {
+			model.addAttribute(MODEL_KEY_Edge_TZ, Edge.getTimeZone());
 		}
-		return node;
+		return Edge;
 	}
 
 	/**
@@ -143,23 +143,23 @@ public abstract class AbstractDataCollector {
 	}
 
 	/**
-	 * Get the currently authenticated node.
+	 * Get the currently authenticated Edge.
 	 * 
 	 * @param required
-	 *        <em>true</em> if AuthenticatedNode is required, or <em>false</em>
+	 *        <em>true</em> if AuthenticatedEdge is required, or <em>false</em>
 	 *        if not
-	 * @return AuthenticatedNode
+	 * @return AuthenticatedEdge
 	 * @throws SecurityException
-	 *         if an AuthenticatedNode is not available and {@code required} is
+	 *         if an AuthenticatedEdge is not available and {@code required} is
 	 *         <em>true</em>
 	 */
-	protected AuthenticatedNode getAuthenticatedNode(boolean required) {
+	protected AuthenticatedEdge getAuthenticatedEdge(boolean required) {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if ( principal instanceof AuthenticatedNode ) {
-			return (AuthenticatedNode) principal;
+		if ( principal instanceof AuthenticatedEdge ) {
+			return (AuthenticatedEdge) principal;
 		}
 		if ( required ) {
-			throw new SecurityException("Authenticated node required but not avaialble");
+			throw new SecurityException("Authenticated Edge required but not avaialble");
 		}
 		return null;
 	}

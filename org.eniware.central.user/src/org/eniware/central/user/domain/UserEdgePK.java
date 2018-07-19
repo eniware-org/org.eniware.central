@@ -9,7 +9,7 @@ package org.eniware.central.user.domain;
 import java.io.Serializable;
 
 /**
- * Primary key based on a user ID and node ID.
+ * Primary key based on a user ID and Edge ID.
  * 
  * @version 1.0
  */
@@ -17,7 +17,7 @@ public class UserEdgePK implements Serializable, Cloneable, Comparable<UserEdgeP
 
 	private static final long serialVersionUID = -2661140310545544324L;
 
-	private Long nodeId;
+	private Long EdgeId;
 	private Long userId;
 
 	/**
@@ -32,21 +32,21 @@ public class UserEdgePK implements Serializable, Cloneable, Comparable<UserEdgeP
 	 * 
 	 * @param userId
 	 *        the user ID
-	 * @param nodeId
-	 *        the node ID
+	 * @param EdgeId
+	 *        the Edge ID
 	 */
-	public UserEdgePK(Long userId, Long nodeId) {
+	public UserEdgePK(Long userId, Long EdgeId) {
 		super();
-		this.nodeId = nodeId;
+		this.EdgeId = EdgeId;
 		this.userId = userId;
 	}
 
 	/**
-	 * Compare two {@code UserNodePK} objects. Keys are ordered based on:
+	 * Compare two {@code UserEdgePK} objects. Keys are ordered based on:
 	 * 
 	 * <ol>
 	 * <li>userId</li>
-	 * <li>nodeId</li>
+	 * <li>EdgeId</li>
 	 * </ol>
 	 * 
 	 * <em>Null</em> values will be sorted before non-<em>null</em> values.
@@ -65,26 +65,26 @@ public class UserEdgePK implements Serializable, Cloneable, Comparable<UserEdgeP
 		if ( comparison != 0 ) {
 			return comparison;
 		}
-		if ( o.nodeId == null ) {
+		if ( o.EdgeId == null ) {
 			return 1;
-		} else if ( nodeId == null ) {
+		} else if ( EdgeId == null ) {
 			return -1;
 		}
-		return nodeId.compareTo(o.nodeId);
+		return EdgeId.compareTo(o.EdgeId);
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("UserNodePK{");
+		builder.append("UserEdgePK{");
 		if ( userId != null ) {
 			builder.append("userId=");
 			builder.append(userId);
 			builder.append(", ");
 		}
-		if ( nodeId != null ) {
-			builder.append("nodeId=");
-			builder.append(nodeId);
+		if ( EdgeId != null ) {
+			builder.append("EdgeId=");
+			builder.append(EdgeId);
 		}
 		builder.append("}");
 		return builder.toString();
@@ -95,7 +95,7 @@ public class UserEdgePK implements Serializable, Cloneable, Comparable<UserEdgeP
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
-		result = prime * result + ((nodeId == null) ? 0 : nodeId.hashCode());
+		result = prime * result + ((EdgeId == null) ? 0 : EdgeId.hashCode());
 		return result;
 	}
 
@@ -111,11 +111,11 @@ public class UserEdgePK implements Serializable, Cloneable, Comparable<UserEdgeP
 			return false;
 		}
 		UserEdgePK other = (UserEdgePK) obj;
-		if ( nodeId == null ) {
-			if ( other.nodeId != null ) {
+		if ( EdgeId == null ) {
+			if ( other.EdgeId != null ) {
 				return false;
 			}
-		} else if ( !nodeId.equals(other.nodeId) ) {
+		} else if ( !EdgeId.equals(other.EdgeId) ) {
 			return false;
 		}
 		if ( userId == null ) {
@@ -138,12 +138,12 @@ public class UserEdgePK implements Serializable, Cloneable, Comparable<UserEdgeP
 		}
 	}
 
-	public Long getNodeId() {
-		return nodeId;
+	public Long getEdgeId() {
+		return EdgeId;
 	}
 
-	public void setNodeId(Long nodeId) {
-		this.nodeId = nodeId;
+	public void setEdgeId(Long EdgeId) {
+		this.EdgeId = EdgeId;
 	}
 
 	public Long getUserId() {

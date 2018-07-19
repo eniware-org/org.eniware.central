@@ -27,7 +27,7 @@
 	<aop:aspectj-autoproxy/>
 
 	<bean id="billingSecurityAspect" class="org.eniware.central.user.billing.aop.BillingSecurityAspect">
-		<argument ref="userNodeDao"/>
+		<argument ref="userEdgeDao"/>
 	</bean>
 		
 	<bean id="aopBillingBiz" class="org.eniware.central.user.billing.support.DelegatingBillingBiz">

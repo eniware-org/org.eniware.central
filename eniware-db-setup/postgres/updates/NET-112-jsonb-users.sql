@@ -23,8 +23,8 @@ CREATE OR REPLACE FUNCTION solaruser.find_most_recent_datum_for_user(users bigin
   RETURNS SETOF solardatum.da_datum_data AS
 $BODY$
 	SELECT r.*
-	FROM (SELECT node_id FROM solaruser.user_node WHERE user_id = ANY(users)) AS n,
-	LATERAL (SELECT * FROM solardatum.find_most_recent(n.node_id)) AS r
-	ORDER BY r.node_id, r.source_id;
+	FROM (SELECT Edge_id FROM solaruser.user_Edge WHERE user_id = ANY(users)) AS n,
+	LATERAL (SELECT * FROM solardatum.find_most_recent(n.Edge_id)) AS r
+	ORDER BY r.Edge_id, r.source_id;
 $BODY$
   LANGUAGE sql STABLE;

@@ -7,7 +7,7 @@
 package org.eniware.central.datum.domain;
 
 /**
- * NodeDatum API for watt-hour related data.
+ * EdgeDatum API for watt-hour related data.
  *
  * @version $Revision$ $Date$
  */

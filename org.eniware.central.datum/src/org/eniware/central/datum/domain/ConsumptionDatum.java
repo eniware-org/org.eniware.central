@@ -12,7 +12,7 @@ package org.eniware.central.datum.domain;
  
  * @version $Revision$ $Date$
  */
-public class ConsumptionDatum extends BaseNodeDatum implements LocationDatum {
+public class ConsumptionDatum extends BaseEdgeDatum implements LocationDatum {
 
 	private static final long serialVersionUID = 714989418475390919L;
 
@@ -32,7 +32,7 @@ public class ConsumptionDatum extends BaseNodeDatum implements LocationDatum {
 	
 	@Override
 	public String toString() {
-		return "ConsumptionDatum{nodeId=" +getNodeId()
+		return "ConsumptionDatum{EdgeId=" +getEdgeId()
 			+",sourceId=" +getSourceId()
 			+",watts=" +getWatts()
 			+",wattHourReading=" +this.wattHourReading

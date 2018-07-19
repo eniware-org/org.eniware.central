@@ -8,7 +8,7 @@ the time of this writing SolarNet is using plv8 version *1.4.x* with [v8][v8] ve
 # Module Support
 
 This project is structured so that during development ES6 modules are written. These
-modules are then transpiled to ES5 JavaScript modules using the CommonJS (Node) style.
+modules are then transpiled to ES5 JavaScript modules using the CommonJS (Edge) style.
 The CommonJS modules are then loaded into a special <code>plv8_modules</code> table
 so that imported modules can be loaded at runtime.
 
@@ -39,7 +39,7 @@ for example:
 
 All modules are located in the `src` directory, and the build process generates SQL
 files in the `dist` directory. If you have not already done so once, you must initialize
-the node environment with
+the Edge environment with
 
 	npm install
 
@@ -70,7 +70,7 @@ use the [inspect][inspect-process] command. First install the required package:
 
 Then, launch like this:
 
-	inspect --debug-brk ./node_modules/ava/profile.js test/myModuleTests.js
+	inspect --debug-brk ./Edge_modules/ava/profile.js test/myModuleTests.js
 
 
  [ava]: https://github.com/avajs/ava

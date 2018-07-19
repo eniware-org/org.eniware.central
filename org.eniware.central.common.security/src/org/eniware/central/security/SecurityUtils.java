@@ -210,20 +210,20 @@ public class SecurityUtils {
 	}
 
 	/**
-	 * Get the current {@link SecurityNode}.
+	 * Get the current {@link SecurityEdge}.
 	 * 
-	 * @return the current node, never <em>null</em>
+	 * @return the current Edge, never <em>null</em>
 	 * @throws SecurityException
-	 *         if the node is not available
+	 *         if the Edge is not available
 	 */
-	public static SecurityNode getCurrentNode() throws SecurityException {
+	public static SecurityEdge getCurrentEdge() throws SecurityException {
 		Authentication auth = getCurrentAuthentication();
-		if ( auth != null && auth.getPrincipal() instanceof SecurityNode ) {
-			return (SecurityNode) auth.getPrincipal();
-		} else if ( auth != null && auth.getDetails() instanceof SecurityNode ) {
-			return (SecurityNode) auth.getDetails();
+		if ( auth != null && auth.getPrincipal() instanceof SecurityEdge ) {
+			return (SecurityEdge) auth.getPrincipal();
+		} else if ( auth != null && auth.getDetails() instanceof SecurityEdge ) {
+			return (SecurityEdge) auth.getDetails();
 		}
-		throw new SecurityException("Node not available");
+		throw new SecurityException("Edge not available");
 	}
 
 }

@@ -27,7 +27,7 @@ public class ReportingPowerDatum extends PowerDatum implements WattHourDatum, Re
 	
 	@Override
 	public String toString() {
-		return "ReportingPowerDatum{nodeId=" +getNodeId()
+		return "ReportingPowerDatum{EdgeId=" +getEdgeId()
 			+",watts=" +getWatts()
 			+",batVolts=" +getBatteryVolts()
 			+",wattHours=" +getWattHours()

@@ -7,11 +7,11 @@
 package org.eniware.central.datum.domain;
 
 /**
- * Domain object for a unit of generation data collected from a node.
+ * Domain object for a unit of generation data collected from a Edge.
  *
  * @version $Revision$ $Date$
  */
-public class PowerDatum extends BaseNodeDatum implements LocationDatum {
+public class PowerDatum extends BaseEdgeDatum implements LocationDatum {
 
 	private static final long serialVersionUID = -3789283457327334343L;
 
@@ -27,7 +27,7 @@ public class PowerDatum extends BaseNodeDatum implements LocationDatum {
 
 	@Override
 	public String toString() {
-		return "PowerDatum{nodeId=" +getNodeId()
+		return "PowerDatum{EdgeId=" +getEdgeId()
 			+",sourceId=" +getSourceId()
 			+",watts=" +getWatts()
 			+",batVolts=" +this.batteryVolts

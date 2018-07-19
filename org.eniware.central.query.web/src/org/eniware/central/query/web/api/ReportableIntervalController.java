@@ -11,7 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TimeZone;
 
-import org.eniware.central.datum.domain.NodeSourcePK;
+import org.eniware.central.datum.domain.EdgeSourcePK;
 import org.eniware.central.query.domain.ReportableInterval;
 import org.eniware.central.query.web.domain.GeneralReportableIntervalCommand;
 import org.eniware.util.JodaDateFormatEditor;
@@ -103,7 +103,7 @@ public class ReportableIntervalController extends WebServiceControllerSupport {
 	}
 
 	/**
-	 * Get a date range of available GeneralNodeData for a node and an optional
+	 * Get a date range of available GeneralEdgeData for a Edge and an optional
 	 * source ID.
 	 * 
 	 * <p>
@@ -111,7 +111,7 @@ public class ReportableIntervalController extends WebServiceControllerSupport {
 	 * </p>
 	 * 
 	 * <p>
-	 * Example URL: <code>/api/v1/sec/range/interval?nodeId=1</code>
+	 * Example URL: <code>/api/v1/sec/range/interval?EdgeId=1</code>
 	 * </p>
 	 * 
 	 * <p>
@@ -139,13 +139,13 @@ public class ReportableIntervalController extends WebServiceControllerSupport {
 	@ResponseBody
 	@RequestMapping(value = "/interval", method = RequestMethod.GET, params = "!types")
 	public Response<ReportableInterval> getReportableInterval(GeneralReportableIntervalCommand cmd) {
-		ReportableInterval data = queryBiz.getReportableInterval(cmd.getNodeId(), cmd.getSourceId());
+		ReportableInterval data = queryBiz.getReportableInterval(cmd.getEdgeId(), cmd.getSourceId());
 		return new Response<ReportableInterval>(data);
 	}
 
 	/**
-	 * Get the set of source IDs available for the available GeneralNodeData for
-	 * a single node, optionally constrained within a date range.
+	 * Get the set of source IDs available for the available GeneralEdgeData for
+	 * a single Edge, optionally constrained within a date range.
 	 * 
 	 * <p>
 	 * A <code>sourceId</code> path pattern may also be provided, to restrict
@@ -153,7 +153,7 @@ public class ReportableIntervalController extends WebServiceControllerSupport {
 	 * </p>
 	 * 
 	 * <p>
-	 * Example URL: <code>/api/v1/sec/range/sources?nodeId=1</code>
+	 * Example URL: <code>/api/v1/sec/range/sources?EdgeId=1</code>
 	 * </p>
 	 * 
 	 * <p>
@@ -177,7 +177,7 @@ public class ReportableIntervalController extends WebServiceControllerSupport {
 	@RequestMapping(value = "/sources", method = RequestMethod.GET, params = { "!types",
 			"!metadataFilter" })
 	public Response<Set<String>> getAvailableSources(GeneralReportableIntervalCommand cmd) {
-		Set<String> data = queryBiz.getAvailableSources(cmd.getNodeId(), cmd.getStartDate(),
+		Set<String> data = queryBiz.getAvailableSources(cmd.getEdgeId(), cmd.getStartDate(),
 				cmd.getEndDate());
 
 		// support filtering based on sourceId path pattern
@@ -187,7 +187,7 @@ public class ReportableIntervalController extends WebServiceControllerSupport {
 	}
 
 	/**
-	 * Get all available node+source ID pairs that match a node datum metadata
+	 * Get all available Edge+source ID pairs that match a Edge datum metadata
 	 * search filter.
 	 * 
 	 * <p>
@@ -197,7 +197,7 @@ public class ReportableIntervalController extends WebServiceControllerSupport {
 	 * 
 	 * <p>
 	 * Example URL:
-	 * <code>/api/v1/sec/range/sources?nodeIds=1,2&metadataFilter=(/m/foo=bar)</code>
+	 * <code>/api/v1/sec/range/sources?EdgeIds=1,2&metadataFilter=(/m/foo=bar)</code>
 	 * </p>
 	 *
 	 * <p>
@@ -208,16 +208,16 @@ public class ReportableIntervalController extends WebServiceControllerSupport {
 	 * {
 	 *   "success": true,
 	 *   "data": [
-	 *     { nodeId: 1, sourceId: "A" },
-	 *     { nodeId: 2, "sourceId: "B" }
+	 *     { EdgeId: 1, sourceId: "A" },
+	 *     { EdgeId: 2, "sourceId: "B" }
 	 *   ]
 	 * }
 	 * </pre>
 	 * 
 	 * <p>
-	 * If only a single node ID is specified, then the results will be
+	 * If only a single Edge ID is specified, then the results will be
 	 * simplified to just an array of strings for the source IDs, omitting the
-	 * node ID which is redundant.
+	 * Edge ID which is redundant.
 	 * </p>
 	 * 
 	 * @param cmd
@@ -227,16 +227,16 @@ public class ReportableIntervalController extends WebServiceControllerSupport {
 	@RequestMapping(value = "/sources", method = RequestMethod.GET, params = { "!types",
 			"metadataFilter" })
 	public Response<Set<?>> getMetadataFilteredAvailableSources(GeneralReportableIntervalCommand cmd) {
-		Set<NodeSourcePK> data = datumMetadataBiz
-				.getGeneralNodeDatumMetadataFilteredSources(cmd.getNodeIds(), cmd.getMetadataFilter());
+		Set<EdgeSourcePK> data = datumMetadataBiz
+				.getGeneralEdgeDatumMetadataFilteredSources(cmd.getEdgeIds(), cmd.getMetadataFilter());
 
 		// support filtering based on sourceId path pattern
-		data = filterNodeSources(data, this.pathMatcher, cmd.getSourceId());
+		data = filterEdgeSources(data, this.pathMatcher, cmd.getSourceId());
 
-		if ( cmd.getNodeIds() != null && cmd.getNodeIds().length < 2 ) {
-			// at most 1 node ID, so simplify results to just source ID values
+		if ( cmd.getEdgeIds() != null && cmd.getEdgeIds().length < 2 ) {
+			// at most 1 Edge ID, so simplify results to just source ID values
 			Set<String> sourceIds = new LinkedHashSet<String>(data.size());
-			for ( NodeSourcePK pk : data ) {
+			for ( EdgeSourcePK pk : data ) {
 				sourceIds.add(pk.getSourceId());
 			}
 			return new Response<Set<?>>(sourceIds);
@@ -245,7 +245,7 @@ public class ReportableIntervalController extends WebServiceControllerSupport {
 	}
 
 	/**
-	 * Filter a set of node sources using a source ID path pattern.
+	 * Filter a set of Edge sources using a source ID path pattern.
 	 * 
 	 * <p>
 	 * If any arguments are {@literal null}, or {@code pathMatcher} is not a
@@ -260,14 +260,14 @@ public class ReportableIntervalController extends WebServiceControllerSupport {
 	 *        the pattern to test
 	 * @return the filtered sources
 	 */
-	public static Set<NodeSourcePK> filterNodeSources(Set<NodeSourcePK> sources, PathMatcher pathMatcher,
+	public static Set<EdgeSourcePK> filterEdgeSources(Set<EdgeSourcePK> sources, PathMatcher pathMatcher,
 			String pattern) {
 		if ( sources == null || sources.isEmpty() || pathMatcher == null || pattern == null
 				|| !pathMatcher.isPattern(pattern) ) {
 			return sources;
 		}
-		for ( Iterator<NodeSourcePK> itr = sources.iterator(); itr.hasNext(); ) {
-			NodeSourcePK pk = itr.next();
+		for ( Iterator<EdgeSourcePK> itr = sources.iterator(); itr.hasNext(); ) {
+			EdgeSourcePK pk = itr.next();
 			if ( !pathMatcher.match(pattern, pk.getSourceId()) ) {
 				itr.remove();
 			}

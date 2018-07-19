@@ -37,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DaoInstructorBiz implements InstructorBiz {
 
 	@Autowired
-	private EdgeInstructionDao nodeInstructionDao;
+	private EdgeInstructionDao EdgeInstructionDao;
 
 	private List<Instruction> asResultList(FilterResults<EntityMatch> matches) {
 		List<Instruction> results = new ArrayList<Instruction>(matches.getReturnedResultCount());
@@ -45,19 +45,19 @@ public class DaoInstructorBiz implements InstructorBiz {
 			if ( match instanceof Instruction ) {
 				results.add((Instruction) match);
 			} else {
-				results.add(nodeInstructionDao.get(match.getId()));
+				results.add(EdgeInstructionDao.get(match.getId()));
 			}
 		}
 		return results;
 	}
 
-	private List<EdgeInstruction> asNodeInstructionList(FilterResults<EntityMatch> matches) {
+	private List<EdgeInstruction> asEdgeInstructionList(FilterResults<EntityMatch> matches) {
 		List<EdgeInstruction> results = new ArrayList<EdgeInstruction>(matches.getReturnedResultCount());
 		for ( EntityMatch match : matches.getResults() ) {
 			if ( match instanceof EdgeInstruction ) {
 				results.add((EdgeInstruction) match);
 			} else {
-				results.add(nodeInstructionDao.get(match.getId()));
+				results.add(EdgeInstructionDao.get(match.getId()));
 			}
 		}
 		return results;
@@ -66,7 +66,7 @@ public class DaoInstructorBiz implements InstructorBiz {
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public EdgeInstruction getInstruction(Long instructionId) {
-		return nodeInstructionDao.get(instructionId);
+		return EdgeInstructionDao.get(instructionId);
 	}
 
 	@Override
@@ -75,59 +75,59 @@ public class DaoInstructorBiz implements InstructorBiz {
 		Long[] ids = instructionIds.toArray(new Long[instructionIds.size()]);
 		SimpleInstructionFilter filter = new SimpleInstructionFilter();
 		filter.setInstructionIds(ids);
-		FilterResults<EntityMatch> matches = nodeInstructionDao.findFiltered(filter, null, null, null);
-		return asNodeInstructionList(matches);
+		FilterResults<EntityMatch> matches = EdgeInstructionDao.findFiltered(filter, null, null, null);
+		return asEdgeInstructionList(matches);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<Instruction> getActiveInstructionsForNode(Long nodeId) {
+	public List<Instruction> getActiveInstructionsForEdge(Long EdgeId) {
 		SimpleInstructionFilter filter = new SimpleInstructionFilter();
-		filter.setNodeId(nodeId);
+		filter.setEdgeId(EdgeId);
 		filter.setState(InstructionState.Queued);
-		FilterResults<EntityMatch> matches = nodeInstructionDao.findFiltered(filter, null, null, null);
+		FilterResults<EntityMatch> matches = EdgeInstructionDao.findFiltered(filter, null, null, null);
 		return asResultList(matches);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<EdgeInstruction> getActiveInstructionsForNodes(Set<Long> nodeIds) {
-		Long[] ids = nodeIds.toArray(new Long[nodeIds.size()]);
+	public List<EdgeInstruction> getActiveInstructionsForEdges(Set<Long> EdgeIds) {
+		Long[] ids = EdgeIds.toArray(new Long[EdgeIds.size()]);
 		SimpleInstructionFilter filter = new SimpleInstructionFilter();
-		filter.setNodeIds(ids);
+		filter.setEdgeIds(ids);
 		filter.setState(InstructionState.Queued);
-		FilterResults<EntityMatch> matches = nodeInstructionDao.findFiltered(filter, null, null, null);
-		return asNodeInstructionList(matches);
+		FilterResults<EntityMatch> matches = EdgeInstructionDao.findFiltered(filter, null, null, null);
+		return asEdgeInstructionList(matches);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<Instruction> getPendingInstructionsForNode(Long nodeId) {
+	public List<Instruction> getPendingInstructionsForEdge(Long EdgeId) {
 		SimpleInstructionFilter filter = new SimpleInstructionFilter();
-		filter.setNodeId(nodeId);
+		filter.setEdgeId(EdgeId);
 		filter.setStateSet(EnumSet.of(InstructionState.Queued, InstructionState.Received,
 				InstructionState.Executing));
-		FilterResults<EntityMatch> matches = nodeInstructionDao.findFiltered(filter, null, null, null);
+		FilterResults<EntityMatch> matches = EdgeInstructionDao.findFiltered(filter, null, null, null);
 		return asResultList(matches);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<EdgeInstruction> getPendingInstructionsForNodes(Set<Long> nodeIds) {
-		Long[] ids = nodeIds.toArray(new Long[nodeIds.size()]);
+	public List<EdgeInstruction> getPendingInstructionsForEdges(Set<Long> EdgeIds) {
+		Long[] ids = EdgeIds.toArray(new Long[EdgeIds.size()]);
 		SimpleInstructionFilter filter = new SimpleInstructionFilter();
-		filter.setNodeIds(ids);
+		filter.setEdgeIds(ids);
 		filter.setStateSet(EnumSet.of(InstructionState.Queued, InstructionState.Received,
 				InstructionState.Executing));
-		FilterResults<EntityMatch> matches = nodeInstructionDao.findFiltered(filter, null, null, null);
-		return asNodeInstructionList(matches);
+		FilterResults<EntityMatch> matches = EdgeInstructionDao.findFiltered(filter, null, null, null);
+		return asEdgeInstructionList(matches);
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public EdgeInstruction queueInstruction(Long nodeId, Instruction instruction) {
+	public EdgeInstruction queueInstruction(Long EdgeId, Instruction instruction) {
 		EdgeInstruction instr = new EdgeInstruction(instruction.getTopic(),
-				instruction.getInstructionDate(), nodeId);
+				instruction.getInstructionDate(), EdgeId);
 		if ( instr.getInstructionDate() == null ) {
 			instr.setInstructionDate(new DateTime());
 		}
@@ -137,19 +137,19 @@ public class DaoInstructorBiz implements InstructorBiz {
 				instr.addParameter(param.getName(), param.getValue());
 			}
 		}
-		Long id = nodeInstructionDao.store(instr);
-		return nodeInstructionDao.get(id);
+		Long id = EdgeInstructionDao.store(instr);
+		return EdgeInstructionDao.get(id);
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public List<EdgeInstruction> queueInstructions(Set<Long> nodeIds, Instruction instruction) {
-		List<EdgeInstruction> results = new ArrayList<EdgeInstruction>(nodeIds.size());
-		for ( Long nodeId : nodeIds ) {
+	public List<EdgeInstruction> queueInstructions(Set<Long> EdgeIds, Instruction instruction) {
+		List<EdgeInstruction> results = new ArrayList<EdgeInstruction>(EdgeIds.size());
+		for ( Long EdgeId : EdgeIds ) {
 			EdgeInstruction copy = new EdgeInstruction(instruction.getTopic(),
-					instruction.getInstructionDate(), nodeId);
+					instruction.getInstructionDate(), EdgeId);
 			copy.setParameters(instruction.getParameters());
-			EdgeInstruction instr = queueInstruction(nodeId, copy);
+			EdgeInstruction instr = queueInstruction(EdgeId, copy);
 			results.add(instr);
 		}
 		return results;
@@ -158,11 +158,11 @@ public class DaoInstructorBiz implements InstructorBiz {
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updateInstructionState(Long instructionId, InstructionState state) {
-		EdgeInstruction instr = nodeInstructionDao.get(instructionId);
+		EdgeInstruction instr = EdgeInstructionDao.get(instructionId);
 		if ( instr != null ) {
 			if ( !state.equals(instr.getState()) ) {
 				instr.setState(state);
-				nodeInstructionDao.store(instr);
+				EdgeInstructionDao.store(instr);
 			}
 		}
 	}
@@ -179,7 +179,7 @@ public class DaoInstructorBiz implements InstructorBiz {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updateInstructionState(Long instructionId, InstructionState state,
 			Map<String, ?> resultParameters) {
-		EdgeInstruction instr = nodeInstructionDao.get(instructionId);
+		EdgeInstruction instr = EdgeInstructionDao.get(instructionId);
 		if ( instr != null ) {
 			if ( !state.equals(instr.getState()) ) {
 				instr.setState(state);
@@ -191,7 +191,7 @@ public class DaoInstructorBiz implements InstructorBiz {
 					params.putAll(resultParameters);
 					instr.setResultParameters(params);
 				}
-				nodeInstructionDao.store(instr);
+				EdgeInstructionDao.store(instr);
 			}
 		}
 	}

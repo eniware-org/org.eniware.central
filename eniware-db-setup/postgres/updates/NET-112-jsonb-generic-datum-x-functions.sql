@@ -1,6 +1,6 @@
 DROP FUNCTION solardatum.find_most_recent(bigint, text[]);
 CREATE OR REPLACE FUNCTION solardatum.find_most_recent(
-	node bigint,
+	Edge bigint,
 	sources text[] DEFAULT NULL)
   RETURNS SETOF solardatum.da_datum_data AS
 $BODY$
@@ -9,33 +9,33 @@ $BODY$
 		-- to speed up query for sources (which can be very slow when queried directly on da_datum),
 		-- we find the most recent hour time slot in agg_datum_hourly, and then join to da_datum with that narrow time range
 		SELECT max(d.ts) as ts, d.source_id FROM solardatum.da_datum d
-		INNER JOIN (SELECT node_id, ts_start, source_id FROM solaragg.find_most_recent_hourly(node, sources)) AS days
-			ON days.node_id = d.node_id
+		INNER JOIN (SELECT Edge_id, ts_start, source_id FROM solaragg.find_most_recent_hourly(Edge, sources)) AS days
+			ON days.Edge_id = d.Edge_id
 				AND days.ts_start <= d.ts
 				AND days.ts_start + interval '1 hour' > d.ts
 				AND days.source_id = d.source_id
 		GROUP BY d.source_id
-	) AS r ON r.ts = dd.ts AND r.source_id = dd.source_id AND dd.node_id = node
+	) AS r ON r.ts = dd.ts AND r.source_id = dd.source_id AND dd.Edge_id = Edge
 	ORDER BY dd.source_id ASC;
 $BODY$
   LANGUAGE sql STABLE
   ROWS 20;
 
 DROP FUNCTION solardatum.find_most_recent(bigint[]);
-CREATE OR REPLACE FUNCTION solardatum.find_most_recent(nodes bigint[])
+CREATE OR REPLACE FUNCTION solardatum.find_most_recent(Edges bigint[])
   RETURNS SETOF solardatum.da_datum_data AS
 $BODY$
 	SELECT r.*
-	FROM (SELECT unnest(nodes) AS node_id) AS n,
-	LATERAL (SELECT * FROM solardatum.find_most_recent(n.node_id)) AS r
-	ORDER BY r.node_id, r.source_id;
+	FROM (SELECT unnest(Edges) AS Edge_id) AS n,
+	LATERAL (SELECT * FROM solardatum.find_most_recent(n.Edge_id)) AS r
+	ORDER BY r.Edge_id, r.source_id;
 $BODY$
   LANGUAGE sql STABLE;
 
 DROP FUNCTION solardatum.store_datum(timestamp with time zone, bigint, text, timestamp with time zone, text);
 CREATE OR REPLACE FUNCTION solardatum.store_datum(
 	cdate timestamp with time zone,
-	node bigint,
+	Edge bigint,
 	src text,
 	pdate timestamp with time zone,
 	jdata text)
@@ -48,9 +48,9 @@ DECLARE
 	jdata_prop_count integer := solardatum.datum_prop_count(jdata_json);
 	ts_post_hour timestamp with time zone := date_trunc('hour', ts_post);
 BEGIN
-	INSERT INTO solardatum.da_datum(ts, node_id, source_id, posted, jdata_i, jdata_a, jdata_s, jdata_t)
-	VALUES (ts_crea, node, src, ts_post, jdata_json->'i', jdata_json->'a', jdata_json->'s', solarcommon.json_array_to_text_array(jdata_json->'t'))
-	ON CONFLICT (node_id, ts, source_id) DO UPDATE
+	INSERT INTO solardatum.da_datum(ts, Edge_id, source_id, posted, jdata_i, jdata_a, jdata_s, jdata_t)
+	VALUES (ts_crea, Edge, src, ts_post, jdata_json->'i', jdata_json->'a', jdata_json->'s', solarcommon.json_array_to_text_array(jdata_json->'t'))
+	ON CONFLICT (Edge_id, ts, source_id) DO UPDATE
 	SET jdata_i = EXCLUDED.jdata_i,
 		jdata_a = EXCLUDED.jdata_a,
 		jdata_s = EXCLUDED.jdata_s,
@@ -58,9 +58,9 @@ BEGIN
 		posted = EXCLUDED.posted;
 
 	INSERT INTO solaragg.aud_datum_hourly (
-		ts_start, node_id, source_id, prop_count)
-	VALUES (ts_post_hour, node, src, jdata_prop_count)
-	ON CONFLICT (node_id, ts_start, source_id) DO UPDATE
+		ts_start, Edge_id, source_id, prop_count)
+	VALUES (ts_post_hour, Edge, src, jdata_prop_count)
+	ON CONFLICT (Edge_id, ts_start, source_id) DO UPDATE
 	SET prop_count = aud_datum_hourly.prop_count + EXCLUDED.prop_count;
 END;
 $BODY$;

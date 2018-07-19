@@ -26,7 +26,7 @@ public class MyBatisEdgeInstructionDao extends
 		BaseMyBatisFilterableDao<EdgeInstruction, EntityMatch, InstructionFilter, Long> implements
 		EdgeInstructionDao {
 
-	public static final String UPDATE_PURGE_COMPLETED_INSTRUCTIONS = "delete-NodeInstruction-completed";
+	public static final String UPDATE_PURGE_COMPLETED_INSTRUCTIONS = "delete-EdgeInstruction-completed";
 
 	/**
 	 * Default constructor.

@@ -8,7 +8,7 @@ package org.eniware.central.datum.support;
 
 import java.math.BigDecimal;
 
-import org.eniware.central.datum.domain.NodeDatum;
+import org.eniware.central.datum.domain.EdgeDatum;
 import org.eniware.central.support.JsonUtils;
 import org.eniware.util.ClassUtils;
 import org.slf4j.Logger;
@@ -68,28 +68,28 @@ public final class DatumUtils {
 	}
 
 	/**
-	 * Get a {@link NodeDatum} {@link Class} for a given name.
+	 * Get a {@link EdgeDatum} {@link Class} for a given name.
 	 * 
 	 * <p>
 	 * If {@code name} contains a period, it will be treated as a
 	 * fully-qualified class name. Otherwise a FQCN will be constructed as
-	 * residing in the same package as {@link NodeDatum} named by capitalizing
+	 * residing in the same package as {@link EdgeDatum} named by capitalizing
 	 * {@code name} and appending {@code Datum} to the end. For example, a
 	 * {@code name} value of <em>power</em> would result in a class named
-	 * {@code PowerDatum} in the same package as {@link NodeDatum} (e.g.
+	 * {@code PowerDatum} in the same package as {@link EdgeDatum} (e.g.
 	 * {@code org.eniware.central.datum.domain.PowerDatum}).
 	 * 
 	 * @param name
-	 *        the node datum class name
+	 *        the Edge datum class name
 	 * @return the class, or <em>null</em> if not available
 	 */
-	public static Class<? extends NodeDatum> nodeDatumClassForName(String name) {
+	public static Class<? extends EdgeDatum> EdgeDatumClassForName(String name) {
 		if ( name == null ) {
 			return null;
 		}
 		StringBuilder buf = new StringBuilder();
 		if ( name.indexOf('.') < 0 ) {
-			buf.append(NodeDatum.class.getPackage().getName());
+			buf.append(EdgeDatum.class.getPackage().getName());
 			buf.append('.');
 
 			// fix case and append "Datum"
@@ -103,11 +103,11 @@ public final class DatumUtils {
 			// contains a period, so treat as FQCN
 			buf.append(name);
 		}
-		Class<? extends NodeDatum> result = null;
+		Class<? extends EdgeDatum> result = null;
 		try {
-			result = ClassUtils.loadClass(name, NodeDatum.class);
+			result = ClassUtils.loadClass(name, EdgeDatum.class);
 		} catch ( RuntimeException e ) {
-			LOG.debug("Exception loading NodeDatum class {}", name, e);
+			LOG.debug("Exception loading EdgeDatum class {}", name, e);
 		}
 		return result;
 	}

@@ -33,9 +33,9 @@
 	<reference id="eventAdmin" interface="org.osgi.service.event.EventAdmin"/>
 
 	<reference id="locationDao" interface="org.eniware.central.dao.EniwareLocationDao"/>
-	<reference id="nodeDatumDao" interface="org.eniware.central.datum.dao.GeneralNodeDatumDao"/>
+	<reference id="EdgeDatumDao" interface="org.eniware.central.datum.dao.GeneralEdgeDatumDao"/>
 	<reference id="userDao" interface="org.eniware.central.user.dao.UserDao"/>
-	<reference id="userNodeDao" interface="org.eniware.central.user.dao.UserNodeDao"/>
+	<reference id="userEdgeDao" interface="org.eniware.central.user.dao.UserEdgeDao"/>
 	
 	<reference id="killbillClient" interface="org.eniware.central.user.billing.killbill.KillbillClient"/>
 	
@@ -55,8 +55,8 @@
 			autowire-on-update="true"/>
 		<argument ref="locationDao"/>
 		<argument ref="userDao"/>
-		<argument ref="userNodeDao"/>
-		<argument ref="nodeDatumDao"/>
+		<argument ref="userEdgeDao"/>
+		<argument ref="EdgeDatumDao"/>
 		<argument ref="killbillClient"/>
 		<property name="tagDefinitionCache" ref="tagDefinitionCache"/>
 	</bean>

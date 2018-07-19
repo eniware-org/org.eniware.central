@@ -335,12 +335,12 @@
        id="g3448"
        style="stroke:#729fcf">
       <path
-         sodipodi:nodetypes="cccccc"
+         sodipodi:Edgetypes="cccccc"
          id="path3442"
          d="M 24.5,27.5 L 26.5,34.5 L 31.5,35.5 L 32.5,40.5 L 36.5,41.5 L 35.375,49.75"
          style="fill:none;fill-rule:evenodd;stroke:url(#linearGradient3476);stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1.0" />
       <path
-         sodipodi:nodetypes="ccccc"
+         sodipodi:Edgetypes="ccccc"
          id="path3444"
          d="M 26.5,34.5 L 24.5,37.5 L 26.5,41 L 24.5,42.5 L 26.5,47.5"
          style="fill:none;fill-rule:evenodd;stroke:url(#linearGradient3484);stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1.0" />
@@ -364,7 +364,7 @@
        style="fill:none;fill-rule:evenodd;stroke:url(#linearGradient3492);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1.0"
        d="M 26.5,34.5 L 24.5,37.5 L 26.5,41 L 24.5,42.5 L 26.5,47.5"
        id="path3438"
-       sodipodi:nodetypes="ccccc" />
+       sodipodi:Edgetypes="ccccc" />
     <path
        sodipodi:type="inkscape:offset"
        inkscape:radius="-0.99151278"
@@ -376,7 +376,7 @@
        style="fill:none;fill-rule:evenodd;stroke:url(#linearGradient3459);stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1.0"
        d="M 24.5,27.5 L 26.5,34.5 L 31.5,35.5 L 32.5,40.5 L 36.5,41.5 L 35.375,49.75"
        id="path3436"
-       sodipodi:nodetypes="cccccc" />
+       sodipodi:Edgetypes="cccccc" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:url(#linearGradient3508);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1.0"
        d="M 24.5,37.5 L 22.5,39.5 L 20.5,39.5 L 18.5,42.5 L 19.5,46.5"

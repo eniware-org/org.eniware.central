@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.eniware.central.datum.domain.AggregateGeneralLocationDatumFilter;
-import org.eniware.central.datum.domain.AggregateGeneralNodeDatumFilter;
+import org.eniware.central.datum.domain.AggregateGeneralEdgeDatumFilter;
 import org.eniware.central.datum.domain.GeneralLocationDatumFilter;
 import org.eniware.central.datum.domain.GeneralLocationDatumFilterMatch;
-import org.eniware.central.datum.domain.GeneralNodeDatumFilter;
-import org.eniware.central.datum.domain.GeneralNodeDatumFilterMatch;
+import org.eniware.central.datum.domain.GeneralEdgeDatumFilter;
+import org.eniware.central.datum.domain.GeneralEdgeDatumFilterMatch;
 import org.eniware.central.datum.domain.ReportingGeneralLocationDatumMatch;
-import org.eniware.central.datum.domain.ReportingGeneralNodeDatumMatch;
+import org.eniware.central.datum.domain.ReportingGeneralEdgeDatumMatch;
 import org.eniware.central.domain.FilterResults;
 import org.eniware.central.domain.Location;
 import org.eniware.central.domain.LocationMatch;
@@ -45,27 +45,27 @@ public class DelegatingQueryBiz implements QueryBiz {
 	}
 
 	@Override
-	public ReportableInterval getReportableInterval(Long nodeId, String sourceId) {
-		return delegate.getReportableInterval(nodeId, sourceId);
+	public ReportableInterval getReportableInterval(Long EdgeId, String sourceId) {
+		return delegate.getReportableInterval(EdgeId, sourceId);
 	}
 
 	@Override
-	public Set<String> getAvailableSources(Long nodeId, DateTime start, DateTime end) {
-		return delegate.getAvailableSources(nodeId, start, end);
+	public Set<String> getAvailableSources(Long EdgeId, DateTime start, DateTime end) {
+		return delegate.getAvailableSources(EdgeId, start, end);
 	}
 
 	@Override
-	public FilterResults<GeneralNodeDatumFilterMatch> findFilteredGeneralNodeDatum(
-			GeneralNodeDatumFilter filter, List<SortDescriptor> sortDescriptors, Integer offset,
+	public FilterResults<GeneralEdgeDatumFilterMatch> findFilteredGeneralEdgeDatum(
+			GeneralEdgeDatumFilter filter, List<SortDescriptor> sortDescriptors, Integer offset,
 			Integer max) {
-		return delegate.findFilteredGeneralNodeDatum(filter, sortDescriptors, offset, max);
+		return delegate.findFilteredGeneralEdgeDatum(filter, sortDescriptors, offset, max);
 	}
 
 	@Override
-	public FilterResults<ReportingGeneralNodeDatumMatch> findFilteredAggregateGeneralNodeDatum(
-			AggregateGeneralNodeDatumFilter filter, List<SortDescriptor> sortDescriptors,
+	public FilterResults<ReportingGeneralEdgeDatumMatch> findFilteredAggregateGeneralEdgeDatum(
+			AggregateGeneralEdgeDatumFilter filter, List<SortDescriptor> sortDescriptors,
 			Integer offset, Integer max) {
-		return delegate.findFilteredAggregateGeneralNodeDatum(filter, sortDescriptors, offset, max);
+		return delegate.findFilteredAggregateGeneralEdgeDatum(filter, sortDescriptors, offset, max);
 	}
 
 	@Override

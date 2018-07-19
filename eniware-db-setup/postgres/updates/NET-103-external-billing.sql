@@ -28,45 +28,45 @@ $BODY$
 $BODY$;
 
 CREATE OR REPLACE FUNCTION solaragg.find_audit_datum_interval(
-	IN node solarcommon.node_id,
+	IN Edge solarcommon.Edge_id,
 	IN src solarcommon.source_id DEFAULT NULL,
 	OUT ts_start solarcommon.ts,
 	OUT ts_end solarcommon.ts,
-	OUT node_tz TEXT,
-	OUT node_tz_offset INTEGER)
+	OUT Edge_tz TEXT,
+	OUT Edge_tz_offset INTEGER)
   RETURNS RECORD AS
 $BODY$
 BEGIN
 	CASE
 		WHEN src IS NULL THEN
-			SELECT min(a.ts_start) FROM solaragg.aud_datum_hourly a WHERE node_id = node
+			SELECT min(a.ts_start) FROM solaragg.aud_datum_hourly a WHERE Edge_id = Edge
 			INTO ts_start;
 		ELSE
-			SELECT min(a.ts_start) FROM solaragg.aud_datum_hourly a WHERE node_id = node AND source_id = src
+			SELECT min(a.ts_start) FROM solaragg.aud_datum_hourly a WHERE Edge_id = Edge AND source_id = src
 			INTO ts_start;
 	END CASE;
 
 	CASE
 		WHEN src IS NULL THEN
-			SELECT max(a.ts_start) FROM solaragg.aud_datum_hourly a WHERE node_id = node
+			SELECT max(a.ts_start) FROM solaragg.aud_datum_hourly a WHERE Edge_id = Edge
 			INTO ts_end;
 		ELSE
-			SELECT max(a.ts_start) FROM solaragg.aud_datum_hourly a WHERE node_id = node AND source_id = src
+			SELECT max(a.ts_start) FROM solaragg.aud_datum_hourly a WHERE Edge_id = Edge AND source_id = src
 			INTO ts_end;
 	END CASE;
 
 	SELECT
 		l.time_zone,
 		CAST(EXTRACT(epoch FROM z.utc_offset) / 60 AS INTEGER)
-	FROM solarnet.sn_node n
+	FROM solarnet.sn_Edge n
 	INNER JOIN solarnet.sn_loc l ON l.id = n.loc_id
 	INNER JOIN pg_timezone_names z ON z.name = l.time_zone
-	WHERE n.node_id = node
-	INTO node_tz, node_tz_offset;
+	WHERE n.Edge_id = Edge
+	INTO Edge_tz, Edge_tz_offset;
 
 	IF NOT FOUND THEN
-		node_tz := 'UTC';
-		node_tz_offset := 0;
+		Edge_tz := 'UTC';
+		Edge_tz_offset := 0;
 	END IF;
 
 END;$BODY$

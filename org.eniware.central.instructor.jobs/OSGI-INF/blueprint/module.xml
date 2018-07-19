@@ -20,8 +20,8 @@
 	<!-- Configuration -->
 	
 	<osgix:cm-properties id="cfg" persistent-id="org.eniware.central.instructor.jobs">
-		<beans:prop key="completedNodeInstructionCleaner.daysOlder">30</beans:prop>
-		<beans:prop key="completedNodeInstructionCleaner.jobCron">0 0 1 ? * SUN</beans:prop><!--  Weekly, on Sunday 1am -->
+		<beans:prop key="completedEdgeInstructionCleaner.daysOlder">30</beans:prop>
+		<beans:prop key="completedEdgeInstructionCleaner.jobCron">0 0 1 ? * SUN</beans:prop><!--  Weekly, on Sunday 1am -->
 	</osgix:cm-properties>
 
 	<ctx:property-placeholder properties-ref="cfg"/>
@@ -30,27 +30,27 @@
 
 	<reference id="eventAdmin" interface="org.osgi.service.event.EventAdmin"/>
 
- 	<reference id="nodeInstructionDao" interface="org.eniware.central.instructor.dao.NodeInstructionDao"/>
+ 	<reference id="EdgeInstructionDao" interface="org.eniware.central.instructor.dao.EdgeInstructionDao"/>
 	
 	<!-- Supporting Services -->
 	
-	<bean id="completedNodeInstructionCleaner" class="org.eniware.central.instructor.jobs.NodeInstructionCleaner">
+	<bean id="completedEdgeInstructionCleaner" class="org.eniware.central.instructor.jobs.EdgeInstructionCleaner">
 		<argument ref="eventAdmin"/>
-		<argument ref="nodeInstructionDao"/>
-		<property name="jobCron" value="${completedNodeInstructionCleaner.jobCron}"/>
-		<property name="jobId" value="NodeInstructionCleaner"/>
-		<property name="jobTopic" value="net/eniwarenetwork/central/instructor/jobs/NodeInstructionCleaner"/>
-		<property name="daysOlder" value="${completedNodeInstructionCleaner.daysOlder}"/>
+		<argument ref="EdgeInstructionDao"/>
+		<property name="jobCron" value="${completedEdgeInstructionCleaner.jobCron}"/>
+		<property name="jobId" value="EdgeInstructionCleaner"/>
+		<property name="jobTopic" value="net/eniwarenetwork/central/instructor/jobs/EdgeInstructionCleaner"/>
+		<property name="daysOlder" value="${completedEdgeInstructionCleaner.daysOlder}"/>
 	</bean>
 	
 	<!-- Published Services -->
 
-	<service ref="completedNodeInstructionCleaner" interface="org.osgi.service.event.EventHandler">
+	<service ref="completedEdgeInstructionCleaner" interface="org.osgi.service.event.EventHandler">
 		<service-properties>
 			<entry key="#{T(org.osgi.service.event.EventConstants).EVENT_TOPIC}">
 				<array value-type="java.lang.String">
 					<value>#{T(org.eniware.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
-					<value>#{completedNodeInstructionCleaner.jobTopic}</value>
+					<value>#{completedEdgeInstructionCleaner.jobTopic}</value>
 				</array>
 			</entry>
 		</service-properties>

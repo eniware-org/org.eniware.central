@@ -20,8 +20,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eniware.central.datum.domain.GeneralNodeDatumFilter;
-import org.eniware.central.datum.domain.GeneralNodeDatumPK;
+import org.eniware.central.datum.domain.GeneralEdgeDatumFilter;
+import org.eniware.central.datum.domain.GeneralEdgeDatumPK;
 import org.eniware.central.domain.FilterMatch;
 import org.eniware.central.domain.FilterResults;
 import org.eniware.central.query.biz.QueryAuditor;
@@ -49,8 +49,8 @@ public class JdbcQueryAuditor implements QueryAuditor {
 	/** The default value for the {@code connecitonRecoveryDelay} property. */
 	public static final long DEFAULT_CONNECTION_RECOVERY_DELAY = 15000;
 
-	/** The default value for the {@code nodeSourceIncrementSql} property. */
-	public static final String DEFAULT_NODE_SOURCE_INCREMENT_SQL = "{call eniwareagg.aud_inc_datum_query_count(?, ?, ?, ?)}";
+	/** The default value for the {@code EdgeSourceIncrementSql} property. */
+	public static final String DEFAULT_Edge_SOURCE_INCREMENT_SQL = "{call eniwareagg.aud_inc_datum_query_count(?, ?, ?, ?)}";
 
 	/**
 	 * A regular expression that matches if a JDBC statement is a
@@ -60,7 +60,7 @@ public class JdbcQueryAuditor implements QueryAuditor {
 			Pattern.CASE_INSENSITIVE);
 
 	private final JdbcOperations jdbcOps;
-	private final ConcurrentMap<GeneralNodeDatumPK, AtomicInteger> nodeSourceCounters;
+	private final ConcurrentMap<GeneralEdgeDatumPK, AtomicInteger> EdgeSourceCounters;
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -68,7 +68,7 @@ public class JdbcQueryAuditor implements QueryAuditor {
 	private long updateDelay;
 	private long flushDelay;
 	private long connectionRecoveryDelay;
-	private String nodeSourceIncrementSql;
+	private String EdgeSourceIncrementSql;
 
 	/**
 	 * Constructor.
@@ -85,23 +85,23 @@ public class JdbcQueryAuditor implements QueryAuditor {
 	 * 
 	 * @param jdbcOperations
 	 *        the JDBC accessor to use
-	 * @param nodeSourceCounters
-	 *        the map to use for tracking counts for node datum
+	 * @param EdgeSourceCounters
+	 *        the map to use for tracking counts for Edge datum
 	 */
 	public JdbcQueryAuditor(JdbcOperations jdbcOperations,
-			ConcurrentMap<GeneralNodeDatumPK, AtomicInteger> nodeSourceCounters) {
+			ConcurrentMap<GeneralEdgeDatumPK, AtomicInteger> EdgeSourceCounters) {
 		super();
 		this.jdbcOps = jdbcOperations;
-		this.nodeSourceCounters = nodeSourceCounters;
+		this.EdgeSourceCounters = EdgeSourceCounters;
 		setConnectionRecoveryDelay(DEFAULT_CONNECTION_RECOVERY_DELAY);
 		setFlushDelay(DEFAULT_FLUSH_DELAY);
 		setUpdateDelay(DEFAULT_UPDATE_DELAY);
-		setNodeSourceIncrementSql(DEFAULT_NODE_SOURCE_INCREMENT_SQL);
+		setEdgeSourceIncrementSql(DEFAULT_Edge_SOURCE_INCREMENT_SQL);
 	}
 
 	@Override
-	public <T extends FilterMatch<GeneralNodeDatumPK>> void auditNodeDatumFilterResults(
-			GeneralNodeDatumFilter filter, FilterResults<T> results) {
+	public <T extends FilterMatch<GeneralEdgeDatumPK>> void auditEdgeDatumFilterResults(
+			GeneralEdgeDatumFilter filter, FilterResults<T> results) {
 		final int returnedCount = (results.getReturnedResultCount() != null
 				? results.getReturnedResultCount()
 				: 0);
@@ -114,46 +114,46 @@ public class JdbcQueryAuditor implements QueryAuditor {
 		DateTime hour = new DateTime();
 		hour = hour.withTime(hour.getHourOfDay(), 0, 0, 0);
 
-		// try shortcut for single node + source
-		Long[] nodeIds = filter.getNodeIds();
+		// try shortcut for single Edge + source
+		Long[] EdgeIds = filter.getEdgeIds();
 		String[] sourceIds = filter.getSourceIds();
-		if ( nodeIds != null && nodeIds.length == 1 && sourceIds != null && sourceIds.length == 1 ) {
-			GeneralNodeDatumPK pk = nodeDatumKey(hour, nodeIds[0], sourceIds[0]);
-			addNodeSourceCount(pk, returnedCount);
+		if ( EdgeIds != null && EdgeIds.length == 1 && sourceIds != null && sourceIds.length == 1 ) {
+			GeneralEdgeDatumPK pk = EdgeDatumKey(hour, EdgeIds[0], sourceIds[0]);
+			addEdgeSourceCount(pk, returnedCount);
 			return;
 		}
 
 		// coalesce counts by key first to simplify inserts into counters
-		Map<GeneralNodeDatumPK, Integer> counts = new HashMap<>(returnedCount);
-		for ( FilterMatch<GeneralNodeDatumPK> result : results ) {
-			GeneralNodeDatumPK id = result.getId();
-			GeneralNodeDatumPK pk = nodeDatumKey(hour, id.getNodeId(), id.getSourceId());
+		Map<GeneralEdgeDatumPK, Integer> counts = new HashMap<>(returnedCount);
+		for ( FilterMatch<GeneralEdgeDatumPK> result : results ) {
+			GeneralEdgeDatumPK id = result.getId();
+			GeneralEdgeDatumPK pk = EdgeDatumKey(hour, id.getEdgeId(), id.getSourceId());
 			counts.compute(pk, (k, v) -> v == null ? 1 : v.intValue() + 1);
 		}
 
 		// insert counts
-		for ( Map.Entry<GeneralNodeDatumPK, Integer> me : counts.entrySet() ) {
-			addNodeSourceCount(me.getKey(), me.getValue());
+		for ( Map.Entry<GeneralEdgeDatumPK, Integer> me : counts.entrySet() ) {
+			addEdgeSourceCount(me.getKey(), me.getValue());
 		}
 	}
 
-	private static GeneralNodeDatumPK nodeDatumKey(DateTime date, Long nodeId, String sourceId) {
-		GeneralNodeDatumPK pk = new GeneralNodeDatumPK();
+	private static GeneralEdgeDatumPK EdgeDatumKey(DateTime date, Long EdgeId, String sourceId) {
+		GeneralEdgeDatumPK pk = new GeneralEdgeDatumPK();
 		pk.setCreated(date);
-		pk.setNodeId(nodeId);
+		pk.setEdgeId(EdgeId);
 		pk.setSourceId(sourceId);
 		return pk;
 	}
 
-	private void addNodeSourceCount(GeneralNodeDatumPK key, int count) {
-		nodeSourceCounters.computeIfAbsent(key, k -> new AtomicInteger(0)).addAndGet(count);
+	private void addEdgeSourceCount(GeneralEdgeDatumPK key, int count) {
+		EdgeSourceCounters.computeIfAbsent(key, k -> new AtomicInteger(0)).addAndGet(count);
 	}
 
-	private void flushNodeSourceData(PreparedStatement stmt) throws SQLException, InterruptedException {
-		for ( Iterator<Map.Entry<GeneralNodeDatumPK, AtomicInteger>> itr = nodeSourceCounters.entrySet()
+	private void flushEdgeSourceData(PreparedStatement stmt) throws SQLException, InterruptedException {
+		for ( Iterator<Map.Entry<GeneralEdgeDatumPK, AtomicInteger>> itr = EdgeSourceCounters.entrySet()
 				.iterator(); itr.hasNext(); ) {
-			Map.Entry<GeneralNodeDatumPK, AtomicInteger> me = itr.next();
-			GeneralNodeDatumPK key = me.getKey();
+			Map.Entry<GeneralEdgeDatumPK, AtomicInteger> me = itr.next();
+			GeneralEdgeDatumPK key = me.getKey();
 			AtomicInteger counter = me.getValue();
 			final int count = counter.getAndSet(0);
 			if ( count < 1 ) {
@@ -163,7 +163,7 @@ public class JdbcQueryAuditor implements QueryAuditor {
 			}
 			try {
 				stmt.setTimestamp(1, new java.sql.Timestamp(key.getCreated().getMillis()));
-				stmt.setLong(2, key.getNodeId());
+				stmt.setLong(2, key.getEdgeId());
 				stmt.setString(3, key.getSourceId());
 				stmt.setInt(4, count);
 				stmt.execute();
@@ -171,15 +171,15 @@ public class JdbcQueryAuditor implements QueryAuditor {
 					Thread.sleep(updateDelay);
 				}
 			} catch ( SQLException | InterruptedException e ) {
-				addNodeSourceCount(key, count);
+				addEdgeSourceCount(key, count);
 				throw e;
 			} catch ( Exception e ) {
-				addNodeSourceCount(key, count);
+				addEdgeSourceCount(key, count);
 				RuntimeException re;
 				if ( e instanceof RuntimeException ) {
 					re = (RuntimeException) e;
 				} else {
-					re = new RuntimeException("Exception flushing node source audit data", e);
+					re = new RuntimeException("Exception flushing Edge source audit data", e);
 				}
 				throw re;
 			}
@@ -229,15 +229,15 @@ public class JdbcQueryAuditor implements QueryAuditor {
 						public Boolean doInConnection(Connection con)
 								throws SQLException, DataAccessException {
 							con.setAutoCommit(true); // we want every execution of our loop to commit immediately
-							PreparedStatement stmt = isCallableStatement(nodeSourceIncrementSql)
-									? con.prepareCall(nodeSourceIncrementSql)
-									: con.prepareStatement(nodeSourceIncrementSql);
+							PreparedStatement stmt = isCallableStatement(EdgeSourceIncrementSql)
+									? con.prepareCall(EdgeSourceIncrementSql)
+									: con.prepareStatement(EdgeSourceIncrementSql);
 							do {
 								try {
 									if ( Thread.interrupted() ) {
 										throw new InterruptedException();
 									}
-									flushNodeSourceData(stmt);
+									flushEdgeSourceData(stmt);
 									Thread.sleep(flushDelay);
 								} catch ( InterruptedException e ) {
 									log.info("Writer thread interrupted: exiting now.");
@@ -350,7 +350,7 @@ public class JdbcQueryAuditor implements QueryAuditor {
 
 	/**
 	 * The JDBC statement to execute for incrementing a count for a single date,
-	 * node, and source.
+	 * Edge, and source.
 	 * 
 	 * <p>
 	 * The statement must accept the following parameters:
@@ -358,22 +358,22 @@ public class JdbcQueryAuditor implements QueryAuditor {
 	 * 
 	 * <ol>
 	 * <li>timestamp - the audit date</li>
-	 * <li>long - the node ID</li>
+	 * <li>long - the Edge ID</li>
 	 * <li>string - the source ID</li>
 	 * </ol>
 	 * 
 	 * @param sql
 	 *        the SQL statement to use; defaults to
-	 *        {@link #DEFAULT_NODE_SOURCE_INCREMENT_SQL}
+	 *        {@link #DEFAULT_Edge_SOURCE_INCREMENT_SQL}
 	 */
-	public void setNodeSourceIncrementSql(String sql) {
+	public void setEdgeSourceIncrementSql(String sql) {
 		if ( sql == null ) {
-			throw new IllegalArgumentException("nodeSourceIncrementSql must not be null");
+			throw new IllegalArgumentException("EdgeSourceIncrementSql must not be null");
 		}
-		if ( sql.equals(nodeSourceIncrementSql) ) {
+		if ( sql.equals(EdgeSourceIncrementSql) ) {
 			return;
 		}
-		this.nodeSourceIncrementSql = sql;
+		this.EdgeSourceIncrementSql = sql;
 		reconnectWriter();
 	}
 

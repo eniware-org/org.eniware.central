@@ -15,13 +15,13 @@ import org.eniware.central.domain.EniwareEdge;
 public interface EniwareEdgeDao extends GenericDao<EniwareEdge, Long> {
 
 	/**
-	 * Get an unused node ID value.
+	 * Get an unused Edge ID value.
 	 * 
 	 * <p>Once an ID has been returned by this method, that ID will
 	 * never be returned again.</p>
 	 * 
-	 * @return an unused node ID
+	 * @return an unused Edge ID
 	 */
-	Long getUnusedNodeId();
+	Long getUnusedEdgeId();
 	
 }

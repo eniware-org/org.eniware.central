@@ -118,15 +118,15 @@ public class UserAuthToken extends BaseStringEntity {
 	}
 
 	/**
-	 * Get the node IDs included in the policy, if available.
+	 * Get the Edge IDs included in the policy, if available.
 	 * 
-	 * @return node IDs, or {@code null}
+	 * @return Edge IDs, or {@code null}
 	 */
 	@SerializeIgnore
 	@JsonIgnore
-	public Set<Long> getNodeIds() {
+	public Set<Long> getEdgeIds() {
 		BasicSecurityPolicy p = getPolicy();
-		return (p == null ? null : p.getNodeIds());
+		return (p == null ? null : p.getEdgeIds());
 	}
 
 	/**

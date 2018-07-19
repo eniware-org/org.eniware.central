@@ -41,7 +41,7 @@ import org.eniware.util.SerializeIgnore;
  */
 public class SimpleInstructionFilter implements InstructionFilter {
 
-	private Long[] nodeIds;
+	private Long[] EdgeIds;
 	private Long[] instructionIds;
 	private List<InstructionState> states;
 
@@ -49,9 +49,9 @@ public class SimpleInstructionFilter implements InstructionFilter {
 	@SerializeIgnore
 	public Map<String, ?> getFilter() {
 		Map<String, Object> f = new LinkedHashMap<String, Object>(2);
-		if ( nodeIds != null && nodeIds.length > 0 ) {
-			f.put("nodeId", nodeIds[0]); // backwards compatibility
-			f.put("nodeIds", nodeIds);
+		if ( EdgeIds != null && EdgeIds.length > 0 ) {
+			f.put("EdgeId", EdgeIds[0]); // backwards compatibility
+			f.put("EdgeIds", EdgeIds);
 		}
 		if ( instructionIds != null && instructionIds.length > 0 ) {
 			f.put("instructionIds", instructionIds);
@@ -66,45 +66,45 @@ public class SimpleInstructionFilter implements InstructionFilter {
 	}
 
 	/**
-	 * Set a single node ID.
+	 * Set a single Edge ID.
 	 * 
 	 * <p>
-	 * This is a convenience method for requests that use a single node ID at a
-	 * time. The node ID is still stored on the {@code nodeIds} array, just as
+	 * This is a convenience method for requests that use a single Edge ID at a
+	 * time. The Edge ID is still stored on the {@code EdgeIds} array, just as
 	 * the first value. Calling this method replaces any existing
-	 * {@code nodeIds} value with a new array containing just the ID passed into
+	 * {@code EdgeIds} value with a new array containing just the ID passed into
 	 * this method.
 	 * </p>
 	 * 
-	 * @param nodeId
-	 *        the ID of the node
+	 * @param EdgeId
+	 *        the ID of the Edge
 	 */
-	public void setNodeId(Long nodeId) {
-		this.nodeIds = new Long[] { nodeId };
+	public void setEdgeId(Long EdgeId) {
+		this.EdgeIds = new Long[] { EdgeId };
 	}
 
 	/**
-	 * Get the first node ID.
+	 * Get the first Edge ID.
 	 * 
 	 * <p>
-	 * This returns the first available node ID from the {@code nodeIds} array,
+	 * This returns the first available Edge ID from the {@code EdgeIds} array,
 	 * or <em>null</em> if not available.
 	 * </p>
 	 * 
-	 * @return the first node ID
+	 * @return the first Edge ID
 	 */
 	@Override
-	public Long getNodeId() {
-		return this.nodeIds == null || this.nodeIds.length < 1 ? null : this.nodeIds[0];
+	public Long getEdgeId() {
+		return this.EdgeIds == null || this.EdgeIds.length < 1 ? null : this.EdgeIds[0];
 	}
 
 	@Override
-	public Long[] getNodeIds() {
-		return nodeIds;
+	public Long[] getEdgeIds() {
+		return EdgeIds;
 	}
 
-	public void setNodeIds(Long[] nodeIds) {
-		this.nodeIds = nodeIds;
+	public void setEdgeIds(Long[] EdgeIds) {
+		this.EdgeIds = EdgeIds;
 	}
 
 	@Override

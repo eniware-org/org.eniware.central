@@ -13,7 +13,7 @@
 	<reference id="userDao" interface="org.eniware.central.user.dao.UserDao"/>
 	<reference id="userMetadataDao" interface="org.eniware.central.user.dao.UserMetadataDao"/>
 	<reference id="userAlertDao" interface="org.eniware.central.user.dao.UserAlertDao"/>
-	<reference id="userNodeDao" interface="org.eniware.central.user.dao.UserNodeDao"/>
+	<reference id="userEdgeDao" interface="org.eniware.central.user.dao.UserEdgeDao"/>
 	<reference id="userAuthTokenDao" interface="org.eniware.central.user.dao.UserAuthTokenDao"/>
 
 	<reference id="registrationBiz"
@@ -32,8 +32,8 @@
 		interface="org.eniware.central.user.biz.UserAlertBiz"
 		filter="(!(secured=true))"/>
 	
-	<reference id="nodeOwnershipBiz"
-		interface="org.eniware.central.user.biz.NodeOwnershipBiz"
+	<reference id="EdgeOwnershipBiz"
+		interface="org.eniware.central.user.biz.EdgeOwnershipBiz"
 		filter="(!(secured=true))"/>
 	
 	<!-- Published Services -->
@@ -56,7 +56,7 @@
 		</service-properties>
 	</service>
 
-	<service ref="aopNodeOwnershipBiz" interface="org.eniware.central.user.biz.NodeOwnershipBiz" ranking="10">
+	<service ref="aopEdgeOwnershipBiz" interface="org.eniware.central.user.biz.EdgeOwnershipBiz" ranking="10">
 		<service-properties>
 			<entry key="secured" value="true"/>
 		</service-properties>
@@ -73,25 +73,25 @@
 	<aop:aspectj-autoproxy/>
 
 	<bean id="registrationSecurityAspect" class="org.eniware.central.user.aop.RegistrationSecurityAspect">
-		<argument ref="userNodeDao"/>
+		<argument ref="userEdgeDao"/>
 	</bean>
 	
 	<bean id="userSecurityAspect" class="org.eniware.central.user.aop.UserSecurityAspect">
-		<argument ref="userNodeDao"/>
+		<argument ref="userEdgeDao"/>
 		<argument ref="userAuthTokenDao"/>
 	</bean>
 	
 	<bean id="userMetadataSecurityAspect" class="org.eniware.central.user.aop.UserMetadataSecurityAspect">
-		<argument ref="userNodeDao"/>
+		<argument ref="userEdgeDao"/>
 	</bean>
 	
-	<bean id="nodeOwnershipSecurityAspect" class="org.eniware.central.user.aop.NodeOwnershipSecurityAspect">
-		<argument ref="userNodeDao"/>
+	<bean id="EdgeOwnershipSecurityAspect" class="org.eniware.central.user.aop.EdgeOwnershipSecurityAspect">
+		<argument ref="userEdgeDao"/>
 		<argument ref="userDao"/>
 	</bean>
 	
 	<bean id="userAlertSecurityAspect" class="org.eniware.central.user.aop.UserAlertSecurityAspect">
-		<argument ref="userNodeDao"/>
+		<argument ref="userEdgeDao"/>
 		<argument ref="userAlertDao"/>
 	</bean>
 	
@@ -107,8 +107,8 @@
 		<argument ref="userMetadataBiz"/>
 	</bean>
 
-	<bean id="aopNodeOwnershipBiz" class="org.eniware.central.user.support.DelegatingNodeOwnershipBiz">
-		<argument ref="nodeOwnershipBiz"/>
+	<bean id="aopEdgeOwnershipBiz" class="org.eniware.central.user.support.DelegatingEdgeOwnershipBiz">
+		<argument ref="EdgeOwnershipBiz"/>
 	</bean>
 	
 	<bean id="aopUserAlertBiz" class="org.eniware.central.user.support.DelegatingUserAlertBiz">

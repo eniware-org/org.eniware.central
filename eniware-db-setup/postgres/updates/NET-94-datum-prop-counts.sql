@@ -27,15 +27,15 @@ $BODY$;
 
 CREATE TABLE solaragg.aud_datum_hourly (
   ts_start timestamp with time zone NOT NULL,
-  node_id solarcommon.node_id NOT NULL,
+  Edge_id solarcommon.Edge_id NOT NULL,
   source_id solarcommon.source_id NOT NULL,
   prop_count integer NOT NULL,
-  CONSTRAINT aud_datum_hourly_pkey PRIMARY KEY (node_id, ts_start, source_id) DEFERRABLE INITIALLY IMMEDIATE
+  CONSTRAINT aud_datum_hourly_pkey PRIMARY KEY (Edge_id, ts_start, source_id) DEFERRABLE INITIALLY IMMEDIATE
 );
 
 CREATE OR REPLACE FUNCTION solardatum.store_datum(
 	cdate solarcommon.ts,
-	node solarcommon.node_id,
+	Edge solarcommon.Edge_id,
 	src solarcommon.source_id,
 	pdate solarcommon.ts,
 	jdata text)
@@ -49,15 +49,15 @@ DECLARE
 	ts_post_hour timestamp with time zone := date_trunc('hour', ts_post);
 BEGIN
 	BEGIN
-		INSERT INTO solardatum.da_datum(ts, node_id, source_id, posted, jdata)
-		VALUES (ts_crea, node, src, ts_post, jdata_json);
+		INSERT INTO solardatum.da_datum(ts, Edge_id, source_id, posted, jdata)
+		VALUES (ts_crea, Edge, src, ts_post, jdata_json);
 	EXCEPTION WHEN unique_violation THEN
 		-- We mostly expect inserts, but we allow updates
 		UPDATE solardatum.da_datum SET 
 			jdata = jdata_json, 
 			posted = ts_post
 		WHERE
-			node_id = node
+			Edge_id = Edge
 			AND ts = ts_crea
 			AND source_id = src;
 	END;
@@ -68,17 +68,17 @@ BEGIN
 		UPDATE solaragg.aud_datum_hourly 
 		SET prop_count = prop_count + jdata_prop_count
 		WHERE
-			node_id = node
+			Edge_id = Edge
 			AND source_id = src
 			AND ts_start = ts_post_hour;
 
 		EXIT update_audit WHEN FOUND;
 
 		INSERT INTO solaragg.aud_datum_hourly (
-			ts_start, node_id, source_id, prop_count)
+			ts_start, Edge_id, source_id, prop_count)
 		VALUES (
 			ts_post_hour,
-			node,
+			Edge,
 			src,
 			jdata_prop_count
 		);

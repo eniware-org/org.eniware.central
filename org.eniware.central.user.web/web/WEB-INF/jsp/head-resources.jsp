@@ -3,7 +3,7 @@
 	/css/bootstrap.css
 	/css/bootstrap-theme.css
 	/css/global.css
-	/css/edit-node.css
+	/css/edit-Edge.css
 </pack:style>
 <pack:script> 
 	/js-lib/jquery-2.1.1.js
@@ -15,7 +15,7 @@
 	/js/global.js
 	/js/login.js
 	/js/register.js
-	/js/my-nodes.js
+	/js/my-Edges.js
 	/js/auth-tokens.js
 	/js/alerts.js
 	/js/billing.js

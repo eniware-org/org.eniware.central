@@ -15,7 +15,7 @@ import org.eniware.central.biz.EniwareEdgeMetadataBiz;
 import org.eniware.central.domain.FilterResults;
 import org.eniware.central.domain.EniwareEdgeMetadataFilterMatch;
 import org.eniware.central.user.biz.UserBiz;
-import org.eniware.central.user.domain.UserNode;
+import org.eniware.central.user.domain.UserEdge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -33,13 +33,13 @@ import org.eniware.domain.GeneralDatumMetadata;
 import org.eniware.web.domain.Response;
 
 /**
- * Controller for node metadata.
+ * Controller for Edge metadata.
  * 
  * @version 1.0
  * @since 1.18
  */
-@Controller("v1NodeMetadataController")
-@RequestMapping(value = "/v1/sec/nodes/meta")
+@Controller("v1EdgeMetadataController")
+@RequestMapping(value = "/v1/sec/Edges/meta")
 public class EdgeMetadataController extends WebServiceControllerSupport {
 
 	private final UserBiz userBiz;
@@ -66,7 +66,7 @@ public class EdgeMetadataController extends WebServiceControllerSupport {
 	}
 
 	/**
-	 * Find all metadata for any number of node IDs.
+	 * Find all metadata for any number of Edge IDs.
 	 * 
 	 * @param criteria
 	 *        any sort or limit criteria
@@ -76,15 +76,15 @@ public class EdgeMetadataController extends WebServiceControllerSupport {
 	@RequestMapping(value = { "", "/" }, method = RequestMethod.GET)
 	public Response<FilterResults<EniwareEdgeMetadataFilterMatch>> findMetadata(
 			DatumFilterCommand criteria) {
-		if ( criteria.getNodeId() == null ) {
-			// default to all nodes for actor
-			List<UserNode> nodes = userBiz.getUserNodes(SecurityUtils.getCurrentActorUserId());
-			if ( nodes != null && !nodes.isEmpty() ) {
-				Long[] nodeIds = new Long[nodes.size()];
-				for ( ListIterator<UserNode> itr = nodes.listIterator(); itr.hasNext(); ) {
-					nodeIds[itr.nextIndex()] = itr.next().getId();
+		if ( criteria.getEdgeId() == null ) {
+			// default to all Edges for actor
+			List<UserEdge> Edges = userBiz.getUserEdges(SecurityUtils.getCurrentActorUserId());
+			if ( Edges != null && !Edges.isEmpty() ) {
+				Long[] EdgeIds = new Long[Edges.size()];
+				for ( ListIterator<UserEdge> itr = Edges.listIterator(); itr.hasNext(); ) {
+					EdgeIds[itr.nextIndex()] = itr.next().getId();
 				}
-				criteria.setNodeIds(nodeIds);
+				criteria.setEdgeIds(EdgeIds);
 			}
 		}
 		FilterResults<EniwareEdgeMetadataFilterMatch> results = eniwareEdgeMetadataBiz.findEniwareEdgeMetadata(
@@ -93,15 +93,15 @@ public class EdgeMetadataController extends WebServiceControllerSupport {
 	}
 
 	/**
-	 * Find all metadata for a specific node ID.
+	 * Find all metadata for a specific Edge ID.
 	 * 
 	 * @return the results
 	 */
 	@ResponseBody
-	@RequestMapping(value = { "/{nodeId}" }, method = RequestMethod.GET)
-	public Response<EniwareEdgeMetadataFilterMatch> getMetadata(@PathVariable("nodeId") Long nodeId) {
+	@RequestMapping(value = { "/{EdgeId}" }, method = RequestMethod.GET)
+	public Response<EniwareEdgeMetadataFilterMatch> getMetadata(@PathVariable("EdgeId") Long EdgeId) {
 		DatumFilterCommand criteria = new DatumFilterCommand();
-		criteria.setNodeId(nodeId);
+		criteria.setEdgeId(EdgeId);
 		FilterResults<EniwareEdgeMetadataFilterMatch> results = eniwareEdgeMetadataBiz
 				.findEniwareEdgeMetadata(criteria, null, null, null);
 		EniwareEdgeMetadataFilterMatch result = null;
@@ -116,52 +116,52 @@ public class EdgeMetadataController extends WebServiceControllerSupport {
 	}
 
 	/**
-	 * Add metadata to a node. The metadata is merged only, and will not replace
+	 * Add metadata to a Edge. The metadata is merged only, and will not replace
 	 * existing values.
 	 * 
-	 * @param nodeId
-	 *        the node ID
+	 * @param EdgeId
+	 *        the Edge ID
 	 * @param meta
 	 *        the metadata to merge
 	 * @return the results
 	 */
 	@ResponseBody
-	@RequestMapping(value = { "/{nodeId}" }, method = RequestMethod.POST)
-	public Response<Object> addMetadata(@PathVariable("nodeId") Long nodeId,
+	@RequestMapping(value = { "/{EdgeId}" }, method = RequestMethod.POST)
+	public Response<Object> addMetadata(@PathVariable("EdgeId") Long EdgeId,
 			@RequestBody GeneralDatumMetadata meta) {
-		eniwareEdgeMetadataBiz.addEniwareEdgeMetadata(nodeId, meta);
+		eniwareEdgeMetadataBiz.addEniwareEdgeMetadata(EdgeId, meta);
 		return response(null);
 	}
 
 	/**
-	 * Completely replace the metadata for a given node ID, or create it if it
+	 * Completely replace the metadata for a given Edge ID, or create it if it
 	 * doesn't already exist.
 	 * 
-	 * @param nodeId
-	 *        the node ID
+	 * @param EdgeId
+	 *        the Edge ID
 	 * @param meta
 	 *        the metadata to store
 	 * @return the results
 	 */
 	@ResponseBody
-	@RequestMapping(value = { "/{nodeId}" }, method = RequestMethod.PUT)
-	public Response<Object> replaceMetadata(@PathVariable("nodeId") Long nodeId,
+	@RequestMapping(value = { "/{EdgeId}" }, method = RequestMethod.PUT)
+	public Response<Object> replaceMetadata(@PathVariable("EdgeId") Long EdgeId,
 			@RequestBody GeneralDatumMetadata meta) {
-		eniwareEdgeMetadataBiz.storeEniwareEdgeMetadata(nodeId, meta);
+		eniwareEdgeMetadataBiz.storeEniwareEdgeMetadata(EdgeId, meta);
 		return response(null);
 	}
 
 	/**
-	 * Completely remove the metadata for a given node ID.
+	 * Completely remove the metadata for a given Edge ID.
 	 * 
-	 * @param nodeId
-	 *        the node ID
+	 * @param EdgeId
+	 *        the Edge ID
 	 * @return the results
 	 */
 	@ResponseBody
-	@RequestMapping(value = { "/{nodeId}" }, method = RequestMethod.DELETE)
-	public Response<Object> deleteMetadata(@PathVariable("nodeId") Long nodeId) {
-		eniwareEdgeMetadataBiz.removeEniwareEdgeMetadata(nodeId);
+	@RequestMapping(value = { "/{EdgeId}" }, method = RequestMethod.DELETE)
+	public Response<Object> deleteMetadata(@PathVariable("EdgeId") Long EdgeId) {
+		eniwareEdgeMetadataBiz.removeEniwareEdgeMetadata(EdgeId);
 		return response(null);
 	}
 

@@ -33,26 +33,26 @@ ALTER TABLE solarnet.sn_weather_loc DROP COLUMN time_zone;
 ALTER TABLE solarnet.sn_weather_loc DROP COLUMN latitude;
 ALTER TABLE solarnet.sn_weather_loc DROP COLUMN longitude;
 
-ALTER TABLE solarnet.sn_node DROP COLUMN time_zone;
-ALTER TABLE solarnet.sn_node DROP CONSTRAINT sn_node_weather_loc_fk;
-ALTER TABLE solarnet.sn_node ADD 
-	CONSTRAINT sn_node_loc_fk FOREIGN KEY (loc_id)
+ALTER TABLE solarnet.sn_Edge DROP COLUMN time_zone;
+ALTER TABLE solarnet.sn_Edge DROP CONSTRAINT sn_Edge_weather_loc_fk;
+ALTER TABLE solarnet.sn_Edge ADD 
+	CONSTRAINT sn_Edge_loc_fk FOREIGN KEY (loc_id)
 		REFERENCES solarnet.sn_loc (id) MATCH SIMPLE
 		ON UPDATE NO ACTION ON DELETE NO ACTION;
-ALTER TABLE solarnet.sn_node ADD COLUMN wloc_id BIGINT;
-ALTER TABLE solarnet.sn_node ADD 
-	CONSTRAINT sn_node_weather_loc_fk FOREIGN KEY (wloc_id)
+ALTER TABLE solarnet.sn_Edge ADD COLUMN wloc_id BIGINT;
+ALTER TABLE solarnet.sn_Edge ADD 
+	CONSTRAINT sn_Edge_weather_loc_fk FOREIGN KEY (wloc_id)
 		REFERENCES solarnet.sn_weather_loc (id) MATCH SIMPLE
 		ON UPDATE NO ACTION ON DELETE NO ACTION;
-UPDATE solarnet.sn_node SET wloc_id = loc_id;
+UPDATE solarnet.sn_Edge SET wloc_id = loc_id;
 
-CREATE OR REPLACE FUNCTION solarnet.get_node_local_timestamp(timestamp with time zone, bigint)
+CREATE OR REPLACE FUNCTION solarnet.get_Edge_local_timestamp(timestamp with time zone, bigint)
   RETURNS timestamp without time zone AS
 $BODY$
 	SELECT $1 AT TIME ZONE l.time_zone
-	FROM solarnet.sn_node n
+	FROM solarnet.sn_Edge n
 	INNER JOIN solarnet.sn_loc l ON l.id = n.loc_id
-	WHERE n.node_id = $2
+	WHERE n.Edge_id = $2
 $BODY$
   LANGUAGE 'sql' STABLE;
 
@@ -60,22 +60,22 @@ CREATE OR REPLACE FUNCTION solarnet.populate_high_low_temperature(datum solarnet
   RETURNS void AS
 $BODY$
 DECLARE
-	node_tz text;
+	Edge_tz text;
 	dat record;
 BEGIN
 	SELECT time_zone from solarnet.sn_loc where id = datum.loc_id
-	INTO node_tz;
+	INTO Edge_tz;
 	
 	SELECT 
-		date(w.info_date at time zone node_tz) as day,
+		date(w.info_date at time zone Edge_tz) as day,
 		min(w.temperature) as temp_min,
 		max(w.temperature) as temp_max
 	FROM solarnet.sn_weather_datum w
 	WHERE 
 		w.loc_id = datum.loc_id
-		AND w.info_date >= date_trunc('day', datum.info_date at time zone node_tz) at time zone node_tz
-		AND w.info_date < date_trunc('day', datum.info_date at time zone node_tz) at time zone node_tz + interval '1 day'
-	GROUP BY date(w.info_date at time zone node_tz)
+		AND w.info_date >= date_trunc('day', datum.info_date at time zone Edge_tz) at time zone Edge_tz
+		AND w.info_date < date_trunc('day', datum.info_date at time zone Edge_tz) at time zone Edge_tz + interval '1 day'
+	GROUP BY date(w.info_date at time zone Edge_tz)
 	INTO dat;
 
 	IF FOUND THEN
@@ -92,21 +92,21 @@ BEGIN
 	-- for the daylight hours of the given day, using sn_day_datum.sunrise/sunset
 	SELECT sub.day, sub.sky from (
 		SELECT 
-			date(w.info_date at time zone node_tz) as day,
+			date(w.info_date at time zone Edge_tz) as day,
 			w.sky, 
 			count(*) as cnt
 		FROM solarnet.sn_weather_datum w
-		INNER JOIN solarnet.sn_day_datum d on d.day = date(datum.info_date at time zone node_tz)
+		INNER JOIN solarnet.sn_day_datum d on d.day = date(datum.info_date at time zone Edge_tz)
 		WHERE 
 			d.loc_id = datum.loc_id
 			AND w.loc_id = datum.loc_id
-			AND w.info_date >= (date_trunc('day', datum.info_date at time zone node_tz) + d.sunrise) at time zone node_tz
-			AND w.info_date < (date_trunc('day', datum.info_date at time zone node_tz) + d.sunset) at time zone node_tz
+			AND w.info_date >= (date_trunc('day', datum.info_date at time zone Edge_tz) + d.sunrise) at time zone Edge_tz
+			AND w.info_date < (date_trunc('day', datum.info_date at time zone Edge_tz) + d.sunset) at time zone Edge_tz
 			AND w.sky <> 'N/A'
 			and w.sky <> ''
 			AND w.sky IS NOT NULL
 		GROUP BY 
-			date(w.info_date at time zone node_tz),
+			date(w.info_date at time zone Edge_tz),
 			w.sky
 	) as sub ORDER BY sub.cnt DESC LIMIT 1
 	INTO dat;
@@ -128,16 +128,16 @@ CREATE OR REPLACE FUNCTION solarnet.populate_rep_consum_datum_hourly(datum solar
 $BODY$
 DECLARE
 	chour timestamp;
-	node_tz text;
+	Edge_tz text;
 	data solarnet.rep_consum_datum_hourly;
 BEGIN
 	SELECT l.time_zone 
-	FROM solarnet.sn_node n
+	FROM solarnet.sn_Edge n
 	INNER JOIN solarnet.sn_loc l ON l.id = n.loc_id
-	WHERE n.node_id = datum.node_id
-	INTO node_tz;
+	WHERE n.Edge_id = datum.Edge_id
+	INTO Edge_tz;
 	
-	SELECT date_trunc('hour', c.created at time zone node_tz)
+	SELECT date_trunc('hour', c.created at time zone Edge_tz)
 	FROM solarnet.sn_consum_datum c
 	WHERE c.id = datum.prev_datum
 	INTO chour;
@@ -148,17 +148,17 @@ BEGIN
 	END IF;
 
 	SELECT 
-		date_trunc('hour', sub.created at time zone node_tz) as created_hour,
-		datum.node_id,
+		date_trunc('hour', sub.created at time zone Edge_tz) as created_hour,
+		datum.Edge_id,
 		datum.source_id,
 		avg(sub.avg_amps) as amps,
 		avg(sub.avg_voltage) as voltage,
 		sum(sub.watt_hours) as watt_hours,
 		sum(sub.cost_amt) as cost_amt,
 		min(sub.currency) as cost_currency
-	FROM solarnet.find_rep_consum_datum(datum.node_id, datum.source_id, chour, node_tz, interval '1 hour') AS sub
-	GROUP BY date_trunc('hour', sub.created at time zone node_tz)
-	ORDER BY date_trunc('hour', sub.created at time zone node_tz)
+	FROM solarnet.find_rep_consum_datum(datum.Edge_id, datum.source_id, chour, Edge_tz, interval '1 hour') AS sub
+	GROUP BY date_trunc('hour', sub.created at time zone Edge_tz)
+	ORDER BY date_trunc('hour', sub.created at time zone Edge_tz)
 	INTO data;
 	--RAISE NOTICE 'Got data: %', data;
 	
@@ -176,15 +176,15 @@ BEGIN
 			cost_amt = data.cost_amt,
 			cost_currency = data.cost_currency
 		WHERE created_hour = data.created_hour
-			AND node_id = data.node_id
+			AND Edge_id = data.Edge_id
 			AND source_id = data.source_id;
 		
 		EXIT insert_update WHEN FOUND;
 
 		INSERT INTO solarnet.rep_consum_datum_hourly (
-			created_hour, node_id, source_id, amps, voltage, 
+			created_hour, Edge_id, source_id, amps, voltage, 
 			watt_hours, cost_amt, cost_currency)
-		VALUES (data.created_hour, data.node_id, data.source_id, 	
+		VALUES (data.created_hour, data.Edge_id, data.source_id, 	
 			data.amps, data.voltage, 
 			data.watt_hours, data.cost_amt, data.cost_currency);
 
@@ -199,16 +199,16 @@ CREATE OR REPLACE FUNCTION solarnet.populate_rep_consum_datum_daily(datum solarn
 $BODY$
 DECLARE
 	chour timestamp;
-	node_tz text;
+	Edge_tz text;
 	data solarnet.rep_consum_datum_daily;
 BEGIN
 	SELECT l.time_zone 
-	FROM solarnet.sn_node n
+	FROM solarnet.sn_Edge n
 	INNER JOIN solarnet.sn_loc l ON l.id = n.loc_id
-	WHERE n.node_id = datum.node_id
-	INTO node_tz;
+	WHERE n.Edge_id = datum.Edge_id
+	INTO Edge_tz;
 	
-	SELECT date_trunc('day', c.created at time zone node_tz)
+	SELECT date_trunc('day', c.created at time zone Edge_tz)
 	FROM solarnet.sn_consum_datum c
 	WHERE c.id = datum.prev_datum
 	INTO chour;
@@ -219,17 +219,17 @@ BEGIN
 	END IF;
 
 	SELECT 
-		date(sub.created at time zone node_tz) as created_day,
-		datum.node_id,
+		date(sub.created at time zone Edge_tz) as created_day,
+		datum.Edge_id,
 		datum.source_id,
 		avg(sub.avg_amps) as amps,
 		avg(sub.avg_voltage) as voltage,
 		sum(sub.watt_hours) as watt_hours,
 		sum(sub.cost_amt) as cost_amt,
 		min(sub.currency) as cost_currency
-	FROM solarnet.find_rep_consum_datum(datum.node_id, datum.source_id, chour, node_tz, interval '1 day') AS sub
-	GROUP BY date(sub.created at time zone node_tz)
-	ORDER BY date(sub.created at time zone node_tz)
+	FROM solarnet.find_rep_consum_datum(datum.Edge_id, datum.source_id, chour, Edge_tz, interval '1 day') AS sub
+	GROUP BY date(sub.created at time zone Edge_tz)
+	ORDER BY date(sub.created at time zone Edge_tz)
 	INTO data;
 	--RAISE NOTICE 'Got data: %', data;
 	
@@ -242,15 +242,15 @@ BEGIN
 			cost_amt = data.cost_amt,
 			cost_currency = data.cost_currency
 		WHERE created_day = data.created_day
-			AND node_id = data.node_id
+			AND Edge_id = data.Edge_id
 			AND source_id = data.source_id;
 		
 		EXIT insert_update WHEN FOUND;
 
 		INSERT INTO solarnet.rep_consum_datum_daily (
-			created_day, node_id, source_id, amps, voltage, 
+			created_day, Edge_id, source_id, amps, voltage, 
 			watt_hours, cost_amt, cost_currency)
-		VALUES (data.created_day, data.node_id, data.source_id, 	
+		VALUES (data.created_day, data.Edge_id, data.source_id, 	
 			data.amps, data.voltage, 
 			data.watt_hours, data.cost_amt, data.cost_currency);
 
@@ -264,16 +264,16 @@ CREATE OR REPLACE FUNCTION solarnet.populate_rep_power_datum_hourly(datum solarn
 $BODY$
 DECLARE
 	chour timestamp;
-	node_tz text;
+	Edge_tz text;
 	data solarnet.rep_power_datum_hourly;
 BEGIN
 	SELECT l.time_zone 
-	FROM solarnet.sn_node n
+	FROM solarnet.sn_Edge n
 	INNER JOIN solarnet.sn_loc l ON l.id = n.loc_id
-	WHERE n.node_id = datum.node_id
-	INTO node_tz;
+	WHERE n.Edge_id = datum.Edge_id
+	INTO Edge_tz;
 	
-	SELECT date_trunc('hour', c.created at time zone node_tz)
+	SELECT date_trunc('hour', c.created at time zone Edge_tz)
 	FROM solarnet.sn_power_datum c
 	WHERE c.id = datum.prev_datum
 	INTO chour;
@@ -284,8 +284,8 @@ BEGIN
 	END IF;
 
 	SELECT 
-		date_trunc('hour', sub.created at time zone node_tz) as created_hour,
-		datum.node_id,
+		date_trunc('hour', sub.created at time zone Edge_tz) as created_hour,
+		datum.Edge_id,
 		datum.source_id,
 		avg(sub.avg_pv_volts) as pv_volts,
 		avg(sub.avg_pv_amps) as pv_amps,
@@ -293,9 +293,9 @@ BEGIN
 		sum(sub.watt_hours) as watt_hours,
 		sum(sub.cost_amt) as cost_amt,
 		min(sub.currency) as cost_currency
-	FROM solarnet.find_rep_power_datum(datum.node_id, datum.source_id, chour, node_tz, interval '1 hour') AS sub
-	GROUP BY date_trunc('hour', sub.created at time zone node_tz)
-	ORDER BY date_trunc('hour', sub.created at time zone node_tz)
+	FROM solarnet.find_rep_power_datum(datum.Edge_id, datum.source_id, chour, Edge_tz, interval '1 hour') AS sub
+	GROUP BY date_trunc('hour', sub.created at time zone Edge_tz)
+	ORDER BY date_trunc('hour', sub.created at time zone Edge_tz)
 	INTO data;
 	--RAISE NOTICE 'Got data: %', data;
 	
@@ -314,15 +314,15 @@ BEGIN
 			cost_amt = data.cost_amt,
 			cost_currency = data.cost_currency
 		WHERE created_hour = data.created_hour
-			AND node_id = data.node_id
+			AND Edge_id = data.Edge_id
 			AND source_id = data.source_id;
 		
 		EXIT insert_update WHEN FOUND;
 
 		INSERT INTO solarnet.rep_power_datum_hourly (
-			created_hour, node_id, source_id, pv_amps, pv_volts, bat_volts, 
+			created_hour, Edge_id, source_id, pv_amps, pv_volts, bat_volts, 
 			watt_hours, cost_amt, cost_currency)
-		VALUES (data.created_hour, data.node_id, data.source_id,	
+		VALUES (data.created_hour, data.Edge_id, data.source_id,	
 			data.pv_amps, data.pv_volts, data.bat_volts, 
 			data.watt_hours, data.cost_amt, data.cost_currency);
 
@@ -337,16 +337,16 @@ CREATE OR REPLACE FUNCTION solarnet.populate_rep_power_datum_daily(datum solarne
 $BODY$
 DECLARE
 	chour timestamp;
-	node_tz text;
+	Edge_tz text;
 	data solarnet.rep_power_datum_daily;
 BEGIN
 	SELECT l.time_zone 
-	FROM solarnet.sn_node n
+	FROM solarnet.sn_Edge n
 	INNER JOIN solarnet.sn_loc l ON l.id = n.loc_id
-	WHERE n.node_id = datum.node_id
-	INTO node_tz;
+	WHERE n.Edge_id = datum.Edge_id
+	INTO Edge_tz;
 	
-	SELECT date_trunc('day', c.created at time zone node_tz)
+	SELECT date_trunc('day', c.created at time zone Edge_tz)
 	FROM solarnet.sn_power_datum c
 	WHERE c.id = datum.prev_datum
 	INTO chour;
@@ -357,8 +357,8 @@ BEGIN
 	END IF;
 
 	SELECT 
-		date(sub.created at time zone node_tz) as created_day,
-		datum.node_id,
+		date(sub.created at time zone Edge_tz) as created_day,
+		datum.Edge_id,
 		datum.source_id,
 		avg(sub.avg_pv_volts) as pv_volts,
 		avg(sub.avg_pv_amps) as pv_amps,
@@ -366,9 +366,9 @@ BEGIN
 		sum(sub.watt_hours) as watt_hours,
 		sum(sub.cost_amt) as cost_amt,
 		min(sub.currency) as cost_currency
-	FROM solarnet.find_rep_power_datum(datum.node_id, datum.source_id, chour, node_tz, interval '1 day') AS sub
-	GROUP BY date(sub.created at time zone node_tz)
-	ORDER BY date(sub.created at time zone node_tz)
+	FROM solarnet.find_rep_power_datum(datum.Edge_id, datum.source_id, chour, Edge_tz, interval '1 day') AS sub
+	GROUP BY date(sub.created at time zone Edge_tz)
+	ORDER BY date(sub.created at time zone Edge_tz)
 	INTO data;
 	--RAISE NOTICE 'Got data: %', data;
 	
@@ -382,15 +382,15 @@ BEGIN
 			cost_amt = data.cost_amt,
 			cost_currency = data.cost_currency
 		WHERE created_day = data.created_day
-			AND node_id = data.node_id
+			AND Edge_id = data.Edge_id
 			AND source_id = data.source_id;
 		
 		EXIT insert_update WHEN FOUND;
 
 		INSERT INTO solarnet.rep_power_datum_daily (
-			created_day, node_id, source_id, pv_amps, pv_volts, bat_volts, 
+			created_day, Edge_id, source_id, pv_amps, pv_volts, bat_volts, 
 			watt_hours, cost_amt, cost_currency)
-		VALUES (data.created_day, data.node_id, data.source_id,
+		VALUES (data.created_day, data.Edge_id, data.source_id,
 			data.pv_amps, data.pv_volts, data.bat_volts, 
 			data.watt_hours, data.cost_amt, data.cost_currency);
 
@@ -408,13 +408,13 @@ $BODY$
 		solarnet.calc_avg_watt_hours(c.pv_amps, c2.pv_amps, c.pv_volts, c2.pv_volts, 
 			c.kwatt_hours, c2.kwatt_hours, (c.created - c2.created)) as watt_hours
 	FROM solarnet.sn_power_datum c
-	INNER JOIN solarnet.sn_node n ON n.node_id = c.node_id
+	INNER JOIN solarnet.sn_Edge n ON n.Edge_id = c.Edge_id
 	INNER JOIN solarnet.sn_loc l ON l.id = n.loc_id
 	LEFT OUTER JOIN solarnet.sn_power_datum c2 ON c2.id = c.prev_datum
 	WHERE 
 		c2.local_created >= $1
 		and c2.local_created < $1 + $2
-	ORDER BY c.created, c.node_id
+	ORDER BY c.created, c.Edge_id
 $BODY$
   LANGUAGE 'sql' STABLE;
 
@@ -427,7 +427,7 @@ DECLARE
 BEGIN
 	SELECT date_trunc('hour', c.created at time zone l.time_zone)
 	FROM solarnet.sn_power_datum c
-	INNER JOIN solarnet.sn_node n ON n.node_id = datum.node_id
+	INNER JOIN solarnet.sn_Edge n ON n.Edge_id = datum.Edge_id
 	INNER JOIN solarnet.sn_loc l ON l.id = n.loc_id
 	WHERE c.id = datum.prev_datum
 	INTO chour;
@@ -439,7 +439,7 @@ BEGIN
 
 	SELECT 
 		date_trunc('hour', sub.created) as created_hour,
-		datum.node_id,
+		datum.Edge_id,
 		sum(sub.watt_hours) as watt_hours
 	FROM solarnet.find_rep_net_power_datum(chour, interval '1 hour') AS sub
 	GROUP BY date_trunc('hour', sub.created)
@@ -478,7 +478,7 @@ DECLARE
 BEGIN
 	SELECT date_trunc('day', c.created at time zone l.time_zone)
 	FROM solarnet.sn_power_datum c
-	INNER JOIN solarnet.sn_node n ON n.node_id = datum.node_id
+	INNER JOIN solarnet.sn_Edge n ON n.Edge_id = datum.Edge_id
 	INNER JOIN solarnet.sn_loc l ON l.id = n.loc_id
 	WHERE c.id = datum.prev_datum
 	INTO chour;

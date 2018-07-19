@@ -20,9 +20,9 @@ import java.util.TimeZone;
 
 import org.eniware.central.RepeatableTaskException;
 import org.eniware.central.dao.EniwareEdgeDao;
-import org.eniware.central.datum.dao.GeneralNodeDatumDao;
+import org.eniware.central.datum.dao.GeneralEdgeDatumDao;
 import org.eniware.central.datum.domain.DatumFilterCommand;
-import org.eniware.central.datum.domain.GeneralNodeDatumFilterMatch;
+import org.eniware.central.datum.domain.GeneralEdgeDatumFilterMatch;
 import org.eniware.central.domain.FilterResults;
 import org.eniware.central.domain.EniwareEdge;
 import org.eniware.central.mail.MailService;
@@ -51,7 +51,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 
 /**
- * Process stale data alerts for nodes.
+ * Process stale data alerts for Edges.
  * 
  * @version 1.2
  */
@@ -61,17 +61,17 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 	public static final Integer DEFAULT_BATCH_SIZE = 50;
 
 	/** The default value for {@link #getMailTemplateResource()}. */
-	public static final String DEFAULT_MAIL_TEMPLATE_RESOURCE = "/net/eniwarenetwork/central/user/alerts/user-alert-NodeStaleData.txt";
+	public static final String DEFAULT_MAIL_TEMPLATE_RESOURCE = "/net/eniwarenetwork/central/user/alerts/user-alert-EdgeStaleData.txt";
 
 	/** The default value for {@link #getMailTemplateResolvedResource()}. */
-	public static final String DEFAULT_MAIL_TEMPLATE_RESOLVED_RESOURCE = "/net/eniwarenetwork/central/user/alerts/user-alert-NodeStaleData-Resolved.txt";
+	public static final String DEFAULT_MAIL_TEMPLATE_RESOLVED_RESOURCE = "/net/eniwarenetwork/central/user/alerts/user-alert-EdgeStaleData-Resolved.txt";
 
 	/**
-	 * A {@code UserAlertSituation} {@code info} key for an associated node ID.
+	 * A {@code UserAlertSituation} {@code info} key for an associated Edge ID.
 	 * 
 	 * @since 1.1
 	 */
-	public static final String SITUATION_INFO_NODE_ID = "nodeId";
+	public static final String SITUATION_INFO_Edge_ID = "EdgeId";
 
 	/**
 	 * A {@code UserAlertSituation} {@code info} key for an associated source
@@ -91,10 +91,10 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 
 	private final EniwareEdgeDao eniwareEdgeDao;
 	private final UserDao userDao;
-	private final UserEdgeDao userNodeDao;
+	private final UserEdgeDao userEdgeDao;
 	private final UserAlertDao userAlertDao;
 	private final UserAlertSituationDao userAlertSituationDao;
-	private final GeneralNodeDatumDao generalNodeDatumDao;
+	private final GeneralEdgeDatumDao generalEdgeDatumDao;
 	private final MailService mailService;
 	private Integer batchSize = DEFAULT_BATCH_SIZE;
 	private final MessageSource messageSource;
@@ -104,11 +104,11 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 	private int initialAlertReminderDelayMinutes = 60;
 	private int alertReminderFrequencyMultiplier = 4;
 
-	// maintain a cache of node data during the execution of the job (cleared after each invocation)
-	private final Map<Long, EniwareEdge> nodeCache = new HashMap<Long, EniwareEdge>(64);
-	private final Map<Long, List<GeneralNodeDatumFilterMatch>> nodeDataCache = new HashMap<Long, List<GeneralNodeDatumFilterMatch>>(
+	// maintain a cache of Edge data during the execution of the job (cleared after each invocation)
+	private final Map<Long, EniwareEdge> EdgeCache = new HashMap<Long, EniwareEdge>(64);
+	private final Map<Long, List<GeneralEdgeDatumFilterMatch>> EdgeDataCache = new HashMap<Long, List<GeneralEdgeDatumFilterMatch>>(
 			64);
-	private final Map<Long, List<GeneralNodeDatumFilterMatch>> userDataCache = new HashMap<Long, List<GeneralNodeDatumFilterMatch>>(
+	private final Map<Long, List<GeneralEdgeDatumFilterMatch>> userDataCache = new HashMap<Long, List<GeneralEdgeDatumFilterMatch>>(
 			16);
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
@@ -120,30 +120,30 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 	 *        The {@link EniwareEdgeDao} to use.
 	 * @param userDao
 	 *        The {@link UserDao} to use.
-	 * @param userNodeDao
+	 * @param userEdgeDao
 	 *        The {@link UserEdgeDao} to use.
 	 * @param userAlertDao
 	 *        The {@link UserAlertDao} to use.
 	 * @param userAlertSituationDao
 	 *        The {@link UserAlertSituationDao} to use.
-	 * @param generalNodeDatumDao
-	 *        The {@link GeneralNodeDatumDao} to use.
+	 * @param generalEdgeDatumDao
+	 *        The {@link GeneralEdgeDatumDao} to use.
 	 * @param mailService
 	 *        The {@link MailService} to use.
 	 * @param messageSource
 	 *        The {@link MessageSource} to use.
 	 */
 	public EmailEdgeStaleDataAlertProcessor(EniwareEdgeDao eniwareEdgeDao, UserDao userDao,
-			UserEdgeDao userNodeDao, UserAlertDao userAlertDao,
-			UserAlertSituationDao userAlertSituationDao, GeneralNodeDatumDao generalNodeDatumDao,
+			UserEdgeDao userEdgeDao, UserAlertDao userAlertDao,
+			UserAlertSituationDao userAlertSituationDao, GeneralEdgeDatumDao generalEdgeDatumDao,
 			MailService mailService, MessageSource messageSource) {
 		super();
 		this.eniwareEdgeDao = eniwareEdgeDao;
 		this.userDao = userDao;
-		this.userNodeDao = userNodeDao;
+		this.userEdgeDao = userEdgeDao;
 		this.userAlertDao = userAlertDao;
 		this.userAlertSituationDao = userAlertSituationDao;
-		this.generalNodeDatumDao = generalNodeDatumDao;
+		this.generalEdgeDatumDao = generalEdgeDatumDao;
 		this.mailService = mailService;
 		this.messageSource = messageSource;
 	}
@@ -163,14 +163,14 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 		if ( validDate == null ) {
 			validDate = new DateTime();
 		}
-		List<UserAlert> alerts = userAlertDao.findAlertsToProcess(UserAlertType.NodeStaleData,
+		List<UserAlert> alerts = userAlertDao.findAlertsToProcess(UserAlertType.EdgeStaleData,
 				lastProcessedAlertId, validDate, batchSize);
 		Long lastAlertId = null;
 		final long now = getCurrentTime();
 		final DateTime nowDateTime = new DateTime(now);
 		final DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("H:mm");
 		try {
-			loadMostRecentNodeData(alerts);
+			loadMostRecentEdgeData(alerts);
 			for ( UserAlert alert : alerts ) {
 				Map<String, Object> alertOptions = alert.getOptions();
 				if ( alertOptions == null ) {
@@ -205,14 +205,14 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 
 				// look for first stale data matching age + source criteria
 				final List<Interval> timePeriods = new ArrayList<Interval>(2);
-				GeneralNodeDatumFilterMatch stale = getFirstStaleDatum(alert, nowDateTime, age,
+				GeneralEdgeDatumFilterMatch stale = getFirstStaleDatum(alert, nowDateTime, age,
 						sourceIds, timeFormatter, timePeriods);
 
 				Map<String, Object> staleInfo = new HashMap<String, Object>(4);
 				if ( stale != null ) {
 					staleInfo.put(SITUATION_INFO_DATUM_CREATED,
 							Long.valueOf(stale.getId().getCreated().getMillis()));
-					staleInfo.put(SITUATION_INFO_NODE_ID, stale.getId().getNodeId());
+					staleInfo.put(SITUATION_INFO_Edge_ID, stale.getId().getEdgeId());
 					staleInfo.put(SITUATION_INFO_SOURCE_ID, stale.getId().getSourceId());
 				}
 
@@ -238,7 +238,7 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 
 					// taper off the alerts so the become less frequent over time
 					if ( (sit.getNotified().getMillis() + notifyOffset) <= now ) {
-						sendAlertMail(alert, "user.alert.NodeStaleData.mail.subject",
+						sendAlertMail(alert, "user.alert.EdgeStaleData.mail.subject",
 								mailTemplateResource, stale);
 						sit.setNotified(new DateTime(now));
 					}
@@ -265,10 +265,10 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 						sit.setNotified(new DateTime(now));
 						userAlertSituationDao.store(sit);
 
-						GeneralNodeDatumFilterMatch nonStale = getFirstNonStaleDatum(alert, now, age,
+						GeneralEdgeDatumFilterMatch nonStale = getFirstNonStaleDatum(alert, now, age,
 								sourceIds);
 
-						sendAlertMail(alert, "user.alert.NodeStaleData.Resolved.mail.subject",
+						sendAlertMail(alert, "user.alert.EdgeStaleData.Resolved.mail.subject",
 								mailTemplateResolvedResource, nonStale);
 					}
 				}
@@ -277,8 +277,8 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 		} catch ( RuntimeException e ) {
 			throw new RepeatableTaskException("Error processing user alerts", e, lastAlertId);
 		} finally {
-			nodeCache.clear();
-			nodeDataCache.clear();
+			EdgeCache.clear();
+			EdgeDataCache.clear();
 			userDataCache.clear();
 		}
 
@@ -293,7 +293,7 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 	}
 
 	private List<Interval> parseAlertTimeWindows(final DateTime nowDateTime,
-			final DateTimeFormatter timeFormatter, final UserAlert alert, final Long nodeId) {
+			final DateTimeFormatter timeFormatter, final UserAlert alert, final Long EdgeId) {
 		Map<String, Object> alertOptions = alert.getOptions();
 		if ( alertOptions == null ) {
 			return null;
@@ -304,7 +304,7 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 		if ( windows == null ) {
 			return null;
 		}
-		final Long intervalNodeId = (nodeId != null ? nodeId : alert.getNodeId());
+		final Long intervalEdgeId = (EdgeId != null ? EdgeId : alert.getEdgeId());
 		List<Interval> timePeriods = new ArrayList<Interval>(windows.size());
 		for ( Map<String, Object> window : windows ) {
 			Object s = window.get("timeStart");
@@ -313,15 +313,15 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 				try {
 					LocalTime start = timeFormatter.parseLocalTime(s.toString());
 					LocalTime end = timeFormatter.parseLocalTime(e.toString());
-					EniwareEdge node = nodeCache.get(intervalNodeId);
+					EniwareEdge Edge = EdgeCache.get(intervalEdgeId);
 					DateTimeZone tz = DateTimeZone.UTC;
-					if ( node != null ) {
-						TimeZone nodeTz = node.getTimeZone();
-						if ( nodeTz != null ) {
-							tz = DateTimeZone.forTimeZone(nodeTz);
+					if ( Edge != null ) {
+						TimeZone EdgeTz = Edge.getTimeZone();
+						if ( EdgeTz != null ) {
+							tz = DateTimeZone.forTimeZone(EdgeTz);
 						}
 					} else {
-						log.warn("Node {} not available, defaulting to UTC time zone", intervalNodeId);
+						log.warn("Edge {} not available, defaulting to UTC time zone", intervalEdgeId);
 					}
 					DateTime startTimeToday = start.toDateTime(nowDateTime.toDateTime(tz));
 					DateTime endTimeToday = end.toDateTime(nowDateTime.toDateTime(tz));
@@ -346,60 +346,60 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 		return timePeriods;
 	}
 
-	private void loadMostRecentNodeData(List<UserAlert> alerts) {
+	private void loadMostRecentEdgeData(List<UserAlert> alerts) {
 		// reset cache
-		nodeCache.clear();
-		nodeDataCache.clear();
+		EdgeCache.clear();
+		EdgeDataCache.clear();
 		userDataCache.clear();
 
-		// keep a reverse node ID -> user ID mapping
-		Map<Long, Long> nodeUserMapping = new HashMap<Long, Long>();
+		// keep a reverse Edge ID -> user ID mapping
+		Map<Long, Long> EdgeUserMapping = new HashMap<Long, Long>();
 
-		// get set of unique user IDs and/or node IDs
-		Set<Long> nodeIds = new HashSet<Long>(alerts.size());
+		// get set of unique user IDs and/or Edge IDs
+		Set<Long> EdgeIds = new HashSet<Long>(alerts.size());
 		Set<Long> userIds = new HashSet<Long>(alerts.size());
 		for ( UserAlert alert : alerts ) {
-			if ( alert.getNodeId() != null ) {
-				nodeIds.add(alert.getNodeId());
+			if ( alert.getEdgeId() != null ) {
+				EdgeIds.add(alert.getEdgeId());
 			} else {
 				userIds.add(alert.getUserId());
 
-				// need to associate all possible node IDs to this user ID
-				List<UserEdge> nodes = userNodeDao
-						.findUserNodesForUser(new User(alert.getUserId(), null));
-				for ( UserEdge userNode : nodes ) {
-					nodeCache.put(userNode.getNode().getId(), userNode.getNode());
-					nodeUserMapping.put(userNode.getNode().getId(), alert.getUserId());
+				// need to associate all possible Edge IDs to this user ID
+				List<UserEdge> Edges = userEdgeDao
+						.findUserEdgesForUser(new User(alert.getUserId(), null));
+				for ( UserEdge userEdge : Edges ) {
+					EdgeCache.put(userEdge.getEdge().getId(), userEdge.getEdge());
+					EdgeUserMapping.put(userEdge.getEdge().getId(), alert.getUserId());
 				}
 			}
 		}
 
-		// load up data for users first, as that might pull in all node data already
+		// load up data for users first, as that might pull in all Edge data already
 		if ( userIds.isEmpty() == false ) {
 			DatumFilterCommand filter = new DatumFilterCommand();
 			filter.setUserIds(userIds.toArray(new Long[userIds.size()]));
 			filter.setMostRecent(true);
-			FilterResults<GeneralNodeDatumFilterMatch> latestNodeData = generalNodeDatumDao
+			FilterResults<GeneralEdgeDatumFilterMatch> latestEdgeData = generalEdgeDatumDao
 					.findFiltered(filter, null, null, null);
-			for ( GeneralNodeDatumFilterMatch match : latestNodeData.getResults() ) {
-				// first add to node list
-				List<GeneralNodeDatumFilterMatch> datumMatches = nodeDataCache
-						.get(match.getId().getNodeId());
+			for ( GeneralEdgeDatumFilterMatch match : latestEdgeData.getResults() ) {
+				// first add to Edge list
+				List<GeneralEdgeDatumFilterMatch> datumMatches = EdgeDataCache
+						.get(match.getId().getEdgeId());
 				if ( datumMatches == null ) {
-					datumMatches = new ArrayList<GeneralNodeDatumFilterMatch>();
-					nodeDataCache.put(match.getId().getNodeId(), datumMatches);
+					datumMatches = new ArrayList<GeneralEdgeDatumFilterMatch>();
+					EdgeDataCache.put(match.getId().getEdgeId(), datumMatches);
 				}
 				datumMatches.add(match);
 
 				// now add match to User list
-				Long userId = nodeUserMapping.get(match.getId().getNodeId());
+				Long userId = EdgeUserMapping.get(match.getId().getEdgeId());
 				if ( userId == null ) {
-					log.warn("No user ID found for node ID: {}", match.getId().getNodeId());
+					log.warn("No user ID found for Edge ID: {}", match.getId().getEdgeId());
 					continue;
 				}
 				datumMatches = userDataCache.get(userId);
 				if ( datumMatches == null ) {
-					datumMatches = new ArrayList<GeneralNodeDatumFilterMatch>();
+					datumMatches = new ArrayList<GeneralEdgeDatumFilterMatch>();
 					userDataCache.put(userId, datumMatches);
 				}
 				datumMatches.add(match);
@@ -407,49 +407,49 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 			log.debug("Loaded most recent datum for users {}: {}", userIds, userDataCache);
 		}
 
-		// we can remove any nodes already fetched via user query
-		nodeIds.removeAll(nodeUserMapping.keySet());
+		// we can remove any Edges already fetched via user query
+		EdgeIds.removeAll(EdgeUserMapping.keySet());
 
-		// for any node IDs still around, query for them now
-		if ( nodeIds.isEmpty() == false ) {
+		// for any Edge IDs still around, query for them now
+		if ( EdgeIds.isEmpty() == false ) {
 			DatumFilterCommand filter = new DatumFilterCommand();
-			filter.setNodeIds(nodeIds.toArray(new Long[nodeIds.size()]));
+			filter.setEdgeIds(EdgeIds.toArray(new Long[EdgeIds.size()]));
 			filter.setMostRecent(true);
-			FilterResults<GeneralNodeDatumFilterMatch> latestNodeData = generalNodeDatumDao
+			FilterResults<GeneralEdgeDatumFilterMatch> latestEdgeData = generalEdgeDatumDao
 					.findFiltered(filter, null, null, null);
-			for ( GeneralNodeDatumFilterMatch match : latestNodeData.getResults() ) {
-				List<GeneralNodeDatumFilterMatch> datumMatches = nodeDataCache
-						.get(match.getId().getNodeId());
+			for ( GeneralEdgeDatumFilterMatch match : latestEdgeData.getResults() ) {
+				List<GeneralEdgeDatumFilterMatch> datumMatches = EdgeDataCache
+						.get(match.getId().getEdgeId());
 				if ( datumMatches == null ) {
-					datumMatches = new ArrayList<GeneralNodeDatumFilterMatch>();
-					nodeDataCache.put(match.getId().getNodeId(), datumMatches);
+					datumMatches = new ArrayList<GeneralEdgeDatumFilterMatch>();
+					EdgeDataCache.put(match.getId().getEdgeId(), datumMatches);
 				}
-				if ( !nodeCache.containsKey(match.getId().getNodeId()) ) {
-					nodeCache.put(match.getId().getNodeId(),
-							eniwareEdgeDao.get(match.getId().getNodeId()));
+				if ( !EdgeCache.containsKey(match.getId().getEdgeId()) ) {
+					EdgeCache.put(match.getId().getEdgeId(),
+							eniwareEdgeDao.get(match.getId().getEdgeId()));
 				}
 				datumMatches.add(match);
 			}
-			log.debug("Loaded most recent datum for nodes {}: {}", nodeIds, nodeDataCache);
+			log.debug("Loaded most recent datum for Edges {}: {}", EdgeIds, EdgeDataCache);
 		}
 	}
 
 	/**
 	 * Get list of most recent datum associated with an alert. Depends on
-	 * {@link #loadMostRecentNodeData(List)} having been already called.
+	 * {@link #loadMostRecentEdgeData(List)} having been already called.
 	 * 
 	 * @param alert
 	 *        The alert to get the most recent data for.
 	 * @return The associated data, never <em>null</em>.
 	 */
-	private List<GeneralNodeDatumFilterMatch> getLatestNodeData(final UserAlert alert) {
-		List<GeneralNodeDatumFilterMatch> results;
-		if ( alert.getNodeId() != null ) {
-			results = nodeDataCache.get(alert.getNodeId());
+	private List<GeneralEdgeDatumFilterMatch> getLatestEdgeData(final UserAlert alert) {
+		List<GeneralEdgeDatumFilterMatch> results;
+		if ( alert.getEdgeId() != null ) {
+			results = EdgeDataCache.get(alert.getEdgeId());
 		} else {
 			results = userDataCache.get(alert.getUserId());
 		}
-		return (results == null ? Collections.<GeneralNodeDatumFilterMatch> emptyList() : results);
+		return (results == null ? Collections.<GeneralEdgeDatumFilterMatch> emptyList() : results);
 	}
 
 	private boolean withinIntervals(final long now, List<Interval> intervals) {
@@ -488,28 +488,28 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 		return earliest.getStart().plusDays(1);
 	}
 
-	private GeneralNodeDatumFilterMatch getFirstStaleDatum(final UserAlert alert, final DateTime now,
+	private GeneralEdgeDatumFilterMatch getFirstStaleDatum(final UserAlert alert, final DateTime now,
 			final Number age, final String[] sourceIds, final DateTimeFormatter timeFormatter,
 			final List<Interval> outputIntervals) {
-		GeneralNodeDatumFilterMatch stale = null;
-		List<GeneralNodeDatumFilterMatch> latestNodeData = getLatestNodeData(alert);
+		GeneralEdgeDatumFilterMatch stale = null;
+		List<GeneralEdgeDatumFilterMatch> latestEdgeData = getLatestEdgeData(alert);
 		List<Interval> intervals = new ArrayList<Interval>(2);
-		if ( alert.getNodeId() != null ) {
+		if ( alert.getEdgeId() != null ) {
 			try {
-				intervals = parseAlertTimeWindows(now, timeFormatter, alert, alert.getNodeId());
+				intervals = parseAlertTimeWindows(now, timeFormatter, alert, alert.getEdgeId());
 			} catch ( ClassCastException e ) {
 				log.warn("Unexpected option data type in alert {}: {}", alert, e.getMessage());
 			}
 		}
 
-		for ( GeneralNodeDatumFilterMatch datum : latestNodeData ) {
-			List<Interval> nodeIntervals = intervals;
-			if ( alert.getNodeId() == null ) {
+		for ( GeneralEdgeDatumFilterMatch datum : latestEdgeData ) {
+			List<Interval> EdgeIntervals = intervals;
+			if ( alert.getEdgeId() == null ) {
 				try {
-					nodeIntervals = parseAlertTimeWindows(now, timeFormatter, alert,
-							datum.getId().getNodeId());
-					if ( nodeIntervals != null ) {
-						for ( Interval interval : nodeIntervals ) {
+					EdgeIntervals = parseAlertTimeWindows(now, timeFormatter, alert,
+							datum.getId().getEdgeId());
+					if ( EdgeIntervals != null ) {
+						for ( Interval interval : EdgeIntervals ) {
 							if ( !intervals.contains(interval) ) {
 								intervals.add(interval);
 							}
@@ -524,7 +524,7 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 					.getMillis()
 					&& (sourceIds == null
 							|| Arrays.binarySearch(sourceIds, datum.getId().getSourceId()) >= 0)
-					&& withinIntervals(now.getMillis(), nodeIntervals) ) {
+					&& withinIntervals(now.getMillis(), EdgeIntervals) ) {
 				stale = datum;
 				break;
 			}
@@ -535,11 +535,11 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 		return stale;
 	}
 
-	private GeneralNodeDatumFilterMatch getFirstNonStaleDatum(final UserAlert alert, final long now,
+	private GeneralEdgeDatumFilterMatch getFirstNonStaleDatum(final UserAlert alert, final long now,
 			final Number age, final String[] sourceIds) {
-		GeneralNodeDatumFilterMatch nonStale = null;
-		List<GeneralNodeDatumFilterMatch> latestNodeData = getLatestNodeData(alert);
-		for ( GeneralNodeDatumFilterMatch datum : latestNodeData ) {
+		GeneralEdgeDatumFilterMatch nonStale = null;
+		List<GeneralEdgeDatumFilterMatch> latestEdgeData = getLatestEdgeData(alert);
+		for ( GeneralEdgeDatumFilterMatch datum : latestEdgeData ) {
 			if ( datum.getId().getCreated().getMillis() + (long) (age.doubleValue() * 1000) >= now
 					&& (sourceIds == null
 							|| Arrays.binarySearch(sourceIds, datum.getId().getSourceId()) >= 0) ) {
@@ -551,15 +551,15 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 	}
 
 	private void sendAlertMail(UserAlert alert, String subjectKey, String resourcePath,
-			GeneralNodeDatumFilterMatch datum) {
+			GeneralEdgeDatumFilterMatch datum) {
 		if ( alert.getStatus() == UserAlertStatus.Suppressed ) {
 			// no emails for this alert
 			log.debug("Alert email suppressed: {}; datum {}; subject {}", alert, datum, subjectKey);
 			return;
 		}
 		User user = userDao.get(alert.getUserId());
-		EniwareEdge node = (datum != null ? nodeCache.get(datum.getId().getNodeId()) : null);
-		if ( user != null && node != null ) {
+		EniwareEdge Edge = (datum != null ? EdgeCache.get(datum.getId().getEdgeId()) : null);
+		if ( user != null && Edge != null ) {
 			BasicMailAddress addr = new BasicMailAddress(user.getName(), user.getEmail());
 			Locale locale = Locale.US; // TODO: get Locale from User entity
 			Map<String, Object> model = new HashMap<String, Object>(4);
@@ -569,15 +569,15 @@ public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor
 
 			// add a formatted datum date to model
 			DateTimeFormatter dateFormat = timestampFormat.withLocale(locale);
-			if ( node != null && node.getTimeZone() != null ) {
-				dateFormat = dateFormat.withZone(DateTimeZone.forTimeZone(node.getTimeZone()));
+			if ( Edge != null && Edge.getTimeZone() != null ) {
+				dateFormat = dateFormat.withZone(DateTimeZone.forTimeZone(Edge.getTimeZone()));
 			}
 			model.put("datumDate", dateFormat.print(datum.getId().getCreated()));
 
 			String subject = messageSource.getMessage(subjectKey,
-					new Object[] { datum.getId().getNodeId() }, locale);
+					new Object[] { datum.getId().getEdgeId() }, locale);
 
-			log.debug("Sending NodeStaleData alert {} to {} with model {}", subject, user.getEmail(),
+			log.debug("Sending EdgeStaleData alert {} to {} with model {}", subject, user.getEmail(),
 					model);
 			ClasspathResourceMessageTemplateDataSource msg = new ClasspathResourceMessageTemplateDataSource(
 					locale, subject, resourcePath, model);

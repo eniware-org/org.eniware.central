@@ -18,7 +18,7 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
 
 /**
- * Job to look for {@link UserAlertType#NodeStaleData} needing of creating /
+ * Job to look for {@link UserAlertType#EdgeStaleData} needing of creating /
  * updating a {@link UserAlertSituation} for.
  * 
  * @version 1.0
@@ -94,7 +94,7 @@ public class UserAlertBatchJob extends JobSupport {
 	protected Event handleJobCompleteEvent(Event jobEvent, boolean complete, Throwable thrown) {
 		Event ack = super.handleJobCompleteEvent(jobEvent, complete, thrown);
 
-		// add JOB_PROPERTIES Map with JOB_PROP_STARTING_NODE_ID to save with job
+		// add JOB_PROPERTIES Map with JOB_PROP_STARTING_Edge_ID to save with job
 		Map<String, Object> jobProps = new HashMap<String, Object>();
 		for ( String key : ack.getPropertyNames() ) {
 			jobProps.put(key, ack.getProperty(key));

@@ -34,10 +34,10 @@ methods.init = function(initOpts) {
 
     // Add the pin.
     if (opts.pinUrl) {
-      $pin = $('<img src="' + opts.pinUrl + '" />').appendTo(imgElement.parentNode).css('display', 'none');
+      $pin = $('<img src="' + opts.pinUrl + '" />').appendTo(imgElement.parentEdge).css('display', 'none');
     }
     else if (opts.pin) {
-      $pin = $(imgElement).parent().parent().find(opts.pin).appendTo(imgElement.parentNode).css('display', 'none');
+      $pin = $(imgElement).parent().parent().find(opts.pin).appendTo(imgElement.parentEdge).css('display', 'none');
     }
 
     // Main event handler when a timezone is clicked.

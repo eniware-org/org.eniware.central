@@ -16,63 +16,63 @@ import org.joda.time.DateTime;
 public class GeneralReportableIntervalCommand {
 
 	private Long locationId;
-	private Long[] nodeIds;
+	private Long[] EdgeIds;
 	private String sourceId;
 	private DateTime startDate;
 	private DateTime endDate;
 	private String metadataFilter;
 
 	/**
-	 * Set a single node ID.
+	 * Set a single Edge ID.
 	 * 
 	 * <p>
-	 * This is a convenience method for requests that use a single node ID at a
-	 * time. The node ID is still stored on the {@code nodeIds} array, just as
+	 * This is a convenience method for requests that use a single Edge ID at a
+	 * time. The Edge ID is still stored on the {@code EdgeIds} array, just as
 	 * the first value. Calling this method replaces any existing
-	 * {@code nodeIds} value with a new array containing just the ID passed into
+	 * {@code EdgeIds} value with a new array containing just the ID passed into
 	 * this method.
 	 * </p>
 	 * 
-	 * @param nodeId
-	 *        the ID of the node
+	 * @param EdgeId
+	 *        the ID of the Edge
 	 */
-	public void setNodeId(Long nodeId) {
-		this.nodeIds = new Long[] { nodeId };
+	public void setEdgeId(Long EdgeId) {
+		this.EdgeIds = new Long[] { EdgeId };
 	}
 
 	/**
-	 * Get the first node ID.
+	 * Get the first Edge ID.
 	 * 
 	 * <p>
-	 * This returns the first available node ID from the {@code nodeIds} array,
+	 * This returns the first available Edge ID from the {@code EdgeIds} array,
 	 * or <em>null</em> if not available.
 	 * </p>
 	 * 
-	 * @return the first node ID
+	 * @return the first Edge ID
 	 */
-	public Long getNodeId() {
-		return this.nodeIds == null || this.nodeIds.length < 1 ? null : this.nodeIds[0];
+	public Long getEdgeId() {
+		return this.EdgeIds == null || this.EdgeIds.length < 1 ? null : this.EdgeIds[0];
 	}
 
 	/**
-	 * Get the node IDs.
+	 * Get the Edge IDs.
 	 * 
-	 * @return The node IDs.
+	 * @return The Edge IDs.
 	 * @since 1.2
 	 */
-	public Long[] getNodeIds() {
-		return nodeIds;
+	public Long[] getEdgeIds() {
+		return EdgeIds;
 	}
 
 	/**
-	 * Set the node IDs.
+	 * Set the Edge IDs.
 	 * 
-	 * @param nodeIds
-	 *        The node IDs to set.
+	 * @param EdgeIds
+	 *        The Edge IDs to set.
 	 * @since 1.2
 	 */
-	public void setNodeIds(Long[] nodeIds) {
-		this.nodeIds = nodeIds;
+	public void setEdgeIds(Long[] EdgeIds) {
+		this.EdgeIds = EdgeIds;
 	}
 
 	public String getSourceId() {

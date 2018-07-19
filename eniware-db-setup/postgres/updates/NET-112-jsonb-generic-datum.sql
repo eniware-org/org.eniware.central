@@ -35,7 +35,7 @@ $$;
 
 CREATE OR REPLACE FUNCTION solardatum.store_meta(
 	cdate timestamp with time zone,
-	node bigint,
+	Edge bigint,
 	src text,
 	jdata text)
   RETURNS void LANGUAGE plpgsql VOLATILE AS
@@ -44,9 +44,9 @@ DECLARE
 	udate timestamp with time zone := now();
 	jdata_json jsonb := jdata::jsonb;
 BEGIN
-	INSERT INTO solardatum.da_meta(node_id, source_id, created, updated, jdata)
-	VALUES (node, src, cdate, udate, jdata_json)
-	ON CONFLICT (node_id, source_id) DO UPDATE
+	INSERT INTO solardatum.da_meta(Edge_id, source_id, created, updated, jdata)
+	VALUES (Edge, src, cdate, udate, jdata_json)
+	ON CONFLICT (Edge_id, source_id) DO UPDATE
 	SET jdata = EXCLUDED.jdata, updated = EXCLUDED.updated;
 END;
 $BODY$;

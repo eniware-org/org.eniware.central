@@ -105,7 +105,7 @@ jQuery.fn = jQuery.prototype = {
 		}
 
 		// Handle $(DOMElement)
-		if ( selector.nodeType ) {
+		if ( selector.EdgeType ) {
 			this.context = this[0] = selector;
 			this.length = 1;
 			return this;
@@ -154,7 +154,7 @@ jQuery.fn = jQuery.prototype = {
 
 					} else {
 						ret = jQuery.buildFragment( [ match[1] ], [ doc ] );
-						selector = ( ret.cacheable ? jQuery.clone(ret.fragment) : ret.fragment ).childNodes;
+						selector = ( ret.cacheable ? jQuery.clone(ret.fragment) : ret.fragment ).childEdges;
 					}
 
 					return jQuery.merge( this, selector );
@@ -163,9 +163,9 @@ jQuery.fn = jQuery.prototype = {
 				} else {
 					elem = document.getElementById( match[2] );
 
-					// Check parentNode to catch when Blackberry 4.6 returns
-					// nodes that are no longer in the document #6963
-					if ( elem && elem.parentNode ) {
+					// Check parentEdge to catch when Blackberry 4.6 returns
+					// Edges that are no longer in the document #6963
+					if ( elem && elem.parentEdge ) {
 						// Handle the case where IE and Opera return items
 						// by name instead of ID
 						if ( elem.id !== match[2] ) {
@@ -515,8 +515,8 @@ jQuery.extend({
 	isPlainObject: function( obj ) {
 		// Must be an Object.
 		// Because of IE, we also have to check the presence of the constructor property.
-		// Make sure that DOM nodes and window objects don't pass through, as well
-		if ( !obj || jQuery.type(obj) !== "object" || obj.nodeType || jQuery.isWindow( obj ) ) {
+		// Make sure that DOM Edges and window objects don't pass through, as well
+		if ( !obj || jQuery.type(obj) !== "object" || obj.EdgeType || jQuery.isWindow( obj ) ) {
 			return false;
 		}
 
@@ -620,8 +620,8 @@ jQuery.extend({
 		return string.replace( rmsPrefix, "ms-" ).replace( rdashAlpha, fcamelCase );
 	},
 
-	nodeName: function( elem, name ) {
-		return elem.nodeName && elem.nodeName.toUpperCase() === name.toUpperCase();
+	EdgeName: function( elem, name ) {
+		return elem.EdgeName && elem.EdgeName.toUpperCase() === name.toUpperCase();
 	},
 
 	// args is for internal usage only
@@ -1365,7 +1365,7 @@ jQuery.support = (function() {
 
 	support = {
 		// IE strips leading whitespace when .innerHTML is used
-		leadingWhitespace: ( div.firstChild.nodeType === 3 ),
+		leadingWhitespace: ( div.firstChild.EdgeType === 3 ),
 
 		// Make sure that tbody elements aren't automatically inserted
 		// IE will insert them into empty tables
@@ -1409,7 +1409,7 @@ jQuery.support = (function() {
 
 		// Makes sure cloning an html5 element does not cause problems
 		// Where outerHTML is undefined, this still works
-		html5Clone: document.createElement("nav").cloneNode( true ).outerHTML !== "<:nav></:nav>",
+		html5Clone: document.createElement("nav").cloneEdge( true ).outerHTML !== "<:nav></:nav>",
 
 		// Will be defined later
 		submitBubbles: true,
@@ -1424,7 +1424,7 @@ jQuery.support = (function() {
 
 	// Make sure checked status is properly cloned
 	input.checked = true;
-	support.noCloneChecked = input.cloneNode( true ).checked;
+	support.noCloneChecked = input.cloneEdge( true ).checked;
 
 	// Make sure that the options inside disabled selects aren't marked as disabled
 	// (WebKit marks them as disabled)
@@ -1441,11 +1441,11 @@ jQuery.support = (function() {
 
 	if ( !div.addEventListener && div.attachEvent && div.fireEvent ) {
 		div.attachEvent( "onclick", function() {
-			// Cloning a node shouldn't copy over any
+			// Cloning a Edge shouldn't copy over any
 			// bound event handlers (IE does this)
 			support.noCloneEvent = false;
 		});
-		div.cloneNode( true ).fireEvent( "onclick" );
+		div.cloneEdge( true ).fireEvent( "onclick" );
 	}
 
 	// Check if a radio maintains its value
@@ -1461,7 +1461,7 @@ jQuery.support = (function() {
 	fragment.appendChild( div.lastChild );
 
 	// WebKit doesn't clone checked state correctly in fragments
-	support.checkClone = fragment.cloneNode( true ).cloneNode( true ).lastChild.checked;
+	support.checkClone = fragment.cloneEdge( true ).cloneEdge( true ).lastChild.checked;
 
 	// Check if a disconnected checkbox will retain its checked
 	// value of true after appended to the DOM (IE6/7)
@@ -1640,7 +1640,7 @@ jQuery.extend({
 	},
 
 	hasData: function( elem ) {
-		elem = elem.nodeType ? jQuery.cache[ elem[jQuery.expando] ] : elem[ jQuery.expando ];
+		elem = elem.EdgeType ? jQuery.cache[ elem[jQuery.expando] ] : elem[ jQuery.expando ];
 		return !!elem && !isEmptyDataObject( elem );
 	},
 
@@ -1653,17 +1653,17 @@ jQuery.extend({
 			internalKey = jQuery.expando,
 			getByName = typeof name === "string",
 
-			// We have to handle DOM nodes and JS objects differently because IE6-7
+			// We have to handle DOM Edges and JS objects differently because IE6-7
 			// can't GC object references properly across the DOM-JS boundary
-			isNode = elem.nodeType,
+			isEdge = elem.EdgeType,
 
-			// Only DOM nodes need the global jQuery cache; JS object data is
+			// Only DOM Edges need the global jQuery cache; JS object data is
 			// attached directly to the object so GC can occur automatically
-			cache = isNode ? jQuery.cache : elem,
+			cache = isEdge ? jQuery.cache : elem,
 
 			// Only defining an ID for JS objects if its cache already exists allows
-			// the code to shortcut on the same path as a DOM node with no cache
-			id = isNode ? elem[ internalKey ] : elem[ internalKey ] && internalKey,
+			// the code to shortcut on the same path as a DOM Edge with no cache
+			id = isEdge ? elem[ internalKey ] : elem[ internalKey ] && internalKey,
 			isEvents = name === "events";
 
 		// Avoid doing any more work than we need to when trying to get data on an
@@ -1673,9 +1673,9 @@ jQuery.extend({
 		}
 
 		if ( !id ) {
-			// Only DOM nodes need a new unique ID for each element since their data
+			// Only DOM Edges need a new unique ID for each element since their data
 			// ends up in the global cache
-			if ( isNode ) {
+			if ( isEdge ) {
 				elem[ internalKey ] = id = ++jQuery.uuid;
 			} else {
 				id = internalKey;
@@ -1687,7 +1687,7 @@ jQuery.extend({
 
 			// Avoids exposing jQuery metadata on plain JS objects when the object
 			// is serialized using JSON.stringify
-			if ( !isNode ) {
+			if ( !isEdge ) {
 				cache[ id ].toJSON = jQuery.noop;
 			}
 		}
@@ -1755,13 +1755,13 @@ jQuery.extend({
 			// Reference to internal data cache key
 			internalKey = jQuery.expando,
 
-			isNode = elem.nodeType,
+			isEdge = elem.EdgeType,
 
 			// See jQuery.data for more information
-			cache = isNode ? jQuery.cache : elem,
+			cache = isEdge ? jQuery.cache : elem,
 
 			// See jQuery.data for more information
-			id = isNode ? elem[ internalKey ] : internalKey;
+			id = isEdge ? elem[ internalKey ] : internalKey;
 
 		// If there is already no cache entry for this object, there is no
 		// purpose in continuing
@@ -1826,11 +1826,11 @@ jQuery.extend({
 			cache[ id ] = null;
 		}
 
-		// We destroyed the cache and need to eliminate the expando on the node to avoid
+		// We destroyed the cache and need to eliminate the expando on the Edge to avoid
 		// false lookups in the cache for entries that no longer exist
-		if ( isNode ) {
-			// IE does not allow us to delete expando properties from nodes,
-			// nor does it have a removeAttribute function on Document nodes;
+		if ( isEdge ) {
+			// IE does not allow us to delete expando properties from Edges,
+			// nor does it have a removeAttribute function on Document Edges;
 			// we must handle all of these cases
 			if ( jQuery.support.deleteExpando ) {
 				delete elem[ internalKey ];
@@ -1847,10 +1847,10 @@ jQuery.extend({
 		return jQuery.data( elem, name, data, true );
 	},
 
-	// A method for determining if a DOM node can handle the data expando
+	// A method for determining if a DOM Edge can handle the data expando
 	acceptData: function( elem ) {
-		if ( elem.nodeName ) {
-			var match = jQuery.noData[ elem.nodeName.toLowerCase() ];
+		if ( elem.EdgeName ) {
+			var match = jQuery.noData[ elem.EdgeName.toLowerCase() ];
 
 			if ( match ) {
 				return !(match === true || elem.getAttribute("classid") !== match);
@@ -1870,7 +1870,7 @@ jQuery.fn.extend({
 			if ( this.length ) {
 				data = jQuery.data( this[0] );
 
-				if ( this[0].nodeType === 1 && !jQuery._data( this[0], "parsedAttrs" ) ) {
+				if ( this[0].EdgeType === 1 && !jQuery._data( this[0], "parsedAttrs" ) ) {
 					attr = this[0].attributes;
 					for ( var i = 0, l = attr.length; i < l; i++ ) {
 						name = attr[i].name;
@@ -1931,7 +1931,7 @@ jQuery.fn.extend({
 function dataAttr( elem, key, data ) {
 	// If nothing was found internally, try to fetch any
 	// data from the HTML5 data-* attribute
-	if ( data === undefined && elem.nodeType === 1 ) {
+	if ( data === undefined && elem.EdgeType === 1 ) {
 
 		var name = "data-" + key.replace( rmultiDash, "-$1" ).toLowerCase();
 
@@ -2160,7 +2160,7 @@ var rclass = /[\n\t\r]/g,
 	rclickable = /^a(?:rea)?$/i,
 	rboolean = /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped|selected)$/i,
 	getSetAttribute = jQuery.support.getSetAttribute,
-	nodeHook, boolHook, fixSpecified;
+	EdgeHook, boolHook, fixSpecified;
 
 jQuery.fn.extend({
 	attr: function( name, value ) {
@@ -2204,7 +2204,7 @@ jQuery.fn.extend({
 			for ( i = 0, l = this.length; i < l; i++ ) {
 				elem = this[ i ];
 
-				if ( elem.nodeType === 1 ) {
+				if ( elem.EdgeType === 1 ) {
 					if ( !elem.className && classNames.length === 1 ) {
 						elem.className = value;
 
@@ -2240,7 +2240,7 @@ jQuery.fn.extend({
 			for ( i = 0, l = this.length; i < l; i++ ) {
 				elem = this[ i ];
 
-				if ( elem.nodeType === 1 && elem.className ) {
+				if ( elem.EdgeType === 1 && elem.className ) {
 					if ( value ) {
 						className = (" " + elem.className + " ").replace( rclass, " " );
 						for ( c = 0, cl = classNames.length; c < cl; c++ ) {
@@ -2300,7 +2300,7 @@ jQuery.fn.extend({
 			i = 0,
 			l = this.length;
 		for ( ; i < l; i++ ) {
-			if ( this[i].nodeType === 1 && (" " + this[i].className + " ").replace(rclass, " ").indexOf( className ) > -1 ) {
+			if ( this[i].EdgeType === 1 && (" " + this[i].className + " ").replace(rclass, " ").indexOf( className ) > -1 ) {
 				return true;
 			}
 		}
@@ -2314,7 +2314,7 @@ jQuery.fn.extend({
 
 		if ( !arguments.length ) {
 			if ( elem ) {
-				hooks = jQuery.valHooks[ elem.nodeName.toLowerCase() ] || jQuery.valHooks[ elem.type ];
+				hooks = jQuery.valHooks[ elem.EdgeName.toLowerCase() ] || jQuery.valHooks[ elem.type ];
 
 				if ( hooks && "get" in hooks && (ret = hooks.get( elem, "value" )) !== undefined ) {
 					return ret;
@@ -2337,7 +2337,7 @@ jQuery.fn.extend({
 		return this.each(function( i ) {
 			var self = jQuery(this), val;
 
-			if ( this.nodeType !== 1 ) {
+			if ( this.EdgeType !== 1 ) {
 				return;
 			}
 
@@ -2358,7 +2358,7 @@ jQuery.fn.extend({
 				});
 			}
 
-			hooks = jQuery.valHooks[ this.nodeName.toLowerCase() ] || jQuery.valHooks[ this.type ];
+			hooks = jQuery.valHooks[ this.EdgeName.toLowerCase() ] || jQuery.valHooks[ this.type ];
 
 			// If set returns undefined, fall back to normal setting
 			if ( !hooks || !("set" in hooks) || hooks.set( this, val, "value" ) === undefined ) {
@@ -2399,7 +2399,7 @@ jQuery.extend({
 
 					// Don't return options that are disabled or in a disabled optgroup
 					if ( option.selected && (jQuery.support.optDisabled ? !option.disabled : option.getAttribute("disabled") === null) &&
-							(!option.parentNode.disabled || !jQuery.nodeName( option.parentNode, "optgroup" )) ) {
+							(!option.parentEdge.disabled || !jQuery.EdgeName( option.parentEdge, "optgroup" )) ) {
 
 						// Get the specific value for the option
 						value = jQuery( option ).val();
@@ -2450,9 +2450,9 @@ jQuery.extend({
 
 	attr: function( elem, name, value, pass ) {
 		var ret, hooks, notxml,
-			nType = elem.nodeType;
+			nType = elem.EdgeType;
 
-		// don't get/set attributes on text, comment and attribute nodes
+		// don't get/set attributes on text, comment and attribute Edges
 		if ( !elem || nType === 3 || nType === 8 || nType === 2 ) {
 			return;
 		}
@@ -2472,7 +2472,7 @@ jQuery.extend({
 		// Grab necessary hook if one is defined
 		if ( notxml ) {
 			name = name.toLowerCase();
-			hooks = jQuery.attrHooks[ name ] || ( rboolean.test( name ) ? boolHook : nodeHook );
+			hooks = jQuery.attrHooks[ name ] || ( rboolean.test( name ) ? boolHook : EdgeHook );
 		}
 
 		if ( value !== undefined ) {
@@ -2507,7 +2507,7 @@ jQuery.extend({
 		var propName, attrNames, name, l,
 			i = 0;
 
-		if ( value && elem.nodeType === 1 ) {
+		if ( value && elem.EdgeType === 1 ) {
 			attrNames = value.toLowerCase().split( rspace );
 			l = attrNames.length;
 
@@ -2534,9 +2534,9 @@ jQuery.extend({
 		type: {
 			set: function( elem, value ) {
 				// We can't allow the type property to be changed (since it causes problems in IE)
-				if ( rtype.test( elem.nodeName ) && elem.parentNode ) {
+				if ( rtype.test( elem.EdgeName ) && elem.parentEdge ) {
 					jQuery.error( "type property can't be changed" );
-				} else if ( !jQuery.support.radioValue && value === "radio" && jQuery.nodeName(elem, "input") ) {
+				} else if ( !jQuery.support.radioValue && value === "radio" && jQuery.EdgeName(elem, "input") ) {
 					// Setting the type on a radio button after the value resets the value in IE6-9
 					// Reset value to it's default in case type is set after value
 					// This is for element creation
@@ -2550,19 +2550,19 @@ jQuery.extend({
 			}
 		},
 		// Use the value property for back compat
-		// Use the nodeHook for button elements in IE6/7 (#1954)
+		// Use the EdgeHook for button elements in IE6/7 (#1954)
 		value: {
 			get: function( elem, name ) {
-				if ( nodeHook && jQuery.nodeName( elem, "button" ) ) {
-					return nodeHook.get( elem, name );
+				if ( EdgeHook && jQuery.EdgeName( elem, "button" ) ) {
+					return EdgeHook.get( elem, name );
 				}
 				return name in elem ?
 					elem.value :
 					null;
 			},
 			set: function( elem, value, name ) {
-				if ( nodeHook && jQuery.nodeName( elem, "button" ) ) {
-					return nodeHook.set( elem, value, name );
+				if ( EdgeHook && jQuery.EdgeName( elem, "button" ) ) {
+					return EdgeHook.set( elem, value, name );
 				}
 				// Does not return so that setAttribute is also used
 				elem.value = value;
@@ -2587,9 +2587,9 @@ jQuery.extend({
 
 	prop: function( elem, name, value ) {
 		var ret, hooks, notxml,
-			nType = elem.nodeType;
+			nType = elem.EdgeType;
 
-		// don't get/set properties on text, comment and attribute nodes
+		// don't get/set properties on text, comment and attribute Edges
 		if ( !elem || nType === 3 || nType === 8 || nType === 2 ) {
 			return;
 		}
@@ -2625,11 +2625,11 @@ jQuery.extend({
 			get: function( elem ) {
 				// elem.tabIndex doesn't always return the correct value when it hasn't been explicitly set
 				// http://fluidproject.org/blog/2008/01/09/getting-setting-and-removing-tabindex-values-with-javascript/
-				var attributeNode = elem.getAttributeNode("tabindex");
+				var attributeEdge = elem.getAttributeEdge("tabindex");
 
-				return attributeNode && attributeNode.specified ?
-					parseInt( attributeNode.value, 10 ) :
-					rfocusable.test( elem.nodeName ) || rclickable.test( elem.nodeName ) && elem.href ?
+				return attributeEdge && attributeEdge.specified ?
+					parseInt( attributeEdge.value, 10 ) :
+					rfocusable.test( elem.EdgeName ) || rclickable.test( elem.EdgeName ) && elem.href ?
 						0 :
 						undefined;
 			}
@@ -2645,9 +2645,9 @@ boolHook = {
 	get: function( elem, name ) {
 		// Align boolean attributes with corresponding properties
 		// Fall back to attribute presence where some booleans are not supported
-		var attrNode,
+		var attrEdge,
 			property = jQuery.prop( elem, name );
-		return property === true || typeof property !== "boolean" && ( attrNode = elem.getAttributeNode(name) ) && attrNode.nodeValue !== false ?
+		return property === true || typeof property !== "boolean" && ( attrEdge = elem.getAttributeEdge(name) ) && attrEdge.EdgeValue !== false ?
 			name.toLowerCase() :
 			undefined;
 	},
@@ -2681,27 +2681,27 @@ if ( !getSetAttribute ) {
 
 	// Use this for any attribute in IE6/7
 	// This fixes almost every IE6/7 issue
-	nodeHook = jQuery.valHooks.button = {
+	EdgeHook = jQuery.valHooks.button = {
 		get: function( elem, name ) {
 			var ret;
-			ret = elem.getAttributeNode( name );
-			return ret && ( fixSpecified[ name ] ? ret.nodeValue !== "" : ret.specified ) ?
-				ret.nodeValue :
+			ret = elem.getAttributeEdge( name );
+			return ret && ( fixSpecified[ name ] ? ret.EdgeValue !== "" : ret.specified ) ?
+				ret.EdgeValue :
 				undefined;
 		},
 		set: function( elem, value, name ) {
-			// Set the existing or create a new attribute node
-			var ret = elem.getAttributeNode( name );
+			// Set the existing or create a new attribute Edge
+			var ret = elem.getAttributeEdge( name );
 			if ( !ret ) {
 				ret = document.createAttribute( name );
-				elem.setAttributeNode( ret );
+				elem.setAttributeEdge( ret );
 			}
-			return ( ret.nodeValue = value + "" );
+			return ( ret.EdgeValue = value + "" );
 		}
 	};
 
-	// Apply the nodeHook to tabindex
-	jQuery.attrHooks.tabindex.set = nodeHook.set;
+	// Apply the EdgeHook to tabindex
+	jQuery.attrHooks.tabindex.set = EdgeHook.set;
 
 	// Set width and height to auto instead of 0 on empty string( Bug #8150 )
 	// This is for removals
@@ -2719,12 +2719,12 @@ if ( !getSetAttribute ) {
 	// Set contenteditable to false on removals(#10429)
 	// Setting to empty string throws an error as an invalid value
 	jQuery.attrHooks.contenteditable = {
-		get: nodeHook.get,
+		get: EdgeHook.get,
 		set: function( elem, value, name ) {
 			if ( value === "" ) {
 				value = "false";
 			}
-			nodeHook.set( elem, value, name );
+			EdgeHook.set( elem, value, name );
 		}
 	};
 }
@@ -2760,14 +2760,14 @@ if ( !jQuery.support.style ) {
 if ( !jQuery.support.optSelected ) {
 	jQuery.propHooks.selected = jQuery.extend( jQuery.propHooks.selected, {
 		get: function( elem ) {
-			var parent = elem.parentNode;
+			var parent = elem.parentEdge;
 
 			if ( parent ) {
 				parent.selectedIndex;
 
 				// Make sure that it also works with optgroups, see #5701
-				if ( parent.parentNode ) {
-					parent.parentNode.selectedIndex;
+				if ( parent.parentEdge ) {
+					parent.parentEdge.selectedIndex;
 				}
 			}
 			return null;
@@ -2824,7 +2824,7 @@ var rformElems = /^(?:textarea|input|select)$/i,
 	quickIs = function( elem, m ) {
 		var attrs = elem.attributes || {};
 		return (
-			(!m[1] || elem.nodeName.toLowerCase() === m[1]) &&
+			(!m[1] || elem.EdgeName.toLowerCase() === m[1]) &&
 			(!m[2] || (attrs.id || {}).value === m[2]) &&
 			(!m[3] || m[3].test( (attrs[ "class" ] || {}).value ))
 		);
@@ -2845,8 +2845,8 @@ jQuery.event = {
 			t, tns, type, namespaces, handleObj,
 			handleObjIn, quick, handlers, special;
 
-		// Don't attach events to noData or text/comment nodes (allow plain objects tho)
-		if ( elem.nodeType === 3 || elem.nodeType === 8 || !types || !handler || !(elemData = jQuery._data( elem )) ) {
+		// Don't attach events to noData or text/comment Edges (allow plain objects tho)
+		if ( elem.EdgeType === 3 || elem.EdgeType === 8 || !types || !handler || !(elemData = jQuery._data( elem )) ) {
 			return;
 		}
 
@@ -3036,8 +3036,8 @@ jQuery.event = {
 	},
 
 	trigger: function( event, data, elem, onlyHandlers ) {
-		// Don't do events on text and comment nodes
-		if ( elem && (elem.nodeType === 3 || elem.nodeType === 8) ) {
+		// Don't do events on text and comment Edges
+		if ( elem && (elem.EdgeType === 3 || elem.EdgeType === 8) ) {
 			return;
 		}
 
@@ -3120,9 +3120,9 @@ jQuery.event = {
 		if ( !onlyHandlers && !special.noBubble && !jQuery.isWindow( elem ) ) {
 
 			bubbleType = special.delegateType || type;
-			cur = rfocusMorph.test( bubbleType + type ) ? elem : elem.parentNode;
+			cur = rfocusMorph.test( bubbleType + type ) ? elem : elem.parentEdge;
 			old = null;
-			for ( ; cur; cur = cur.parentNode ) {
+			for ( ; cur; cur = cur.parentEdge ) {
 				eventPath.push([ cur, bubbleType ]);
 				old = cur;
 			}
@@ -3155,7 +3155,7 @@ jQuery.event = {
 		if ( !onlyHandlers && !event.isDefaultPrevented() ) {
 
 			if ( (!special._default || special._default.apply( elem.ownerDocument, data ) === false) &&
-				!(type === "click" && jQuery.nodeName( elem, "a" )) && jQuery.acceptData( elem ) ) {
+				!(type === "click" && jQuery.EdgeName( elem, "a" )) && jQuery.acceptData( elem ) ) {
 
 				// Call a native DOM method on the target with the same name name as the event.
 				// Can't use an .isFunction() check here because IE6/7 fails that test.
@@ -3209,7 +3209,7 @@ jQuery.event = {
 			jqcur = jQuery(this);
 			jqcur.context = this.ownerDocument || this;
 
-			for ( cur = event.target; cur != this; cur = cur.parentNode || this ) {
+			for ( cur = event.target; cur != this; cur = cur.parentEdge || this ) {
 				selMatch = {};
 				matches = [];
 				jqcur[0] = cur;
@@ -3270,8 +3270,8 @@ jQuery.event = {
 	},
 
 	// Includes some event props shared by KeyEvent and MouseEvent
-	// *** attrChange attrName relatedNode srcElement  are not normalized, non-W3C, deprecated, will be removed in 1.8 ***
-	props: "attrChange attrName relatedNode srcElement altKey bubbles cancelable ctrlKey currentTarget eventPhase metaKey relatedTarget shiftKey target timeStamp view which".split(" "),
+	// *** attrChange attrName relatedEdge srcElement  are not normalized, non-W3C, deprecated, will be removed in 1.8 ***
+	props: "attrChange attrName relatedEdge srcElement altKey bubbles cancelable ctrlKey currentTarget eventPhase metaKey relatedTarget shiftKey target timeStamp view which".split(" "),
 
 	fixHooks: {},
 
@@ -3343,9 +3343,9 @@ jQuery.event = {
 			event.target = originalEvent.srcElement || document;
 		}
 
-		// Target should not be a text node (#504, Safari)
-		if ( event.target.nodeType === 3 ) {
-			event.target = event.target.parentNode;
+		// Target should not be a text Edge (#504, Safari)
+		if ( event.target.EdgeType === 3 ) {
+			event.target = event.target.parentEdge;
 		}
 
 		// For mouse/key events; add metaKey if it's not there (#3368, IE6/7/8)
@@ -3546,20 +3546,20 @@ if ( !jQuery.support.submitBubbles ) {
 	jQuery.event.special.submit = {
 		setup: function() {
 			// Only need this for delegated form submit events
-			if ( jQuery.nodeName( this, "form" ) ) {
+			if ( jQuery.EdgeName( this, "form" ) ) {
 				return false;
 			}
 
 			// Lazy-add a submit handler when a descendant form may potentially be submitted
 			jQuery.event.add( this, "click._submit keypress._submit", function( e ) {
-				// Node name check avoids a VML-related crash in IE (#9807)
+				// Edge name check avoids a VML-related crash in IE (#9807)
 				var elem = e.target,
-					form = jQuery.nodeName( elem, "input" ) || jQuery.nodeName( elem, "button" ) ? elem.form : undefined;
+					form = jQuery.EdgeName( elem, "input" ) || jQuery.EdgeName( elem, "button" ) ? elem.form : undefined;
 				if ( form && !form._submit_attached ) {
 					jQuery.event.add( form, "submit._submit", function( event ) {
 						// If form was submitted by the user, bubble the event up the tree
-						if ( this.parentNode && !event.isTrigger ) {
-							jQuery.event.simulate( "submit", this.parentNode, event, true );
+						if ( this.parentEdge && !event.isTrigger ) {
+							jQuery.event.simulate( "submit", this.parentEdge, event, true );
 						}
 					});
 					form._submit_attached = true;
@@ -3570,7 +3570,7 @@ if ( !jQuery.support.submitBubbles ) {
 
 		teardown: function() {
 			// Only need this for delegated form submit events
-			if ( jQuery.nodeName( this, "form" ) ) {
+			if ( jQuery.EdgeName( this, "form" ) ) {
 				return false;
 			}
 
@@ -3587,7 +3587,7 @@ if ( !jQuery.support.changeBubbles ) {
 
 		setup: function() {
 
-			if ( rformElems.test( this.nodeName ) ) {
+			if ( rformElems.test( this.EdgeName ) ) {
 				// IE doesn't fire change on a check/radio until blur; trigger it on click
 				// after a propertychange. Eat the blur-change in special.change.handle.
 				// This still fires onchange a second time for check/radio after blur.
@@ -3610,10 +3610,10 @@ if ( !jQuery.support.changeBubbles ) {
 			jQuery.event.add( this, "beforeactivate._change", function( e ) {
 				var elem = e.target;
 
-				if ( rformElems.test( elem.nodeName ) && !elem._change_attached ) {
+				if ( rformElems.test( elem.EdgeName ) && !elem._change_attached ) {
 					jQuery.event.add( elem, "change._change", function( event ) {
-						if ( this.parentNode && !event.isSimulated && !event.isTrigger ) {
-							jQuery.event.simulate( "change", this.parentNode, event, true );
+						if ( this.parentEdge && !event.isSimulated && !event.isTrigger ) {
+							jQuery.event.simulate( "change", this.parentEdge, event, true );
 						}
 					});
 					elem._change_attached = true;
@@ -3633,7 +3633,7 @@ if ( !jQuery.support.changeBubbles ) {
 		teardown: function() {
 			jQuery.event.remove( this, "._change" );
 
-			return rformElems.test( this.nodeName );
+			return rformElems.test( this.EdgeName );
 		}
 	};
 }
@@ -3882,7 +3882,7 @@ var Sizzle = function( selector, context, results, seed ) {
 
 	var origContext = context;
 
-	if ( context.nodeType !== 1 && context.nodeType !== 9 ) {
+	if ( context.EdgeType !== 1 && context.EdgeType !== 9 ) {
 		return [];
 	}
 	
@@ -3937,7 +3937,7 @@ var Sizzle = function( selector, context, results, seed ) {
 	} else {
 		// Take a shortcut and set the context if the root selector is an ID
 		// (but not if it'll be faster if the inner selector is an ID)
-		if ( !seed && parts.length > 1 && context.nodeType === 9 && !contextXML &&
+		if ( !seed && parts.length > 1 && context.EdgeType === 9 && !contextXML &&
 				Expr.match.ID.test(parts[0]) && !Expr.match.ID.test(parts[parts.length - 1]) ) {
 
 			ret = Sizzle.find( parts.shift(), context, contextXML );
@@ -3949,7 +3949,7 @@ var Sizzle = function( selector, context, results, seed ) {
 		if ( context ) {
 			ret = seed ?
 				{ expr: parts.pop(), set: makeArray(seed) } :
-				Sizzle.find( parts.pop(), parts.length === 1 && (parts[0] === "~" || parts[0] === "+") && context.parentNode ? context.parentNode : context, contextXML );
+				Sizzle.find( parts.pop(), parts.length === 1 && (parts[0] === "~" || parts[0] === "+") && context.parentEdge ? context.parentEdge : context, contextXML );
 
 			set = ret.expr ?
 				Sizzle.filter( ret.expr, ret.set ) :
@@ -3996,16 +3996,16 @@ var Sizzle = function( selector, context, results, seed ) {
 		if ( !prune ) {
 			results.push.apply( results, checkSet );
 
-		} else if ( context && context.nodeType === 1 ) {
+		} else if ( context && context.EdgeType === 1 ) {
 			for ( i = 0; checkSet[i] != null; i++ ) {
-				if ( checkSet[i] && (checkSet[i] === true || checkSet[i].nodeType === 1 && Sizzle.contains(context, checkSet[i])) ) {
+				if ( checkSet[i] && (checkSet[i] === true || checkSet[i].EdgeType === 1 && Sizzle.contains(context, checkSet[i])) ) {
 					results.push( set[i] );
 				}
 			}
 
 		} else {
 			for ( i = 0; checkSet[i] != null; i++ ) {
-				if ( checkSet[i] && checkSet[i].nodeType === 1 ) {
+				if ( checkSet[i] && checkSet[i].EdgeType === 1 ) {
 					results.push( set[i] );
 				}
 			}
@@ -4044,8 +4044,8 @@ Sizzle.matches = function( expr, set ) {
 	return Sizzle( expr, null, null, set );
 };
 
-Sizzle.matchesSelector = function( node, expr ) {
-	return Sizzle( expr, null, null, [node] ).length > 0;
+Sizzle.matchesSelector = function( Edge, expr ) {
+	return Sizzle( expr, null, null, [Edge] ).length > 0;
 };
 
 Sizzle.find = function( expr, context, isXML ) {
@@ -4180,16 +4180,16 @@ Sizzle.error = function( msg ) {
 };
 
 /**
- * Utility function for retreiving the text value of an array of DOM nodes
+ * Utility function for retreiving the text value of an array of DOM Edges
  * @param {Array|Element} elem
  */
 var getText = Sizzle.getText = function( elem ) {
-    var i, node,
-		nodeType = elem.nodeType,
+    var i, Edge,
+		EdgeType = elem.EdgeType,
 		ret = "";
 
-	if ( nodeType ) {
-		if ( nodeType === 1 || nodeType === 9 ) {
+	if ( EdgeType ) {
+		if ( EdgeType === 1 || EdgeType === 9 ) {
 			// Use textContent || innerText for elements
 			if ( typeof elem.textContent === 'string' ) {
 				return elem.textContent;
@@ -4202,16 +4202,16 @@ var getText = Sizzle.getText = function( elem ) {
 					ret += getText( elem );
 				}
 			}
-		} else if ( nodeType === 3 || nodeType === 4 ) {
-			return elem.nodeValue;
+		} else if ( EdgeType === 3 || EdgeType === 4 ) {
+			return elem.EdgeValue;
 		}
 	} else {
 
-		// If no nodeType, this is expected to be an array
-		for ( i = 0; (node = elem[i]); i++ ) {
-			// Do not traverse comment nodes
-			if ( node.nodeType !== 8 ) {
-				ret += getText( node );
+		// If no EdgeType, this is expected to be an array
+		for ( i = 0; (Edge = elem[i]); i++ ) {
+			// Do not traverse comment Edges
+			if ( Edge.EdgeType !== 8 ) {
+				ret += getText( Edge );
 			}
 		}
 	}
@@ -4260,9 +4260,9 @@ var Expr = Sizzle.selectors = {
 
 			for ( var i = 0, l = checkSet.length, elem; i < l; i++ ) {
 				if ( (elem = checkSet[i]) ) {
-					while ( (elem = elem.previousSibling) && elem.nodeType !== 1 ) {}
+					while ( (elem = elem.previousSibling) && elem.EdgeType !== 1 ) {}
 
-					checkSet[i] = isPartStrNotTag || elem && elem.nodeName.toLowerCase() === part ?
+					checkSet[i] = isPartStrNotTag || elem && elem.EdgeName.toLowerCase() === part ?
 						elem || false :
 						elem === part;
 				}
@@ -4286,8 +4286,8 @@ var Expr = Sizzle.selectors = {
 					elem = checkSet[i];
 
 					if ( elem ) {
-						var parent = elem.parentNode;
-						checkSet[i] = parent.nodeName.toLowerCase() === part ? parent : false;
+						var parent = elem.parentEdge;
+						checkSet[i] = parent.EdgeName.toLowerCase() === part ? parent : false;
 					}
 				}
 
@@ -4297,8 +4297,8 @@ var Expr = Sizzle.selectors = {
 
 					if ( elem ) {
 						checkSet[i] = isPartStr ?
-							elem.parentNode :
-							elem.parentNode === part;
+							elem.parentEdge :
+							elem.parentEdge === part;
 					}
 				}
 
@@ -4309,31 +4309,31 @@ var Expr = Sizzle.selectors = {
 		},
 
 		"": function(checkSet, part, isXML){
-			var nodeCheck,
+			var EdgeCheck,
 				doneName = done++,
 				checkFn = dirCheck;
 
 			if ( typeof part === "string" && !rNonWord.test( part ) ) {
 				part = part.toLowerCase();
-				nodeCheck = part;
-				checkFn = dirNodeCheck;
+				EdgeCheck = part;
+				checkFn = dirEdgeCheck;
 			}
 
-			checkFn( "parentNode", part, doneName, checkSet, nodeCheck, isXML );
+			checkFn( "parentEdge", part, doneName, checkSet, EdgeCheck, isXML );
 		},
 
 		"~": function( checkSet, part, isXML ) {
-			var nodeCheck,
+			var EdgeCheck,
 				doneName = done++,
 				checkFn = dirCheck;
 
 			if ( typeof part === "string" && !rNonWord.test( part ) ) {
 				part = part.toLowerCase();
-				nodeCheck = part;
-				checkFn = dirNodeCheck;
+				EdgeCheck = part;
+				checkFn = dirEdgeCheck;
 			}
 
-			checkFn( "previousSibling", part, doneName, checkSet, nodeCheck, isXML );
+			checkFn( "previousSibling", part, doneName, checkSet, EdgeCheck, isXML );
 		}
 	},
 
@@ -4341,9 +4341,9 @@ var Expr = Sizzle.selectors = {
 		ID: function( match, context, isXML ) {
 			if ( typeof context.getElementById !== "undefined" && !isXML ) {
 				var m = context.getElementById(match[1]);
-				// Check parentNode to catch when Blackberry 4.6 returns
-				// nodes that are no longer in the document #6963
-				return m && m.parentNode ? [m] : [];
+				// Check parentEdge to catch when Blackberry 4.6 returns
+				// Edges that are no longer in the document #6963
+				return m && m.parentEdge ? [m] : [];
 			}
 		},
 
@@ -4490,8 +4490,8 @@ var Expr = Sizzle.selectors = {
 		selected: function( elem ) {
 			// Accessing this property makes selected-by-default
 			// options in Safari work properly
-			if ( elem.parentNode ) {
-				elem.parentNode.selectedIndex;
+			if ( elem.parentEdge ) {
+				elem.parentEdge.selectedIndex;
 			}
 			
 			return elem.selected === true;
@@ -4510,53 +4510,53 @@ var Expr = Sizzle.selectors = {
 		},
 
 		header: function( elem ) {
-			return (/h\d/i).test( elem.nodeName );
+			return (/h\d/i).test( elem.EdgeName );
 		},
 
 		text: function( elem ) {
 			var attr = elem.getAttribute( "type" ), type = elem.type;
 			// IE6 and 7 will map elem.type to 'text' for new HTML5 types (search, etc) 
 			// use getAttribute instead to test this case
-			return elem.nodeName.toLowerCase() === "input" && "text" === type && ( attr === type || attr === null );
+			return elem.EdgeName.toLowerCase() === "input" && "text" === type && ( attr === type || attr === null );
 		},
 
 		radio: function( elem ) {
-			return elem.nodeName.toLowerCase() === "input" && "radio" === elem.type;
+			return elem.EdgeName.toLowerCase() === "input" && "radio" === elem.type;
 		},
 
 		checkbox: function( elem ) {
-			return elem.nodeName.toLowerCase() === "input" && "checkbox" === elem.type;
+			return elem.EdgeName.toLowerCase() === "input" && "checkbox" === elem.type;
 		},
 
 		file: function( elem ) {
-			return elem.nodeName.toLowerCase() === "input" && "file" === elem.type;
+			return elem.EdgeName.toLowerCase() === "input" && "file" === elem.type;
 		},
 
 		password: function( elem ) {
-			return elem.nodeName.toLowerCase() === "input" && "password" === elem.type;
+			return elem.EdgeName.toLowerCase() === "input" && "password" === elem.type;
 		},
 
 		submit: function( elem ) {
-			var name = elem.nodeName.toLowerCase();
+			var name = elem.EdgeName.toLowerCase();
 			return (name === "input" || name === "button") && "submit" === elem.type;
 		},
 
 		image: function( elem ) {
-			return elem.nodeName.toLowerCase() === "input" && "image" === elem.type;
+			return elem.EdgeName.toLowerCase() === "input" && "image" === elem.type;
 		},
 
 		reset: function( elem ) {
-			var name = elem.nodeName.toLowerCase();
+			var name = elem.EdgeName.toLowerCase();
 			return (name === "input" || name === "button") && "reset" === elem.type;
 		},
 
 		button: function( elem ) {
-			var name = elem.nodeName.toLowerCase();
+			var name = elem.EdgeName.toLowerCase();
 			return name === "input" && "button" === elem.type || name === "button";
 		},
 
 		input: function( elem ) {
-			return (/input|select|textarea|button/i).test( elem.nodeName );
+			return (/input|select|textarea|button/i).test( elem.EdgeName );
 		},
 
 		focus: function( elem ) {
@@ -4628,13 +4628,13 @@ var Expr = Sizzle.selectors = {
 				doneName, parent, cache,
 				count, diff,
 				type = match[1],
-				node = elem;
+				Edge = elem;
 
 			switch ( type ) {
 				case "only":
 				case "first":
-					while ( (node = node.previousSibling) )	 {
-						if ( node.nodeType === 1 ) { 
+					while ( (Edge = Edge.previousSibling) )	 {
+						if ( Edge.EdgeType === 1 ) { 
 							return false; 
 						}
 					}
@@ -4643,11 +4643,11 @@ var Expr = Sizzle.selectors = {
 						return true; 
 					}
 
-					node = elem;
+					Edge = elem;
 
 				case "last":
-					while ( (node = node.nextSibling) )	 {
-						if ( node.nodeType === 1 ) { 
+					while ( (Edge = Edge.nextSibling) )	 {
+						if ( Edge.EdgeType === 1 ) { 
 							return false; 
 						}
 					}
@@ -4663,21 +4663,21 @@ var Expr = Sizzle.selectors = {
 					}
 					
 					doneName = match[0];
-					parent = elem.parentNode;
+					parent = elem.parentEdge;
 	
-					if ( parent && (parent[ expando ] !== doneName || !elem.nodeIndex) ) {
+					if ( parent && (parent[ expando ] !== doneName || !elem.EdgeIndex) ) {
 						count = 0;
 						
-						for ( node = parent.firstChild; node; node = node.nextSibling ) {
-							if ( node.nodeType === 1 ) {
-								node.nodeIndex = ++count;
+						for ( Edge = parent.firstChild; Edge; Edge = Edge.nextSibling ) {
+							if ( Edge.EdgeType === 1 ) {
+								Edge.EdgeIndex = ++count;
 							}
 						} 
 
 						parent[ expando ] = doneName;
 					}
 					
-					diff = elem.nodeIndex - last;
+					diff = elem.EdgeIndex - last;
 
 					if ( first === 0 ) {
 						return diff === 0;
@@ -4689,11 +4689,11 @@ var Expr = Sizzle.selectors = {
 		},
 
 		ID: function( elem, match ) {
-			return elem.nodeType === 1 && elem.getAttribute("id") === match;
+			return elem.EdgeType === 1 && elem.getAttribute("id") === match;
 		},
 
 		TAG: function( elem, match ) {
-			return (match === "*" && elem.nodeType === 1) || !!elem.nodeName && elem.nodeName.toLowerCase() === match;
+			return (match === "*" && elem.EdgeType === 1) || !!elem.EdgeName && elem.EdgeName.toLowerCase() === match;
 		},
 		
 		CLASS: function( elem, match ) {
@@ -4770,11 +4770,11 @@ var makeArray = function( array, results ) {
 };
 
 // Perform a simple check to determine if the browser is capable of
-// converting a NodeList to an array using builtin methods.
-// Also verifies that the returned array holds DOM nodes
+// converting a EdgeList to an array using builtin methods.
+// Also verifies that the returned array holds DOM Edges
 // (which is not the case in the Blackberry browser)
 try {
-	Array.prototype.slice.call( document.documentElement.childNodes, 0 )[0].nodeType;
+	Array.prototype.slice.call( document.documentElement.childEdges, 0 )[0].EdgeType;
 
 // Provide a fallback method if it does not work
 } catch( e ) {
@@ -4820,12 +4820,12 @@ if ( document.documentElement.compareDocumentPosition ) {
 
 } else {
 	sortOrder = function( a, b ) {
-		// The nodes are identical, we can exit early
+		// The Edges are identical, we can exit early
 		if ( a === b ) {
 			hasDuplicate = true;
 			return 0;
 
-		// Fallback to using sourceIndex (in IE) if it's available on both nodes
+		// Fallback to using sourceIndex (in IE) if it's available on both Edges
 		} else if ( a.sourceIndex && b.sourceIndex ) {
 			return a.sourceIndex - b.sourceIndex;
 		}
@@ -4833,15 +4833,15 @@ if ( document.documentElement.compareDocumentPosition ) {
 		var al, bl,
 			ap = [],
 			bp = [],
-			aup = a.parentNode,
-			bup = b.parentNode,
+			aup = a.parentEdge,
+			bup = b.parentEdge,
 			cur = aup;
 
-		// If the nodes are siblings (or identical) we can do a quick check
+		// If the Edges are siblings (or identical) we can do a quick check
 		if ( aup === bup ) {
 			return siblingCheck( a, b );
 
-		// If no parents were found then the nodes are disconnected
+		// If no parents were found then the Edges are disconnected
 		} else if ( !aup ) {
 			return -1;
 
@@ -4850,17 +4850,17 @@ if ( document.documentElement.compareDocumentPosition ) {
 		}
 
 		// Otherwise they're somewhere else in the tree so we need
-		// to build up a full list of the parentNodes for comparison
+		// to build up a full list of the parentEdges for comparison
 		while ( cur ) {
 			ap.unshift( cur );
-			cur = cur.parentNode;
+			cur = cur.parentEdge;
 		}
 
 		cur = bup;
 
 		while ( cur ) {
 			bp.unshift( cur );
-			cur = cur.parentNode;
+			cur = cur.parentEdge;
 		}
 
 		al = ap.length;
@@ -4919,7 +4919,7 @@ if ( document.documentElement.compareDocumentPosition ) {
 				var m = context.getElementById(match[1]);
 
 				return m ?
-					m.id === match[1] || typeof m.getAttributeNode !== "undefined" && m.getAttributeNode("id").nodeValue === match[1] ?
+					m.id === match[1] || typeof m.getAttributeEdge !== "undefined" && m.getAttributeEdge("id").EdgeValue === match[1] ?
 						[m] :
 						undefined :
 					[];
@@ -4927,9 +4927,9 @@ if ( document.documentElement.compareDocumentPosition ) {
 		};
 
 		Expr.filter.ID = function( elem, match ) {
-			var node = typeof elem.getAttributeNode !== "undefined" && elem.getAttributeNode("id");
+			var Edge = typeof elem.getAttributeEdge !== "undefined" && elem.getAttributeEdge("id");
 
-			return elem.nodeType === 1 && node && node.nodeValue === match;
+			return elem.EdgeType === 1 && Edge && Edge.EdgeValue === match;
 		};
 	}
 
@@ -4957,7 +4957,7 @@ if ( document.documentElement.compareDocumentPosition ) {
 				var tmp = [];
 
 				for ( var i = 0; results[i]; i++ ) {
-					if ( results[i].nodeType === 1 ) {
+					if ( results[i].EdgeType === 1 ) {
 						tmp.push( results[i] );
 					}
 				}
@@ -5007,7 +5007,7 @@ if ( document.querySelectorAll ) {
 				// See if we find a selector to speed up
 				var match = /^(\w+$)|^\.([\w\-]+$)|^#([\w\-]+$)/.exec( query );
 				
-				if ( match && (context.nodeType === 1 || context.nodeType === 9) ) {
+				if ( match && (context.EdgeType === 1 || context.EdgeType === 9) ) {
 					// Speed-up: Sizzle("TAG")
 					if ( match[1] ) {
 						return makeArray( context.getElementsByTagName( query ), extra );
@@ -5018,7 +5018,7 @@ if ( document.querySelectorAll ) {
 					}
 				}
 				
-				if ( context.nodeType === 9 ) {
+				if ( context.EdgeType === 9 ) {
 					// Speed-up: Sizzle("body")
 					// The body element only exists once, optimize finding it
 					if ( query === "body" && context.body ) {
@@ -5028,9 +5028,9 @@ if ( document.querySelectorAll ) {
 					} else if ( match && match[3] ) {
 						var elem = context.getElementById( match[3] );
 
-						// Check parentNode to catch when Blackberry 4.6 returns
-						// nodes that are no longer in the document #6963
-						if ( elem && elem.parentNode ) {
+						// Check parentEdge to catch when Blackberry 4.6 returns
+						// Edges that are no longer in the document #6963
+						if ( elem && elem.parentEdge ) {
 							// Handle the case where IE and Opera return items
 							// by name instead of ID
 							if ( elem.id === match[3] ) {
@@ -5050,11 +5050,11 @@ if ( document.querySelectorAll ) {
 				// We can work around this by specifying an extra ID on the root
 				// and working up from there (Thanks to Andrew Dupont for the technique)
 				// IE 8 doesn't work on object elements
-				} else if ( context.nodeType === 1 && context.nodeName.toLowerCase() !== "object" ) {
+				} else if ( context.EdgeType === 1 && context.EdgeName.toLowerCase() !== "object" ) {
 					var oldContext = context,
 						old = context.getAttribute( "id" ),
 						nid = old || id,
-						hasParent = context.parentNode,
+						hasParent = context.parentEdge,
 						relativeHierarchySelector = /^\s*[+~]/.test( query );
 
 					if ( !old ) {
@@ -5063,7 +5063,7 @@ if ( document.querySelectorAll ) {
 						nid = nid.replace( /'/g, "\\$&" );
 					}
 					if ( relativeHierarchySelector && hasParent ) {
-						context = context.parentNode;
+						context = context.parentEdge;
 					}
 
 					try {
@@ -5098,7 +5098,7 @@ if ( document.querySelectorAll ) {
 
 	if ( matches ) {
 		// Check to see if it's possible to do matchesSelector
-		// on a disconnected node (IE 9 fails this)
+		// on a disconnected Edge (IE 9 fails this)
 		var disconnectedMatch = !matches.call( document.createElement( "div" ), "div" ),
 			pseudoWorks = false;
 
@@ -5111,27 +5111,27 @@ if ( document.querySelectorAll ) {
 			pseudoWorks = true;
 		}
 
-		Sizzle.matchesSelector = function( node, expr ) {
+		Sizzle.matchesSelector = function( Edge, expr ) {
 			// Make sure that attribute selectors are quoted
 			expr = expr.replace(/\=\s*([^'"\]]*)\s*\]/g, "='$1']");
 
-			if ( !Sizzle.isXML( node ) ) {
+			if ( !Sizzle.isXML( Edge ) ) {
 				try { 
 					if ( pseudoWorks || !Expr.match.PSEUDO.test( expr ) && !/!=/.test( expr ) ) {
-						var ret = matches.call( node, expr );
+						var ret = matches.call( Edge, expr );
 
-						// IE 9's matchesSelector returns false on disconnected nodes
+						// IE 9's matchesSelector returns false on disconnected Edges
 						if ( ret || !disconnectedMatch ||
-								// As well, disconnected nodes are said to be in a document
+								// As well, disconnected Edges are said to be in a document
 								// fragment in IE 9, so check for that
-								node.document && node.document.nodeType !== 11 ) {
+								Edge.document && Edge.document.EdgeType !== 11 ) {
 							return ret;
 						}
 					}
 				} catch(e) {}
 			}
 
-			return Sizzle(expr, null, null, [node]).length > 0;
+			return Sizzle(expr, null, null, [Edge]).length > 0;
 		};
 	}
 })();
@@ -5165,7 +5165,7 @@ if ( document.querySelectorAll ) {
 	div = null;
 })();
 
-function dirNodeCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
+function dirEdgeCheck( dir, cur, doneName, checkSet, EdgeCheck, isXML ) {
 	for ( var i = 0, l = checkSet.length; i < l; i++ ) {
 		var elem = checkSet[i];
 
@@ -5180,12 +5180,12 @@ function dirNodeCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
 					break;
 				}
 
-				if ( elem.nodeType === 1 && !isXML ){
+				if ( elem.EdgeType === 1 && !isXML ){
 					elem[ expando ] = doneName;
 					elem.sizset = i;
 				}
 
-				if ( elem.nodeName.toLowerCase() === cur ) {
+				if ( elem.EdgeName.toLowerCase() === cur ) {
 					match = elem;
 					break;
 				}
@@ -5198,7 +5198,7 @@ function dirNodeCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
 	}
 }
 
-function dirCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
+function dirCheck( dir, cur, doneName, checkSet, EdgeCheck, isXML ) {
 	for ( var i = 0, l = checkSet.length; i < l; i++ ) {
 		var elem = checkSet[i];
 
@@ -5213,7 +5213,7 @@ function dirCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
 					break;
 				}
 
-				if ( elem.nodeType === 1 ) {
+				if ( elem.EdgeType === 1 ) {
 					if ( !isXML ) {
 						elem[ expando ] = doneName;
 						elem.sizset = i;
@@ -5260,14 +5260,14 @@ Sizzle.isXML = function( elem ) {
 	// (such as loading iframes in IE - #4833) 
 	var documentElement = (elem ? elem.ownerDocument || elem : 0).documentElement;
 
-	return documentElement ? documentElement.nodeName !== "HTML" : false;
+	return documentElement ? documentElement.EdgeName !== "HTML" : false;
 };
 
 var posProcess = function( selector, context, seed ) {
 	var match,
 		tmpSet = [],
 		later = "",
-		root = context.nodeType ? [context] : context;
+		root = context.EdgeType ? [context] : context;
 
 	// Position selectors must be done after the filter
 	// And so must :not(positional) so we move all PSEUDOs to the end
@@ -5399,7 +5399,7 @@ jQuery.fn.extend({
 					}
 				}
 
-				cur = cur.parentNode;
+				cur = cur.parentEdge;
 				level++;
 			}
 
@@ -5420,8 +5420,8 @@ jQuery.fn.extend({
 					break;
 
 				} else {
-					cur = cur.parentNode;
-					if ( !cur || !cur.ownerDocument || cur === context || cur.nodeType === 11 ) {
+					cur = cur.parentEdge;
+					if ( !cur || !cur.ownerDocument || cur === context || cur.EdgeType === 11 ) {
 						break;
 					}
 				}
@@ -5439,7 +5439,7 @@ jQuery.fn.extend({
 
 		// No argument, return index in parent
 		if ( !elem ) {
-			return ( this[0] && this[0].parentNode ) ? this.prevAll().length : -1;
+			return ( this[0] && this[0].parentEdge ) ? this.prevAll().length : -1;
 		}
 
 		// index in selector
@@ -5456,7 +5456,7 @@ jQuery.fn.extend({
 	add: function( selector, context ) {
 		var set = typeof selector === "string" ?
 				jQuery( selector, context ) :
-				jQuery.makeArray( selector && selector.nodeType ? [ selector ] : selector ),
+				jQuery.makeArray( selector && selector.EdgeType ? [ selector ] : selector ),
 			all = jQuery.merge( this.get(), set );
 
 		return this.pushStack( isDisconnected( set[0] ) || isDisconnected( all[0] ) ?
@@ -5471,20 +5471,20 @@ jQuery.fn.extend({
 
 // A painfully simple check to see if an element is disconnected
 // from a document (should be improved, where feasible).
-function isDisconnected( node ) {
-	return !node || !node.parentNode || node.parentNode.nodeType === 11;
+function isDisconnected( Edge ) {
+	return !Edge || !Edge.parentEdge || Edge.parentEdge.EdgeType === 11;
 }
 
 jQuery.each({
 	parent: function( elem ) {
-		var parent = elem.parentNode;
-		return parent && parent.nodeType !== 11 ? parent : null;
+		var parent = elem.parentEdge;
+		return parent && parent.EdgeType !== 11 ? parent : null;
 	},
 	parents: function( elem ) {
-		return jQuery.dir( elem, "parentNode" );
+		return jQuery.dir( elem, "parentEdge" );
 	},
 	parentsUntil: function( elem, i, until ) {
-		return jQuery.dir( elem, "parentNode", until );
+		return jQuery.dir( elem, "parentEdge", until );
 	},
 	next: function( elem ) {
 		return jQuery.nth( elem, 2, "nextSibling" );
@@ -5505,15 +5505,15 @@ jQuery.each({
 		return jQuery.dir( elem, "previousSibling", until );
 	},
 	siblings: function( elem ) {
-		return jQuery.sibling( elem.parentNode.firstChild, elem );
+		return jQuery.sibling( elem.parentEdge.firstChild, elem );
 	},
 	children: function( elem ) {
 		return jQuery.sibling( elem.firstChild );
 	},
 	contents: function( elem ) {
-		return jQuery.nodeName( elem, "iframe" ) ?
+		return jQuery.EdgeName( elem, "iframe" ) ?
 			elem.contentDocument || elem.contentWindow.document :
-			jQuery.makeArray( elem.childNodes );
+			jQuery.makeArray( elem.childEdges );
 	}
 }, function( name, fn ) {
 	jQuery.fn[ name ] = function( until, selector ) {
@@ -5552,8 +5552,8 @@ jQuery.extend({
 		var matched = [],
 			cur = elem[ dir ];
 
-		while ( cur && cur.nodeType !== 9 && (until === undefined || cur.nodeType !== 1 || !jQuery( cur ).is( until )) ) {
-			if ( cur.nodeType === 1 ) {
+		while ( cur && cur.EdgeType !== 9 && (until === undefined || cur.EdgeType !== 1 || !jQuery( cur ).is( until )) ) {
+			if ( cur.EdgeType === 1 ) {
 				matched.push( cur );
 			}
 			cur = cur[dir];
@@ -5566,7 +5566,7 @@ jQuery.extend({
 		var num = 0;
 
 		for ( ; cur; cur = cur[dir] ) {
-			if ( cur.nodeType === 1 && ++num === result ) {
+			if ( cur.EdgeType === 1 && ++num === result ) {
 				break;
 			}
 		}
@@ -5578,7 +5578,7 @@ jQuery.extend({
 		var r = [];
 
 		for ( ; n; n = n.nextSibling ) {
-			if ( n.nodeType === 1 && n !== elem ) {
+			if ( n.EdgeType === 1 && n !== elem ) {
 				r.push( n );
 			}
 		}
@@ -5600,14 +5600,14 @@ function winnow( elements, qualifier, keep ) {
 			return retVal === keep;
 		});
 
-	} else if ( qualifier.nodeType ) {
+	} else if ( qualifier.EdgeType ) {
 		return jQuery.grep(elements, function( elem, i ) {
 			return ( elem === qualifier ) === keep;
 		});
 
 	} else if ( typeof qualifier === "string" ) {
 		var filtered = jQuery.grep(elements, function( elem ) {
-			return elem.nodeType === 1;
+			return elem.EdgeType === 1;
 		});
 
 		if ( isSimple.test( qualifier ) ) {
@@ -5626,7 +5626,7 @@ function winnow( elements, qualifier, keep ) {
 
 
 function createSafeFragment( document ) {
-	var list = nodeNames.split( "|" ),
+	var list = EdgeNames.split( "|" ),
 	safeFrag = document.createDocumentFragment();
 
 	if ( safeFrag.createElement ) {
@@ -5639,7 +5639,7 @@ function createSafeFragment( document ) {
 	return safeFrag;
 }
 
-var nodeNames = "abbr|article|aside|audio|canvas|datalist|details|figcaption|figure|footer|" +
+var EdgeNames = "abbr|article|aside|audio|canvas|datalist|details|figcaption|figure|footer|" +
 		"header|hgroup|mark|meter|nav|output|progress|section|summary|time|video",
 	rinlinejQuery = / jQuery\d+="(?:\d+|null)"/g,
 	rleadingWhitespace = /^\s+/,
@@ -5649,7 +5649,7 @@ var nodeNames = "abbr|article|aside|audio|canvas|datalist|details|figcaption|fig
 	rhtml = /<|&#?\w+;/,
 	rnoInnerhtml = /<(?:script|style)/i,
 	rnocache = /<(?:script|object|embed|option|style)/i,
-	rnoshimcache = new RegExp("<(?:" + nodeNames + ")", "i"),
+	rnoshimcache = new RegExp("<(?:" + EdgeNames + ")", "i"),
 	// checked="checked" or checked
 	rchecked = /checked\s*(?:[^=]|=\s*.checked.)/i,
 	rscriptType = /\/(java|ecma)script/i,
@@ -5686,7 +5686,7 @@ jQuery.fn.extend({
 		}
 
 		if ( typeof text !== "object" && text !== undefined ) {
-			return this.empty().append( (this[0] && this[0].ownerDocument || document).createTextNode( text ) );
+			return this.empty().append( (this[0] && this[0].ownerDocument || document).createTextEdge( text ) );
 		}
 
 		return jQuery.text( this );
@@ -5703,14 +5703,14 @@ jQuery.fn.extend({
 			// The elements to wrap the target around
 			var wrap = jQuery( html, this[0].ownerDocument ).eq(0).clone(true);
 
-			if ( this[0].parentNode ) {
+			if ( this[0].parentEdge ) {
 				wrap.insertBefore( this[0] );
 			}
 
 			wrap.map(function() {
 				var elem = this;
 
-				while ( elem.firstChild && elem.firstChild.nodeType === 1 ) {
+				while ( elem.firstChild && elem.firstChild.EdgeType === 1 ) {
 					elem = elem.firstChild;
 				}
 
@@ -5751,15 +5751,15 @@ jQuery.fn.extend({
 
 	unwrap: function() {
 		return this.parent().each(function() {
-			if ( !jQuery.nodeName( this, "body" ) ) {
-				jQuery( this ).replaceWith( this.childNodes );
+			if ( !jQuery.EdgeName( this, "body" ) ) {
+				jQuery( this ).replaceWith( this.childEdges );
 			}
 		}).end();
 	},
 
 	append: function() {
 		return this.domManip(arguments, true, function( elem ) {
-			if ( this.nodeType === 1 ) {
+			if ( this.EdgeType === 1 ) {
 				this.appendChild( elem );
 			}
 		});
@@ -5767,16 +5767,16 @@ jQuery.fn.extend({
 
 	prepend: function() {
 		return this.domManip(arguments, true, function( elem ) {
-			if ( this.nodeType === 1 ) {
+			if ( this.EdgeType === 1 ) {
 				this.insertBefore( elem, this.firstChild );
 			}
 		});
 	},
 
 	before: function() {
-		if ( this[0] && this[0].parentNode ) {
+		if ( this[0] && this[0].parentEdge ) {
 			return this.domManip(arguments, false, function( elem ) {
-				this.parentNode.insertBefore( elem, this );
+				this.parentEdge.insertBefore( elem, this );
 			});
 		} else if ( arguments.length ) {
 			var set = jQuery.clean( arguments );
@@ -5786,9 +5786,9 @@ jQuery.fn.extend({
 	},
 
 	after: function() {
-		if ( this[0] && this[0].parentNode ) {
+		if ( this[0] && this[0].parentEdge ) {
 			return this.domManip(arguments, false, function( elem ) {
-				this.parentNode.insertBefore( elem, this.nextSibling );
+				this.parentEdge.insertBefore( elem, this.nextSibling );
 			});
 		} else if ( arguments.length ) {
 			var set = this.pushStack( this, "after", arguments );
@@ -5801,13 +5801,13 @@ jQuery.fn.extend({
 	remove: function( selector, keepData ) {
 		for ( var i = 0, elem; (elem = this[i]) != null; i++ ) {
 			if ( !selector || jQuery.filter( selector, [ elem ] ).length ) {
-				if ( !keepData && elem.nodeType === 1 ) {
+				if ( !keepData && elem.EdgeType === 1 ) {
 					jQuery.cleanData( elem.getElementsByTagName("*") );
 					jQuery.cleanData( [ elem ] );
 				}
 
-				if ( elem.parentNode ) {
-					elem.parentNode.removeChild( elem );
+				if ( elem.parentEdge ) {
+					elem.parentEdge.removeChild( elem );
 				}
 			}
 		}
@@ -5817,12 +5817,12 @@ jQuery.fn.extend({
 
 	empty: function() {
 		for ( var i = 0, elem; (elem = this[i]) != null; i++ ) {
-			// Remove element nodes and prevent memory leaks
-			if ( elem.nodeType === 1 ) {
+			// Remove element Edges and prevent memory leaks
+			if ( elem.EdgeType === 1 ) {
 				jQuery.cleanData( elem.getElementsByTagName("*") );
 			}
 
-			// Remove any remaining nodes
+			// Remove any remaining Edges
 			while ( elem.firstChild ) {
 				elem.removeChild( elem.firstChild );
 			}
@@ -5842,7 +5842,7 @@ jQuery.fn.extend({
 
 	html: function( value ) {
 		if ( value === undefined ) {
-			return this[0] && this[0].nodeType === 1 ?
+			return this[0] && this[0].EdgeType === 1 ?
 				this[0].innerHTML.replace(rinlinejQuery, "") :
 				null;
 
@@ -5855,8 +5855,8 @@ jQuery.fn.extend({
 
 			try {
 				for ( var i = 0, l = this.length; i < l; i++ ) {
-					// Remove element nodes and prevent memory leaks
-					if ( this[i].nodeType === 1 ) {
+					// Remove element Edges and prevent memory leaks
+					if ( this[i].EdgeType === 1 ) {
 						jQuery.cleanData( this[i].getElementsByTagName("*") );
 						this[i].innerHTML = value;
 					}
@@ -5882,7 +5882,7 @@ jQuery.fn.extend({
 	},
 
 	replaceWith: function( value ) {
-		if ( this[0] && this[0].parentNode ) {
+		if ( this[0] && this[0].parentEdge ) {
 			// Make sure that the elements are removed from the DOM before they are inserted
 			// this can help fix replacing a parent with child elements
 			if ( jQuery.isFunction( value ) ) {
@@ -5898,7 +5898,7 @@ jQuery.fn.extend({
 
 			return this.each(function() {
 				var next = this.nextSibling,
-					parent = this.parentNode;
+					parent = this.parentEdge;
 
 				jQuery( this ).remove();
 
@@ -5924,7 +5924,7 @@ jQuery.fn.extend({
 			value = args[0],
 			scripts = [];
 
-		// We can't cloneNode fragments that contain checked, in WebKit
+		// We can't cloneEdge fragments that contain checked, in WebKit
 		if ( !jQuery.support.checkClone && arguments.length === 3 && typeof value === "string" && rchecked.test( value ) ) {
 			return this.each(function() {
 				jQuery(this).domManip( args, table, callback, true );
@@ -5940,10 +5940,10 @@ jQuery.fn.extend({
 		}
 
 		if ( this[0] ) {
-			parent = value && value.parentNode;
+			parent = value && value.parentEdge;
 
 			// If we're in a fragment, just use that instead of building a new one
-			if ( jQuery.support.parentNode && parent && parent.nodeType === 11 && parent.childNodes.length === this.length ) {
+			if ( jQuery.support.parentEdge && parent && parent.EdgeType === 11 && parent.childEdges.length === this.length ) {
 				results = { fragment: parent };
 
 			} else {
@@ -5952,14 +5952,14 @@ jQuery.fn.extend({
 
 			fragment = results.fragment;
 
-			if ( fragment.childNodes.length === 1 ) {
+			if ( fragment.childEdges.length === 1 ) {
 				first = fragment = fragment.firstChild;
 			} else {
 				first = fragment.firstChild;
 			}
 
 			if ( first ) {
-				table = table && jQuery.nodeName( first, "tr" );
+				table = table && jQuery.EdgeName( first, "tr" );
 
 				for ( var i = 0, l = this.length, lastIndex = l - 1; i < l; i++ ) {
 					callback.call(
@@ -5990,7 +5990,7 @@ jQuery.fn.extend({
 });
 
 function root( elem, cur ) {
-	return jQuery.nodeName(elem, "table") ?
+	return jQuery.EdgeName(elem, "table") ?
 		(elem.getElementsByTagName("tbody")[0] ||
 		elem.appendChild(elem.ownerDocument.createElement("tbody"))) :
 		elem;
@@ -5998,7 +5998,7 @@ function root( elem, cur ) {
 
 function cloneCopyEvent( src, dest ) {
 
-	if ( dest.nodeType !== 1 || !jQuery.hasData( src ) ) {
+	if ( dest.EdgeType !== 1 || !jQuery.hasData( src ) ) {
 		return;
 	}
 
@@ -6025,10 +6025,10 @@ function cloneCopyEvent( src, dest ) {
 }
 
 function cloneFixAttributes( src, dest ) {
-	var nodeName;
+	var EdgeName;
 
 	// We do not need to do anything for non-Elements
-	if ( dest.nodeType !== 1 ) {
+	if ( dest.EdgeType !== 1 ) {
 		return;
 	}
 
@@ -6044,15 +6044,15 @@ function cloneFixAttributes( src, dest ) {
 		dest.mergeAttributes( src );
 	}
 
-	nodeName = dest.nodeName.toLowerCase();
+	EdgeName = dest.EdgeName.toLowerCase();
 
 	// IE6-8 fail to clone children inside object elements that use
 	// the proprietary classid attribute value (rather than the type
 	// attribute) to identify the type of content to display
-	if ( nodeName === "object" ) {
+	if ( EdgeName === "object" ) {
 		dest.outerHTML = src.outerHTML;
 
-	} else if ( nodeName === "input" && (src.type === "checkbox" || src.type === "radio") ) {
+	} else if ( EdgeName === "input" && (src.type === "checkbox" || src.type === "radio") ) {
 		// IE6-8 fails to persist the checked state of a cloned checkbox
 		// or radio button. Worse, IE6-7 fail to give the cloned element
 		// a checked appearance if the defaultChecked value isn't also set
@@ -6068,12 +6068,12 @@ function cloneFixAttributes( src, dest ) {
 
 	// IE6-8 fails to return the selected option to the default selected
 	// state when cloning options
-	} else if ( nodeName === "option" ) {
+	} else if ( EdgeName === "option" ) {
 		dest.selected = src.defaultSelected;
 
 	// IE6-8 fails to set the defaultValue to the correct value when
 	// cloning other types of input fields
-	} else if ( nodeName === "input" || nodeName === "textarea" ) {
+	} else if ( EdgeName === "input" || EdgeName === "textarea" ) {
 		dest.defaultValue = src.defaultValue;
 	}
 
@@ -6082,15 +6082,15 @@ function cloneFixAttributes( src, dest ) {
 	dest.removeAttribute( jQuery.expando );
 }
 
-jQuery.buildFragment = function( args, nodes, scripts ) {
+jQuery.buildFragment = function( args, Edges, scripts ) {
 	var fragment, cacheable, cacheresults, doc,
 	first = args[ 0 ];
 
-	// nodes may contain either an explicit document object,
+	// Edges may contain either an explicit document object,
 	// a jQuery collection or context object.
-	// If nodes[0] contains a valid object to assign to doc
-	if ( nodes && nodes[0] ) {
-		doc = nodes[0].ownerDocument || nodes[0];
+	// If Edges[0] contains a valid object to assign to doc
+	if ( Edges && Edges[0] ) {
+		doc = Edges[0].ownerDocument || Edges[0];
 	}
 
 	// Ensure that an attr object doesn't incorrectly stand in as a document object
@@ -6103,7 +6103,7 @@ jQuery.buildFragment = function( args, nodes, scripts ) {
 	// Only cache "small" (1/2 KB) HTML strings that are associated with the main document
 	// Cloning options loses the selected state, so don't cache them
 	// IE 6 doesn't like it when you put <object> or <embed> elements in a fragment
-	// Also, WebKit does not clone 'checked' attributes on cloneNode, so don't cache
+	// Also, WebKit does not clone 'checked' attributes on cloneEdge, so don't cache
 	// Lastly, IE6,7,8 will not correctly reuse cached fragments that were created from unknown elems #10501
 	if ( args.length === 1 && typeof first === "string" && first.length < 512 && doc === document &&
 		first.charAt(0) === "<" && !rnocache.test( first ) &&
@@ -6142,9 +6142,9 @@ jQuery.each({
 	jQuery.fn[ name ] = function( selector ) {
 		var ret = [],
 			insert = jQuery( selector ),
-			parent = this.length === 1 && this[0].parentNode;
+			parent = this.length === 1 && this[0].parentEdge;
 
-		if ( parent && parent.nodeType === 11 && parent.childNodes.length === 1 && insert.length === 1 ) {
+		if ( parent && parent.EdgeType === 11 && parent.childEdges.length === 1 && insert.length === 1 ) {
 			insert[ original ]( this[0] );
 			return this;
 
@@ -6180,17 +6180,17 @@ function fixDefaultChecked( elem ) {
 }
 // Finds all inputs and passes them to fixDefaultChecked
 function findInputs( elem ) {
-	var nodeName = ( elem.nodeName || "" ).toLowerCase();
-	if ( nodeName === "input" ) {
+	var EdgeName = ( elem.EdgeName || "" ).toLowerCase();
+	if ( EdgeName === "input" ) {
 		fixDefaultChecked( elem );
 	// Skip scripts, get other children
-	} else if ( nodeName !== "script" && typeof elem.getElementsByTagName !== "undefined" ) {
+	} else if ( EdgeName !== "script" && typeof elem.getElementsByTagName !== "undefined" ) {
 		jQuery.grep( elem.getElementsByTagName("input"), fixDefaultChecked );
 	}
 }
 
 // Derived From: http://www.iecss.com/shimprove/javascript/shimprove.1-0-1.js
-function shimCloneNode( elem ) {
+function shimCloneEdge( elem ) {
 	var div = document.createElement( "div" );
 	safeFragment.appendChild( div );
 
@@ -6203,14 +6203,14 @@ jQuery.extend({
 		var srcElements,
 			destElements,
 			i,
-			// IE<=8 does not properly clone detached, unknown element nodes
-			clone = jQuery.support.html5Clone || !rnoshimcache.test( "<" + elem.nodeName ) ?
-				elem.cloneNode( true ) :
-				shimCloneNode( elem );
+			// IE<=8 does not properly clone detached, unknown element Edges
+			clone = jQuery.support.html5Clone || !rnoshimcache.test( "<" + elem.EdgeName ) ?
+				elem.cloneEdge( true ) :
+				shimCloneEdge( elem );
 
 		if ( (!jQuery.support.noCloneEvent || !jQuery.support.noCloneChecked) &&
-				(elem.nodeType === 1 || elem.nodeType === 11) && !jQuery.isXMLDoc(elem) ) {
-			// IE copies events bound via attachEvent when using cloneNode.
+				(elem.EdgeType === 1 || elem.EdgeType === 11) && !jQuery.isXMLDoc(elem) ) {
+			// IE copies events bound via attachEvent when using cloneEdge.
 			// Calling detachEvent on the clone will also remove the events
 			// from the original. In order to get around this, we use some
 			// proprietary methods to clear the events. Thanks to MooTools
@@ -6226,7 +6226,7 @@ jQuery.extend({
 			// with an element if you are cloning the body and one of the
 			// elements on the page has a name or id of "length"
 			for ( i = 0; srcElements[i]; ++i ) {
-				// Ensure that the destination node is not null; Fixes #9587
+				// Ensure that the destination Edge is not null; Fixes #9587
 				if ( destElements[i] ) {
 					cloneFixAttributes( srcElements[i], destElements[i] );
 				}
@@ -6274,10 +6274,10 @@ jQuery.extend({
 				continue;
 			}
 
-			// Convert html string into DOM nodes
+			// Convert html string into DOM Edges
 			if ( typeof elem === "string" ) {
 				if ( !rhtml.test( elem ) ) {
-					elem = context.createTextNode( elem );
+					elem = context.createTextEdge( elem );
 				} else {
 					// Fix "XHTML"-style tags in all browsers
 					elem = elem.replace(rxhtmlTag, "<$1></$2>");
@@ -6311,26 +6311,26 @@ jQuery.extend({
 						// String was a <table>, *may* have spurious <tbody>
 						var hasBody = rtbody.test(elem),
 							tbody = tag === "table" && !hasBody ?
-								div.firstChild && div.firstChild.childNodes :
+								div.firstChild && div.firstChild.childEdges :
 
 								// String was a bare <thead> or <tfoot>
 								wrap[1] === "<table>" && !hasBody ?
-									div.childNodes :
+									div.childEdges :
 									[];
 
 						for ( j = tbody.length - 1; j >= 0 ; --j ) {
-							if ( jQuery.nodeName( tbody[ j ], "tbody" ) && !tbody[ j ].childNodes.length ) {
-								tbody[ j ].parentNode.removeChild( tbody[ j ] );
+							if ( jQuery.EdgeName( tbody[ j ], "tbody" ) && !tbody[ j ].childEdges.length ) {
+								tbody[ j ].parentEdge.removeChild( tbody[ j ] );
 							}
 						}
 					}
 
 					// IE completely kills leading whitespace when innerHTML is used
 					if ( !jQuery.support.leadingWhitespace && rleadingWhitespace.test( elem ) ) {
-						div.insertBefore( context.createTextNode( rleadingWhitespace.exec(elem)[0] ), div.firstChild );
+						div.insertBefore( context.createTextEdge( rleadingWhitespace.exec(elem)[0] ), div.firstChild );
 					}
 
-					elem = div.childNodes;
+					elem = div.childEdges;
 				}
 			}
 
@@ -6347,7 +6347,7 @@ jQuery.extend({
 				}
 			}
 
-			if ( elem.nodeType ) {
+			if ( elem.EdgeType ) {
 				ret.push( elem );
 			} else {
 				ret = jQuery.merge( ret, elem );
@@ -6359,11 +6359,11 @@ jQuery.extend({
 				return !elem.type || rscriptType.test( elem.type );
 			};
 			for ( i = 0; ret[i]; i++ ) {
-				if ( scripts && jQuery.nodeName( ret[i], "script" ) && (!ret[i].type || ret[i].type.toLowerCase() === "text/javascript") ) {
-					scripts.push( ret[i].parentNode ? ret[i].parentNode.removeChild( ret[i] ) : ret[i] );
+				if ( scripts && jQuery.EdgeName( ret[i], "script" ) && (!ret[i].type || ret[i].type.toLowerCase() === "text/javascript") ) {
+					scripts.push( ret[i].parentEdge ? ret[i].parentEdge.removeChild( ret[i] ) : ret[i] );
 
 				} else {
-					if ( ret[i].nodeType === 1 ) {
+					if ( ret[i].EdgeType === 1 ) {
 						var jsTags = jQuery.grep( ret[i].getElementsByTagName( "script" ), checkScriptType );
 
 						ret.splice.apply( ret, [i + 1, 0].concat( jsTags ) );
@@ -6383,7 +6383,7 @@ jQuery.extend({
 			deleteExpando = jQuery.support.deleteExpando;
 
 		for ( var i = 0, elem; (elem = elems[i]) != null; i++ ) {
-			if ( elem.nodeName && jQuery.noData[elem.nodeName.toLowerCase()] ) {
+			if ( elem.EdgeName && jQuery.noData[elem.EdgeName.toLowerCase()] ) {
 				continue;
 			}
 
@@ -6433,8 +6433,8 @@ function evalScript( i, elem ) {
 		jQuery.globalEval( ( elem.text || elem.textContent || elem.innerHTML || "" ).replace( rcleanScript, "/*$0*/" ) );
 	}
 
-	if ( elem.parentNode ) {
-		elem.parentNode.removeChild( elem );
+	if ( elem.parentEdge ) {
+		elem.parentEdge.removeChild( elem );
 	}
 }
 
@@ -6507,10 +6507,10 @@ jQuery.extend({
 		"float": jQuery.support.cssFloat ? "cssFloat" : "styleFloat"
 	},
 
-	// Get and set the style property on a DOM Node
+	// Get and set the style property on a DOM Edge
 	style: function( elem, name, value, extra ) {
-		// Don't set styles on text and comment nodes
-		if ( !elem || elem.nodeType === 3 || elem.nodeType === 8 || !elem.style ) {
+		// Don't set styles on text and comment Edges
+		if ( !elem || elem.EdgeType === 3 || elem.EdgeType === 8 || !elem.style ) {
 			return;
 		}
 
@@ -7070,7 +7070,7 @@ jQuery.fn.extend({
 		})
 		.filter(function(){
 			return this.name && !this.disabled &&
-				( this.checked || rselectTextarea.test( this.nodeName ) ||
+				( this.checked || rselectTextarea.test( this.EdgeName ) ||
 					rinput.test( this.type ) );
 		})
 		.map(function( i, elem ){
@@ -7226,9 +7226,9 @@ jQuery.extend({
 			callbackContext = s.context || s,
 			// Context for global events
 			// It's the callbackContext if one was provided in the options
-			// and if it's a DOM node or a jQuery collection
+			// and if it's a DOM Edge or a jQuery collection
 			globalEventContext = callbackContext !== s &&
-				( callbackContext.nodeType || callbackContext instanceof jQuery ) ?
+				( callbackContext.EdgeType || callbackContext instanceof jQuery ) ?
 						jQuery( callbackContext ) : jQuery.event,
 			// Deferreds
 			deferred = jQuery.Deferred(),
@@ -7967,7 +7967,7 @@ jQuery.ajaxTransport( "script", function(s) {
 						script.onload = script.onreadystatechange = null;
 
 						// Remove the script
-						if ( head && script.parentNode ) {
+						if ( head && script.parentEdge ) {
 							head.removeChild( script );
 						}
 
@@ -7981,7 +7981,7 @@ jQuery.ajaxTransport( "script", function(s) {
 					}
 				};
 				// Use insertBefore instead of appendChild  to circumvent an IE6 bug.
-				// This arises when a base node is used (#2709 and #4378).
+				// This arises when a base Edge is used (#2709 and #4378).
 				head.insertBefore( script, head.firstChild );
 			},
 
@@ -8254,7 +8254,7 @@ jQuery.fn.extend({
 					// in a stylesheet to whatever the default browser style is
 					// for such an element
 					if ( display === "" && jQuery.css(elem, "display") === "none" ) {
-						jQuery._data( elem, "olddisplay", defaultDisplay(elem.nodeName) );
+						jQuery._data( elem, "olddisplay", defaultDisplay(elem.EdgeName) );
 					}
 				}
 			}
@@ -8347,7 +8347,7 @@ jQuery.fn.extend({
 		prop = jQuery.extend( {}, prop );
 
 		function doAnimation() {
-			// XXX 'this' does not always have a nodeName when running the
+			// XXX 'this' does not always have a EdgeName when running the
 			// test suite
 
 			if ( optall.queue === false ) {
@@ -8355,7 +8355,7 @@ jQuery.fn.extend({
 			}
 
 			var opt = jQuery.extend( {}, optall ),
-				isElement = this.nodeType === 1,
+				isElement = this.EdgeType === 1,
 				hidden = isElement && jQuery(this).is(":hidden"),
 				name, val, p, e,
 				parts, start, end, unit,
@@ -8401,7 +8401,7 @@ jQuery.fn.extend({
 
 						// inline-level elements accept inline-block;
 						// block-level elements need to be inline with layout
-						if ( !jQuery.support.inlineBlockNeedsLayout || defaultDisplay( this.nodeName ) === "inline" ) {
+						if ( !jQuery.support.inlineBlockNeedsLayout || defaultDisplay( this.EdgeName ) === "inline" ) {
 							this.style.display = "inline-block";
 
 						} else {
@@ -8848,12 +8848,12 @@ if ( jQuery.expr && jQuery.expr.filters ) {
 }
 
 // Try to restore the default display value of an element
-function defaultDisplay( nodeName ) {
+function defaultDisplay( EdgeName ) {
 
-	if ( !elemdisplay[ nodeName ] ) {
+	if ( !elemdisplay[ EdgeName ] ) {
 
 		var body = document.body,
-			elem = jQuery( "<" + nodeName + ">" ).appendTo( body ),
+			elem = jQuery( "<" + EdgeName + ">" ).appendTo( body ),
 			display = elem.css( "display" );
 		elem.remove();
 
@@ -8877,7 +8877,7 @@ function defaultDisplay( nodeName ) {
 				iframeDoc.close();
 			}
 
-			elem = iframeDoc.createElement( nodeName );
+			elem = iframeDoc.createElement( EdgeName );
 
 			iframeDoc.body.appendChild( elem );
 
@@ -8886,10 +8886,10 @@ function defaultDisplay( nodeName ) {
 		}
 
 		// Store the correct default display
-		elemdisplay[ nodeName ] = display;
+		elemdisplay[ EdgeName ] = display;
 	}
 
-	return elemdisplay[ nodeName ];
+	return elemdisplay[ EdgeName ];
 }
 
 
@@ -8923,7 +8923,7 @@ if ( "getBoundingClientRect" in document.documentElement ) {
 		var doc = elem.ownerDocument,
 			docElem = doc.documentElement;
 
-		// Make sure we're not dealing with a disconnected DOM node
+		// Make sure we're not dealing with a disconnected DOM Edge
 		if ( !box || !jQuery.contains( docElem, elem ) ) {
 			return box ? { top: box.top, left: box.left } : { top: 0, left: 0 };
 		}
@@ -8969,7 +8969,7 @@ if ( "getBoundingClientRect" in document.documentElement ) {
 			top = elem.offsetTop,
 			left = elem.offsetLeft;
 
-		while ( (elem = elem.parentNode) && elem !== body && elem !== docElem ) {
+		while ( (elem = elem.parentEdge) && elem !== body && elem !== docElem ) {
 			if ( jQuery.support.fixedPosition && prevComputedStyle.position === "fixed" ) {
 				break;
 			}
@@ -8982,7 +8982,7 @@ if ( "getBoundingClientRect" in document.documentElement ) {
 				top  += elem.offsetTop;
 				left += elem.offsetLeft;
 
-				if ( jQuery.support.doesNotAddBorder && !(jQuery.support.doesAddBorderForTableAndCells && rtable.test(elem.nodeName)) ) {
+				if ( jQuery.support.doesNotAddBorder && !(jQuery.support.doesAddBorderForTableAndCells && rtable.test(elem.EdgeName)) ) {
 					top  += parseFloat( computedStyle.borderTopWidth  ) || 0;
 					left += parseFloat( computedStyle.borderLeftWidth ) || 0;
 				}
@@ -9086,7 +9086,7 @@ jQuery.fn.extend({
 
 		// Get correct offsets
 		offset       = this.offset(),
-		parentOffset = rroot.test(offsetParent[0].nodeName) ? { top: 0, left: 0 } : offsetParent.offset();
+		parentOffset = rroot.test(offsetParent[0].EdgeName) ? { top: 0, left: 0 } : offsetParent.offset();
 
 		// Subtract element margins
 		// note: when an element has margin: auto the offsetLeft and marginLeft
@@ -9108,7 +9108,7 @@ jQuery.fn.extend({
 	offsetParent: function() {
 		return this.map(function() {
 			var offsetParent = this.offsetParent || document.body;
-			while ( offsetParent && (!rroot.test(offsetParent.nodeName) && jQuery.css(offsetParent, "position") === "static") ) {
+			while ( offsetParent && (!rroot.test(offsetParent.EdgeName) && jQuery.css(offsetParent, "position") === "static") ) {
 				offsetParent = offsetParent.offsetParent;
 			}
 			return offsetParent;
@@ -9160,7 +9160,7 @@ jQuery.each( ["Left", "Top"], function( i, name ) {
 function getWindow( elem ) {
 	return jQuery.isWindow( elem ) ?
 		elem :
-		elem.nodeType === 9 ?
+		elem.EdgeType === 9 ?
 			elem.defaultView || elem.parentWindow :
 			false;
 }
@@ -9216,7 +9216,7 @@ jQuery.each([ "Height", "Width" ], function( i, name ) {
 				body && body[ "client" + name ] || docElemProp;
 
 		// Get document width or height
-		} else if ( elem.nodeType === 9 ) {
+		} else if ( elem.EdgeType === 9 ) {
 			// Either scroll[Width/Height] or offset[Width/Height], whichever is greater
 			return Math.max(
 				elem.documentElement["client" + name],

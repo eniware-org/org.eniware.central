@@ -18,8 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class MyBatisEniwareEdgeDao extends BaseMyBatisGenericDao<EniwareEdge, Long> implements EniwareEdgeDao {
 
-	/** The query name used for {@link #getUnusedNodeId(String)}. */
-	public static final String QUERY_FOR_NEXT_NODE_ID = "get-next-node-id";
+	/** The query name used for {@link #getUnusedEdgeId(String)}. */
+	public static final String QUERY_FOR_NEXT_Edge_ID = "get-next-Edge-id";
 
 	/**
 	 * Default constructor.
@@ -30,15 +30,15 @@ public class MyBatisEniwareEdgeDao extends BaseMyBatisGenericDao<EniwareEdge, Lo
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.SUPPORTS)
-	public Long getUnusedNodeId() {
-		return getSqlSession().selectOne(QUERY_FOR_NEXT_NODE_ID);
+	public Long getUnusedEdgeId() {
+		return getSqlSession().selectOne(QUERY_FOR_NEXT_Edge_ID);
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public Long store(EniwareEdge datum) {
-		// because we allow the node ID to be pre-assigned (i.e. from a
-		// previous call to getUnusedNodeId() we have to test if the node
+		// because we allow the Edge ID to be pre-assigned (i.e. from a
+		// previous call to getUnusedEdgeId() we have to test if the Edge
 		// ID exists in the database yet, and if so perform an update, 
 		// otherwise perform an insert
 
@@ -56,7 +56,7 @@ public class MyBatisEniwareEdgeDao extends BaseMyBatisGenericDao<EniwareEdge, Lo
 		}
 
 		// assign new ID now
-		Long id = getUnusedNodeId();
+		Long id = getUnusedEdgeId();
 		datum.setId(id);
 		preprocessInsert(datum);
 		getSqlSession().insert(getInsert(), datum);

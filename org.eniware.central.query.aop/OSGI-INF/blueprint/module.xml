@@ -25,7 +25,7 @@
 
 	<!-- Service References -->
 
-	<reference id="userNodeDao" interface="org.eniware.central.user.dao.UserNodeDao"/>
+	<reference id="userEdgeDao" interface="org.eniware.central.user.dao.UserEdgeDao"/>
 
 	<reference id="queryBiz"
 		interface="org.eniware.central.query.biz.QueryBiz"
@@ -45,8 +45,8 @@
 	<aop:aspectj-autoproxy/>
 
 	<bean id="querySecurityAspect" class="org.eniware.central.query.aop.QuerySecurityAspect">
-		<argument ref="userNodeDao"/>
-		<property name="nodeIdNotRequiredSet">
+		<argument ref="userEdgeDao"/>
+		<property name="EdgeIdNotRequiredSet">
 			<set>
 				<value>price</value>
 				<value>weather</value>

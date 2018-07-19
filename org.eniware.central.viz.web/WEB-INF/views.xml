@@ -8,8 +8,8 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/index.jsp" />
 	</definition>
 	
-	<definition name="node-dashboard" extends="default">
-		<put-attribute name="body" value="/WEB-INF/jsp/node-dashboard.jsp" />
+	<definition name="Edge-dashboard" extends="default">
+		<put-attribute name="body" value="/WEB-INF/jsp/Edge-dashboard.jsp" />
 	</definition>
 	
 </tiles-definitions>

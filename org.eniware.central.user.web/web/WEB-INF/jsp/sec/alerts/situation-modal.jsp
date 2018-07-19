@@ -10,7 +10,7 @@
 		 				   based on the type of the alert being displayed. This allows i18n messages to be rendered for 
 		 				   all types.
 		 		--%>
-		 		<p class="alert-type alert-type-NodeStaleData"><fmt:message key='alerts.situation.view.NodeStaleData.intro'/></p>
+		 		<p class="alert-type alert-type-EdgeStaleData"><fmt:message key='alerts.situation.view.EdgeStaleData.intro'/></p>
 		 		<table class="table">
 		 			<tbody>
 		 				<tr>
@@ -25,8 +25,8 @@
 		 					</td>
 		 				</tr>
 		 				<tr>
-		 					<th><fmt:message key="alert.nodeId.label"/></th>
-		 					<td class="alert-situation-node"></td>
+		 					<th><fmt:message key="alert.EdgeId.label"/></th>
+		 					<td class="alert-situation-Edge"></td>
 		 				</tr>
 		 				<tr>
 		 					<th><fmt:message key="alert.options.ageMinutes.heading"/></th>
@@ -40,8 +40,8 @@
 		 					<th><fmt:message key="alert.situation.info.label"/></th>
 		 					<td class="alert-situation-info">
 		 						<dl class="dl-horizontal">
-		 							<dt><fmt:message key="alert.situation.info.nodeId.label"/></dt>
-		 							<dd class="alert-situation-info-nodeId"></dd>
+		 							<dt><fmt:message key="alert.situation.info.EdgeId.label"/></dt>
+		 							<dd class="alert-situation-info-EdgeId"></dd>
 		 							
 		 							<dt><fmt:message key="alert.situation.info.sourceId.label"/></dt>
 		 							<dd class="alert-situation-info-sourceId"></dd>
@@ -57,7 +57,7 @@
 		 				</tr>
 		 			</tbody>
 		 		</table>
-		 		<p class="alert-type alert-type-NodeStaleData"><fmt:message key='alerts.situation.resolve.caption'/></p>
+		 		<p class="alert-type alert-type-EdgeStaleData"><fmt:message key='alerts.situation.resolve.caption'/></p>
 		 	</div>
 		 	<div class="modal-footer">
 		 		<button type="button" class="btn btn-danger pull-left" id="alert-situation-resolve">

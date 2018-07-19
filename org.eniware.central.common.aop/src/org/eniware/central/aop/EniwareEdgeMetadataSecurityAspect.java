@@ -30,27 +30,27 @@ public class EniwareEdgeMetadataSecurityAspect extends AuthorizationSupport {
 	/**
 	 * Constructor.
 	 * 
-	 * @param userNodeDao
-	 *        the UserNodeDao to use
+	 * @param userEdgeDao
+	 *        the UserEdgeDao to use
 	 */
-	public EniwareEdgeMetadataSecurityAspect(UserEdgeDao userNodeDao) {
-		super(userNodeDao);
+	public EniwareEdgeMetadataSecurityAspect(UserEdgeDao userEdgeDao) {
+		super(userEdgeDao);
 		AntPathMatcher antMatch = new AntPathMatcher();
 		antMatch.setCachePatterns(false);
 		antMatch.setCaseSensitive(true);
 		setPathMatcher(antMatch);
 	}
 
-	@Pointcut("bean(aop*) && execution(* org.eniware.central.biz.EniwareEdgeMetadata*.addEniwareEdge*(..)) && args(nodeId,..)")
-	public void addMetadata(Long nodeId) {
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.biz.EniwareEdgeMetadata*.addEniwareEdge*(..)) && args(EdgeId,..)")
+	public void addMetadata(Long EdgeId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* org.eniware.central.biz.EniwareEdgeMetadata*.storeEniwareEdge*(..)) && args(nodeId,..)")
-	public void storeMetadata(Long nodeId) {
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.biz.EniwareEdgeMetadata*.storeEniwareEdge*(..)) && args(EdgeId,..)")
+	public void storeMetadata(Long EdgeId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* org.eniware.central.biz.EniwareEdgeMetadata*.removeEniwareEdge*(..)) && args(nodeId)")
-	public void removeMetadata(Long nodeId) {
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.biz.EniwareEdgeMetadata*.removeEniwareEdge*(..)) && args(EdgeId)")
+	public void removeMetadata(Long EdgeId) {
 	}
 
 	@Pointcut("bean(aop*) && execution(* org.eniware.central.biz.EniwareEdgeMetadata*.findEniwareEdge*(..)) && args(filter,..)")
@@ -58,18 +58,18 @@ public class EniwareEdgeMetadataSecurityAspect extends AuthorizationSupport {
 	}
 
 	/**
-	 * Check access to modifying node metadata.
+	 * Check access to modifying Edge metadata.
 	 * 
-	 * @param nodeId
-	 *        the ID of the node to verify
+	 * @param EdgeId
+	 *        the ID of the Edge to verify
 	 */
-	@Before("addMetadata(nodeId) || storeMetadata(nodeId) || removeMetadata(nodeId)")
-	public void updateMetadataCheck(Long nodeId) {
-		requireNodeWriteAccess(nodeId);
+	@Before("addMetadata(EdgeId) || storeMetadata(EdgeId) || removeMetadata(EdgeId)")
+	public void updateMetadataCheck(Long EdgeId) {
+		requireEdgeWriteAccess(EdgeId);
 	}
 
 	/**
-	 * Check access to reading node metadata.
+	 * Check access to reading Edge metadata.
 	 * 
 	 * @param pjp
 	 *        the join point
@@ -79,25 +79,25 @@ public class EniwareEdgeMetadataSecurityAspect extends AuthorizationSupport {
 	@Around("findMetadata(filter)")
 	public Object readMetadataCheck(ProceedingJoinPoint pjp, EniwareEdgeMetadataFilter filter)
 			throws Throwable {
-		Long[] nodeIds = (filter == null ? null : filter.getNodeIds());
-		if ( nodeIds == null ) {
-			log.warn("Access DENIED to node metadata without node ID filter");
+		Long[] EdgeIds = (filter == null ? null : filter.getEdgeIds());
+		if ( EdgeIds == null ) {
+			log.warn("Access DENIED to Edge metadata without Edge ID filter");
 			throw new AuthorizationException(AuthorizationException.Reason.ACCESS_DENIED, null);
 		}
-		for ( Long nodeId : nodeIds ) {
-			requireNodeReadAccess(nodeId);
+		for ( Long EdgeId : EdgeIds ) {
+			requireEdgeReadAccess(EdgeId);
 		}
 
-		// node ID passes, execute query and then filter based on security policy if necessary
+		// Edge ID passes, execute query and then filter based on security policy if necessary
 		Object result = pjp.proceed();
 
 		SecurityPolicy policy = getActiveSecurityPolicy();
-		if ( policy == null || policy.getNodeMetadataPaths() == null
-				|| policy.getNodeMetadataPaths().isEmpty() ) {
+		if ( policy == null || policy.getEdgeMetadataPaths() == null
+				|| policy.getEdgeMetadataPaths().isEmpty() ) {
 			return result;
 		}
 
-		return policyEnforcerCheck(result, SecurityPolicyMetadataType.Node);
+		return policyEnforcerCheck(result, SecurityPolicyMetadataType.Edge);
 	}
 
 }

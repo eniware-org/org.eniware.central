@@ -9,7 +9,7 @@ package org.eniware.central.datum.domain;
 import org.eniware.central.domain.Entity;
 
 /**
- * Base domain object API for data collected from nodes.
+ * Base domain object API for data collected from Edges.
  
  * @version $Revision$ $Date$
  */

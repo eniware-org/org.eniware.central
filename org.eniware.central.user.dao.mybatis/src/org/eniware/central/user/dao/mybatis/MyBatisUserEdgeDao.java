@@ -26,49 +26,49 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class MyBatisUserEdgeDao extends BaseMyBatisGenericDao<UserEdge, Long> implements UserEdgeDao {
 
-	/** The query name used for {@link #findUserNodesForUser(User)}. */
-	public static final String QUERY_FOR_USER = "find-UserNode-for-User";
+	/** The query name used for {@link #findUserEdgesForUser(User)}. */
+	public static final String QUERY_FOR_USER = "find-UserEdge-for-User";
 
 	/**
-	 * The query name used for {@link #findArchivedUserNodesForUser(Long)}.
+	 * The query name used for {@link #findArchivedUserEdgesForUser(Long)}.
 	 * 
 	 * @since 1.1
 	 */
-	public static final String QUERY_FOR_USER_ARCHIVED = "find-archived-UserNode-for-User";
+	public static final String QUERY_FOR_USER_ARCHIVED = "find-archived-UserEdge-for-User";
 
 	/**
 	 * The query name used for
-	 * {@link #updateUserNodeArchivedStatus(Long, Long[], boolean)}.
+	 * {@link #updateUserEdgeArchivedStatus(Long, Long[], boolean)}.
 	 * 
 	 * @since 1.1
 	 */
-	public static final String UPDATE_ARCHIVED_STATUS = "update-archived-UserNode-status";
+	public static final String UPDATE_ARCHIVED_STATUS = "update-archived-UserEdge-status";
 
 	/**
 	 * The query name used for
-	 * {@link #findUserNodesAndCertificatesForUser(Long)}.
+	 * {@link #findUserEdgesAndCertificatesForUser(Long)}.
 	 */
-	public static final String QUERY_FOR_USER_WITH_CERT = "find-UserNode-for-user-with-certs";
+	public static final String QUERY_FOR_USER_WITH_CERT = "find-UserEdge-for-user-with-certs";
 
 	/**
 	 * The callable statement used in
-	 * {@link #storeUserNodeTransfer(UserEdgeTransfer)}.
+	 * {@link #storeUserEdgeTransfer(UserEdgeTransfer)}.
 	 */
-	public static final String CALL_STORE_USER_NODE_TRANSFER = "store-UserNodeTransfer";
+	public static final String CALL_STORE_USER_Edge_TRANSFER = "store-UserEdgeTransfer";
 
-	/** The query name for {@link #deleteUserNodeTrasnfer(UserEdgeTransfer)}. */
-	public static final String DELETE_USER_NODE_TRANSFER = "delete-UserNodeTransfer";
+	/** The query name for {@link #deleteUserEdgeTrasnfer(UserEdgeTransfer)}. */
+	public static final String DELETE_USER_Edge_TRANSFER = "delete-UserEdgeTransfer";
 
 	/**
-	 * The query name used for {@link #getUserNodeTransfer(UserEdgePK)}.
+	 * The query name used for {@link #getUserEdgeTransfer(UserEdgePK)}.
 	 */
-	public static final String QUERY_USER_NODE_TRANSFERS_FOR_ID = "get-UserNodeTransfer-for-id";
+	public static final String QUERY_USER_Edge_TRANSFERS_FOR_ID = "get-UserEdgeTransfer-for-id";
 
 	/**
 	 * The query name used for
-	 * {@link #findUserNodeTransferRequestsForEmail(String)}.
+	 * {@link #findUserEdgeTransferRequestsForEmail(String)}.
 	 */
-	public static final String QUERY_USER_NODE_TRANSFERS_FOR_EMAIL = "find-UserNodeTransfer-for-email";
+	public static final String QUERY_USER_Edge_TRANSFERS_FOR_EMAIL = "find-UserEdgeTransfer-for-email";
 
 	/**
 	 * Default constructor.
@@ -80,50 +80,50 @@ public class MyBatisUserEdgeDao extends BaseMyBatisGenericDao<UserEdge, Long> im
 	@Override
 	protected Long handleInsert(UserEdge datum) {
 		super.handleInsert(datum);
-		// as our primary key is actually the node ID, return that
-		assert datum.getNode() != null;
-		return datum.getNode().getId();
+		// as our primary key is actually the Edge ID, return that
+		assert datum.getEdge() != null;
+		return datum.getEdge().getId();
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserEdge> findUserNodesForUser(User user) {
+	public List<UserEdge> findUserEdgesForUser(User user) {
 		List<UserEdge> results = getSqlSession().selectList(QUERY_FOR_USER, user.getId());
-		for ( UserEdge userNode : results ) {
-			userNode.setUser(user);
+		for ( UserEdge userEdge : results ) {
+			userEdge.setUser(user);
 		}
 		return results;
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserEdge> findUserNodesAndCertificatesForUser(Long userId) {
+	public List<UserEdge> findUserEdgesAndCertificatesForUser(Long userId) {
 		return getSqlSession().selectList(QUERY_FOR_USER_WITH_CERT, userId);
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.SUPPORTS)
-	public void storeUserNodeTransfer(UserEdgeTransfer transfer) {
-		getSqlSession().update(CALL_STORE_USER_NODE_TRANSFER, transfer);
+	public void storeUserEdgeTransfer(UserEdgeTransfer transfer) {
+		getSqlSession().update(CALL_STORE_USER_Edge_TRANSFER, transfer);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public UserEdgeTransfer getUserNodeTransfer(UserEdgePK pk) {
-		return getSqlSession().selectOne(QUERY_USER_NODE_TRANSFERS_FOR_ID, pk);
+	public UserEdgeTransfer getUserEdgeTransfer(UserEdgePK pk) {
+		return getSqlSession().selectOne(QUERY_USER_Edge_TRANSFERS_FOR_ID, pk);
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.SUPPORTS)
-	public void deleteUserNodeTrasnfer(UserEdgeTransfer transfer) {
-		int count = getSqlSession().delete(DELETE_USER_NODE_TRANSFER, transfer.getId());
-		log.debug("Deleted {} UserNodeTransfer entities for ID {}", count, transfer.getId());
+	public void deleteUserEdgeTrasnfer(UserEdgeTransfer transfer) {
+		int count = getSqlSession().delete(DELETE_USER_Edge_TRANSFER, transfer.getId());
+		log.debug("Deleted {} UserEdgeTransfer entities for ID {}", count, transfer.getId());
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserEdgeTransfer> findUserNodeTransferRequestsForEmail(String email) {
-		return getSqlSession().selectList(QUERY_USER_NODE_TRANSFERS_FOR_EMAIL, email);
+	public List<UserEdgeTransfer> findUserEdgeTransferRequestsForEmail(String email) {
+		return getSqlSession().selectList(QUERY_USER_Edge_TRANSFERS_FOR_EMAIL, email);
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class MyBatisUserEdgeDao extends BaseMyBatisGenericDao<UserEdge, Long> im
 	 */
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserEdge> findArchivedUserNodesForUser(Long userId) {
+	public List<UserEdge> findArchivedUserEdgesForUser(Long userId) {
 		return getSqlSession().selectList(QUERY_FOR_USER_ARCHIVED, userId);
 	}
 
@@ -144,10 +144,10 @@ public class MyBatisUserEdgeDao extends BaseMyBatisGenericDao<UserEdge, Long> im
 	 */
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void updateUserNodeArchivedStatus(Long userId, Long[] nodeIds, boolean archived) {
+	public void updateUserEdgeArchivedStatus(Long userId, Long[] EdgeIds, boolean archived) {
 		Map<String, Object> sqlProperties = new HashMap<String, Object>(3);
 		sqlProperties.put("userId", userId);
-		sqlProperties.put("nodeIds", nodeIds);
+		sqlProperties.put("EdgeIds", EdgeIds);
 		sqlProperties.put("archived", archived);
 		getSqlSession().update(UPDATE_ARCHIVED_STATUS, sqlProperties);
 	}

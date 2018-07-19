@@ -50,38 +50,38 @@ public class DelegatingUserBiz implements UserBiz {
 	}
 
 	@Override
-	public List<UserEdge> getUserNodes(Long userId) {
-		return delegate.getUserNodes(userId);
+	public List<UserEdge> getUserEdges(Long userId) {
+		return delegate.getUserEdges(userId);
 	}
 
 	@Override
-	public UserEdge getUserNode(Long userId, Long nodeId) throws AuthorizationException {
-		return delegate.getUserNode(userId, nodeId);
+	public UserEdge getUserEdge(Long userId, Long EdgeId) throws AuthorizationException {
+		return delegate.getUserEdge(userId, EdgeId);
 	}
 
 	@Override
-	public UserEdge saveUserNode(UserEdge userNodeEntry) throws AuthorizationException {
-		return delegate.saveUserNode(userNodeEntry);
+	public UserEdge saveUserEdge(UserEdge userEdgeEntry) throws AuthorizationException {
+		return delegate.saveUserEdge(userEdgeEntry);
 	}
 
 	@Override
-	public List<UserEdgeConfirmation> getPendingUserNodeConfirmations(Long userId) {
-		return delegate.getPendingUserNodeConfirmations(userId);
+	public List<UserEdgeConfirmation> getPendingUserEdgeConfirmations(Long userId) {
+		return delegate.getPendingUserEdgeConfirmations(userId);
 	}
 
 	@Override
-	public UserEdgeConfirmation getPendingUserNodeConfirmation(Long userNodeConfirmationId) {
-		return delegate.getPendingUserNodeConfirmation(userNodeConfirmationId);
+	public UserEdgeConfirmation getPendingUserEdgeConfirmation(Long userEdgeConfirmationId) {
+		return delegate.getPendingUserEdgeConfirmation(userEdgeConfirmationId);
 	}
 
 	@Override
-	public UserEdgeCertificate getUserNodeCertificate(Long userId, Long nodeId) {
-		return delegate.getUserNodeCertificate(userId, nodeId);
+	public UserEdgeCertificate getUserEdgeCertificate(Long userId, Long EdgeId) {
+		return delegate.getUserEdgeCertificate(userId, EdgeId);
 	}
 
 	@Override
-	public UserAuthToken generateUserAuthToken(Long userId, UserAuthTokenType type, Set<Long> nodeIds) {
-		return delegate.generateUserAuthToken(userId, type, nodeIds);
+	public UserAuthToken generateUserAuthToken(Long userId, UserAuthTokenType type, Set<Long> EdgeIds) {
+		return delegate.generateUserAuthToken(userId, type, EdgeIds);
 	}
 
 	@Override
@@ -113,14 +113,14 @@ public class DelegatingUserBiz implements UserBiz {
 	}
 
 	@Override
-	public void updateUserNodeArchivedStatus(Long userId, Long[] nodeIds, boolean archived)
+	public void updateUserEdgeArchivedStatus(Long userId, Long[] EdgeIds, boolean archived)
 			throws AuthorizationException {
-		delegate.updateUserNodeArchivedStatus(userId, nodeIds, archived);
+		delegate.updateUserEdgeArchivedStatus(userId, EdgeIds, archived);
 	}
 
 	@Override
-	public List<UserEdge> getArchivedUserNodes(Long userId) throws AuthorizationException {
-		return delegate.getArchivedUserNodes(userId);
+	public List<UserEdge> getArchivedUserEdges(Long userId) throws AuthorizationException {
+		return delegate.getArchivedUserEdges(userId);
 	}
 
 	@Override

@@ -7,7 +7,7 @@
 package org.eniware.central.query.domain;
 
 import org.eniware.central.datum.domain.ConsumptionDatum;
-import org.eniware.central.datum.domain.NodeDatum;
+import org.eniware.central.datum.domain.EdgeDatum;
 import org.eniware.central.datum.domain.PowerDatum;
 
 /**
@@ -22,11 +22,11 @@ public enum ReportableIntervalType {
 	Power;
 
 	/**
-	 * Get a NodeDatum class type for this enum value.
+	 * Get a EdgeDatum class type for this enum value.
 	 * 
 	 * @return the class type
 	 */
-	public Class<? extends NodeDatum> getDatumTypeClass() {
+	public Class<? extends EdgeDatum> getDatumTypeClass() {
 		switch (this) {
 			case Consumption:
 				return ConsumptionDatum.class;

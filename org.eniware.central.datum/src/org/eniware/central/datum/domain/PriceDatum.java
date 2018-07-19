@@ -11,14 +11,14 @@ package org.eniware.central.datum.domain;
  * 
  * <p>
  * Note a {@code PriceDatum} is not directly related to a {@code EniwareEdge}, and
- * the {@code nodeId} value may actually be <em>null</em>. This class implements
- * both {@link NodeDatum} and {@link LocationDatum} for ease of use, although
+ * the {@code EdgeId} value may actually be <em>null</em>. This class implements
+ * both {@link EdgeDatum} and {@link LocationDatum} for ease of use, although
  * strictly speaking it is only a {@link LocationDatum}.
  * </p>
  *
  * @version 1.0
  */
-public class PriceDatum extends BaseNodeDatum implements LocationDatum {
+public class PriceDatum extends BaseEdgeDatum implements LocationDatum {
 
 	private static final long serialVersionUID = 4601794526965944988L;
 
@@ -34,7 +34,7 @@ public class PriceDatum extends BaseNodeDatum implements LocationDatum {
 
 	@Override
 	public String toString() {
-		return "PriceDatum{nodeId=" + getNodeId() + ",locationId=" + getLocationId() + ",price="
+		return "PriceDatum{EdgeId=" + getEdgeId() + ",locationId=" + getLocationId() + ",price="
 				+ this.price + '}';
 	}
 

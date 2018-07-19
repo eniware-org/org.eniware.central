@@ -10,9 +10,9 @@ import org.eniware.central.domain.BaseEntity;
 import org.eniware.central.domain.HardwareControl;
 
 /**
- * A user node hardware control configuration element.
+ * A user Edge hardware control configuration element.
  * 
- * <p>This defines a relationship between a node control and a HardwareControl entity.</p>
+ * <p>This defines a relationship between a Edge control and a HardwareControl entity.</p>
  * 
  * @version $Revision$
  */
@@ -20,16 +20,16 @@ public class UserEdgeHardwareControl extends BaseEntity {
 
 	private static final long serialVersionUID = 9220118628409582403L;
 
-	private Long nodeId;
+	private Long EdgeId;
 	private String sourceId;
 	private String name;
 	private HardwareControl control;
 	
-	public Long getNodeId() {
-		return nodeId;
+	public Long getEdgeId() {
+		return EdgeId;
 	}
-	public void setNodeId(Long nodeId) {
-		this.nodeId = nodeId;
+	public void setEdgeId(Long EdgeId) {
+		this.EdgeId = EdgeId;
 	}
 	public HardwareControl getControl() {
 		return control;

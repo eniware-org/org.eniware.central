@@ -29,13 +29,13 @@ public class UserAlertSecurityAspect extends AuthorizationSupport {
 	/**
 	 * Constructor.
 	 * 
-	 * @param userNodeDao
+	 * @param userEdgeDao
 	 *        The {@link UserEdgeDao} to use.
 	 * @param userAlertDao
 	 *        The {@link UserAlertDao} to use.
 	 */
-	public UserAlertSecurityAspect(UserEdgeDao userNodeDao, UserAlertDao userAlertDao) {
-		super(userNodeDao);
+	public UserAlertSecurityAspect(UserEdgeDao userEdgeDao, UserAlertDao userAlertDao) {
+		super(userEdgeDao);
 		this.userAlertDao = userAlertDao;
 	}
 
@@ -51,8 +51,8 @@ public class UserAlertSecurityAspect extends AuthorizationSupport {
 	public void getAlertSituationsForUser(Long userId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserAlertBiz.alertSituationsForNode(..)) && args(nodeId)")
-	public void getAlertSituationsForNode(Long nodeId) {
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserAlertBiz.alertSituationsForEdge(..)) && args(EdgeId)")
+	public void getAlertSituationsForEdge(Long EdgeId) {
 	}
 
 	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserAlertBiz.saveAlert(..)) && args(alert)")
@@ -110,9 +110,9 @@ public class UserAlertSecurityAspect extends AuthorizationSupport {
 		requireUserWriteAccess(entity.getUserId());
 	}
 
-	@Before("getAlertSituationsForNode(nodeId)")
-	public void checkGetForNode(Long nodeId) {
+	@Before("getAlertSituationsForEdge(EdgeId)")
+	public void checkGetForEdge(Long EdgeId) {
 		// require WRITE access here because read access not sufficient for alerts: we want owners or user tokens only
-		requireNodeWriteAccess(nodeId);
+		requireEdgeWriteAccess(EdgeId);
 	}
 }

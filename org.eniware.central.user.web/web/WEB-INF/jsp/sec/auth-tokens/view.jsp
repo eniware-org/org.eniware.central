@@ -3,7 +3,7 @@
 	
 		userAuthTokens - collection of "user" UserAuthToken objects
 		dataAuthTokens - collection of "data" UserAuthToken objects
-		userNodes      - collection of UserNode objects
+		userEdges      - collection of UserEdge objects
  --%>
 <p class="intro">
 	<fmt:message key='auth-tokens.intro'/>
@@ -72,7 +72,7 @@
 </c:choose>
 </section>
 
-<c:if test="${not empty userNodes}">
+<c:if test="${not empty userEdges}">
 	<section id="data-auth-tokens">
 	<h2>
 		<fmt:message key='auth-tokens.data.title'/>
@@ -106,11 +106,11 @@
 						<td>
 							<c:if test="${not empty token.policy}">
 								<dl>
-									<c:if test="${fn:length(token.policy.nodeIds) gt 0}">
-										<dt><fmt:message key='auth-tokens.label.nodes'/></dt>
+									<c:if test="${fn:length(token.policy.EdgeIds) gt 0}">
+										<dt><fmt:message key='auth-tokens.label.Edges'/></dt>
 										<dd>
-											<c:forEach items="${token.policy.nodeIds}" var="nodeId" varStatus="nodeIdStatus">
-												${nodeId}<c:if test="${not nodeIdStatus.last}">, </c:if>
+											<c:forEach items="${token.policy.EdgeIds}" var="EdgeId" varStatus="EdgeIdStatus">
+												${EdgeId}<c:if test="${not EdgeIdStatus.last}">, </c:if>
 											</c:forEach>
 										</dd>
 									</c:if>
@@ -128,18 +128,18 @@
 											<fmt:message key='aggregation.${token.policy.minAggregation}.label'/>
 										</dd>
 									</c:if>
-									<c:if test="${fn:length(token.policy.nodeMetadataPaths) gt 0}">
-										<dt><fmt:message key='auth-tokens.label.nodeMetadataPaths'/></dt>
+									<c:if test="${fn:length(token.policy.EdgeMetadataPaths) gt 0}">
+										<dt><fmt:message key='auth-tokens.label.EdgeMetadataPaths'/></dt>
 										<dd>
-											<c:forEach items="${token.policy.nodeMetadataPaths}" var="nodeMetadataPath" varStatus="nodeMetadataPathStatus">
-												${nodeMetadataPath}<c:if test="${not nodeMetadataPathStatus.last}">, </c:if>
+											<c:forEach items="${token.policy.EdgeMetadataPaths}" var="EdgeMetadataPath" varStatus="EdgeMetadataPathStatus">
+												${EdgeMetadataPath}<c:if test="${not EdgeMetadataPathStatus.last}">, </c:if>
 											</c:forEach>
 										</dd>
 									</c:if>
 									<c:if test="${fn:length(token.policy.userMetadataPaths) gt 0}">
 										<dt><fmt:message key='auth-tokens.label.userMetadataPaths'/></dt>
 										<dd>
-											<c:forEach items="${token.policy.userMetadataPaths}" var="userMetadataPath" varStatus="nodeMetadataPathStatus">
+											<c:forEach items="${token.policy.userMetadataPaths}" var="userMetadataPath" varStatus="EdgeMetadataPathStatus">
 												${userMetadataPath}<c:if test="${not userMetadataPathStatus.last}">, </c:if>
 											</c:forEach>
 										</dd>
@@ -253,7 +253,7 @@
 	<sec:csrfInput/>
 </form>
 
-<c:if test="${not empty userNodes}">
+<c:if test="${not empty userEdges}">
 	<form id="create-data-auth-token" class="modal fade" action="<c:url value='/u/sec/auth-tokens/generateData'/>" method="post">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -266,14 +266,14 @@
 			 		<ul class="nav nav-pills form-group before">
 						<li class="active"><a data-toggle="pill" href="#create-data-auth-token-tab-ids"><fmt:message key='auth-tokens.data.create.group.ids'/></a></li>
 						<li><a data-toggle="pill" href="#create-data-auth-token-tab-agg"><fmt:message key='auth-tokens.data.create.group.agg'/></a></li>
-						<li><a data-toggle="pill" href="#create-data-auth-token-tab-node-meta"><fmt:message key='auth-tokens.data.create.group.node-meta'/></a></li>
+						<li><a data-toggle="pill" href="#create-data-auth-token-tab-Edge-meta"><fmt:message key='auth-tokens.data.create.group.Edge-meta'/></a></li>
 						<li><a data-toggle="pill" href="#create-data-auth-token-tab-user-meta"><fmt:message key='auth-tokens.data.create.group.user-meta'/></a></li>
 					</ul>
 					<div class="tab-content before">
 						<div id="create-data-auth-token-tab-ids" class="tab-pane fade in active">
-					 		<div id="create-data-auth-token-policy-nodeids" class="toggle-buttons">
-					 			<c:forEach items="${userNodes}" var="userNode" varStatus="status">
-					 				<button type="button" class="toggle btn btn-sm btn-default" data-node-id="${userNode.node.id}">${userNode.node.id}<c:if test="${fn:length(userNode.name) gt 0}"> - ${userNode.name}</c:if></button>
+					 		<div id="create-data-auth-token-policy-Edgeids" class="toggle-buttons">
+					 			<c:forEach items="${userEdges}" var="userEdge" varStatus="status">
+					 				<button type="button" class="toggle btn btn-sm btn-default" data-Edge-id="${userEdge.Edge.id}">${userEdge.Edge.id}<c:if test="${fn:length(userEdge.name) gt 0}"> - ${userEdge.name}</c:if></button>
 					 			</c:forEach>
 					 		</div>
 					 		<div class="form-group">
@@ -293,11 +293,11 @@
 				 			</select>
 							<div class="help-block"><fmt:message key='auth-tokens.policy.minAggregation.caption'/></div>
 						</div>
-						<div id="create-data-auth-token-tab-node-meta" class="tab-pane fade">
-				 			<label for="create-data-auth-token-policy-nodemeta"><fmt:message key='auth-tokens.policy.nodeMetadataPaths.label'/></label>
-				 			<textarea id="create-data-auth-token-policy-nodemeta" class="form-control" name="nodeMetadataPaths" rows="2" 
-				 				placeholder="<fmt:message key='auth-tokens.policy.nodeMetadataPaths.placeholder'/>"></textarea>
-				 			<div class="help-block"><fmt:message key='auth-tokens.policy.nodeMetadataPaths.caption'/></div>
+						<div id="create-data-auth-token-tab-Edge-meta" class="tab-pane fade">
+				 			<label for="create-data-auth-token-policy-Edgemeta"><fmt:message key='auth-tokens.policy.EdgeMetadataPaths.label'/></label>
+				 			<textarea id="create-data-auth-token-policy-Edgemeta" class="form-control" name="EdgeMetadataPaths" rows="2" 
+				 				placeholder="<fmt:message key='auth-tokens.policy.EdgeMetadataPaths.placeholder'/>"></textarea>
+				 			<div class="help-block"><fmt:message key='auth-tokens.policy.EdgeMetadataPaths.caption'/></div>
 						</div>
 						<div id="create-data-auth-token-tab-user-meta" class="tab-pane fade">
 				 			<label for="create-data-auth-token-policy-usermeta"><fmt:message key='auth-tokens.policy.userMetadataPaths.label'/></label>

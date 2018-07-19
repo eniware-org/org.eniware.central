@@ -27,8 +27,8 @@
 					</li>
 				</sec:authorize>
 				<sec:authorize access="hasRole('ROLE_USER')">
-					<li ${navloc == 'my-nodes' ? 'class="active"' : ''}>
-						<a href="<c:url value='/u/sec/my-nodes'/>"><fmt:message key="link.my-nodes"/></a>
+					<li ${navloc == 'my-Edges' ? 'class="active"' : ''}>
+						<a href="<c:url value='/u/sec/my-Edges'/>"><fmt:message key="link.my-Edges"/></a>
 					</li>
 					<li ${navloc == 'alerts' ? 'class="active"' : ''}>
 						<a href="<c:url value='/u/sec/alerts'/>"><fmt:message key="link.alerts"/> <span class="label label-danger label-as-badge alert-situation-count"></span></a>

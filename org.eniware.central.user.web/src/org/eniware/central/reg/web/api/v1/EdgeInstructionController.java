@@ -12,7 +12,7 @@ import java.util.Set;
 
 import org.eniware.central.instructor.domain.Instruction;
 import org.eniware.central.instructor.domain.InstructionState;
-import org.eniware.central.instructor.domain.NodeInstruction;
+import org.eniware.central.instructor.domain.EdgeInstruction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,11 +24,11 @@ import org.eniware.central.web.support.WebServiceControllerSupport;
 import org.eniware.web.domain.Response;
 
 /**
- * Controller for node instruction web service API.
+ * Controller for Edge instruction web service API.
  * 
  * @version 1.2
  */
-@Controller("v1nodeInstructionController")
+@Controller("v1EdgeInstructionController")
 @RequestMapping(value = "/v1/sec/instr")
 public class EdgeInstructionController extends WebServiceControllerSupport {
 
@@ -59,70 +59,70 @@ public class EdgeInstructionController extends WebServiceControllerSupport {
 	 */
 	@RequestMapping(value = "/view", method = RequestMethod.GET, params = "ids")
 	@ResponseBody
-	public Response<List<NodeInstruction>> viewInstruction(
+	public Response<List<EdgeInstruction>> viewInstruction(
 			@RequestParam("ids") Set<Long> instructionIds) {
-		List<NodeInstruction> results = instructorBiz.getInstructions(instructionIds);
+		List<EdgeInstruction> results = instructorBiz.getInstructions(instructionIds);
 		return response(results);
 	}
 
 	/**
-	 * Get a list of all active instructions for a specific node.
+	 * Get a list of all active instructions for a specific Edge.
 	 * 
-	 * @param nodeId
-	 *        the ID of the node to get instructions for
-	 * @return the active instructions for the node
+	 * @param EdgeId
+	 *        the ID of the Edge to get instructions for
+	 * @return the active instructions for the Edge
 	 */
-	@RequestMapping(value = "/viewActive", method = RequestMethod.GET, params = "!nodeIds")
+	@RequestMapping(value = "/viewActive", method = RequestMethod.GET, params = "!EdgeIds")
 	@ResponseBody
-	public Response<List<Instruction>> activeInstructions(@RequestParam("nodeId") Long nodeId) {
-		List<Instruction> instructions = instructorBiz.getActiveInstructionsForNode(nodeId);
+	public Response<List<Instruction>> activeInstructions(@RequestParam("EdgeId") Long EdgeId) {
+		List<Instruction> instructions = instructorBiz.getActiveInstructionsForEdge(EdgeId);
 		return response(instructions);
 	}
 
 	/**
-	 * Get a list of all active instructions for a set of nodes.
+	 * Get a list of all active instructions for a set of Edges.
 	 * 
-	 * @param nodeIds
-	 *        the IDs of the nodes to get instructions for
-	 * @return the active instructions for the nodes
+	 * @param EdgeIds
+	 *        the IDs of the Edges to get instructions for
+	 * @return the active instructions for the Edges
 	 * @since 1.2
 	 */
-	@RequestMapping(value = "/viewActive", method = RequestMethod.GET, params = "nodeIds")
+	@RequestMapping(value = "/viewActive", method = RequestMethod.GET, params = "EdgeIds")
 	@ResponseBody
-	public Response<List<NodeInstruction>> activeInstructions(
-			@RequestParam("nodeIds") Set<Long> nodeIds) {
-		List<NodeInstruction> instructions = instructorBiz.getActiveInstructionsForNodes(nodeIds);
+	public Response<List<EdgeInstruction>> activeInstructions(
+			@RequestParam("EdgeIds") Set<Long> EdgeIds) {
+		List<EdgeInstruction> instructions = instructorBiz.getActiveInstructionsForEdges(EdgeIds);
 		return response(instructions);
 	}
 
 	/**
-	 * Get a list of all pending instructions for a specific node.
+	 * Get a list of all pending instructions for a specific Edge.
 	 * 
-	 * @param nodeId
-	 *        the ID of the node to get instructions for
-	 * @return the pending instructions for the node
+	 * @param EdgeId
+	 *        the ID of the Edge to get instructions for
+	 * @return the pending instructions for the Edge
 	 * @since 1.1
 	 */
-	@RequestMapping(value = "/viewPending", method = RequestMethod.GET, params = "!nodeIds")
+	@RequestMapping(value = "/viewPending", method = RequestMethod.GET, params = "!EdgeIds")
 	@ResponseBody
-	public Response<List<Instruction>> pendingInstructions(@RequestParam("nodeId") Long nodeId) {
-		List<Instruction> instructions = instructorBiz.getPendingInstructionsForNode(nodeId);
+	public Response<List<Instruction>> pendingInstructions(@RequestParam("EdgeId") Long EdgeId) {
+		List<Instruction> instructions = instructorBiz.getPendingInstructionsForEdge(EdgeId);
 		return response(instructions);
 	}
 
 	/**
-	 * Get a list of all pending instructions for a set of nodes.
+	 * Get a list of all pending instructions for a set of Edges.
 	 * 
-	 * @param nodeIds
-	 *        the IDs of the nodes to get instructions for
-	 * @return the pending instructions for the nodes
+	 * @param EdgeIds
+	 *        the IDs of the Edges to get instructions for
+	 * @return the pending instructions for the Edges
 	 * @since 1.2
 	 */
-	@RequestMapping(value = "/viewPending", method = RequestMethod.GET, params = "nodeIds")
+	@RequestMapping(value = "/viewPending", method = RequestMethod.GET, params = "EdgeIds")
 	@ResponseBody
-	public Response<List<NodeInstruction>> pendingInstructions(
-			@RequestParam("nodeIds") Set<Long> nodeIds) {
-		List<NodeInstruction> instructions = instructorBiz.getPendingInstructionsForNodes(nodeIds);
+	public Response<List<EdgeInstruction>> pendingInstructions(
+			@RequestParam("EdgeIds") Set<Long> EdgeIds) {
+		List<EdgeInstruction> instructions = instructorBiz.getPendingInstructionsForEdges(EdgeIds);
 		return response(instructions);
 	}
 
@@ -131,30 +131,30 @@ public class EdgeInstructionController extends WebServiceControllerSupport {
 	 * 
 	 * @param input
 	 *        the instruction data to add to the queue
-	 * @return the node instruction
+	 * @return the Edge instruction
 	 */
-	@RequestMapping(value = "/add", method = RequestMethod.POST, params = "!nodeIds")
+	@RequestMapping(value = "/add", method = RequestMethod.POST, params = "!EdgeIds")
 	@ResponseBody
-	public Response<NodeInstruction> queueInstruction(NodeInstruction input) {
-		NodeInstruction instr = instructorBiz.queueInstruction(input.getNodeId(), input);
+	public Response<EdgeInstruction> queueInstruction(EdgeInstruction input) {
+		EdgeInstruction instr = instructorBiz.queueInstruction(input.getEdgeId(), input);
 		return response(instr);
 	}
 
 	/**
-	 * Enqueue one instruction for multiple nodes.
+	 * Enqueue one instruction for multiple Edges.
 	 * 
-	 * @param nodeIds
-	 *        a set of node IDs to enqueue the instruction on
+	 * @param EdgeIds
+	 *        a set of Edge IDs to enqueue the instruction on
 	 * @param input
 	 *        the instruction data to add to the queue
-	 * @return the node instructions
+	 * @return the Edge instructions
 	 * @since 1.2
 	 */
-	@RequestMapping(value = "/add", method = RequestMethod.POST, params = "nodeIds")
+	@RequestMapping(value = "/add", method = RequestMethod.POST, params = "EdgeIds")
 	@ResponseBody
-	public Response<List<NodeInstruction>> queueInstruction(@RequestParam("nodeIds") Set<Long> nodeIds,
-			NodeInstruction input) {
-		List<NodeInstruction> results = instructorBiz.queueInstructions(nodeIds, input);
+	public Response<List<EdgeInstruction>> queueInstruction(@RequestParam("EdgeIds") Set<Long> EdgeIds,
+			EdgeInstruction input) {
+		List<EdgeInstruction> results = instructorBiz.queueInstructions(EdgeIds, input);
 		return response(results);
 	}
 
@@ -168,7 +168,7 @@ public class EdgeInstructionController extends WebServiceControllerSupport {
 	 */
 	@RequestMapping(value = "/updateState", method = RequestMethod.POST, params = "!ids")
 	@ResponseBody
-	public Response<NodeInstruction> updateInstructionState(@RequestParam("id") Long instructionId,
+	public Response<EdgeInstruction> updateInstructionState(@RequestParam("id") Long instructionId,
 			@RequestParam("state") InstructionState state) {
 		instructorBiz.updateInstructionState(instructionId, state);
 		return response(null);
@@ -185,7 +185,7 @@ public class EdgeInstructionController extends WebServiceControllerSupport {
 	 */
 	@RequestMapping(value = "/updateState", method = RequestMethod.POST, params = "ids")
 	@ResponseBody
-	public Response<NodeInstruction> updateInstructionState(
+	public Response<EdgeInstruction> updateInstructionState(
 			@RequestParam("ids") Set<Long> instructionIds,
 			@RequestParam("state") InstructionState state) {
 		instructorBiz.updateInstructionsState(instructionIds, state);

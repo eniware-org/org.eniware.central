@@ -10,9 +10,9 @@ import org.eniware.central.domain.BaseEntity;
 import org.joda.time.DateTime;
 
 /**
- * The "pending confirmation" entity for after a user generates a node
+ * The "pending confirmation" entity for after a user generates a Edge
  * "invitation" to join EniwareNet. The user must confirm the invitation before a
- * UserNode entity is created.
+ * UserEdge entity is created.
  * 
  * @version 1.2
  */
@@ -21,7 +21,7 @@ public class UserEdgeConfirmation extends BaseEntity {
 	private static final long serialVersionUID = -598611218946751443L;
 
 	private User user;
-	private Long nodeId;
+	private Long EdgeId;
 	private String confirmationKey;
 	private DateTime confirmationDate;
 	private String securityPhrase;
@@ -36,12 +36,12 @@ public class UserEdgeConfirmation extends BaseEntity {
 		this.user = user;
 	}
 
-	public Long getNodeId() {
-		return nodeId;
+	public Long getEdgeId() {
+		return EdgeId;
 	}
 
-	public void setNodeId(Long nodeId) {
-		this.nodeId = nodeId;
+	public void setEdgeId(Long EdgeId) {
+		this.EdgeId = EdgeId;
 	}
 
 	public String getConfirmationKey() {

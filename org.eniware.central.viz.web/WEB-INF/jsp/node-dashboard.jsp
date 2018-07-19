@@ -2,9 +2,9 @@
 <%@ taglib uri="http://packtag.sf.net" prefix="pack" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:set var="nodeId">
+<c:set var="EdgeId">
 	<c:choose>
-		<c:when test='${param["nodeId"] != null}'>${param["nodeId"]}</c:when>
+		<c:when test='${param["EdgeId"] != null}'>${param["EdgeId"]}</c:when>
 		<c:otherwise>11</c:otherwise>
 	</c:choose>
 </c:set>
@@ -51,14 +51,14 @@
 	</c:choose>
 </c:set>
 <head>
-	<title><fmt:message key="node.displayName"/> ${nodeId} <fmt:message key="dashboard.displayName"/></title>
+	<title><fmt:message key="Edge.displayName"/> ${EdgeId} <fmt:message key="dashboard.displayName"/></title>
 	<meta name="viewport" content="width=1120" />
 	<script src="js-lib/d3-3.4.8.min.js"></script>
 	<script src="js-lib/queue-1.0.7.min.js"></script>
 	
 	<pack:style>
 		<src>/css/global.css</src>
-		<src>/css/node-dashboard.css</src>
+		<src>/css/Edge-dashboard.css</src>
 		<src>/css/smoothness/jquery-ui-1.7.2.custom.css</src>
 		<src>/css/ui.daterangepicker.css</src>
 		<src>/css/jquery.jqplot.css</src>
@@ -83,7 +83,7 @@
 		<src>/js-lib/eniwarenetwork-d3.js</src>		
 		<src>/js-lib/eniwarenetwork-d3-datum.js</src>
 
-		<src>/js/node-dashboard.js</src>
+		<src>/js/Edge-dashboard.js</src>
 	</pack:script>
 </head>
 <body>
@@ -130,7 +130,7 @@
 	</div>
 </div>
 <div style="display: none">
-	<input type="hidden" id="nodeId" name="nodeId" value="${nodeId}" />
+	<input type="hidden" id="EdgeId" name="EdgeId" value="${EdgeId}" />
 	<input type="hidden" id="feature-consumption" name="feature.consumption" value="true" />
 	<input type="hidden" id="feature-gridPrice" name="feature.gridPrice" value="true" />
 	<input type="hidden" id="consumptionSourceId" name="consumptionSourceId" value="${consumptionSourceId}" />

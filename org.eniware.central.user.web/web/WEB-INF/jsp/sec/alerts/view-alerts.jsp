@@ -1,33 +1,33 @@
 <%--
 	Input parameters:
 	
-		nodeDataAlerts 		- collection of UserAuth objects of type NodeStaleData
-		nodeDataAlertTypes 	- collection of UserAlertType that represent node data alerts
-		userNodes      		- collection of UserNode objects
+		EdgeDataAlerts 		- collection of UserAuth objects of type EdgeStaleData
+		EdgeDataAlertTypes 	- collection of UserAlertType that represent Edge data alerts
+		userEdges      		- collection of UserEdge objects
 		alertStatuses       - collection of UesrAlertStatus
  --%>
 <p class="intro">
 	<fmt:message key='alerts.intro'/>
 </p>
 
-<section class="node-data-alerts">
+<section class="Edge-data-alerts">
 	<h2>
-		<fmt:message key='alerts.node.data.header'/>
-		<button type="button" id="add-node-data-button" class="btn btn-primary pull-right">
+		<fmt:message key='alerts.Edge.data.header'/>
+		<button type="button" id="add-Edge-data-button" class="btn btn-primary pull-right">
 			<i class="glyphicon glyphicon-plus"></i> <fmt:message key='alerts.action.create'/>
 		</button>
 	</h2>
 	<p class="intro">
-		<fmt:message key='alerts.node.data.intro'>
-			<fmt:param value="${fn:length(nodeDataAlerts)}"/>
+		<fmt:message key='alerts.Edge.data.intro'>
+			<fmt:param value="${fn:length(EdgeDataAlerts)}"/>
 		</fmt:message>
 	</p>
-	<c:if test="${not empty nodeDataAlerts}">
-		<table class="table" id="node-data-alerts"
+	<c:if test="${not empty EdgeDataAlerts}">
+		<table class="table" id="Edge-data-alerts"
 			data-action-situation='<c:url value="/u/sec/alerts/situation"/>'>
 			<thead>
 				<tr>
-					<th><fmt:message key="alert.nodeId.label"/></th>
+					<th><fmt:message key="alert.EdgeId.label"/></th>
 					<th><fmt:message key="alert.type.label"/></th>
 					<th><fmt:message key="alert.options.sourceIds.label"/></th>
 					<th><fmt:message key="alert.options.ageMinutes.heading"/></th>
@@ -37,15 +37,15 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${nodeDataAlerts}" var="alert">
+				<c:forEach items="${EdgeDataAlerts}" var="alert">
 					<tr class="alert-row${alert.situation != null ? ' alert-danger' : ''}">
 						<td>
 							<c:choose>
-								<c:when test="${alert.nodeId != null}">
-									${alert.nodeId}
+								<c:when test="${alert.EdgeId != null}">
+									${alert.EdgeId}
 								</c:when>
 								<c:otherwise>
-									<fmt:message key='alert.nodeId.any'/>
+									<fmt:message key='alert.EdgeId.any'/>
 								</c:otherwise>
 							</c:choose>
 						</td>
@@ -95,7 +95,7 @@
 						</td>
 						<td>
 							<button type="button" class="btn btn-small btn-default edit-alert"
-								data-node-id="${alert.nodeId}" data-alert-id="${alert.id}"
+								data-Edge-id="${alert.EdgeId}" data-alert-id="${alert.id}"
 								data-alert-type="${alert.type}" data-alert-status="${alert.status}"
 								data-sources="${alertSources}" data-age="${alertAge}"
 								data-window-time-start="${alertWindowTimeStart}" data-window-time-end="${alertWindowTimeEnd}">
@@ -118,38 +118,38 @@
 
 <%-- Modal views --%>
 
-<form id="create-node-data-alert-modal" class="modal fade alert-form" action="<c:url value='/u/sec/alerts/save'/>" method="post"
-	data-action-node-sources='<c:url value="/u/sec/alerts/node/0/sources"/>'>
+<form id="create-Edge-data-alert-modal" class="modal fade alert-form" action="<c:url value='/u/sec/alerts/save'/>" method="post"
+	data-action-Edge-sources='<c:url value="/u/sec/alerts/Edge/0/sources"/>'>
 	<div class="modal-dialog">
 		<div class="modal-content">
 		 	<div class="modal-header">
 		 		<button type="button" class="close" data-dismiss="modal">&times;</button>
-		 		<h4 class="modal-title"><fmt:message key='alerts.node.data.create.title'/></h4>
+		 		<h4 class="modal-title"><fmt:message key='alerts.Edge.data.create.title'/></h4>
 		 	</div>
-		 	<div class="modal-body form-horizontal carousel slide" id="create-node-data-alert-carousel">
+		 	<div class="modal-body form-horizontal carousel slide" id="create-Edge-data-alert-carousel">
 		 		<ol class="carousel-indicators dark">
-    				<li data-target="#create-node-data-alert-carousel" data-slide-to="0" class="active" title="<fmt:message key='alerts.node.data.create.section.main.title'/>"></li>
-    				<li data-target="#create-node-data-alert-carousel" data-slide-to="1" title="<fmt:message key='alerts.node.data.create.section.filters.title'/>"></li>
+    				<li data-target="#create-Edge-data-alert-carousel" data-slide-to="0" class="active" title="<fmt:message key='alerts.Edge.data.create.section.main.title'/>"></li>
+    				<li data-target="#create-Edge-data-alert-carousel" data-slide-to="1" title="<fmt:message key='alerts.Edge.data.create.section.filters.title'/>"></li>
   				</ol>
 		 		<div class="carousel-inner" role="listbox">
 		 			<div class="item active">
-				 		<p><fmt:message key='alerts.node.data.create.intro'/></p>
+				 		<p><fmt:message key='alerts.Edge.data.create.intro'/></p>
 						<div class="form-group">
-							<label class="col-sm-2 control-label" for="create-node-data-alert-node-id"><fmt:message key="alert.nodeId.label"/></label>
+							<label class="col-sm-2 control-label" for="create-Edge-data-alert-Edge-id"><fmt:message key="alert.EdgeId.label"/></label>
 							<div class="col-sm-10">
-								<select name="nodeId" class="form-control" id="create-node-data-alert-node-id">
-									<option value=""><fmt:message key='alert.nodeId.any'/></option>
-									<c:forEach items="${userNodes}" var="userNode">
-										<option value="${userNode.node.id}">${userNode.idAndName}</option>
+								<select name="EdgeId" class="form-control" id="create-Edge-data-alert-Edge-id">
+									<option value=""><fmt:message key='alert.EdgeId.any'/></option>
+									<c:forEach items="${userEdges}" var="userEdge">
+										<option value="${userEdge.Edge.id}">${userEdge.idAndName}</option>
 									</c:forEach>
 								</select>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label" for="create-node-data-alert-type"><fmt:message key="alert.type.label"/></label>
+							<label class="col-sm-2 control-label" for="create-Edge-data-alert-type"><fmt:message key="alert.type.label"/></label>
 							<div class="col-sm-10 checkbox">
-								<select name="type" class="form-control" id="create-node-data-alert-type">
-									<c:forEach items="${nodeDataAlertTypes}" var="alertType">
+								<select name="type" class="form-control" id="create-Edge-data-alert-type">
+									<c:forEach items="${EdgeDataAlertTypes}" var="alertType">
 										<option value="${alertType}" title="<fmt:message key='alert.type.${alertType}.caption'/>">
 											<fmt:message key='alert.type.${alertType}.label'/>
 										</option>
@@ -158,15 +158,15 @@
 							</div>
 						</div>
 				 		<div class="form-group">
-				 			<label class="col-sm-2 control-label" for="create-node-data-alert-age"><fmt:message key='alert.options.ageMinutes.label'/></label>
+				 			<label class="col-sm-2 control-label" for="create-Edge-data-alert-age"><fmt:message key='alert.options.ageMinutes.label'/></label>
 							<div class="col-sm-10">
-								<input name='option-age-minutes' type="number" min="10" required="required" value="30" class="form-control col-sm-3" id="create-node-data-alert-age"/>
+								<input name='option-age-minutes' type="number" min="10" required="required" value="30" class="form-control col-sm-3" id="create-Edge-data-alert-age"/>
 								<span class="help-block"><fmt:message key="alert.options.ageMinutes.caption"/></span>
 							</div>
 				 		</div>
 				 		<div class="form-group">
-				 			<label class="col-sm-2 control-label" for="create-node-data-alert-status"><fmt:message key='alert.status.label'/></label>
-							<div class="col-sm-10" id="create-node-data-alert-status">
+				 			<label class="col-sm-2 control-label" for="create-Edge-data-alert-status"><fmt:message key='alert.status.label'/></label>
+							<div class="col-sm-10" id="create-Edge-data-alert-status">
 								<c:forEach items="${alertStatuses}" var="alertStatus" varStatus="itr">
 									<label class="radio-inline">
 										<input type="radio" name="status" value="${alertStatus}" 
@@ -182,22 +182,22 @@
 		 			</div>
 		 			<div class="item">
 				 		<div class="form-group">
-				 			<label class="col-sm-2 control-label" for="create-node-data-alert-sources"><fmt:message key='alert.options.sourceIds.label'/></label>
+				 			<label class="col-sm-2 control-label" for="create-Edge-data-alert-sources"><fmt:message key='alert.options.sourceIds.label'/></label>
 							<div class="col-sm-10">
-								<input name='option-sources' type="text" maxlength="255" class="form-control" id="create-node-data-alert-sources"/>
+								<input name='option-sources' type="text" maxlength="255" class="form-control" id="create-Edge-data-alert-sources"/>
 								<span class="help-block"><fmt:message key="alert.options.sourceIds.caption"/></span>
-								<div class="text-info hidden" id="create-node-data-alert-sources-list">
-									<%-- This container will be used to display the available sources for a given node. --%>
+								<div class="text-info hidden" id="create-Edge-data-alert-sources-list">
+									<%-- This container will be used to display the available sources for a given Edge. --%>
 									<b><fmt:message key='alert.options.sourceIds.available.label'/>: </b>
 									<span class="sources"></span>
 								</div>
 							</div>
 				 		</div>
 				 		<div class="form-group">
-				 			<label class="col-sm-2 control-label" for="create-node-data-alert-window"><fmt:message key='alert.options.window.label'/></label>
-							<div class="col-sm-10 form-inline" id="create-node-data-alert-window">
-								<input name='option-window-time-start' type="text" size="5" maxlength="5" placeholder="08:00" class="form-control" id="create-node-data-alert-window-time-start"/>
-								<input name='option-window-time-end' type="text" size="5" maxlength="5" placeholder="20:00" class="form-control" id="create-node-data-alert-window-time-end"/>
+				 			<label class="col-sm-2 control-label" for="create-Edge-data-alert-window"><fmt:message key='alert.options.window.label'/></label>
+							<div class="col-sm-10 form-inline" id="create-Edge-data-alert-window">
+								<input name='option-window-time-start' type="text" size="5" maxlength="5" placeholder="08:00" class="form-control" id="create-Edge-data-alert-window-time-start"/>
+								<input name='option-window-time-end' type="text" size="5" maxlength="5" placeholder="20:00" class="form-control" id="create-Edge-data-alert-window-time-end"/>
 								<span class="help-block"><fmt:message key="alert.options.window.caption"/></span>
 							</div>
 				 		</div>

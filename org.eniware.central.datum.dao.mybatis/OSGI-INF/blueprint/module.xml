@@ -31,8 +31,8 @@
 	
 	<service ref="generalLocationDatumDao" interface="org.eniware.central.datum.dao.GeneralLocationDatumDao" ranking="5"/>
 	<service ref="generalLocationDatumMetadataDao" interface="org.eniware.central.datum.dao.GeneralLocationDatumMetadataDao" ranking="5"/>
-	<service ref="generalNodeDatumDao" interface="org.eniware.central.datum.dao.GeneralNodeDatumDao" ranking="5"/>
-	<service ref="generalNodeDatumMetadataDao" interface="org.eniware.central.datum.dao.GeneralNodeDatumMetadataDao" ranking="5"/>
+	<service ref="generalEdgeDatumDao" interface="org.eniware.central.datum.dao.GeneralEdgeDatumDao" ranking="5"/>
+	<service ref="generalEdgeDatumMetadataDao" interface="org.eniware.central.datum.dao.GeneralEdgeDatumMetadataDao" ranking="5"/>
 
 	<service ref="sqlSessionFactory" interface="org.apache.ibatis.session.SqlSessionFactory">
 		<service-properties>
@@ -72,12 +72,12 @@
 		<property name="messageSource" ref="messageSource"/>
 	</bean>
 	
-	<bean id="generalNodeDatumDao" class="org.eniware.central.datum.dao.mybatis.MyBatisGeneralNodeDatumDao">
+	<bean id="generalEdgeDatumDao" class="org.eniware.central.datum.dao.mybatis.MyBatisGeneralEdgeDatumDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 		<property name="messageSource" ref="messageSource"/>
 	</bean>
 	
-	<bean id="generalNodeDatumMetadataDao" class="org.eniware.central.datum.dao.mybatis.MyBatisGeneralNodeDatumMetadataDao">
+	<bean id="generalEdgeDatumMetadataDao" class="org.eniware.central.datum.dao.mybatis.MyBatisGeneralEdgeDatumMetadataDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 		<property name="messageSource" ref="messageSource"/>
 	</bean>
@@ -90,21 +90,21 @@
 				<value>org.eniware.central.domain.EniwareEdge</value>
 				
 				<value>org.eniware.central.datum.domain.LocationSourcePK</value>
-				<value>org.eniware.central.datum.domain.NodeSourcePK</value>
+				<value>org.eniware.central.datum.domain.EdgeSourcePK</value>
 				<value>org.eniware.central.datum.domain.GeneralLocationDatumPK</value>
-				<value>org.eniware.central.datum.domain.GeneralNodeDatumPK</value>
+				<value>org.eniware.central.datum.domain.GeneralEdgeDatumPK</value>
 			
 				<value>org.eniware.central.datum.domain.GeneralLocationDatum</value>
 				<value>org.eniware.central.datum.domain.GeneralLocationDatumMatch</value>
 				<value>org.eniware.central.datum.domain.GeneralLocationDatumMetadata</value>
 				<value>org.eniware.central.datum.domain.GeneralLocationDatumMetadataMatch</value>
-				<value>org.eniware.central.datum.domain.GeneralNodeDatum</value>
-				<value>org.eniware.central.datum.domain.GeneralNodeDatumMatch</value>
-				<value>org.eniware.central.datum.domain.GeneralNodeDatumMetadata</value>
-				<value>org.eniware.central.datum.domain.GeneralNodeDatumMetadataMatch</value>
+				<value>org.eniware.central.datum.domain.GeneralEdgeDatum</value>
+				<value>org.eniware.central.datum.domain.GeneralEdgeDatumMatch</value>
+				<value>org.eniware.central.datum.domain.GeneralEdgeDatumMetadata</value>
+				<value>org.eniware.central.datum.domain.GeneralEdgeDatumMetadataMatch</value>
 				
 				<value>org.eniware.central.datum.domain.ReportingGeneralLocationDatum</value>
-				<value>org.eniware.central.datum.domain.ReportingGeneralNodeDatum</value>
+				<value>org.eniware.central.datum.domain.ReportingGeneralEdgeDatum</value>
 			</list>
 		</property>
 		<property name="typeHandlers">
@@ -126,8 +126,8 @@
 
 				<value>classpath:/net/eniwarenetwork/central/datum/dao/mybatis/map/GeneralLocationDatum.xml</value>
 				<value>classpath:/net/eniwarenetwork/central/datum/dao/mybatis/map/GeneralLocationDatumMetadata.xml</value>
-				<value>classpath:/net/eniwarenetwork/central/datum/dao/mybatis/map/GeneralNodeDatum.xml</value>
-				<value>classpath:/net/eniwarenetwork/central/datum/dao/mybatis/map/GeneralNodeDatumMetadata.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/datum/dao/mybatis/map/GeneralEdgeDatum.xml</value>
+				<value>classpath:/net/eniwarenetwork/central/datum/dao/mybatis/map/GeneralEdgeDatumMetadata.xml</value>
 			</list>
 		</property>
 	</bean>

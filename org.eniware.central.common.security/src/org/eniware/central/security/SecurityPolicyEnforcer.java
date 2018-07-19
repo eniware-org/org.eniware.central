@@ -38,7 +38,7 @@ public class SecurityPolicyEnforcer implements InvocationHandler {
 	private final PathMatcher pathMatcher;
 	private final SecurityPolicyMetadataType metadataType;
 
-	private Long[] cachedNodeIds;
+	private Long[] cachedEdgeIds;
 	private String[] cachedSourceIds;
 	private GeneralDatumMetadata cachedMetadata;
 
@@ -127,7 +127,7 @@ public class SecurityPolicyEnforcer implements InvocationHandler {
 	 *         if any policy fails
 	 */
 	public void verify() {
-		String[] getters = new String[] { "getNodeIds", "getSourceIds", "getAggregation",
+		String[] getters = new String[] { "getEdgeIds", "getSourceIds", "getAggregation",
 				"getMetadata" };
 		for ( String methodName : getters ) {
 			try {
@@ -145,14 +145,14 @@ public class SecurityPolicyEnforcer implements InvocationHandler {
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		final String methodName = method.getName();
 		final Object delegateResult = method.invoke(delegate, args);
-		if ( "getNodeIds".equals(methodName) || "getNodeId".equals(methodName) ) {
-			Long[] nodeIds;
+		if ( "getEdgeIds".equals(methodName) || "getEdgeId".equals(methodName) ) {
+			Long[] EdgeIds;
 			if ( methodName.endsWith("s") ) {
-				nodeIds = (Long[]) delegateResult;
+				EdgeIds = (Long[]) delegateResult;
 			} else {
-				nodeIds = (delegateResult != null ? new Long[] { (Long) delegateResult } : null);
+				EdgeIds = (delegateResult != null ? new Long[] { (Long) delegateResult } : null);
 			}
-			Long[] result = verifyNodeIds(nodeIds);
+			Long[] result = verifyEdgeIds(EdgeIds);
 			if ( result == null || result.length < 1 || methodName.endsWith("s") ) {
 				return result;
 			}
@@ -180,46 +180,46 @@ public class SecurityPolicyEnforcer implements InvocationHandler {
 	}
 
 	/**
-	 * Verify an arbitrary list of node IDs against the configured policy.
+	 * Verify an arbitrary list of Edge IDs against the configured policy.
 	 * 
-	 * @param nodeIds
-	 *        The node IDs to verify.
-	 * @return The allowed node IDs.
+	 * @param EdgeIds
+	 *        The Edge IDs to verify.
+	 * @return The allowed Edge IDs.
 	 * @throws AuthorizationException
-	 *         if no node IDs are allowed
+	 *         if no Edge IDs are allowed
 	 */
-	public Long[] verifyNodeIds(Long[] nodeIds) {
-		Set<Long> policyNodeIds = policy.getNodeIds();
+	public Long[] verifyEdgeIds(Long[] EdgeIds) {
+		Set<Long> policyEdgeIds = policy.getEdgeIds();
 		// verify source IDs
-		if ( policyNodeIds == null || policyNodeIds.isEmpty() ) {
-			return nodeIds;
+		if ( policyEdgeIds == null || policyEdgeIds.isEmpty() ) {
+			return EdgeIds;
 		}
-		if ( cachedNodeIds != null ) {
-			return (cachedNodeIds.length == 0 ? null : cachedNodeIds);
+		if ( cachedEdgeIds != null ) {
+			return (cachedEdgeIds.length == 0 ? null : cachedEdgeIds);
 		}
-		if ( nodeIds != null && nodeIds.length > 0 ) {
+		if ( EdgeIds != null && EdgeIds.length > 0 ) {
 			// remove any source IDs not in the policy
-			Set<Long> nodeIdsSet = new LinkedHashSet<Long>(Arrays.asList(nodeIds));
-			for ( Iterator<Long> itr = nodeIdsSet.iterator(); itr.hasNext(); ) {
-				Long nodeId = itr.next();
-				if ( !policyNodeIds.contains(nodeId) ) {
-					LOG.warn("Access DENIED to node {} for {}: policy restriction", nodeId, principal);
+			Set<Long> EdgeIdsSet = new LinkedHashSet<Long>(Arrays.asList(EdgeIds));
+			for ( Iterator<Long> itr = EdgeIdsSet.iterator(); itr.hasNext(); ) {
+				Long EdgeId = itr.next();
+				if ( !policyEdgeIds.contains(EdgeId) ) {
+					LOG.warn("Access DENIED to Edge {} for {}: policy restriction", EdgeId, principal);
 					itr.remove();
 				}
 			}
-			if ( nodeIdsSet.size() < 1 ) {
-				LOG.warn("Access DENIED to nodes {} for {}", nodeIds, principal);
-				throw new AuthorizationException(AuthorizationException.Reason.ACCESS_DENIED, nodeIds);
-			} else if ( nodeIdsSet.size() < nodeIds.length ) {
-				nodeIds = nodeIdsSet.toArray(new Long[nodeIdsSet.size()]);
+			if ( EdgeIdsSet.size() < 1 ) {
+				LOG.warn("Access DENIED to Edges {} for {}", EdgeIds, principal);
+				throw new AuthorizationException(AuthorizationException.Reason.ACCESS_DENIED, EdgeIds);
+			} else if ( EdgeIdsSet.size() < EdgeIds.length ) {
+				EdgeIds = EdgeIdsSet.toArray(new Long[EdgeIdsSet.size()]);
 			}
-		} else if ( nodeIds == null || nodeIds.length < 1 ) {
+		} else if ( EdgeIds == null || EdgeIds.length < 1 ) {
 			// no source IDs provided, set to policy source IDs
-			LOG.info("Access RESTRICTED to nodes {} for {}", policyNodeIds, principal);
-			nodeIds = policyNodeIds.toArray(new Long[policyNodeIds.size()]);
+			LOG.info("Access RESTRICTED to Edges {} for {}", policyEdgeIds, principal);
+			EdgeIds = policyEdgeIds.toArray(new Long[policyEdgeIds.size()]);
 		}
-		cachedNodeIds = (nodeIds == null ? new Long[0] : nodeIds);
-		return nodeIds;
+		cachedEdgeIds = (EdgeIds == null ? new Long[0] : EdgeIds);
+		return EdgeIds;
 	}
 
 	private boolean matchesPattern(Set<String> patterns, String value) {
@@ -348,8 +348,8 @@ public class SecurityPolicyEnforcer implements InvocationHandler {
 			final boolean cacheResults) {
 		final Set<String> policyMetadataPaths;
 		switch (metadataType) {
-			case Node:
-				policyMetadataPaths = policy.getNodeMetadataPaths();
+			case Edge:
+				policyMetadataPaths = policy.getEdgeMetadataPaths();
 				break;
 
 			case User:
@@ -411,7 +411,7 @@ public class SecurityPolicyEnforcer implements InvocationHandler {
 			String entryPath = path + "/" + me.getKey();
 			Object val = me.getValue();
 			if ( val instanceof Map ) {
-				// object node; try to remove entire trees from checking if the path start doesn't match
+				// object Edge; try to remove entire trees from checking if the path start doesn't match
 				if ( !matchesPatternStart(policyPaths, entryPath) ) {
 					continue;
 				}
@@ -426,7 +426,7 @@ public class SecurityPolicyEnforcer implements InvocationHandler {
 					result.put(me.getKey(), mapVal);
 				}
 			} else {
-				// leaf node
+				// leaf Edge
 				if ( matchesPattern(policyPaths, entryPath) ) {
 					if ( result == null ) {
 						result = new LinkedHashMap<String, Object>(meta.size());

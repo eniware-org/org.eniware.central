@@ -16,7 +16,7 @@ public interface LocationDatum extends Datum {
 	/**
 	 * Get the ID of the location this datam relates to.
 	 * 
-	 * @return the node ID
+	 * @return the Edge ID
 	 */
 	public Long getLocationId();
 	

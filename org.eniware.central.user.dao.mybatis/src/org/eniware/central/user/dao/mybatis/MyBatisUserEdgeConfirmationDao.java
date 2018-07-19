@@ -26,10 +26,10 @@ public class MyBatisUserEdgeConfirmationDao extends BaseMyBatisGenericDao<UserEd
 		implements UserEdgeConfirmationDao {
 
 	/** The query name used for {@link #getConfirmationForKey(String, String)}. */
-	public static final String QUERY_FOR_KEY = "get-UserNodeConfirmation-for-key";
+	public static final String QUERY_FOR_KEY = "get-UserEdgeConfirmation-for-key";
 
-	/** The query name used for {@link #findUserNodesForUser(User)}. */
-	public static final String QUERY_FOR_USER = "find-UserNodeConfirmation-for-User";
+	/** The query name used for {@link #findUserEdgesForUser(User)}. */
+	public static final String QUERY_FOR_USER = "find-UserEdgeConfirmation-for-User";
 
 	/**
 	 * Default constructor.

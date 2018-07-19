@@ -1,4 +1,4 @@
-var nodeId = -1;
+var EdgeId = -1;
 var featureConsumption = false;
 var featureGridPrice = false;
 var sourceId = 'Eniware';
@@ -15,36 +15,36 @@ var rollingMonthlyConsumptionChart;
 var rollingDayConsumptionChart;
 var rollingMonthlyGenerationChart;
 var rollingDayGenerationChart;
-var nodeWeather;
+var EdgeWeather;
 var rollingMonthlyWeatherChart;
 var rollingDayWeatherChart;
 
 var dateTimeDataFormat = '%Y-%m-%d %H:%M';
 var dateDataFormat = '%Y-%m-%d';
 
-var nodeUrlHelper;
+var EdgeUrlHelper;
 var priceUrlHelper;
 var weatherUrlHelper;
 
 /**
- * NodeChart constructor.
+ * EdgeChart constructor.
  * 
  * The opts object supports the following:
  * 
- * - consumptionSourceId:	the source ID of the consumption node to monitor
+ * - consumptionSourceId:	the source ID of the consumption Edge to monitor
  * - feature:				object with consumption and gridPrice boolean flags
  * 
  * @param divId the name of the element to hold the chart (string)
- * @param nodeId the ID of the node (number)
+ * @param EdgeId the ID of the Edge (number)
  * @param interval date range interval, with startDate, endDate, sDate, eDate properties
- * @param opts object with NodeChart options (required)
+ * @param opts object with EdgeChart options (required)
  * @param chartOpts optional object with jqPlot options
- * @return NodeChart object
+ * @return EdgeChart object
  */
-function NodeChart(divId, nodeId, interval, opts, chartOpts) {
+function EdgeChart(divId, EdgeId, interval, opts, chartOpts) {
 	
 	this.divId = divId;
-	this.nodeId = nodeId;
+	this.EdgeId = EdgeId;
 	this.interval = interval,
 	this.opts = opts || {};
 	this.chartOpts = chartOpts || {};
@@ -81,7 +81,7 @@ function NodeChart(divId, nodeId, interval, opts, chartOpts) {
 		
 		var me = this;
 		var queryParams = {
-				nodeId: this.nodeId,
+				EdgeId: this.EdgeId,
 				startDate: this.interval.startDate,
 				endDate: this.interval.endDate,
 			};
@@ -153,7 +153,7 @@ function NodeChart(divId, nodeId, interval, opts, chartOpts) {
 		}
 
 		var queryRange = sn.datum.loaderQueryRange(queryParams.aggregate, this.interval, this.interval.eDate);
-		sn.datum.loader([sourceId], nodeUrlHelper, queryRange.start, queryRange.end, queryParams.aggregate).load(function(error, data) {
+		sn.datum.loader([sourceId], EdgeUrlHelper, queryRange.start, queryRange.end, queryParams.aggregate).load(function(error, data) {
 			if ( !Array.isArray(data) )  {
 				console.log('Error loading consumption data: %s', error);
 				return;
@@ -170,7 +170,7 @@ function NodeChart(divId, nodeId, interval, opts, chartOpts) {
 		});
 
 		if ( this.featureConsumption ) {
-			sn.datum.loader([this.consumptionSourceId], nodeUrlHelper, queryRange.start, queryRange.end, queryParams.aggregate).load(function(error, data) {
+			sn.datum.loader([this.consumptionSourceId], EdgeUrlHelper, queryRange.start, queryRange.end, queryParams.aggregate).load(function(error, data) {
 				if ( !Array.isArray(data) )  {
 					console.log('Error loading consumption data: %s', error);
 					return;
@@ -290,18 +290,18 @@ function NodeChart(divId, nodeId, interval, opts, chartOpts) {
 		}
 		$.jqplot(this.divId, seriesArray,  opts);
 		if ( this.showDaylight ) {
-			new DaylightCanvas(this.nodeId, $('#'+this.divId +' canvas.jqplot-series-canvas'), 
+			new DaylightCanvas(this.EdgeId, $('#'+this.divId +' canvas.jqplot-series-canvas'), 
 					this.interval.sDate.clone(), this.interval.eDate.clone(), this.interval).showDaylight();
 		}
-		$(document).trigger("NodeChartReady", [this]);
+		$(document).trigger("EdgeChartReady", [this]);
 		return this;
 	};
 }
 
-function ConsumptionHourlyCostChart(divId, nodeId, consumptionSourceId, interval, chartOpts) {
+function ConsumptionHourlyCostChart(divId, EdgeId, consumptionSourceId, interval, chartOpts) {
 	
 	this.divId = divId;
-	this.nodeId = nodeId;
+	this.EdgeId = EdgeId;
 	this.consumptionSourceId = consumptionSourceId;
 	this.interval = interval,
 	this.chartOpts = chartOpts || {};
@@ -316,7 +316,7 @@ function ConsumptionHourlyCostChart(divId, nodeId, consumptionSourceId, interval
 		this.costSeries = [];
 		var me = this;
 		var queryRange = sn.datum.loaderQueryRange('Hour', this.interval, this.interval.eDate);
-		sn.datum.loader([consumptionSourceId], nodeUrlHelper, queryRange.start, queryRange.end, 'Hour').load(function(error, data) {
+		sn.datum.loader([consumptionSourceId], EdgeUrlHelper, queryRange.start, queryRange.end, 'Hour').load(function(error, data) {
 			if ( !Array.isArray(data) )  {
 				console.log('Error loading consumption data: %s', error);
 				return;
@@ -368,7 +368,7 @@ function ConsumptionHourlyCostChart(divId, nodeId, consumptionSourceId, interval
 				this.divId,  
 				[this.kwHourSeries, this.costSeries], 
 				opts);
-		new DaylightCanvas(this.nodeId, $('#'+this.divId +' canvas.jqplot-series-canvas'), 
+		new DaylightCanvas(this.EdgeId, $('#'+this.divId +' canvas.jqplot-series-canvas'), 
 				Date.create(this.kwHourSeries[0][0]), 
 				Date.create(this.kwHourSeries[this.kwHourSeries.length-1][0]),
 				this.interval).showDaylight();
@@ -379,9 +379,9 @@ function ConsumptionHourlyCostChart(divId, nodeId, consumptionSourceId, interval
 
 var daylightIconCache = {};
 
-function DaylightCanvas(nodeId, canvasDiv, startDate, endDate, interval) {
+function DaylightCanvas(EdgeId, canvasDiv, startDate, endDate, interval) {
 	
-	this.nodeId = nodeId;
+	this.EdgeId = EdgeId;
 	this.canvas = $(canvasDiv);
 	this.startDate = startDate;
 	this.endDate = endDate;
@@ -459,7 +459,7 @@ function DaylightCanvas(nodeId, canvasDiv, startDate, endDate, interval) {
 	this.loadWeatherIcon = function(condition, iconDiv) {
 		var iconName = getWeatherIconNameFromCondition(condition);
 		if ( this.conditionCache[iconName] ) {
-			iconDiv.append(this.conditionCache[iconName].cloneNode(true)).show();
+			iconDiv.append(this.conditionCache[iconName].cloneEdge(true)).show();
 			return;
 		}
 		var me = this;
@@ -468,7 +468,7 @@ function DaylightCanvas(nodeId, canvasDiv, startDate, endDate, interval) {
 			url: 'img/weather-' +iconName +'.svg',
 			dataType: 'xml',
 			success: function(data, textStatus) {
-				var svg = document.importNode(data.documentElement, true);
+				var svg = document.importEdge(data.documentElement, true);
 				me.conditionCache[iconName] = svg;
 				iconDiv.append(svg).show();
 			}
@@ -476,10 +476,10 @@ function DaylightCanvas(nodeId, canvasDiv, startDate, endDate, interval) {
 	};
 }
 
-function ConsumptionBarChart(divId, nodeId, consumptionSourceId, interval, queryOpts, chartOpts) {
+function ConsumptionBarChart(divId, EdgeId, consumptionSourceId, interval, queryOpts, chartOpts) {
 	
 	this.divId = divId;
-	this.nodeId = nodeId;
+	this.EdgeId = EdgeId;
 	this.consumptionSourceId = consumptionSourceId;
 	this.interval = interval,
 	this.chartOpts = chartOpts || {};
@@ -512,7 +512,7 @@ function ConsumptionBarChart(divId, nodeId, consumptionSourceId, interval, query
 		var me = this;
 		
 		var queryRange = sn.datum.loaderQueryRange(this._aggregate(), this.interval, this.interval.eDate);
-		sn.datum.loader([consumptionSourceId], nodeUrlHelper, queryRange.start, queryRange.end, this._aggregate()).load(function(error, data) {
+		sn.datum.loader([consumptionSourceId], EdgeUrlHelper, queryRange.start, queryRange.end, this._aggregate()).load(function(error, data) {
 			if ( !Array.isArray(data) )  {
 				console.log('Error loading consumption data: %s', error);
 				return;
@@ -575,10 +575,10 @@ function ConsumptionBarChart(divId, nodeId, consumptionSourceId, interval, query
 	};
 }
 
-function WeatherChart(divId, nodeId, interval, queryOpts, chartOpts) {
+function WeatherChart(divId, EdgeId, interval, queryOpts, chartOpts) {
 	
 	this.divId = divId;
-	this.nodeId = nodeId;
+	this.EdgeId = EdgeId;
 	this.interval = interval,
 	this.queryOpts = queryOpts || {};
 	this.chartOpts = chartOpts || {};
@@ -604,7 +604,7 @@ function WeatherChart(divId, nodeId, interval, queryOpts, chartOpts) {
 		this.dateTicks = [];
 		var me = this;
 		var queryParams = {
-			nodeId: this.nodeId,
+			EdgeId: this.EdgeId,
 			startDate: this.interval.startDate,
 			endDate: this.interval.endDate,
 			aggregate: this._aggregate()
@@ -676,10 +676,10 @@ function WeatherChart(divId, nodeId, interval, queryOpts, chartOpts) {
 	
 }
 
-function GenerationBarChart(divId, nodeId, interval, opts, chartOpts) {
+function GenerationBarChart(divId, EdgeId, interval, opts, chartOpts) {
 	
 	this.divId = divId;
-	this.nodeId = nodeId;
+	this.EdgeId = EdgeId;
 	this.interval = interval,
 	this.chartOpts = chartOpts || {};
 	this.opts = opts || {};
@@ -710,7 +710,7 @@ function GenerationBarChart(divId, nodeId, interval, opts, chartOpts) {
 		this.pointLabels = [];
 		var me = this;
 		var queryRange = sn.datum.loaderQueryRange(this._aggregate(), this.interval, this.interval.eDate);
-		sn.datum.loader([consumptionSourceId], nodeUrlHelper, queryRange.start, queryRange.end, this._aggregate()).load(function(error, data) {
+		sn.datum.loader([consumptionSourceId], EdgeUrlHelper, queryRange.start, queryRange.end, this._aggregate()).load(function(error, data) {
 			if ( !Array.isArray(data) )  {
 				console.log('Error loading consumption data: %s', error);
 				return;
@@ -784,11 +784,11 @@ function GenerationBarChart(divId, nodeId, interval, opts, chartOpts) {
 	};
 }
 
-function NodeWeather(divId, nodeId) {
+function EdgeWeather(divId, EdgeId) {
 	
 	this.divId = divId;
 	this.div = $('#' +divId);
-	this.nodeId = nodeId;
+	this.EdgeId = EdgeId;
 	this.updateFrequency = 10; // minutes
 	
 	this.weather = {};
@@ -796,7 +796,7 @@ function NodeWeather(divId, nodeId) {
 	this.tz = {};
 	
 	this.refresh = function() {
-		var queryParams = {nodeId:this.nodeId};
+		var queryParams = {EdgeId:this.EdgeId};
 		var me = this;
 		var q = queue();
 		q.defer(d3.json, weatherUrlHelper.mostRecentURL([weatherSourceId]));
@@ -879,7 +879,7 @@ function NodeWeather(divId, nodeId) {
 			url: 'img/weather-' +iconName +'.svg',
 			dataType: 'xml',
 			success: function(data, textStatus) {
-				var svg = document.importNode(data.documentElement, true);
+				var svg = document.importEdge(data.documentElement, true);
 				//$(svg).css({width: '128px', height: '128px'});
 				me.div.children('.weather-icon').append(svg).show();
 			}
@@ -903,8 +903,8 @@ function getWeatherIconNameFromCondition(condition) {
 }
 
 function setupRangeChart(interval) {
-	rangeChart = new NodeChart('chart-overview-div', 
-			nodeId, 
+	rangeChart = new EdgeChart('chart-overview-div', 
+			EdgeId, 
 			interval, {
 				consumptionSourceId: consumptionSourceId,
 				feature: {consumption: featureConsumption, gridPrice: featureGridPrice}
@@ -919,8 +919,8 @@ function setupRangeChart(interval) {
 }
 
 function setupChart(interval) {
-	mainChart = new NodeChart('chart-div', 
-			nodeId, 
+	mainChart = new EdgeChart('chart-div', 
+			EdgeId, 
 			interval, {
 				consumptionSourceId: consumptionSourceId,
 				feature: {consumption: featureConsumption, gridPrice: featureGridPrice}
@@ -1001,7 +1001,7 @@ function setupRollingWeekHourlyConsumptionChart(interval) {
 		return;
 	}
 	rollingWeekHourlyConsumptionChart = new ConsumptionHourlyCostChart('hourly-cost-chart-div', 
-			nodeId, 
+			EdgeId, 
 			consumptionSourceId,
 			interval, {
 				legend:{show:true, location:'nw'},
@@ -1016,7 +1016,7 @@ function setupRollingMonthConsumptionChart(interval) {
 		return;
 	}
 	rollingMonthlyConsumptionChart = new ConsumptionBarChart('monthly-cost-chart-div', 
-			nodeId, 
+			EdgeId, 
 			consumptionSourceId,
 			interval);
 	$("#monthly-cost-div").data('chart', rollingMonthlyConsumptionChart);
@@ -1027,7 +1027,7 @@ function setupRollingDayConsumptionChart(interval) {
 		return;
 	}
 	rollingDayConsumptionChart = new ConsumptionBarChart('week-cost-chart-div', 
-			nodeId, 
+			EdgeId, 
 			consumptionSourceId,
 			interval, 
 			{aggregate: 'Day'}, 
@@ -1040,7 +1040,7 @@ function setupRollingDayGenerationChart(interval) {
 		return;
 	}
 	rollingDayGenerationChart = new GenerationBarChart('week-generation-chart-div',
-			nodeId, interval, {aggregate: 'Day'}, {legend:{location:'ne'}});
+			EdgeId, interval, {aggregate: 'Day'}, {legend:{location:'ne'}});
 	$("#week-generation-div").data('chart', rollingDayGenerationChart);
 }
 
@@ -1049,7 +1049,7 @@ function setupRollingMonthGenerationChart(interval) {
 		return;
 	}
 	rollingMonthlyGenerationChart = new GenerationBarChart('monthly-generation-chart-div',
-			nodeId, interval, {aggregate: 'Month'}, {legend:{location:'nw'}});
+			EdgeId, interval, {aggregate: 'Month'}, {legend:{location:'nw'}});
 	$("#monthly-generation-div").data('chart', rollingMonthlyGenerationChart);
 }
 
@@ -1058,7 +1058,7 @@ function setupRollingMonthWeatherChart(interval) {
 		return;
 	}
 	rollingMonthlyWeatherChart = new WeatherChart('monthly-weather-chart-div', 
-			nodeId, 
+			EdgeId, 
 			interval,
 			{aggregate: 'Month'});
 	$("#monthly-weather-div").data('chart', rollingMonthlyWeatherChart);
@@ -1069,7 +1069,7 @@ function setupRollingDayWeatherChart(interval) {
 		return;
 	}
 	rollingDayWeatherChart = new WeatherChart('week-weather-chart-div', 
-			nodeId, 
+			EdgeId, 
 			interval, 
 			{aggregate: 'Day'});
 	$("#week-weather-div").data('chart', rollingDayWeatherChart);
@@ -1103,15 +1103,15 @@ function chartSwitcherLoadChartData(switchable) {
 	}
 }
 
-$(document).bind("NodeChartReady", function(e, nodeChart) {
-	if ( nodeChart.divId == 'chart-overview-div' ) {
+$(document).bind("EdgeChartReady", function(e, EdgeChart) {
+	if ( EdgeChart.divId == 'chart-overview-div' ) {
 		setupRangeSlider();
 	}
 	return false;
 });
 
 $(document).ready(function() {
-	nodeId = $('#nodeId').val();
+	EdgeId = $('#EdgeId').val();
 	consumptionSourceId =  $('#consumptionSourceId').val();
 	sourceId =  $('#sourceId').val();
 	priceSourceId =  $('#priceSourceId').val();
@@ -1122,12 +1122,12 @@ $(document).ready(function() {
 	featureConsumption = $('#feature-consumption').val() == 'true' ? true : false;
 	featureGridPrice = $('#feature-gridPrice').val() == 'true' ? true : false;
 	
-	nodeUrlHelper = sn.datum.nodeUrlHelper(nodeId);
+	EdgeUrlHelper = sn.datum.EdgeUrlHelper(EdgeId);
 	priceUrlHelper = sn.datum.locationUrlHelper(priceLocationId);
 	weatherUrlHelper = sn.datum.locationUrlHelper(weatherLocationId);
 	
 	var sourceSets = [
-	                  { nodeUrlHelper : nodeUrlHelper, sourceIds : [sourceId, consumptionSourceId] }
+	                  { EdgeUrlHelper : EdgeUrlHelper, sourceIds : [sourceId, consumptionSourceId] }
 	                  ];
 	sn.datum.availableDataRange(sourceSets, function(data) {
 		var reportableInterval = {};
@@ -1186,6 +1186,6 @@ $(document).ready(function() {
 		});
 	});
 	
-	nodeWeather = new NodeWeather('current-weather-div', nodeId);
-	nodeWeather.refresh();
+	EdgeWeather = new EdgeWeather('current-weather-div', EdgeId);
+	EdgeWeather.refresh();
 });

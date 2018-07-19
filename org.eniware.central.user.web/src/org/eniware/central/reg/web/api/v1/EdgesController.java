@@ -12,8 +12,8 @@ import java.util.List;
 import org.eniware.central.domain.FilterResults;
 import org.eniware.central.support.BasicFilterResults;
 import org.eniware.central.user.biz.UserBiz;
-import org.eniware.central.user.domain.UserNode;
-import org.eniware.central.user.domain.UserNodeConfirmation;
+import org.eniware.central.user.domain.UserEdge;
+import org.eniware.central.user.domain.UserEdgeConfirmation;
 import org.eniware.support.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,12 +27,12 @@ import org.eniware.central.web.support.WebServiceControllerSupport;
 import org.eniware.web.domain.Response;
 
 /**
- * Controller for user nodes web service API.
+ * Controller for user Edges web service API.
  * 
  * @version 1.1
  */
-@Controller("v1nodesController")
-@RequestMapping(value = "/v1/sec/nodes")
+@Controller("v1EdgesController")
+@RequestMapping(value = "/v1/sec/Edges")
 public class EdgesController extends WebServiceControllerSupport {
 
 	public final UserBiz userBiz;
@@ -54,52 +54,52 @@ public class EdgesController extends WebServiceControllerSupport {
 	}
 
 	/**
-	 * Get a listing of nodes for the active user.
+	 * Get a listing of Edges for the active user.
 	 * 
-	 * @return The list of nodes available to the active user.
+	 * @return The list of Edges available to the active user.
 	 */
 	@RequestMapping(value = { "", "/" }, method = RequestMethod.GET)
 	@ResponseBody
-	public Response<FilterResults<UserNode>> getMyNodes() {
-		List<UserNode> nodes = userBiz.getUserNodes(SecurityUtils.getCurrentActorUserId());
-		FilterResults<UserNode> result = new BasicFilterResults<UserNode>(nodes, (long) nodes.size(), 0,
-				nodes.size());
+	public Response<FilterResults<UserEdge>> getMyEdges() {
+		List<UserEdge> Edges = userBiz.getUserEdges(SecurityUtils.getCurrentActorUserId());
+		FilterResults<UserEdge> result = new BasicFilterResults<UserEdge>(Edges, (long) Edges.size(), 0,
+				Edges.size());
 		return response(result);
 	}
 
 	/**
-	 * Get a listing of pending node confirmations for the active user.
+	 * Get a listing of pending Edge confirmations for the active user.
 	 * 
-	 * @return The list of pending node confirmations for the active user.
+	 * @return The list of pending Edge confirmations for the active user.
 	 */
 	@RequestMapping(value = "/pending", method = RequestMethod.GET)
 	@ResponseBody
-	public Response<FilterResults<UserNodeConfirmation>> getPendingNodes() {
-		List<UserNodeConfirmation> pending = userBiz
-				.getPendingUserNodeConfirmations(SecurityUtils.getCurrentActorUserId());
-		FilterResults<UserNodeConfirmation> result = new BasicFilterResults<UserNodeConfirmation>(
+	public Response<FilterResults<UserEdgeConfirmation>> getPendingEdges() {
+		List<UserEdgeConfirmation> pending = userBiz
+				.getPendingUserEdgeConfirmations(SecurityUtils.getCurrentActorUserId());
+		FilterResults<UserEdgeConfirmation> result = new BasicFilterResults<UserEdgeConfirmation>(
 				pending, (long) pending.size(), 0, pending.size());
 		return response(result);
 	}
 
 	/**
-	 * Get a list of all archived nodes.
+	 * Get a list of all archived Edges.
 	 * 
-	 * @return All archived nodes.
+	 * @return All archived Edges.
 	 * @since 1.1
 	 */
 	@RequestMapping(value = "/archived", method = RequestMethod.GET)
 	@ResponseBody
-	public Response<List<UserNode>> getArchivedNodes() {
-		List<UserNode> nodes = userBiz.getArchivedUserNodes(SecurityUtils.getCurrentActorUserId());
-		return Response.response(nodes);
+	public Response<List<UserEdge>> getArchivedEdges() {
+		List<UserEdge> Edges = userBiz.getArchivedUserEdges(SecurityUtils.getCurrentActorUserId());
+		return Response.response(Edges);
 	}
 
 	/**
-	 * Update the archived status of a set of nodes.
+	 * Update the archived status of a set of Edges.
 	 * 
-	 * @param nodeIds
-	 *        The node IDs to update the archived status of.
+	 * @param EdgeIds
+	 *        The Edge IDs to update the archived status of.
 	 * @param archived
 	 *        {@code true} to archive, {@code false} to un-archive
 	 * @return A success response.
@@ -107,9 +107,9 @@ public class EdgesController extends WebServiceControllerSupport {
 	 */
 	@RequestMapping(value = "/archived", method = RequestMethod.POST)
 	@ResponseBody
-	public Response<Object> updateArchivedStatus(@RequestParam("nodeIds") Long[] nodeIds,
+	public Response<Object> updateArchivedStatus(@RequestParam("EdgeIds") Long[] EdgeIds,
 			@RequestParam("archived") boolean archived) {
-		userBiz.updateUserNodeArchivedStatus(SecurityUtils.getCurrentActorUserId(), nodeIds, archived);
+		userBiz.updateUserEdgeArchivedStatus(SecurityUtils.getCurrentActorUserId(), EdgeIds, archived);
 		return Response.response(null);
 	}
 }

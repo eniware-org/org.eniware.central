@@ -21,10 +21,10 @@
 	<osgix:cm-properties id="cfg" persistent-id="org.eniware.central.user.alerts">
 		<beans:prop key="alert.mail.from">alerts@eniware.org</beans:prop>
 		<beans:prop key="alert.mail.wrap">80</beans:prop>
-		<beans:prop key="nodeStaleDataAlertProcessor.batchSize">250</beans:prop>
-		<beans:prop key="emailNodeStaleDataAlertProcessor.jobCron">30 0/5 * * * ?</beans:prop>
-		<beans:prop key="emailNodeStaleDataAlertProcessor.initialAlertReminderDelayMinutes">60</beans:prop>
-		<beans:prop key="emailNodeStaleDataAlertProcessor.alertReminderFrequencyMultiplier">4</beans:prop>
+		<beans:prop key="EdgeStaleDataAlertProcessor.batchSize">250</beans:prop>
+		<beans:prop key="emailEdgeStaleDataAlertProcessor.jobCron">30 0/5 * * * ?</beans:prop>
+		<beans:prop key="emailEdgeStaleDataAlertProcessor.initialAlertReminderDelayMinutes">60</beans:prop>
+		<beans:prop key="emailEdgeStaleDataAlertProcessor.alertReminderFrequencyMultiplier">4</beans:prop>
 		<beans:prop key="resolvedSituationCleaner.jobCron">0 5 1 ? * SUN</beans:prop><!--  Weekly, on Sunday 1:05am -->
 		<beans:prop key="resolvedSituationCleaner.daysOlder">21</beans:prop>
 	</osgix:cm-properties>
@@ -34,31 +34,31 @@
 	<!-- Service References -->
 
 	<reference id="eventAdmin" interface="org.osgi.service.event.EventAdmin"/>
-	<reference id="generalNodeDatumDao" interface="org.eniware.central.datum.dao.GeneralNodeDatumDao"/>
+	<reference id="generalEdgeDatumDao" interface="org.eniware.central.datum.dao.GeneralEdgeDatumDao"/>
 	<reference id="mailSender" interface="org.springframework.mail.MailSender"/>
 	<reference id="eniwareEdgeDao" interface="org.eniware.central.dao.EniwareEdgeDao"/>
 	<reference id="userDao" interface="org.eniware.central.user.dao.UserDao"/>
 	<reference id="userAlertDao" interface="org.eniware.central.user.dao.UserAlertDao"/>
 	<reference id="userAlertSituationDao" interface="org.eniware.central.user.dao.UserAlertSituationDao"/>
-	<reference id="userNodeDao" interface="org.eniware.central.user.dao.UserNodeDao"/>
+	<reference id="userEdgeDao" interface="org.eniware.central.user.dao.UserEdgeDao"/>
 
 	<!-- Jobs -->
 
-	<bean id="emailNodeStaleDataAlertProcessorJob" class="org.eniware.central.user.alerts.UserAlertBatchJob">
+	<bean id="emailEdgeStaleDataAlertProcessorJob" class="org.eniware.central.user.alerts.UserAlertBatchJob">
 		<argument ref="eventAdmin"/>
-		<argument ref="emailNodeStaleDataAlertProcessor"/>
-		<property name="jobCron" value="${emailNodeStaleDataAlertProcessor.jobCron}"/>
-		<property name="jobId" value="EmailNodeStaleDataAlertProcessor"/>
+		<argument ref="emailEdgeStaleDataAlertProcessor"/>
+		<property name="jobCron" value="${emailEdgeStaleDataAlertProcessor.jobCron}"/>
+		<property name="jobId" value="EmailEdgeStaleDataAlertProcessor"/>
 		<property name="jobGroup" value="UserAlert"/>
-		<property name="jobTopic" value="net/eniwarenetwork/central/user/alert/NodeStaleDataAlertProcessor"/>
+		<property name="jobTopic" value="net/eniwarenetwork/central/user/alert/EdgeStaleDataAlertProcessor"/>
 	</bean>
 
-	<service ref="emailNodeStaleDataAlertProcessorJob" interface="org.osgi.service.event.EventHandler">
+	<service ref="emailEdgeStaleDataAlertProcessorJob" interface="org.osgi.service.event.EventHandler">
 		<service-properties>
 			<entry key="#{T(org.osgi.service.event.EventConstants).EVENT_TOPIC}">
 				<array value-type="java.lang.String">
 					<value>#{T(org.eniware.central.scheduler.SchedulerConstants).TOPIC_SCHEDULER_READY}</value>
-					<value>#{emailNodeStaleDataAlertProcessorJob.jobTopic}</value>
+					<value>#{emailEdgeStaleDataAlertProcessorJob.jobTopic}</value>
 				</array>
 			</entry>
 		</service-properties>
@@ -91,18 +91,18 @@
 		<property name="basenames" value="org.eniware.central.user.alerts.messages"/>
 	</bean>
 	
-	<bean id="emailNodeStaleDataAlertProcessor" class="org.eniware.central.user.alerts.EmailNodeStaleDataAlertProcessor">
+	<bean id="emailEdgeStaleDataAlertProcessor" class="org.eniware.central.user.alerts.EmailEdgeStaleDataAlertProcessor">
 		<argument ref="eniwareEdgeDao"/>
 		<argument ref="userDao"/>
-		<argument ref="userNodeDao"/>
+		<argument ref="userEdgeDao"/>
 		<argument ref="userAlertDao"/>
 		<argument ref="userAlertSituationDao"/>
-		<argument ref="generalNodeDatumDao"/>
+		<argument ref="generalEdgeDatumDao"/>
 		<argument ref="mailService"/>
 		<argument ref="messageSource"/>
-		<property name="batchSize" value="${nodeStaleDataAlertProcessor.batchSize}"/>
-		<property name="initialAlertReminderDelayMinutes" value="${emailNodeStaleDataAlertProcessor.initialAlertReminderDelayMinutes}"/>
-		<property name="alertReminderFrequencyMultiplier" value="${emailNodeStaleDataAlertProcessor.alertReminderFrequencyMultiplier}"/>
+		<property name="batchSize" value="${EdgeStaleDataAlertProcessor.batchSize}"/>
+		<property name="initialAlertReminderDelayMinutes" value="${emailEdgeStaleDataAlertProcessor.initialAlertReminderDelayMinutes}"/>
+		<property name="alertReminderFrequencyMultiplier" value="${emailEdgeStaleDataAlertProcessor.alertReminderFrequencyMultiplier}"/>
 	</bean>
 	
 	<bean id="mailService" class="org.eniware.central.mail.support.DefaultMailService">

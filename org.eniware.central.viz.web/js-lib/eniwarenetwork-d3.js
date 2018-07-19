@@ -104,13 +104,13 @@ var sn = {
 	},
 	
 	/**
-	 * Register a node URL helper function for the given name.
+	 * Register a Edge URL helper function for the given name.
 	 */
-	registerNodeUrlHelper : function(name, helper) {
-		if ( sn.env.nodeUrlHelpers === undefined ) {
-			sn.env.nodeUrlHelpers = {};
+	registerEdgeUrlHelper : function(name, helper) {
+		if ( sn.env.EdgeUrlHelpers === undefined ) {
+			sn.env.EdgeUrlHelpers = {};
 		}
-		sn.env.nodeUrlHelpers[name] = helper;
+		sn.env.EdgeUrlHelpers[name] = helper;
 	},
 	
 	counter : function() {
@@ -405,13 +405,13 @@ sn.powerPerSourceArray = function(rawData, sources) {
  * 
  * A function can be passed for the {@code helper} argument, if different helpers are
  * needed for different data sets. This might be useful if you'd like to pull Power data
- * from one node but Consumption from another, for example. It will be called first
- * without any arguments and should return a {@code sn.nodeUrlHelper} instance to use
- * for the {@link sn.nodeUrlHelper#reportableInterval()} method. Then, for each data
+ * from one Edge but Consumption from another, for example. It will be called first
+ * without any arguments and should return a {@code sn.EdgeUrlHelper} instance to use
+ * for the {@link sn.EdgeUrlHelper#reportableInterval()} method. Then, for each data
  * type passed in {@code dataTypes} the function will be called again with the <em>data
  * type value</em> and <em>array index</em> as parameters.
  * 
- * @param {sn.nodeUrlHelper|function} helper a URL helper instance, or a function that returns one
+ * @param {sn.EdgeUrlHelper|function} helper a URL helper instance, or a function that returns one
  * @param {string[]} dataTypes array of string data types, e.g. 'Power' or 'Consumption'
  * @param {function} [callback] an optional callback; if provided no event will be generated. The
  *                              function will be passed the same object as passed on the event's 
@@ -424,18 +424,18 @@ sn.availableDataRange = function(helper, dataTypes, callback) {
 		urlHelperFn = function() { return helper; };
 	}
 	
-	// if nodeId same for all data types, we can issue a single query, otherwise one query per node ID
+	// if EdgeId same for all data types, we can issue a single query, otherwise one query per Edge ID
 	var numRangeQueries = 0,
-		lastNodeId,
+		lastEdgeId,
 		q = queue(),
 		sourcesRequests = [],
 		urlHelper;
 	
 	dataTypes.forEach(function(e, i) {
 		urlHelper = urlHelperFn(e, i);
-		if ( urlHelper.nodeId() !== lastNodeId ) {
+		if ( urlHelper.EdgeId() !== lastEdgeId ) {
 			q.defer(d3.json, urlHelper.reportableInterval(dataTypes));
-			lastNodeId = urlHelper.nodeId();
+			lastEdgeId = urlHelper.EdgeId();
 			numRangeQueries += 1;
 		}
 		sourcesRequests.push(urlHelperFn(e, i).availableSources(e));
@@ -451,7 +451,7 @@ sn.availableDataRange = function(helper, dataTypes, callback) {
 		for ( i = 0; i < numRangeQueries; i += 1 ) {
 			repInterval = results[i];
 			if ( repInterval.data === undefined || repInterval.data.endDate === undefined ) {
-				sn.log('No data available for node {0}', urlHelperFn(dataTypes[i], i).nodeId());
+				sn.log('No data available for Edge {0}', urlHelperFn(dataTypes[i], i).EdgeId());
 				continue;
 			}
 			repInterval = repInterval.data;
@@ -480,8 +480,8 @@ sn.availableDataRange = function(helper, dataTypes, callback) {
 		}
 		// turn start/end date strings into actual Date objects;
 		// NOTE: we use the date strings here, rather than the available *DateMillis values, because the date strings
-		//       are formatted in the node's local time zone, which allows the chart to display the data in OTHER
-		//       time zones as if it were also in the node's local time zone.
+		//       are formatted in the Edge's local time zone, which allows the chart to display the data in OTHER
+		//       time zones as if it were also in the Edge's local time zone.
 		var intervalObj = extractReportableInterval(results);// repInterval.data;
 		if ( intervalObj.startDate !== undefined ) {
 			intervalObj.sDate = sn.dateTimeFormat.parse(intervalObj.startDate);
@@ -512,7 +512,7 @@ sn.availableDataRange = function(helper, dataTypes, callback) {
 		for ( i = numRangeQueries; i < len; i += 1 ) {
 			response = results[i];
 			if ( response.success !== true || Array.isArray(response.data) !== true || response.data.length < 1 ) {
-				sn.log('No sources available for node {0} data type {1}', urlHelperFn(dataTypes[i - numRangeQueries], i - numRangeQueries).nodeId(), dataTypes[i - numRangeQueries]);
+				sn.log('No sources available for Edge {0} data type {1}', urlHelperFn(dataTypes[i - numRangeQueries], i - numRangeQueries).EdgeId(), dataTypes[i - numRangeQueries]);
 				continue;
 			}
 			sourceList = response.data.map(sourceMapper).filter(removeDuplicates);
@@ -549,7 +549,7 @@ sn.colorDataLegendTable = function(containerSelector, colorData, clickHandler, l
 	}
 	
 	if ( labelRenderer === undefined ) {
-		// default way to render labels is just a text node
+		// default way to render labels is just a text Edge
 		labelRenderer = function(s) {
 			s.text(Object);
 		};
@@ -572,14 +572,14 @@ sn.colorDataLegendTable = function(containerSelector, colorData, clickHandler, l
 };
 
 /**
- * A node-specific URL utility object.
+ * A Edge-specific URL utility object.
  * 
  * @class
  * @constructor
- * @param nodeId {Number} the node ID to use
- * @returns {sn.nodeUrlHelper}
+ * @param EdgeId {Number} the Edge ID to use
+ * @returns {sn.EdgeUrlHelper}
  */
-sn.nodeUrlHelper = function(nodeId) {
+sn.EdgeUrlHelper = function(EdgeId) {
 	var hostURL = function() {
 		return ('http' +(sn.config.tls === true ? 's' : '') +'://' +sn.config.host);
 	};
@@ -588,7 +588,7 @@ sn.nodeUrlHelper = function(nodeId) {
 	};
 	var helper = { 
 		
-		nodeId : function() { return nodeId; },
+		EdgeId : function() { return EdgeId; },
 		
 		hostURL : hostURL,
 		
@@ -596,13 +596,13 @@ sn.nodeUrlHelper = function(nodeId) {
 		
 		reportableInterval : function(types) {
 			var t = (Array.isArray(types) && types.length > 0 ? types : ['Power']);
-			var url = (baseURL() +'/range/interval?nodeId=' +nodeId
+			var url = (baseURL() +'/range/interval?EdgeId=' +EdgeId
 					+ '&' +t.map(function(e) { return 'types='+encodeURIComponent(e); }).join('&'));
 			return url;
 		},
 		
 		availableSources : function(type, startDate, endDate) {
-			var url = (baseURL() +'/range/sources?nodeId=' +nodeId
+			var url = (baseURL() +'/range/sources?EdgeId=' +EdgeId
 						+ '&type=' +encodeURIComponent(type !== undefined ? type : 'Power'));
 			if ( startDate !== undefined ) {
 				url += '&start=' +encodeURIComponent(sn.dateFormat(startDate));
@@ -626,7 +626,7 @@ sn.nodeUrlHelper = function(nodeId) {
 			var types = (Array.isArray(type) ? type : [type]);
 			types.sort();
 			var eDate = (opts !== undefined && opts.exclusiveEndDate === true ? d3.time.second.utc.offset(endDate, -1) : endDate);
-			var dataURL = (baseURL() +'/datum/query?nodeId=' +nodeId 
+			var dataURL = (baseURL() +'/datum/query?EdgeId=' +EdgeId 
                     		+'&type=' +encodeURIComponent(type.toLowerCase()));
 			if ( startDate ) {
 				dataURL += '&startDate=' +encodeURIComponent(sn.dateTimeFormatURL(startDate));
@@ -662,7 +662,7 @@ sn.nodeUrlHelper = function(nodeId) {
 		dateTimeList : function(type, startDate, endDate, agg, opts) {
 			var types, 
 				eDate = (opts !== undefined && opts.exclusiveEndDate === true && endDate ? d3.time.second.utc.offset(endDate, -1) : endDate), 
-				dataURL = baseURL() +'/datum/list?nodeId=' +nodeId;
+				dataURL = baseURL() +'/datum/list?EdgeId=' +EdgeId;
 			if ( type ) {
 				types = (Array.isArray(type) ? type : [type]);
 				types.sort();
@@ -696,19 +696,19 @@ sn.nodeUrlHelper = function(nodeId) {
 			type = (type === undefined ? 'power' : type.toLowerCase());
 			var url;
 			if ( type === 'weather' ) {
-				url = (baseURL() + '/weather/recent?nodeId=');
+				url = (baseURL() + '/weather/recent?EdgeId=');
 			} else {
-				url = (baseURL() + '/datum/mostRecent?nodeId=');
+				url = (baseURL() + '/datum/mostRecent?EdgeId=');
 			}
-			url += nodeId;
+			url += EdgeId;
 			if ( type !== 'weather' ) {
 				url += '&type=' + encodeURIComponent(type);
 			}
 			return url;
 		},
 		
-		nodeDashboard : function(source) {
-			return ('http://' +sn.config.host +'/eniwareviz/node-dashboard.do?nodeId=' +nodeId
+		EdgeDashboard : function(source) {
+			return ('http://' +sn.config.host +'/eniwareviz/Edge-dashboard.do?EdgeId=' +EdgeId
 				 +(source === undefined ? '' : '&consumptionSourceId='+source));
 		}
 	};
@@ -716,14 +716,14 @@ sn.nodeUrlHelper = function(nodeId) {
 	// this is a stand-alone function so we correctly capture the 'prop' name in the loop below
 	function setupProxy(prop) {
 		helper[prop] = function() {
-			return sn.env.nodeUrlHelpers[prop].apply(helper, arguments);
+			return sn.env.EdgeUrlHelpers[prop].apply(helper, arguments);
 		};
 	}
 	
 	// allow plug-ins to supply URL helper methods, as long as they don't override built-in ones
 	(function() {
 		var prop,
-			helpers = sn.env.nodeUrlHelpers;
+			helpers = sn.env.EdgeUrlHelpers;
 		if ( helpers !== undefined ) {
 			for ( prop in helpers ) {
 				if ( !helpers.hasOwnProperty(prop) || helper[prop] !== undefined || typeof helpers[prop] !== 'function' ) {
@@ -1313,7 +1313,7 @@ sn.seasonConsumptionPowerMap = function (dataArray, sourceIdDataTypeMap, exclude
  * 
  * @class
  * @param {string[]} dataTypes - array of data types to load data for
- * @param {function} dataTypeUrlHelperProvider - function that returns a {@link sn.nodeUrlHelper} for a given data type
+ * @param {function} dataTypeUrlHelperProvider - function that returns a {@link sn.EdgeUrlHelper} for a given data type
  * @param {date} start - the start date
  * @param {date} end - the end date
  * @param {string} aggregate - optional aggregate level
@@ -1401,12 +1401,12 @@ sn.datumLoader = function(dataTypes, dataTypeUrlHelperProvider,  start, end, agg
 			var dataArray,
 				nextOffset;
 			if ( error ) {
-				sn.log('Error requesting data for node {0} data type {1}: {2}', urlHelper.nodeId(), dataType, error);
+				sn.log('Error requesting data for Edge {0} data type {1}: {2}', urlHelper.EdgeId(), dataType, error);
 				return;
 			}
 			dataArray = dataExtractor(json);
 			if ( dataArray === undefined ) {
-				sn.log('No data available for node {0} data type {1}', urlHelper.nodeId(), dataType);
+				sn.log('No data available for Edge {0} data type {1}', urlHelper.EdgeId(), dataType);
 				if ( requestCompletionHandler ) {
 					requestCompletionHandler.call(that, dataType);
 				}
@@ -1690,7 +1690,7 @@ sn.displayUnitsForScale = function(baseUnit, scale) {
 /**
  * Set the display units within a d3 selection based on a scale. This method takes a 
  * base unit and adds an SI prefix based on the provided scale. It replaces the text
- * content of any DOM node with a <code>unit</code> class that is a child of the given
+ * content of any DOM Edge with a <code>unit</code> class that is a child of the given
  * selection.
  * 
  * @param {object} selection - A d3 selection that serves as the root search context.
@@ -1853,7 +1853,7 @@ sn.util.copyAll = function(obj1, obj2) {
 	return obj2;
 };
 
-// parse URL parameters into sn.env, e.g. ?nodeId=11 puts sn.env.nodeId === '11'
+// parse URL parameters into sn.env, e.g. ?EdgeId=11 puts sn.env.EdgeId === '11'
 if ( window !== undefined && window.location.search !== undefined ) {
 	sn.env = sn.parseURLQueryTerms(window.location.search);
 }

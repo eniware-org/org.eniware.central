@@ -1,31 +1,31 @@
 /**************************************************************************************************
- * TABLE solarnet.sn_node_meta
+ * TABLE solarnet.sn_Edge_meta
  * 
- * Stores JSON metadata specific to a node.
+ * Stores JSON metadata specific to a Edge.
  */
-CREATE TABLE solarnet.sn_node_meta (
-  node_id 			solarcommon.node_id NOT NULL,
+CREATE TABLE solarnet.sn_Edge_meta (
+  Edge_id 			solarcommon.Edge_id NOT NULL,
   created 			solarcommon.ts NOT NULL,
   updated 			solarcommon.ts NOT NULL,
   jdata 			json NOT NULL,
-  CONSTRAINT sn_node_meta_pkey PRIMARY KEY (node_id)  DEFERRABLE INITIALLY IMMEDIATE,
-  CONSTRAINT sn_node_meta_node_fk FOREIGN KEY (node_id)
-        REFERENCES solarnet.sn_node (node_id) MATCH SIMPLE
+  CONSTRAINT sn_Edge_meta_pkey PRIMARY KEY (Edge_id)  DEFERRABLE INITIALLY IMMEDIATE,
+  CONSTRAINT sn_Edge_meta_Edge_fk FOREIGN KEY (Edge_id)
+        REFERENCES solarnet.sn_Edge (Edge_id) MATCH SIMPLE
         ON UPDATE NO ACTION ON DELETE CASCADE
 );
 
 /**************************************************************************************************
- * FUNCTION solarnet.store_node_meta(timestamptz, bigint, text)
+ * FUNCTION solarnet.store_Edge_meta(timestamptz, bigint, text)
  * 
- * Add or update node metadata.
+ * Add or update Edge metadata.
  * 
  * @param cdate the creation date to use
- * @param node the node ID
+ * @param Edge the Edge ID
  * @param jdata the metadata to store
  */
-CREATE OR REPLACE FUNCTION solarnet.store_node_meta(
+CREATE OR REPLACE FUNCTION solarnet.store_Edge_meta(
 	cdate solarcommon.ts, 
-	node solarcommon.node_id, 
+	Edge solarcommon.Edge_id, 
 	jdata text)
   RETURNS void AS
 $BODY$
@@ -37,11 +37,11 @@ BEGIN
 	-- In 9.5 we can do upsert with ON CONFLICT.
 	LOOP
 		-- first try to update
-		UPDATE solarnet.sn_node_meta SET 
+		UPDATE solarnet.sn_Edge_meta SET 
 			jdata = jdata_json, 
 			updated = udate
 		WHERE
-			node_id = node;
+			Edge_id = Edge;
 
 		-- check if the row is found
 		IF FOUND THEN
@@ -50,8 +50,8 @@ BEGIN
 		
 		-- not found so insert the row
 		BEGIN
-			INSERT INTO solarnet.sn_node_meta(node_id, created, updated, jdata)
-			VALUES (node, cdate, udate, jdata_json);
+			INSERT INTO solarnet.sn_Edge_meta(Edge_id, created, updated, jdata)
+			VALUES (Edge, cdate, udate, jdata_json);
 			RETURN;
 		EXCEPTION WHEN unique_violation THEN
 			-- do nothing and loop

@@ -10,7 +10,7 @@
 
 	<!-- Service References -->
 
-	<reference id="userNodeDao" interface="org.eniware.central.user.dao.UserNodeDao"/>
+	<reference id="userEdgeDao" interface="org.eniware.central.user.dao.UserEdgeDao"/>
 
 	<reference id="eniwareEdgeMetadataBiz"
 		interface="org.eniware.central.biz.EniwareEdgeMetadataBiz"
@@ -30,7 +30,7 @@
 	<aop:aspectj-autoproxy/>
 
 	<bean id="eniwareEdgeMetadataSecurityAspect" class="org.eniware.central.aop.EniwareEdgeMetadataSecurityAspect">
-		<argument ref="userNodeDao"/>
+		<argument ref="userEdgeDao"/>
 	</bean>
 	
 	<bean id="aopEniwareEdgeMetadataBiz" class="org.eniware.central.support.DelegatingEniwareEdgeMetadataBiz">

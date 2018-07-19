@@ -13,20 +13,20 @@ package org.eniware.central.user.domain;
  */
 public enum UserEdgeCertificateInstallationStatus {
 
-	/** A request to install the certificate on a node has been queued. */
+	/** A request to install the certificate on a Edge has been queued. */
 	RequestQueued,
 
 	/**
-	 * The request to install the certificate has been received by the node.
+	 * The request to install the certificate has been received by the Edge.
 	 */
 	RequestReceived,
 
 	/**
-	 * The certificate has been installed successfully on the node.
+	 * The certificate has been installed successfully on the Edge.
 	 */
 	Installed,
 
-	/** The node declined the certificate installation request. */
+	/** The Edge declined the certificate installation request. */
 	Declined,
 
 }

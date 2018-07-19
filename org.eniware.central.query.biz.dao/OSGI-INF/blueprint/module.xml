@@ -42,7 +42,7 @@
 	<reference id="weatherLocationDao" interface="org.eniware.central.dao.WeatherLocationDao"/>
 
 	<reference id="generalLocationDatumDao" interface="org.eniware.central.datum.dao.GeneralLocationDatumDao"/>
-	<reference id="generalNodeDatumDao" interface="org.eniware.central.datum.dao.GeneralNodeDatumDao"/>
+	<reference id="generalEdgeDatumDao" interface="org.eniware.central.datum.dao.GeneralEdgeDatumDao"/>
 
 	<reference id="transactionManager" interface="org.springframework.transaction.PlatformTransactionManager"/>
 

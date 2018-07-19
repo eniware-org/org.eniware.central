@@ -1,8 +1,8 @@
-/* Add index on user_node to assist finding all nodes for a given user. */
-CREATE INDEX user_node_user_idx ON solaruser.user_node (user_id);
+/* Add index on user_Edge to assist finding all Edges for a given user. */
+CREATE INDEX user_Edge_user_idx ON solaruser.user_Edge (user_id);
 
 /**
- * Return most recent datum records for all available sources for all nodes owned by a given user ID.
+ * Return most recent datum records for all available sources for all Edges owned by a given user ID.
  * 
  * @param users An array of user IDs to return results for.
  * @returns Set of solardatum.da_datum records.
@@ -11,25 +11,25 @@ CREATE OR REPLACE FUNCTION solaruser.find_most_recent_datum_for_user(users bigin
   RETURNS SETOF solardatum.da_datum AS
 $BODY$
 	SELECT r.* 
-	FROM (SELECT node_id FROM solaruser.user_node WHERE user_id = ANY(users)) AS n,
-	LATERAL (SELECT * FROM solardatum.find_most_recent(n.node_id)) AS r
-	ORDER BY r.node_id, r.source_id;
+	FROM (SELECT Edge_id FROM solaruser.user_Edge WHERE user_id = ANY(users)) AS n,
+	LATERAL (SELECT * FROM solardatum.find_most_recent(n.Edge_id)) AS r
+	ORDER BY r.Edge_id, r.source_id;
 $BODY$
   LANGUAGE sql STABLE;
 
 /**
- * Return most recent datum records for all available sources for a given set of node IDs.
+ * Return most recent datum records for all available sources for a given set of Edge IDs.
  * 
- * @param nodes An array of node IDs to return results for.
+ * @param Edges An array of Edge IDs to return results for.
  * @returns Set of solardatum.da_datum records.
  */
-CREATE OR REPLACE FUNCTION solardatum.find_most_recent(nodes solarcommon.node_ids)
+CREATE OR REPLACE FUNCTION solardatum.find_most_recent(Edges solarcommon.Edge_ids)
   RETURNS SETOF solardatum.da_datum AS
 $BODY$
 	SELECT r.* 
-	FROM (SELECT unnest(nodes) AS node_id) AS n,
-	LATERAL (SELECT * FROM solardatum.find_most_recent(n.node_id)) AS r
-	ORDER BY r.node_id, r.source_id;
+	FROM (SELECT unnest(Edges) AS Edge_id) AS n,
+	LATERAL (SELECT * FROM solardatum.find_most_recent(n.Edge_id)) AS r
+	ORDER BY r.Edge_id, r.source_id;
 $BODY$
   LANGUAGE sql STABLE;
 
@@ -39,7 +39,7 @@ CREATE TYPE solaruser.user_alert_status AS ENUM
 	('Active', 'Disabled', 'Suppressed');
 
 CREATE TYPE solaruser.user_alert_type AS ENUM 
-	('NodeStaleData');
+	('EdgeStaleData');
 
 CREATE TYPE solaruser.user_alert_sit_status AS ENUM 
 	('Active', 'Resolved');
@@ -50,7 +50,7 @@ CREATE TABLE solaruser.user_alert (
 	id				BIGINT NOT NULL DEFAULT nextval('solaruser.user_alert_seq'),
 	created			TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	user_id			BIGINT NOT NULL,
-	node_id			BIGINT,
+	Edge_id			BIGINT,
 	valid_to		TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	alert_type		solaruser.user_alert_type NOT NULL,
 	status			solaruser.user_alert_status NOT NULL,
@@ -59,13 +59,13 @@ CREATE TABLE solaruser.user_alert (
 	CONSTRAINT user_alert_user_fk FOREIGN KEY (user_id)
 		REFERENCES solaruser.user_user (id) MATCH SIMPLE
 		ON UPDATE NO ACTION ON DELETE CASCADE,
-	CONSTRAINT user_alert_node_fk FOREIGN KEY (node_id)
-		REFERENCES solarnet.sn_node (node_id) MATCH SIMPLE
+	CONSTRAINT user_alert_Edge_fk FOREIGN KEY (Edge_id)
+		REFERENCES solarnet.sn_Edge (Edge_id) MATCH SIMPLE
 		ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
-/* Add index on node_id so we can batch process in sets of nodes. */
-CREATE INDEX user_alert_node_idx ON solaruser.user_alert (node_id);
+/* Add index on Edge_id so we can batch process in sets of Edges. */
+CREATE INDEX user_alert_Edge_idx ON solaruser.user_alert (Edge_id);
 
 /* Add index on valid_to so we can batch process only those alerts that need validation. */
 CREATE INDEX user_alert_valid_idx ON solaruser.user_alert (valid_to);

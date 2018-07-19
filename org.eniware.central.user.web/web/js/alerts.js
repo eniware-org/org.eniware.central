@@ -13,15 +13,15 @@ $(document).ready(function() {
 		setupAlertStatusHelp(this);
 	});
 	
-	function nodeSourcesURL(nodeId) {
-		return $('#create-node-data-alert-modal').data('action-node-sources').replace(/\/\d+(?=\/)/, '/'+nodeId);
+	function EdgeSourcesURL(EdgeId) {
+		return $('#create-Edge-data-alert-modal').data('action-Edge-sources').replace(/\/\d+(?=\/)/, '/'+EdgeId);
 	}
 	
-	function populateSourceList(nodeId, sourceListContainer) {
-		if ( nodeId === '' ) {
+	function populateSourceList(EdgeId, sourceListContainer) {
+		if ( EdgeId === '' ) {
 			sourceListContainer.addClass('hidden');
 		} else {
-			$.getJSON(nodeSourcesURL(nodeId), function(json) {
+			$.getJSON(EdgeSourcesURL(EdgeId), function(json) {
 				if ( json && json.success === true && Array.isArray(json.data) && json.data.length > 0 ) {
 					sourceListContainer.find('.sources').text(json.data.join(', '));
 					sourceListContainer.removeClass('hidden');
@@ -35,17 +35,17 @@ $(document).ready(function() {
 		}
 	}
 	
-	$('.alert-form select[name=nodeId]').change(function(event) {
-		populateSourceList($(this).val(), $('#create-node-data-alert-sources-list'));
+	$('.alert-form select[name=EdgeId]').change(function(event) {
+		populateSourceList($(this).val(), $('#create-Edge-data-alert-sources-list'));
 	});
 	
-	$('#create-node-data-alert-modal').on('submit', function(event) {
+	$('#create-Edge-data-alert-modal').on('submit', function(event) {
 		event.preventDefault();
 		var form = this;
 		var url = $(form).attr('action');
 		var data = {};
 		data.id = form.elements['id'].value;
-		data.nodeId = $(form.elements['nodeId']).val();
+		data.EdgeId = $(form.elements['EdgeId']).val();
 		data.type = $(form.elements['type']).val();
 		data.status = $(form).find('input[name=status]:checked').val();
 		data.options = {
@@ -71,13 +71,13 @@ $(document).ready(function() {
 				document.location.reload(true);
 			},
 			error: function(xhr, status, statusText) {
-				EniwareReg.showAlertBefore('#create-node-data-alert-modal .modal-body > *:first-child', 'alert-warning', statusText);
+				EniwareReg.showAlertBefore('#create-Edge-data-alert-modal .modal-body > *:first-child', 'alert-warning', statusText);
 			}
 		});
 	}).on('shown.bs.modal', function() {
-		populateSourceList($('#create-node-data-alert-node-id').val(), $('#create-node-data-alert-sources-list'));
+		populateSourceList($('#create-Edge-data-alert-Edge-id').val(), $('#create-Edge-data-alert-sources-list'));
 	}).on('click', 'button.action-delete', function(event) {
-		var form = $('#create-node-data-alert-modal').get(0),
+		var form = $('#create-Edge-data-alert-modal').get(0),
 			alertId = form.elements['id'].value,
 			url = EniwareReg.eniwareUserURL('/sec/alerts/') + alertId;
 		$.ajax({
@@ -91,13 +91,13 @@ $(document).ready(function() {
 				document.location.reload(true);
 			},
 			error: function(xhr, status, statusText) {
-				EniwareReg.showAlertBefore('#create-node-data-alert-modal .modal-body > *:first-child', 'alert-warning', statusText);
+				EniwareReg.showAlertBefore('#create-Edge-data-alert-modal .modal-body > *:first-child', 'alert-warning', statusText);
 			}
 		});
 	});
 	
-	$('#add-node-data-button').on('click', function(event) {
-		var form = $('#create-node-data-alert-modal');
+	$('#add-Edge-data-button').on('click', function(event) {
+		var form = $('#create-Edge-data-alert-modal');
 		form.get(0).reset(); // doesn't reset hidden fields
 		form.get(0).elements['id'].value = '';
 		form.find('button.action-delete').hide();
@@ -109,17 +109,17 @@ $(document).ready(function() {
 			return '';
 		}
 		var info = '<dl>';
-		if ( alert.situation.info.nodeId ) {
-			info += '<dt>Node ID</dt><dd>' +alert.situation.info.nodeId +'</dd>';
+		if ( alert.situation.info.EdgeId ) {
+			info += '<dt>Edge ID</dt><dd>' +alert.situation.info.EdgeId +'</dd>';
 		}
 		if ( alert.situation.info.sourceId ) {
-			info += '<dt>Source ID</dt><dd>' +alert.situation.info.nodeId +'</dd>';
+			info += '<dt>Source ID</dt><dd>' +alert.situation.info.EdgeId +'</dd>';
 		}
 		info += '</dl>'
 		return info;
 	}
 	
-	function populateAlertSituationValues(root, alert, nodeName) {
+	function populateAlertSituationValues(root, alert, EdgeName) {
 		// make use of the i18n type/status
 		var type = (alert && alert.type && EniwareReg.userAlertTypes
 				? EniwareReg.userAlertTypes[alert.type]
@@ -127,21 +127,21 @@ $(document).ready(function() {
 		var date = (alert && alert.options && alert.options.situationDate
 				? alert.options.situationDate
 				: '');
-		var node = (nodeName ? nodeName : alert.nodeId);
+		var Edge = (EdgeName ? EdgeName : alert.EdgeId);
 		var age = (alert && alert.options && alert.options.age ? (alert.options.age / 60).toFixed(0) : '1');
 		var sources = (alert && alert.options && alert.options.sources ? alert.options.sources : '');
-		var infoNodeId = (alert && alert.situation && alert.situation.info ? alert.situation.info.nodeId : '');
+		var infoEdgeId = (alert && alert.situation && alert.situation.info ? alert.situation.info.EdgeId : '');
 		var infoSourceId = (alert && alert.situation && alert.situation.info ? alert.situation.info.sourceId : '');
 		
 		root.find('.alert-situation-type').text(type);
 		root.find('.alert-situation-created').text(date);
-		root.find('.alert-situation-node').text(node);
+		root.find('.alert-situation-Edge').text(Edge);
 		root.find('.alert-situation-age').text(age);
 		root.find('.alert-situation-sources').text(sources);
 		
-		if ( infoNodeId && infoSourceId ) {
+		if ( infoEdgeId && infoSourceId ) {
 			root.find('.alert-situation-info').show();
-			root.find('.alert-situation-info-nodeId').text(infoNodeId);
+			root.find('.alert-situation-info-EdgeId').text(infoEdgeId);
 			root.find('.alert-situation-info-sourceId').text(infoSourceId);
 		} else {
 			root.find('.alert-situation-info').hide();
@@ -164,7 +164,7 @@ $(document).ready(function() {
 	 * attribute <code>alert-id</code> for the ID of the alert to view, and a modal 
 	 * dialog with an ID <code>alert-situation-modal</code> to display the alert details.
 	 */
-	EniwareReg.viewAlertSituation = function(event, nodeName) {
+	EniwareReg.viewAlertSituation = function(event, EdgeName) {
 		event.preventDefault();
 		var btn = $(this);
 		var alertId = btn.data('alert-id');
@@ -172,7 +172,7 @@ $(document).ready(function() {
 		$.getJSON(url, function(json) {
 			var modal = $('#alert-situation-modal'),
 				alert = json.data,
-				name = (nodeName ? nodeName : $('#create-node-data-alert-node-id').find('option[value="'+(alert.nodeId ? alert.nodeId : '')+'"]').text());
+				name = (EdgeName ? EdgeName : $('#create-Edge-data-alert-Edge-id').find('option[value="'+(alert.EdgeId ? alert.EdgeId : '')+'"]').text());
 			if ( json.success === true && alert !== undefined ) {
 				populateAlertSituationValues(modal, alert, name);
 				$('#alert-situation-resolve').data('alert-id', json.data.id);
@@ -184,25 +184,25 @@ $(document).ready(function() {
 		});
 	};
 	
-	$('#node-data-alerts').on('click', 'button.edit-alert', function(event) {
+	$('#Edge-data-alerts').on('click', 'button.edit-alert', function(event) {
 		event.preventDefault();
 		var btn = $(this);
 		var alertId = btn.data('alert-id'),
-			nodeId = btn.data('node-id'),
+			EdgeId = btn.data('Edge-id'),
 			alertType = btn.data('alert-type'),
 			alertStatus = btn.data('alert-status'),
 			alertSources = btn.data('sources'),
 			alertAge = btn.data('age'),
 			alertWindowStart = btn.data('window-time-start'),
 			alertWindowEnd = btn.data('window-time-end');
-		var form = $('#create-node-data-alert-modal');
-		$('#create-node-data-alert-node-id').val(nodeId);
-		$('#create-node-data-alert-type').val(alertType);
+		var form = $('#create-Edge-data-alert-modal');
+		$('#create-Edge-data-alert-Edge-id').val(EdgeId);
+		$('#create-Edge-data-alert-type').val(alertType);
 		form.find('input[type=radio][value=' + alertStatus + ']').prop('checked', true);
-		$('#create-node-data-alert-sources').val(alertSources);
-		$('#create-node-data-alert-age').val(alertAge);
-		$('#create-node-data-alert-window-time-start').val(alertWindowStart);
-		$('#create-node-data-alert-window-time-end').val(alertWindowEnd);
+		$('#create-Edge-data-alert-sources').val(alertSources);
+		$('#create-Edge-data-alert-age').val(alertAge);
+		$('#create-Edge-data-alert-window-time-start').val(alertWindowStart);
+		$('#create-Edge-data-alert-window-time-end').val(alertWindowEnd);
 		form.get(0).elements['id'].value = alertId;
 		form.find('button.action-delete').show();
 		form.modal('show');

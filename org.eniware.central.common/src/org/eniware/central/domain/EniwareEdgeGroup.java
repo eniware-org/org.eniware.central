@@ -13,15 +13,15 @@ import java.io.Serializable;
 import org.joda.time.DateTime;
 
 /**
- * Domain object for a group of nodes.
+ * Domain object for a group of Edges.
  * 
  * <p>Groups are assigned a {@link Location} which is meant to give the group
- * a broadly-defined location There is no actual restriction that nodes within
+ * a broadly-defined location There is no actual restriction that Edges within
  * the group are physically within the group location's boundaries, but in 
  * practice this will often be the case.</p>
  * @version $Revision$
  */
-public class EniwareEdgeGroup extends BaseEntity implements Cloneable, Serializable, NodeGroupIdentity {
+public class EniwareEdgeGroup extends BaseEntity implements Cloneable, Serializable, EdgeGroupIdentity {
 
 	private static final long serialVersionUID = 1843734913796373879L;
 

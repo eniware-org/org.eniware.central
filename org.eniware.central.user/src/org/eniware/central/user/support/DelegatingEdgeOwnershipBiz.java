@@ -34,30 +34,30 @@ public class DelegatingEdgeOwnershipBiz implements EdgeOwnershipBiz {
 	}
 
 	@Override
-	public UserEdgeTransfer getNodeOwnershipTransfer(Long userId, Long nodeId) {
-		return delegate.getNodeOwnershipTransfer(userId, nodeId);
+	public UserEdgeTransfer getEdgeOwnershipTransfer(Long userId, Long EdgeId) {
+		return delegate.getEdgeOwnershipTransfer(userId, EdgeId);
 	}
 
 	@Override
-	public List<UserEdgeTransfer> pendingNodeOwnershipTransfersForEmail(String email) {
-		return delegate.pendingNodeOwnershipTransfersForEmail(email);
+	public List<UserEdgeTransfer> pendingEdgeOwnershipTransfersForEmail(String email) {
+		return delegate.pendingEdgeOwnershipTransfersForEmail(email);
 	}
 
 	@Override
-	public void requestNodeOwnershipTransfer(Long userId, Long nodeId, String newOwnerEmail)
+	public void requestEdgeOwnershipTransfer(Long userId, Long EdgeId, String newOwnerEmail)
 			throws AuthorizationException {
-		delegate.requestNodeOwnershipTransfer(userId, nodeId, newOwnerEmail);
+		delegate.requestEdgeOwnershipTransfer(userId, EdgeId, newOwnerEmail);
 	}
 
 	@Override
-	public void cancelNodeOwnershipTransfer(Long userId, Long nodeId) throws AuthorizationException {
-		delegate.cancelNodeOwnershipTransfer(userId, nodeId);
+	public void cancelEdgeOwnershipTransfer(Long userId, Long EdgeId) throws AuthorizationException {
+		delegate.cancelEdgeOwnershipTransfer(userId, EdgeId);
 	}
 
 	@Override
-	public UserEdgeTransfer confirmNodeOwnershipTransfer(Long userId, Long nodeId, boolean accept)
+	public UserEdgeTransfer confirmEdgeOwnershipTransfer(Long userId, Long EdgeId, boolean accept)
 			throws AuthorizationException {
-		return delegate.confirmNodeOwnershipTransfer(userId, nodeId, accept);
+		return delegate.confirmEdgeOwnershipTransfer(userId, EdgeId, accept);
 	}
 
 }

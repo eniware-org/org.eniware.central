@@ -1,2 +1,2 @@
-ALTER TABLE solarnet.sn_node_instruction
+ALTER TABLE solarnet.sn_Edge_instruction
    ADD COLUMN jresult_params json;

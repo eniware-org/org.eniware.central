@@ -23,7 +23,7 @@ import org.eniware.central.web.support.WebServiceControllerSupport;
 import org.eniware.web.domain.Response;
 
 /**
- * Remote authentication for nodes.
+ * Remote authentication for Edges.
  * 
  * @version 1.2
  */

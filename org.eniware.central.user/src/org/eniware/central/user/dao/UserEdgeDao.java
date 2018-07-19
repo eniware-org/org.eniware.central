@@ -16,29 +16,29 @@ import org.eniware.central.user.domain.UserEdgePK;
 import org.eniware.central.user.domain.UserEdgeTransfer;
 
 /**
- * DAO API for UserNode objects.
+ * DAO API for UserEdge objects.
  * 
  * @version 1.3
  */
 public interface UserEdgeDao extends GenericDao<UserEdge, Long> {
 
 	/**
-	 * Find a list of all UserNode objects for a particular user.
+	 * Find a list of all UserEdge objects for a particular user.
 	 * 
-	 * This will not return archived nodes (see
-	 * {@link #findArchivedUserNodesForUser(Long)}).
+	 * This will not return archived Edges (see
+	 * {@link #findArchivedUserEdgesForUser(Long)}).
 	 * 
 	 * @param user
-	 *        the user to get all nodes for
+	 *        the user to get all Edges for
 	 * @return list of {@link UserEdge} objects, or an empty list if none found
 	 */
-	List<UserEdge> findUserNodesForUser(User user);
+	List<UserEdge> findUserEdgesForUser(User user);
 
 	/**
-	 * Find all UserNodes for a given user.
+	 * Find all UserEdges for a given user.
 	 * 
 	 * <p>
-	 * The returned nodes will have {@link UserEdgeCertificate} values populated
+	 * The returned Edges will have {@link UserEdgeCertificate} values populated
 	 * in {@link UserEdge#getCertificate()}, with the priority being requested,
 	 * active, disabled. The {@link UserEdgeTransfer} values will be populated
 	 * in {@link UserEdge#getTransfer()} as well.
@@ -46,33 +46,33 @@ public interface UserEdgeDao extends GenericDao<UserEdge, Long> {
 	 * 
 	 * @param userId
 	 *        the user ID
-	 * @return the nodes
+	 * @return the Edges
 	 */
-	List<UserEdge> findUserNodesAndCertificatesForUser(Long userId);
+	List<UserEdge> findUserEdgesAndCertificatesForUser(Long userId);
 
 	/**
-	 * Find a list of all archived UserNode objects for a particular user.
+	 * Find a list of all archived UserEdge objects for a particular user.
 	 * 
 	 * @param userId
-	 *        the user ID to get all archived nodes for
+	 *        the user ID to get all archived Edges for
 	 * @return list of {@link UserEdge} objects, or an empty list if none found
 	 * @since 1.3
 	 */
-	List<UserEdge> findArchivedUserNodesForUser(Long userId);
+	List<UserEdge> findArchivedUserEdgesForUser(Long userId);
 
 	/**
-	 * Update the archived status of a set of node IDs.
+	 * Update the archived status of a set of Edge IDs.
 	 * 
 	 * @param userId
-	 *        The user ID of the nodes to update the status for.
-	 * @param nodeIds
-	 *        The IDs of the nodes to update the archived status for.
+	 *        The user ID of the Edges to update the status for.
+	 * @param EdgeIds
+	 *        The IDs of the Edges to update the archived status for.
 	 * @param archived
-	 *        {@code true} to archive the nodes, {@code false} to un-archive
+	 *        {@code true} to archive the Edges, {@code false} to un-archive
 	 *        them.
 	 * @since 1.3
 	 */
-	void updateUserNodeArchivedStatus(Long userId, Long[] nodeIds, boolean archived);
+	void updateUserEdgeArchivedStatus(Long userId, Long[] EdgeIds, boolean archived);
 
 	/**
 	 * Store a {@link UserEdgeTransfer}.
@@ -81,17 +81,17 @@ public interface UserEdgeDao extends GenericDao<UserEdge, Long> {
 	 *        The transfer to store.
 	 * @since 1.2
 	 */
-	void storeUserNodeTransfer(UserEdgeTransfer transfer);
+	void storeUserEdgeTransfer(UserEdgeTransfer transfer);
 
 	/**
 	 * Get a {@link UserEdgeTransfer} by primary key.
 	 * 
 	 * @param pk
 	 *        The ID of the transfer to get.
-	 * @return The matching UserNodeTransfer, or <em>null</em> if not available.
+	 * @return The matching UserEdgeTransfer, or <em>null</em> if not available.
 	 * @since 1.2
 	 */
-	UserEdgeTransfer getUserNodeTransfer(UserEdgePK pk);
+	UserEdgeTransfer getUserEdgeTransfer(UserEdgePK pk);
 
 	/**
 	 * Delete a {@link UserEdgeTransfer}.
@@ -100,16 +100,16 @@ public interface UserEdgeDao extends GenericDao<UserEdge, Long> {
 	 *        The transfer to delete.
 	 * @since 1.2
 	 */
-	void deleteUserNodeTrasnfer(UserEdgeTransfer transfer);
+	void deleteUserEdgeTrasnfer(UserEdgeTransfer transfer);
 
 	/**
 	 * Get all {@link UserEdgeTransfer} instances for a given email address.
 	 * 
 	 * @param email
 	 *        The email of the requested recipient of the ownership trasnfer.
-	 * @return The available node transfers, never <em>null</em>.
+	 * @return The available Edge transfers, never <em>null</em>.
 	 * @since 1.2
 	 */
-	List<UserEdgeTransfer> findUserNodeTransferRequestsForEmail(String email);
+	List<UserEdgeTransfer> findUserEdgeTransferRequestsForEmail(String email);
 
 }

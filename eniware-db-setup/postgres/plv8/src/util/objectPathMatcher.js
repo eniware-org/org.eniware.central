@@ -135,12 +135,12 @@ function evaluateFilter(obj, filter) {
 		return !keepWalking;
 	}
 
-	filter.walk(function(err, node, parent) {
+	filter.walk(function(err, Edge, parent) {
 		var match = false;
 		if ( parent !== undefined ) {
-			if ( parent !== logicStack[stackIdx].node ) {
+			if ( parent !== logicStack[stackIdx].Edge ) {
 				while ( stackIdx >= 0 ) {
-					if ( logicStack[stackIdx].node === parent ) {
+					if ( logicStack[stackIdx].Edge === parent ) {
 						currLogicOp = logicStack[stackIdx].op;
 						if ( shortCircuitIfPossible(logicStack[logicStack.length - 1].result) ) {
 							return false;
@@ -163,36 +163,36 @@ function evaluateFilter(obj, filter) {
 				}
 			}
 		}
-		if ( node.children ) {
+		if ( Edge.children ) {
 			// new logic grouping
-			logicStack.push({op:node.op, result:false, node:node});
-			currLogicOp = node.op;
+			logicStack.push({op:Edge.op, result:false, Edge:Edge});
+			currLogicOp = Edge.op;
 			stackIdx += 1;
 		} else if ( logicStackSatisfiedIdx === -1 ) {
-			walkObjectPathValues(obj, node.key.split('/'), function(path, value) {
-				if ( node.op === '=' ) {
+			walkObjectPathValues(obj, Edge.key.split('/'), function(path, value) {
+				if ( Edge.op === '=' ) {
 					// note using lax equality here for automatic coersion
-					if ( value == node.val ) {
+					if ( value == Edge.val ) {
 						match = true;
 					}
-				} else if ( node.op === '~=' ) {
-					if ( value !== undefined && value.search(new RegExp(node.val)) !== -1 ) {
+				} else if ( Edge.op === '~=' ) {
+					if ( value !== undefined && value.search(new RegExp(Edge.val)) !== -1 ) {
 						match = true;
 					}
-				} else if ( node.op === '<' ) {
-					if ( value < node.val ) {
+				} else if ( Edge.op === '<' ) {
+					if ( value < Edge.val ) {
 						match = true;
 					}
-				} else if ( node.op === '<=' ) {
-					if ( value <= node.val ) {
+				} else if ( Edge.op === '<=' ) {
+					if ( value <= Edge.val ) {
 						match = true;
 					}
-				} else if ( node.op === '>' ) {
-					if ( value > node.val ) {
+				} else if ( Edge.op === '>' ) {
+					if ( value > Edge.val ) {
 						match = true;
 					}
-				} else if ( node.op === '>=' ) {
-					if ( value >= node.val ) {
+				} else if ( Edge.op === '>=' ) {
+					if ( value >= Edge.val ) {
 						match = true;
 					}
 				}

@@ -23,17 +23,17 @@
 	</delete>
 	
 	<sql id="fragment-UserMetadataEntity-full-result">
-		umeta.user_id AS node_meta_user_id,
-		umeta.created AS node_meta_created,
-		umeta.updated AS node_meta_updated,
-		umeta.jdata AS node_meta_jdata
+		umeta.user_id AS Edge_meta_user_id,
+		umeta.created AS Edge_meta_created,
+		umeta.updated AS Edge_meta_updated,
+		umeta.jdata AS Edge_meta_jdata
 	</sql>
 	
 	<resultMap id="UserMetadataEntityFullResult" type="UserMetadataEntity">
-		<id property="userId" column="node_meta_user_id"/>
-		<id property="created" column="node_meta_created"/>
-		<result property="updated" column="node_meta_updated"/>
-		<result property="metaJson" column="node_meta_jdata"/>
+		<id property="userId" column="Edge_meta_user_id"/>
+		<id property="created" column="Edge_meta_created"/>
+		<result property="updated" column="Edge_meta_updated"/>
+		<result property="metaJson" column="Edge_meta_jdata"/>
 	</resultMap>
 	
 	<select id="get-UserMetadataEntity-for-id" parameterType="long" resultMap="UserMetadataEntityFullResult">

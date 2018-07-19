@@ -44,8 +44,8 @@
 	<osgi:reference id="userMetadataBiz" sticky="false"
 		interface="org.eniware.central.user.biz.UserMetadataBiz"/>
 	
-	<osgi:reference id="nodeOwnershipBiz" sticky="false"
-		interface="org.eniware.central.user.biz.NodeOwnershipBiz"/>
+	<osgi:reference id="EdgeOwnershipBiz" sticky="false"
+		interface="org.eniware.central.user.biz.EdgeOwnershipBiz"/>
 	
 	<osgi:reference id="userAlertBiz" sticky="false"
 		interface="org.eniware.central.user.biz.UserAlertBiz"/>

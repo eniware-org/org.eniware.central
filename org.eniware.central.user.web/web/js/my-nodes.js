@@ -4,11 +4,11 @@ $(document).ready(function() {
 	var tzPicker;
 	var dynamicSearchTimer;
 	
-	$('#my-nodes-table').on('click', 'a.view-cert', function(event) {
+	$('#my-Edges-table').on('click', 'a.view-cert', function(event) {
 		event.preventDefault();
 		
 		var btn = $(this);
-		var id = btn.parents('.node-row').data('node-id');
+		var id = btn.parents('.Edge-row').data('Edge-id');
 		var form = $('#view-cert-modal');
 		var downLink = $('#modal-cert-download').get(0);
 		var renewLink = $('#modal-cert-renew').get(0);
@@ -22,40 +22,40 @@ $(document).ready(function() {
 		event.preventDefault();
 		
 		var btn = $(this);
-		var nodeRow = btn.parents('.node-row').first();
-		var nodeId = nodeRow.data('node-id');
-		var nodeName = nodeRow.data('node-name');
-		var userId = nodeRow.data('user-id');
+		var EdgeRow = btn.parents('.Edge-row').first();
+		var EdgeId = EdgeRow.data('Edge-id');
+		var EdgeName = EdgeRow.data('Edge-name');
+		var userId = EdgeRow.data('user-id');
 		var form = $('#transfer-ownership-modal');
 
-		form.find("input[name='nodeId']").val(nodeId || '');
+		form.find("input[name='EdgeId']").val(EdgeId || '');
 		form.find("input[name='userId']").val(userId || '');
 		
-		$('#transfer-ownership-node').text(nodeId + (nodeName ? ' - ' + nodeName : ''));
+		$('#transfer-ownership-Edge').text(EdgeId + (EdgeName ? ' - ' + EdgeName : ''));
 		
 		form.modal('show');
 	}).on('click', 'a.archive', function(event) {
 		event.preventDefault();
 		
 		var btn = $(this);
-		var nodeRow = btn.parents('.node-row').first();
-		var nodeId = nodeRow.data('node-id');
-		var nodeName = nodeRow.data('node-name');
-		var form = $('#archive-node-modal');
+		var EdgeRow = btn.parents('.Edge-row').first();
+		var EdgeId = EdgeRow.data('Edge-id');
+		var EdgeName = EdgeRow.data('Edge-name');
+		var form = $('#archive-Edge-modal');
 
-		form.find("input[name='nodeIds']").val(nodeId || '');
-		form.find(".node-name-label").text(nodeId + (nodeName ? ' - ' + nodeName : ''));
+		form.find("input[name='EdgeIds']").val(EdgeId || '');
+		form.find(".Edge-name-label").text(EdgeId + (EdgeName ? ' - ' + EdgeName : ''));
 		
 		form.modal('show');
 	}).on('click', 'button.view-situation', function(event) {
 		// use call(this) to preserve button as 'this' object
-		var nodeRow = $(this).parents('.node-row').first();
-		var nodeId = nodeRow.data('node-id');
-		var nodeName = nodeRow.data('node-name');
-		if ( nodeName ) {
-			nodeName = nodeId + ' - ' + nodeName;
+		var EdgeRow = $(this).parents('.Edge-row').first();
+		var EdgeId = EdgeRow.data('Edge-id');
+		var EdgeName = EdgeRow.data('Edge-name');
+		if ( EdgeName ) {
+			EdgeName = EdgeId + ' - ' + EdgeName;
 		}
-		EniwareReg.viewAlertSituation.call(this, event, nodeName);
+		EniwareReg.viewAlertSituation.call(this, event, EdgeName);
 	});
 	
 	$('#pending-transfer').on('click', 'button.cancel-ownership-transfer', function(event) {
@@ -63,8 +63,8 @@ $(document).ready(function() {
 		var btn = $(this);
 		var url = btn.data('action'),
 			userId = btn.data('user-id'),
-			nodeId = btn.data('node-id');
-		$.post(url, { userId:userId, nodeId:nodeId, _csrf:EniwareReg.csrf() }, function(json) {
+			EdgeId = btn.data('Edge-id');
+		$.post(url, { userId:userId, EdgeId:EdgeId, _csrf:EniwareReg.csrf() }, function(json) {
 			document.location.reload(true);
 		}).fail(function(data, statusText, xhr) {
 			EniwareReg.showAlertBefore('#top', 'alert-warning', statusText);
@@ -74,16 +74,16 @@ $(document).ready(function() {
 	$('#pending-transfer-requests-table').on('click', 'button.decide-ownership-transfer', function(event) {
 		event.preventDefault();
 		var btn = $(this);
-		var nodeId = btn.data('node-id');
+		var EdgeId = btn.data('Edge-id');
 		var userId = btn.data('user-id');
 		var requester = btn.data('requester');
 		var form = $('#decide-transfer-ownership-modal');
 		
-		form.find("input[name='nodeId']").val(nodeId || '');
+		form.find("input[name='EdgeId']").val(EdgeId || '');
 		form.find("input[name='userId']").val(userId || '');
 		form.find("input[name='accept']").val('false');
 		
-		$('#transfer-ownership-request-node').text(nodeId);
+		$('#transfer-ownership-request-Edge').text(EdgeId);
 		$('#transfer-ownership-request-requester').text(requester);
 
 		form.modal('show');
@@ -200,17 +200,17 @@ $(document).ready(function() {
 		form.submit();
 	});
 	
-	$('#archive-node-modal').ajaxForm({
+	$('#archive-Edge-modal').ajaxForm({
 		dataType: 'json',
 		success: function(json, status, xhr, form) {
 			document.location.reload(true);
 		},
 		error: function(xhr, status, statusText) {
-			EniwareReg.showAlertBefore('#archive-node-modal .modal-body > *:first-child', 'alert-warning', statusText);
+			EniwareReg.showAlertBefore('#archive-Edge-modal .modal-body > *:first-child', 'alert-warning', statusText);
 		}
 	});
 	
-	function setupEditUserNodeLocationDisplay(loc) {
+	function setupEditUserEdgeLocationDisplay(loc) {
 		var locDisplay = [], text = '';
 		if ( loc.street ) {
 			locDisplay.push(loc.street);
@@ -243,65 +243,65 @@ $(document).ready(function() {
 			}
 			text += ')';
 		}
-		$('#usernode-location').text(text);
+		$('#userEdge-location').text(text);
 	}
 	
-	function setupEditUserNodeFields(form, userNode) {
-		var node = userNode.node;
-		if ( !node ) {
-			node = {}
+	function setupEditUserEdgeFields(form, userEdge) {
+		var Edge = userEdge.Edge;
+		if ( !Edge ) {
+			Edge = {}
 		}
-		var loc = userNode.nodeLocation;
+		var loc = userEdge.EdgeLocation;
 		if ( !loc ) {
 			loc = {};
 		}
-		var user = userNode.user;
+		var user = userEdge.user;
 		if ( !user ) {
 			user = {};
 		}
-		$('#usernode-id').text(node.id);
-		$('#usernode-name').val(userNode.name);
-		$('#usernode-description').val(userNode.description);
-		$('#usernode-private').prop('checked', userNode.requiresAuthorization);
+		$('#userEdge-id').text(Edge.id);
+		$('#userEdge-name').val(userEdge.name);
+		$('#userEdge-description').val(userEdge.description);
+		$('#userEdge-private').prop('checked', userEdge.requiresAuthorization);
 		
-		setupEditUserNodeLocationDisplay(loc);
+		setupEditUserEdgeLocationDisplay(loc);
 		setupEditUserLocationFields(loc);
 
-		form.find("input[name='node.id']").val(node.id || '');
+		form.find("input[name='Edge.id']").val(Edge.id || '');
 		form.find("input[name='user.id']").val(user.id || '')
-		form.find("input[name='node.locationId']").val(node.locationId || '');
+		form.find("input[name='Edge.locationId']").val(Edge.locationId || '');
 	}
 	
-	$('#nodes').on('click', 'button.edit-node', function(event) {
+	$('#Edges').on('click', 'button.edit-Edge', function(event) {
 		var btn = $(this);
 		var form = $(btn.data('target'));
-		var url = form.attr('action').replace(/\/[^\/]+$/, '/node');
-		var req = {userId : btn.data('user-id'), nodeId : btn.data('node-id') };
-		setupEditUserNodeFields(form, {node : {id : req.nodeId}, user : {id : req.userId}});
+		var url = form.attr('action').replace(/\/[^\/]+$/, '/Edge');
+		var req = {userId : btn.data('user-id'), EdgeId : btn.data('Edge-id') };
+		setupEditUserEdgeFields(form, {Edge : {id : req.EdgeId}, user : {id : req.userId}});
 		$.getJSON(url, req, function(json) {
-			setupEditUserNodeFields(form, json.data);
+			setupEditUserEdgeFields(form, json.data);
 		}).fail(function(data, statusText, xhr) {
-			EniwareReg.showAlertBefore('#edit-node-modal .modal-body > *:first-child', 'alert-warning', statusText);
+			EniwareReg.showAlertBefore('#edit-Edge-modal .modal-body > *:first-child', 'alert-warning', statusText);
 		});
-		editNodeShowPage(form, 1);
+		editEdgeShowPage(form, 1);
 		form.modal('show');
 	});
 	
-	$('#edit-node-modal').ajaxForm({
+	$('#edit-Edge-modal').ajaxForm({
 		dataType: 'json',
 		success: function(json, status, xhr, form) {
 			form.modal('hide');
 			document.location.reload(true);
 		},
 		error: function(xhr, status, statusText) {
-			EniwareReg.showAlertBefore('#edit-node-modal .modal-body > *:first-child', 'alert-warning', statusText);
+			EniwareReg.showAlertBefore('#edit-Edge-modal .modal-body > *:first-child', 'alert-warning', statusText);
 		}
 	}).data('page', 1).on('show', function() {
 		dynamicSearchTimer = undefined;
-		$('#edit-node-location-search-results').addClass('hidden');
+		$('#edit-Edge-location-search-results').addClass('hidden');
 	});
 	
-	function editNodeShowPage(form, newPage) {
+	function editEdgeShowPage(form, newPage) {
 		var currPage = form.data('page');
 		if ( currPage === newPage || newPage < 1 ) {
 			return;
@@ -322,14 +322,14 @@ $(document).ready(function() {
 	}
 	
 	function selectTzPickerArea(tzcontainer) {
-		var timeZoneId = $('#edit-node-location-tz').val();
-		var country = $('#edit-node-location-country').val();
+		var timeZoneId = $('#edit-Edge-location-tz').val();
+		var country = $('#edit-Edge-location-country').val();
 		if ( timeZoneId && country ) {
 			tzcontainer.find("area[data-timezone='"+timeZoneId+"'][data-country="+country+']').trigger('click');
 		}
 	}
 	
-	$('#edit-node-modal button.change-location').on('click', function(event) {
+	$('#edit-Edge-modal button.change-location').on('click', function(event) {
 		var form = $(this).parents('form').first();
 		var pageContainer = form.find('.modal-body .hbox');
 		var pickerUrl = form.attr('action').replace(/\/[^\/]+$/, '/tzpicker.html');
@@ -338,34 +338,34 @@ $(document).ready(function() {
 			tzcontainer.load(pickerUrl, function() {
 				var picker = tzcontainer.find('.timezone-image');
 				picker.timezonePicker({
-					target : '#edit-node-location-tz',
-					countryTarget : '#edit-node-location-country',
+					target : '#edit-Edge-location-tz',
+					countryTarget : '#edit-Edge-location-country',
 				});
 				selectTzPickerArea(tzcontainer);
 			});
 		} else {
 			selectTzPickerArea(tzcontainer);
 		}
-		editNodeShowPage(form, 2);
+		editEdgeShowPage(form, 2);
 	});
 	
-	$('#edit-node-page-back').on('click', function(event) {
+	$('#edit-Edge-page-back').on('click', function(event) {
 		var form = $(this).parents('form').first();
 		var destPage = form.data('page') - 1;
-		$('#edit-node-location-search-results').toggleClass('hidden', destPage !== 3);
-		editNodeShowPage(form, destPage);
+		$('#edit-Edge-location-search-results').toggleClass('hidden', destPage !== 3);
+		editEdgeShowPage(form, destPage);
 	});
 	
-	$('#edit-node-select-tz').on('click', function(event) {
+	$('#edit-Edge-select-tz').on('click', function(event) {
 		var form = $(this).parents('form').first();
-		$('#edit-node-select-location').attr('disabled', 'disabled');
-		editNodeShowPage(form, 3);
+		$('#edit-Edge-select-location').attr('disabled', 'disabled');
+		editEdgeShowPage(form, 3);
 		if ( dynamicSearchTimer === undefined ) {
 			searchForLocationDetails();
 		}
 	});
 	
-	$('#edit-node-location-search-results').on('click', 'tr', function(event) {
+	$('#edit-Edge-location-search-results').on('click', 'tr', function(event) {
 		var me = $(this);
 		var loc = me.data('location');
 		if ( me.hasClass('success') === false ) {
@@ -376,10 +376,10 @@ $(document).ready(function() {
 	});
 	
 	function showLocationSearchResults(results) {
-		var table = $('#edit-node-location-search-results');
+		var table = $('#edit-Edge-location-search-results');
 		var templateRow = table.find('tr.template');
 		var tbody = table.find('tbody');
-		var form = $('#edit-node-modal');
+		var form = $('#edit-Edge-modal');
 		var i, len, tr, loc, prop, cell;
 		tbody.empty();
 		if ( results.length > 0 ) {
@@ -397,30 +397,30 @@ $(document).ready(function() {
 				tbody.append(tr);
 			}
 			table.removeClass('hidden');
-			$('#edit-node-location-search-no-match').addClass('hidden');
+			$('#edit-Edge-location-search-no-match').addClass('hidden');
 		} else {
 			table.addClass('hidden');
-			$('#edit-node-location-search-no-match').removeClass('hidden'); // no matches, allow saving
+			$('#edit-Edge-location-search-no-match').removeClass('hidden'); // no matches, allow saving
 		}
-		$('#edit-node-select-location').removeAttr('disabled');
+		$('#edit-Edge-select-location').removeAttr('disabled');
 	}
 	
 	function setupEditUserLocationFields(location) {
 		if ( !location ) {
 			location = {};
 		}
-		var form = $('#edit-node-modal');
+		var form = $('#edit-Edge-modal');
 		var elements = form.get(0).elements;
 		var criteria = ['country', 'timeZoneId', 'region', 'stateOrProvince', 'locality', 'postalCode', 
 		                'street', 'latitude', 'longitude', 'elevation'];
 		var input;
 		criteria.forEach(function(prop) {
-			input = elements['node.location.'+prop];
+			input = elements['Edge.location.'+prop];
 			if ( input ) {
 				$(input).val(location[prop]);
 			}
 		});
-		input = elements['node.locationId'];
+		input = elements['Edge.locationId'];
 		if ( input ) {
 			$(input).val(location.id);
 		}
@@ -434,13 +434,13 @@ $(document).ready(function() {
 	}
 	
 	function searchForLocationDetails() {
-		var form = $('#edit-node-modal');
+		var form = $('#edit-Edge-modal');
 		var elements = form.get(0).elements;
-		var url = $('#edit-node-location-details').data('lookup-url');
+		var url = $('#edit-Edge-location-details').data('lookup-url');
 		var criteria = ['timeZoneId', 'country', 'region', 'stateOrProvince', 'locality', 'postalCode'];
 		var req = {}, input;
 		criteria.forEach(function(prop) {
-			input = elements['node.location.'+prop];
+			input = elements['Edge.location.'+prop];
 			if ( input ) {
 				input = $(input);
 				if ( input.val().length > 0 ) {
@@ -453,16 +453,16 @@ $(document).ready(function() {
 				showLocationSearchResults(json.data.results);
 			}
 		}).fail(function(data, statusText, xhr) {
-			EniwareReg.showAlertBefore('#edit-node-modal .modal-body > *:first-child', 'alert-warning', statusText);
+			EniwareReg.showAlertBefore('#edit-Edge-modal .modal-body > *:first-child', 'alert-warning', statusText);
 		});
 	}
 	
-	$('#edit-node-location-details').on('keyup', 'input', handleLocationDetailsChange);
+	$('#edit-Edge-location-details').on('keyup', 'input', handleLocationDetailsChange);
 	
-	$('#edit-node-select-location').on('click', function() {
-		var form = $('#edit-node-modal');
-		$('#edit-node-location-search-results').addClass('hidden');
-		editNodeShowPage(form, 4);
+	$('#edit-Edge-select-location').on('click', function() {
+		var form = $('#edit-Edge-modal');
+		$('#edit-Edge-location-search-results').addClass('hidden');
+		editEdgeShowPage(form, 4);
 	});
 	
 	function numberOrUndefined(value) {
@@ -480,21 +480,21 @@ $(document).ready(function() {
 		return result;
 	}
 	
-	$('#edit-node-select-location-private').on('click', function() {
-		var form = $('#edit-node-modal');
-		editNodeShowPage(form, 1);
-		setupEditUserNodeLocationDisplay({
-			name : $('#edit-node-location-name').val(),
-			country : $('#edit-node-location-country').val(),
-			stateOrProvince : $('#edit-node-location-state').val(),
-			region : $('#edit-node-location-region').val(),
-			locality : $('#edit-node-location-locality').val(),
-			postalCode : $('#edit-node-location-postal-code').val(),
-			street : $('#edit-node-location-street').val(),
-			latitude : numberOrUndefined($('#edit-node-location-latitude').val()),
-			longitude : numberOrUndefined($('#edit-node-location-longitude').val()),
-			elevation : numberOrUndefined($('#edit-node-location-elevation').val()),
-			timeZoneId : $('#edit-node-location-tz').val()
+	$('#edit-Edge-select-location-private').on('click', function() {
+		var form = $('#edit-Edge-modal');
+		editEdgeShowPage(form, 1);
+		setupEditUserEdgeLocationDisplay({
+			name : $('#edit-Edge-location-name').val(),
+			country : $('#edit-Edge-location-country').val(),
+			stateOrProvince : $('#edit-Edge-location-state').val(),
+			region : $('#edit-Edge-location-region').val(),
+			locality : $('#edit-Edge-location-locality').val(),
+			postalCode : $('#edit-Edge-location-postal-code').val(),
+			street : $('#edit-Edge-location-street').val(),
+			latitude : numberOrUndefined($('#edit-Edge-location-latitude').val()),
+			longitude : numberOrUndefined($('#edit-Edge-location-longitude').val()),
+			elevation : numberOrUndefined($('#edit-Edge-location-elevation').val()),
+			timeZoneId : $('#edit-Edge-location-tz').val()
 		});
 	});
 	
@@ -518,16 +518,16 @@ $(document).ready(function() {
 	});
 	
 	(function() {
-		var nodeRows = $('.node-row');
-		if ( nodeRows.length > 0 ) {
+		var EdgeRows = $('.Edge-row');
+		if ( EdgeRows.length > 0 ) {
 			// show active alert situations
 			$.getJSON(EniwareReg.eniwareUserURL('/sec/alerts/user/situations'), function(json) {
 				var i, alert;
 				if ( json && json.data && Array.isArray(json.data) ) {
 					for ( i = 0; i < json.data.length; i++ ) {
 						alert = json.data[i];
-						if ( alert.nodeId ) {
-							nodeRows.filter('[data-node-id='+alert.nodeId+']').find('button.view-situation').each(function(idx, el) {
+						if ( alert.EdgeId ) {
+							EdgeRows.filter('[data-Edge-id='+alert.EdgeId+']').find('button.view-situation').each(function(idx, el) {
 								$(el).data('alert-id', alert.id);
 							}).removeClass('hidden');
 						}

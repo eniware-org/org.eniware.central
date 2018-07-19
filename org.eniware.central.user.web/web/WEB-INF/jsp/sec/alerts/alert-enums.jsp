@@ -1,12 +1,12 @@
 <%--
 	Input parameters:
 	
-		nodeDataAlertTypes 	- collection of UserAlertType that represent node data alerts
+		EdgeDataAlertTypes 	- collection of UserAlertType that represent Edge data alerts
 		alertStatuses       - collection of UesrAlertStatus
  --%>
 <script type="text/javascript">
 EniwareReg.userAlertTypes = {
-<c:forEach items="${nodeDataAlertTypes}" var="alertType" varStatus="itr">
+<c:forEach items="${EdgeDataAlertTypes}" var="alertType" varStatus="itr">
 	${alertType} : "<fmt:message key='alert.type.${alertType}.label'/>"${itr.last ? '' : ', '}
 </c:forEach>
 };

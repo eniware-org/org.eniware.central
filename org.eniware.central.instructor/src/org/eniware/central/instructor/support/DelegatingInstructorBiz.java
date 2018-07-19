@@ -52,33 +52,33 @@ public class DelegatingInstructorBiz implements InstructorBiz {
 	}
 
 	@Override
-	public List<Instruction> getActiveInstructionsForNode(Long nodeId) {
-		return delegate.getActiveInstructionsForNode(nodeId);
+	public List<Instruction> getActiveInstructionsForEdge(Long EdgeId) {
+		return delegate.getActiveInstructionsForEdge(EdgeId);
 	}
 
 	@Override
-	public List<EdgeInstruction> getActiveInstructionsForNodes(Set<Long> nodeIds) {
-		return delegate.getActiveInstructionsForNodes(nodeIds);
+	public List<EdgeInstruction> getActiveInstructionsForEdges(Set<Long> EdgeIds) {
+		return delegate.getActiveInstructionsForEdges(EdgeIds);
 	}
 
 	@Override
-	public List<Instruction> getPendingInstructionsForNode(Long nodeId) {
-		return delegate.getPendingInstructionsForNode(nodeId);
+	public List<Instruction> getPendingInstructionsForEdge(Long EdgeId) {
+		return delegate.getPendingInstructionsForEdge(EdgeId);
 	}
 
 	@Override
-	public List<EdgeInstruction> getPendingInstructionsForNodes(Set<Long> nodeIds) {
-		return delegate.getPendingInstructionsForNodes(nodeIds);
+	public List<EdgeInstruction> getPendingInstructionsForEdges(Set<Long> EdgeIds) {
+		return delegate.getPendingInstructionsForEdges(EdgeIds);
 	}
 
 	@Override
-	public EdgeInstruction queueInstruction(Long nodeId, Instruction instruction) {
-		return delegate.queueInstruction(nodeId, instruction);
+	public EdgeInstruction queueInstruction(Long EdgeId, Instruction instruction) {
+		return delegate.queueInstruction(EdgeId, instruction);
 	}
 
 	@Override
-	public List<EdgeInstruction> queueInstructions(Set<Long> nodeIds, Instruction instruction) {
-		return delegate.queueInstructions(nodeIds, instruction);
+	public List<EdgeInstruction> queueInstructions(Set<Long> EdgeIds, Instruction instruction) {
+		return delegate.queueInstructions(EdgeIds, instruction);
 	}
 
 	@Override

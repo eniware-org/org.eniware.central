@@ -25,9 +25,9 @@
 
 	<!-- Service References -->
 
-	<reference id="userNodeDao" interface="org.eniware.central.user.dao.UserNodeDao"/>
+	<reference id="userEdgeDao" interface="org.eniware.central.user.dao.UserEdgeDao"/>
 
-	<reference id="nodeInstructionDao" interface="org.eniware.central.instructor.dao.NodeInstructionDao"/>
+	<reference id="EdgeInstructionDao" interface="org.eniware.central.instructor.dao.EdgeInstructionDao"/>
 	
 	<reference id="instructorBiz"
 		interface="org.eniware.central.instructor.biz.InstructorBiz"
@@ -47,8 +47,8 @@
 	<aop:aspectj-autoproxy/>
 
 	<bean id="instructorSecurityAspect" class="org.eniware.central.instructor.aop.InstructorSecurityAspect">
-		<argument ref="userNodeDao"/>
-		<argument ref="nodeInstructionDao"/>
+		<argument ref="userEdgeDao"/>
+		<argument ref="EdgeInstructionDao"/>
 	</bean>
 	
 	<bean id="aopInstructorBiz" class="org.eniware.central.instructor.support.DelegatingInstructorBiz">

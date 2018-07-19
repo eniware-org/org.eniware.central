@@ -65,7 +65,7 @@ CREATE TABLE solarnet.sn_power_datum_new (
 	id				BIGINT NOT NULL DEFAULT nextval('solarnet.solarnet_seq'),
 	created			TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	posted			TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	node_id 		BIGINT NOT NULL,
+	Edge_id 		BIGINT NOT NULL,
 	source_id 		VARCHAR(255) NOT NULL DEFAULT '',
 	price_loc_id	BIGINT,
 	pv_volts 		REAL,
@@ -85,11 +85,11 @@ CREATE TABLE solarnet.sn_power_datum_new (
 );
 
 INSERT INTO solarnet.sn_power_datum_new
-	SELECT p.id,p.created,p.posted,p.node_id,p.source_id,l.id,p.pv_volts,
+	SELECT p.id,p.created,p.posted,p.Edge_id,p.source_id,l.id,p.pv_volts,
 	p.pv_amps,p.bat_volts,p.bat_amp_hrs,p.dc_out_volts,p.dc_out_amps,p.ac_out_volts,p.ac_out_amps,
 	p.amp_hours,p.kwatt_hours,p.error_msg,p.prev_datum,p.local_created
 	FROM solarnet.sn_power_datum p
-	LEFT OUTER JOIN solarnet.sn_price_loc l ON l.loc_name = 'HAY2201' AND p.node_id = 11;
+	LEFT OUTER JOIN solarnet.sn_price_loc l ON l.loc_name = 'HAY2201' AND p.Edge_id = 11;
 
 DROP FUNCTION IF EXISTS solarnet.find_prev_power_datum(solarnet.sn_power_datum, interval) CASCADE;
 DROP FUNCTION IF EXISTS solarnet.find_rep_price_datum(bigint, timestamp without time zone, text, interval) CASCADE;
@@ -105,7 +105,7 @@ CREATE TABLE solarnet.sn_consum_datum_new (
 	id				BIGINT NOT NULL DEFAULT nextval('solarnet.solarnet_seq'),
 	created			TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	posted			TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	node_id 		BIGINT NOT NULL,
+	Edge_id 		BIGINT NOT NULL,
 	source_id 		VARCHAR(255) NOT NULL,
 	price_loc_id	BIGINT,
 	amps			REAL,
@@ -116,10 +116,10 @@ CREATE TABLE solarnet.sn_consum_datum_new (
 );
 
 INSERT INTO solarnet.sn_consum_datum_new
-	SELECT c.id,c.created,c.posted,c.node_id,c.source_id,l.id,c.amps,
+	SELECT c.id,c.created,c.posted,c.Edge_id,c.source_id,l.id,c.amps,
 	c.voltage,c.error_msg,c.prev_datum
 	FROM solarnet.sn_consum_datum c
-	LEFT OUTER JOIN solarnet.sn_price_loc l ON l.loc_name = 'HAY2201' AND c.node_id = 11;
+	LEFT OUTER JOIN solarnet.sn_price_loc l ON l.loc_name = 'HAY2201' AND c.Edge_id = 11;
 
 DROP FUNCTION IF EXISTS solarnet.find_prev_consum_datum(solarnet.sn_consum_datum, interval) CASCADE;
 DROP FUNCTION IF EXISTS solarnet.populate_rep_consum_datum_hourly(solarnet.sn_consum_datum) CASCADE;
@@ -141,26 +141,26 @@ CREATE INDEX price_datum_prev_datum_idx ON solarnet.sn_price_datum (prev_datum);
 
 CLUSTER solarnet.sn_price_datum USING price_datum_unq_idx;
 
-ALTER TABLE solarnet.sn_power_datum ADD CONSTRAINT sn_power_datum_node_fk
-FOREIGN KEY (node_id) REFERENCES solarnet.sn_node (node_id);
+ALTER TABLE solarnet.sn_power_datum ADD CONSTRAINT sn_power_datum_Edge_fk
+FOREIGN KEY (Edge_id) REFERENCES solarnet.sn_Edge (Edge_id);
 ALTER TABLE solarnet.sn_power_datum ADD CONSTRAINT sn_power_datum_price_loc_fk
 FOREIGN KEY (price_loc_id) REFERENCES solarnet.sn_price_loc (id);
 
-CREATE UNIQUE INDEX power_datum_node_unq_idx ON solarnet.sn_power_datum (created, node_id, source_id);
+CREATE UNIQUE INDEX power_datum_Edge_unq_idx ON solarnet.sn_power_datum (created, Edge_id, source_id);
 CREATE INDEX power_datum_prev_datum_idx ON solarnet.sn_power_datum (prev_datum);
 CREATE INDEX power_datum_local_created_idx ON solarnet.sn_power_datum (local_created);
 
-CLUSTER solarnet.sn_power_datum USING power_datum_node_unq_idx;
+CLUSTER solarnet.sn_power_datum USING power_datum_Edge_unq_idx;
 
-ALTER TABLE solarnet.sn_consum_datum ADD CONSTRAINT sn_consum_datum_node_fk
-FOREIGN KEY (node_id) REFERENCES solarnet.sn_node (node_id);
+ALTER TABLE solarnet.sn_consum_datum ADD CONSTRAINT sn_consum_datum_Edge_fk
+FOREIGN KEY (Edge_id) REFERENCES solarnet.sn_Edge (Edge_id);
 ALTER TABLE solarnet.sn_consum_datum ADD CONSTRAINT sn_consum_datum_price_loc_fk
 FOREIGN KEY (price_loc_id) REFERENCES solarnet.sn_price_loc (id);
 
-CREATE UNIQUE INDEX consum_datum_node_unq_idx ON solarnet.sn_consum_datum (created,node_id,source_id);
+CREATE UNIQUE INDEX consum_datum_Edge_unq_idx ON solarnet.sn_consum_datum (created,Edge_id,source_id);
 CREATE INDEX consum_datum_prev_datum_idx ON solarnet.sn_consum_datum (prev_datum);
 
-CLUSTER solarnet.sn_consum_datum USING consum_datum_node_unq_idx;
+CLUSTER solarnet.sn_consum_datum USING consum_datum_Edge_unq_idx;
 
 
 /* ==========
@@ -213,7 +213,7 @@ COMMENT ON TABLE solarnet.rep_price_datum_hourly IS 'To refresh this table, call
 select solarnet.populate_rep_price_datum_hourly(c) from solarnet.sn_price_datum c
 where c.id in (
 	select max(id) from solarnet.sn_price_datum
-	group by date_trunc(''hour'', created), node_id
+	group by date_trunc(''hour'', created), Edge_id
 )';
 
 CLUSTER solarnet.rep_price_datum_hourly USING rep_price_datum_hourly_pkey;
@@ -233,7 +233,7 @@ COMMENT ON TABLE solarnet.rep_price_datum_daily IS 'To refresh this table, call 
 select solarnet.populate_rep_price_datum_daily(c) from solarnet.sn_price_datum c
 where c.id in (
 	select max(id) from solarnet.sn_price_datum
-	group by date_trunc(''hour'', created), node_id
+	group by date_trunc(''hour'', created), Edge_id
 )';
 
 CLUSTER solarnet.rep_price_datum_daily USING rep_price_datum_daily_pkey;
@@ -241,7 +241,7 @@ CLUSTER solarnet.rep_price_datum_daily USING rep_price_datum_daily_pkey;
 /**************************************************************************************************
  * FUNCTION solarnet.find_rep_price_datum(bigint timestamp, interval)
  * 
- * SQL function to return a set of reporting PriceDatum records for a specific node within a given
+ * SQL function to return a set of reporting PriceDatum records for a specific Edge within a given
  * date range.
  * 
  * @param bigint		the location ID
@@ -434,7 +434,7 @@ $BODY$
 	FROM solarnet.sn_consum_datum c
 	WHERE c.created < $1.created
 		AND c.created >= ($1.created - $2)
-		AND c.node_id = $1.node_id
+		AND c.Edge_id = $1.Edge_id
 		AND c.source_id = $1.source_id
 	ORDER BY c.created DESC
 	LIMIT 1;
@@ -460,10 +460,10 @@ CREATE TRIGGER populate_prev_consum_datum
 /**************************************************************************************************
  * FUNCTION solarnet.find_rep_consum_datum(bigint, text, timestamp, text, interval)
  * 
- * SQL function to return a set of reporting ConsumptionDatum records for a specific node within a
+ * SQL function to return a set of reporting ConsumptionDatum records for a specific Edge within a
  * given date range.
  * 
- * @param bigint		the node ID
+ * @param bigint		the Edge ID
  * @param text			the source ID
  * @param timestamp		the starting date
  * @param text			a valid time zone ID (e.g. 'Pacific/Auckland')
@@ -503,7 +503,7 @@ $BODY$
 		) AS p ON p.created BETWEEN c.created - interval '1 hour' AND c.created
 			AND p.id = c.price_loc_id
 	WHERE 
-		c2.node_id = $1
+		c2.Edge_id = $1
 		AND c2.source_id = $2
 		AND c2.created >= $3 at time zone $4
 		AND c2.created < $3 at time zone $4 + $5
@@ -529,13 +529,13 @@ CREATE OR REPLACE FUNCTION solarnet.populate_rep_consum_datum_hourly(datum solar
 $BODY$
 DECLARE
 	chour timestamp;
-	node_tz text;
+	Edge_tz text;
 	data solarnet.rep_consum_datum_hourly;
 BEGIN
-	SELECT time_zone from solarnet.sn_node where node_id = datum.node_id
-	INTO node_tz;
+	SELECT time_zone from solarnet.sn_Edge where Edge_id = datum.Edge_id
+	INTO Edge_tz;
 	
-	SELECT date_trunc('hour', c.created at time zone node_tz)
+	SELECT date_trunc('hour', c.created at time zone Edge_tz)
 	FROM solarnet.sn_consum_datum c
 	WHERE c.id = datum.prev_datum
 	INTO chour;
@@ -546,17 +546,17 @@ BEGIN
 	END IF;
 
 	SELECT 
-		date_trunc('hour', sub.created at time zone node_tz) as created_hour,
-		datum.node_id,
+		date_trunc('hour', sub.created at time zone Edge_tz) as created_hour,
+		datum.Edge_id,
 		datum.source_id,
 		avg(sub.avg_amps) as amps,
 		avg(sub.avg_voltage) as voltage,
 		sum(sub.watt_hours) as watt_hours,
 		sum(sub.cost_amt) as cost_amt,
 		min(sub.currency) as cost_currency
-	FROM solarnet.find_rep_consum_datum(datum.node_id, datum.source_id, chour, node_tz, interval '1 hour') AS sub
-	GROUP BY date_trunc('hour', sub.created at time zone node_tz)
-	ORDER BY date_trunc('hour', sub.created at time zone node_tz)
+	FROM solarnet.find_rep_consum_datum(datum.Edge_id, datum.source_id, chour, Edge_tz, interval '1 hour') AS sub
+	GROUP BY date_trunc('hour', sub.created at time zone Edge_tz)
+	ORDER BY date_trunc('hour', sub.created at time zone Edge_tz)
 	INTO data;
 	--RAISE NOTICE 'Got data: %', data;
 	
@@ -574,15 +574,15 @@ BEGIN
 			cost_amt = data.cost_amt,
 			cost_currency = data.cost_currency
 		WHERE created_hour = data.created_hour
-			AND node_id = data.node_id
+			AND Edge_id = data.Edge_id
 			AND source_id = data.source_id;
 		
 		EXIT insert_update WHEN FOUND;
 
 		INSERT INTO solarnet.rep_consum_datum_hourly (
-			created_hour, node_id, source_id, amps, voltage, 
+			created_hour, Edge_id, source_id, amps, voltage, 
 			watt_hours, cost_amt, cost_currency)
-		VALUES (data.created_hour, data.node_id, data.source_id, 	
+		VALUES (data.created_hour, data.Edge_id, data.source_id, 	
 			data.amps, data.voltage, 
 			data.watt_hours, data.cost_amt, data.cost_currency);
 
@@ -624,13 +624,13 @@ CREATE OR REPLACE FUNCTION solarnet.populate_rep_consum_datum_daily(datum solarn
 $BODY$
 DECLARE
 	chour timestamp;
-	node_tz text;
+	Edge_tz text;
 	data solarnet.rep_consum_datum_daily;
 BEGIN
-	SELECT time_zone from solarnet.sn_node where node_id = datum.node_id
-	INTO node_tz;
+	SELECT time_zone from solarnet.sn_Edge where Edge_id = datum.Edge_id
+	INTO Edge_tz;
 	
-	SELECT date_trunc('day', c.created at time zone node_tz)
+	SELECT date_trunc('day', c.created at time zone Edge_tz)
 	FROM solarnet.sn_consum_datum c
 	WHERE c.id = datum.prev_datum
 	INTO chour;
@@ -641,17 +641,17 @@ BEGIN
 	END IF;
 
 	SELECT 
-		date(sub.created at time zone node_tz) as created_day,
-		datum.node_id,
+		date(sub.created at time zone Edge_tz) as created_day,
+		datum.Edge_id,
 		datum.source_id,
 		avg(sub.avg_amps) as amps,
 		avg(sub.avg_voltage) as voltage,
 		sum(sub.watt_hours) as watt_hours,
 		sum(sub.cost_amt) as cost_amt,
 		min(sub.currency) as cost_currency
-	FROM solarnet.find_rep_consum_datum(datum.node_id, datum.source_id, chour, node_tz, interval '1 day') AS sub
-	GROUP BY date(sub.created at time zone node_tz)
-	ORDER BY date(sub.created at time zone node_tz)
+	FROM solarnet.find_rep_consum_datum(datum.Edge_id, datum.source_id, chour, Edge_tz, interval '1 day') AS sub
+	GROUP BY date(sub.created at time zone Edge_tz)
+	ORDER BY date(sub.created at time zone Edge_tz)
 	INTO data;
 	--RAISE NOTICE 'Got data: %', data;
 	
@@ -664,15 +664,15 @@ BEGIN
 			cost_amt = data.cost_amt,
 			cost_currency = data.cost_currency
 		WHERE created_day = data.created_day
-			AND node_id = data.node_id
+			AND Edge_id = data.Edge_id
 			AND source_id = data.source_id;
 		
 		EXIT insert_update WHEN FOUND;
 
 		INSERT INTO solarnet.rep_consum_datum_daily (
-			created_day, node_id, source_id, amps, voltage, 
+			created_day, Edge_id, source_id, amps, voltage, 
 			watt_hours, cost_amt, cost_currency)
-		VALUES (data.created_day, data.node_id, data.source_id, 	
+		VALUES (data.created_day, data.Edge_id, data.source_id, 	
 			data.amps, data.voltage, 
 			data.watt_hours, data.cost_amt, data.cost_currency);
 
@@ -706,7 +706,7 @@ $BODY$
 	FROM solarnet.sn_power_datum c
 	WHERE c.created < $1.created
 		AND c.created >= ($1.created - $2)
-		AND c.node_id = $1.node_id
+		AND c.Edge_id = $1.Edge_id
 		AND c.source_id = $1.source_id
 	ORDER BY c.created DESC
 	LIMIT 1;
@@ -738,7 +738,7 @@ CREATE OR REPLACE FUNCTION solarnet.populate_local_created()
   RETURNS trigger AS
 $BODY$
 BEGIN
-	NEW.local_created := solarnet.get_node_local_timestamp(NEW.created, NEW.node_id);
+	NEW.local_created := solarnet.get_Edge_local_timestamp(NEW.created, NEW.Edge_id);
 	RETURN NEW;
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE;
@@ -753,10 +753,10 @@ CREATE TRIGGER populate_local_created
 /**************************************************************************************************
  * FUNCTION solarnet.find_rep_power_datum(bigint, text, timestamp, text, interval)
  * 
- * SQL function to return a set of reporting PowerDatum records for a specific node within a given
+ * SQL function to return a set of reporting PowerDatum records for a specific Edge within a given
  * date range.
  * 
- * @param bigint		the node ID
+ * @param bigint		the Edge ID
  * @param text			the source ID
  * @param timestamp		the starting date
  * @param text			a valid time zone ID (e.g. 'Pacific/Auckland')
@@ -797,7 +797,7 @@ $BODY$
 		) AS p ON p.created BETWEEN c.created - interval '1 hour' AND c.created
 			AND p.id = c.price_loc_id
 	WHERE 
-		c2.node_id = $1
+		c2.Edge_id = $1
 		AND c2.source_id = $2
 		AND c2.created >= $3 at time zone $4
 		AND c2.created < $3 at time zone $4 + $5
@@ -823,13 +823,13 @@ CREATE OR REPLACE FUNCTION solarnet.populate_rep_power_datum_hourly(datum solarn
 $BODY$
 DECLARE
 	chour timestamp;
-	node_tz text;
+	Edge_tz text;
 	data solarnet.rep_power_datum_hourly;
 BEGIN
-	SELECT time_zone from solarnet.sn_node where node_id = datum.node_id
-	INTO node_tz;
+	SELECT time_zone from solarnet.sn_Edge where Edge_id = datum.Edge_id
+	INTO Edge_tz;
 	
-	SELECT date_trunc('hour', c.created at time zone node_tz)
+	SELECT date_trunc('hour', c.created at time zone Edge_tz)
 	FROM solarnet.sn_power_datum c
 	WHERE c.id = datum.prev_datum
 	INTO chour;
@@ -840,8 +840,8 @@ BEGIN
 	END IF;
 
 	SELECT 
-		date_trunc('hour', sub.created at time zone node_tz) as created_hour,
-		datum.node_id,
+		date_trunc('hour', sub.created at time zone Edge_tz) as created_hour,
+		datum.Edge_id,
 		datum.source_id,
 		avg(sub.avg_pv_volts) as pv_volts,
 		avg(sub.avg_pv_amps) as pv_amps,
@@ -849,9 +849,9 @@ BEGIN
 		sum(sub.watt_hours) as watt_hours,
 		sum(sub.cost_amt) as cost_amt,
 		min(sub.currency) as cost_currency
-	FROM solarnet.find_rep_power_datum(datum.node_id, datum.source_id, chour, node_tz, interval '1 hour') AS sub
-	GROUP BY date_trunc('hour', sub.created at time zone node_tz)
-	ORDER BY date_trunc('hour', sub.created at time zone node_tz)
+	FROM solarnet.find_rep_power_datum(datum.Edge_id, datum.source_id, chour, Edge_tz, interval '1 hour') AS sub
+	GROUP BY date_trunc('hour', sub.created at time zone Edge_tz)
+	ORDER BY date_trunc('hour', sub.created at time zone Edge_tz)
 	INTO data;
 	--RAISE NOTICE 'Got data: %', data;
 	
@@ -870,15 +870,15 @@ BEGIN
 			cost_amt = data.cost_amt,
 			cost_currency = data.cost_currency
 		WHERE created_hour = data.created_hour
-			AND node_id = data.node_id
+			AND Edge_id = data.Edge_id
 			AND source_id = data.source_id;
 		
 		EXIT insert_update WHEN FOUND;
 
 		INSERT INTO solarnet.rep_power_datum_hourly (
-			created_hour, node_id, source_id, pv_amps, pv_volts, bat_volts, 
+			created_hour, Edge_id, source_id, pv_amps, pv_volts, bat_volts, 
 			watt_hours, cost_amt, cost_currency)
-		VALUES (data.created_hour, data.node_id, data.source_id,	
+		VALUES (data.created_hour, data.Edge_id, data.source_id,	
 			data.pv_amps, data.pv_volts, data.bat_volts, 
 			data.watt_hours, data.cost_amt, data.cost_currency);
 
@@ -924,7 +924,7 @@ DECLARE
 BEGIN
 	SELECT date_trunc('hour', c.created at time zone n.time_zone)
 	FROM solarnet.sn_power_datum c
-	INNER JOIN solarnet.sn_node n ON n.node_id = datum.node_id
+	INNER JOIN solarnet.sn_Edge n ON n.Edge_id = datum.Edge_id
 	WHERE c.id = datum.prev_datum
 	INTO chour;
 
@@ -935,7 +935,7 @@ BEGIN
 
 	SELECT 
 		date_trunc('hour', sub.created) as created_hour,
-		datum.node_id,
+		datum.Edge_id,
 		sum(sub.watt_hours) as watt_hours
 	FROM solarnet.find_rep_net_power_datum(chour, interval '1 hour') AS sub
 	GROUP BY date_trunc('hour', sub.created)
@@ -997,13 +997,13 @@ CREATE OR REPLACE FUNCTION solarnet.populate_rep_power_datum_daily(datum solarne
 $BODY$
 DECLARE
 	chour timestamp;
-	node_tz text;
+	Edge_tz text;
 	data solarnet.rep_power_datum_daily;
 BEGIN
-	SELECT time_zone from solarnet.sn_node where node_id = datum.node_id
-	INTO node_tz;
+	SELECT time_zone from solarnet.sn_Edge where Edge_id = datum.Edge_id
+	INTO Edge_tz;
 	
-	SELECT date_trunc('day', c.created at time zone node_tz)
+	SELECT date_trunc('day', c.created at time zone Edge_tz)
 	FROM solarnet.sn_power_datum c
 	WHERE c.id = datum.prev_datum
 	INTO chour;
@@ -1014,8 +1014,8 @@ BEGIN
 	END IF;
 
 	SELECT 
-		date(sub.created at time zone node_tz) as created_day,
-		datum.node_id,
+		date(sub.created at time zone Edge_tz) as created_day,
+		datum.Edge_id,
 		datum.source_id,
 		avg(sub.avg_pv_volts) as pv_volts,
 		avg(sub.avg_pv_amps) as pv_amps,
@@ -1023,9 +1023,9 @@ BEGIN
 		sum(sub.watt_hours) as watt_hours,
 		sum(sub.cost_amt) as cost_amt,
 		min(sub.currency) as cost_currency
-	FROM solarnet.find_rep_power_datum(datum.node_id, datum.source_id, chour, node_tz, interval '1 day') AS sub
-	GROUP BY date(sub.created at time zone node_tz)
-	ORDER BY date(sub.created at time zone node_tz)
+	FROM solarnet.find_rep_power_datum(datum.Edge_id, datum.source_id, chour, Edge_tz, interval '1 day') AS sub
+	GROUP BY date(sub.created at time zone Edge_tz)
+	ORDER BY date(sub.created at time zone Edge_tz)
 	INTO data;
 	--RAISE NOTICE 'Got data: %', data;
 	
@@ -1039,15 +1039,15 @@ BEGIN
 			cost_amt = data.cost_amt,
 			cost_currency = data.cost_currency
 		WHERE created_day = data.created_day
-			AND node_id = data.node_id
+			AND Edge_id = data.Edge_id
 			AND source_id = data.source_id;
 		
 		EXIT insert_update WHEN FOUND;
 
 		INSERT INTO solarnet.rep_power_datum_daily (
-			created_day, node_id, source_id, pv_amps, pv_volts, bat_volts, 
+			created_day, Edge_id, source_id, pv_amps, pv_volts, bat_volts, 
 			watt_hours, cost_amt, cost_currency)
-		VALUES (data.created_day, data.node_id, data.source_id,
+		VALUES (data.created_day, data.Edge_id, data.source_id,
 			data.pv_amps, data.pv_volts, data.bat_volts, 
 			data.watt_hours, data.cost_amt, data.cost_currency);
 
@@ -1093,7 +1093,7 @@ DECLARE
 BEGIN
 	SELECT date_trunc('day', c.created at time zone n.time_zone)
 	FROM solarnet.sn_power_datum c
-	INNER JOIN solarnet.sn_node n ON n.node_id = datum.node_id
+	INNER JOIN solarnet.sn_Edge n ON n.Edge_id = datum.Edge_id
 	WHERE c.id = datum.prev_datum
 	INTO chour;
 

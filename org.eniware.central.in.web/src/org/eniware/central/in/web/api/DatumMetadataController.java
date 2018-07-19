@@ -8,7 +8,7 @@ package org.eniware.central.in.web.api;
 
 import static org.eniware.web.domain.Response.response;
 import org.eniware.central.datum.domain.DatumFilterCommand;
-import org.eniware.central.datum.domain.GeneralNodeDatumMetadataFilterMatch;
+import org.eniware.central.datum.domain.GeneralEdgeDatumMetadataFilterMatch;
 import org.eniware.central.in.biz.DataCollectorBiz;
 import org.eniware.central.web.support.WebServiceControllerSupport;
 import org.eniware.domain.GeneralDatumMetadata;
@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @version 1.0
  */
 @Controller("v1DatumMetadataController")
-@RequestMapping({ "/api/v1/pub/datum/meta/{nodeId}", "/api/v1/sec/datum/meta/{nodeId}" })
+@RequestMapping({ "/api/v1/pub/datum/meta/{EdgeId}", "/api/v1/sec/datum/meta/{EdgeId}" })
 public class DatumMetadataController extends WebServiceControllerSupport {
 
 	private final DataCollectorBiz dataCollectorBiz;
@@ -56,46 +56,46 @@ public class DatumMetadataController extends WebServiceControllerSupport {
 
 	@ResponseBody
 	@RequestMapping(value = { "", "/" }, method = RequestMethod.GET)
-	public Response<FilterResults<GeneralNodeDatumMetadataFilterMatch>> findMetadata(
-			@PathVariable("nodeId") Long nodeId, DatumFilterCommand criteria) {
-		return findMetadata(nodeId, null, criteria);
+	public Response<FilterResults<GeneralEdgeDatumMetadataFilterMatch>> findMetadata(
+			@PathVariable("EdgeId") Long EdgeId, DatumFilterCommand criteria) {
+		return findMetadata(EdgeId, null, criteria);
 	}
 
 	@ResponseBody
 	@RequestMapping(value = { "/{sourceId}" }, method = RequestMethod.GET)
-	public Response<FilterResults<GeneralNodeDatumMetadataFilterMatch>> findMetadata(
-			@PathVariable("nodeId") Long nodeId, @PathVariable("sourceId") String sourceId,
+	public Response<FilterResults<GeneralEdgeDatumMetadataFilterMatch>> findMetadata(
+			@PathVariable("EdgeId") Long EdgeId, @PathVariable("sourceId") String sourceId,
 			DatumFilterCommand criteria) {
 		DatumFilterCommand filter = new DatumFilterCommand();
-		filter.setNodeId(nodeId);
+		filter.setEdgeId(EdgeId);
 		filter.setSourceId(sourceId);
-		FilterResults<GeneralNodeDatumMetadataFilterMatch> results = dataCollectorBiz
-				.findGeneralNodeDatumMetadata(filter, criteria.getSortDescriptors(),
+		FilterResults<GeneralEdgeDatumMetadataFilterMatch> results = dataCollectorBiz
+				.findGeneralEdgeDatumMetadata(filter, criteria.getSortDescriptors(),
 						criteria.getOffset(), criteria.getMax());
 		return response(results);
 	}
 
 	@ResponseBody
 	@RequestMapping(value = { "", "/" }, method = RequestMethod.GET, params = { "sourceId" })
-	public Response<FilterResults<GeneralNodeDatumMetadataFilterMatch>> findMetadataAlt(
-			@PathVariable("nodeId") Long nodeId, @RequestParam("sourceId") String sourceId,
+	public Response<FilterResults<GeneralEdgeDatumMetadataFilterMatch>> findMetadataAlt(
+			@PathVariable("EdgeId") Long EdgeId, @RequestParam("sourceId") String sourceId,
 			DatumFilterCommand criteria) {
-		return findMetadata(nodeId, sourceId, criteria);
+		return findMetadata(EdgeId, sourceId, criteria);
 	}
 
 	@ResponseBody
 	@RequestMapping(value = { "/{sourceId}" }, method = RequestMethod.POST)
-	public Response<Object> addMetadata(@PathVariable("nodeId") Long nodeId,
+	public Response<Object> addMetadata(@PathVariable("EdgeId") Long EdgeId,
 			@PathVariable("sourceId") String sourceId, @RequestBody GeneralDatumMetadata meta) {
-		dataCollectorBiz.addGeneralNodeDatumMetadata(nodeId, sourceId, meta);
+		dataCollectorBiz.addGeneralEdgeDatumMetadata(EdgeId, sourceId, meta);
 		return response(null);
 	}
 
 	@ResponseBody
 	@RequestMapping(value = { "", "/" }, method = RequestMethod.POST, params = { "sourceId" })
-	public Response<Object> addMetadataAlt(@PathVariable("nodeId") Long nodeId,
+	public Response<Object> addMetadataAlt(@PathVariable("EdgeId") Long EdgeId,
 			@RequestParam("sourceId") String sourceId, @RequestBody GeneralDatumMetadata meta) {
-		return addMetadata(nodeId, sourceId, meta);
+		return addMetadata(EdgeId, sourceId, meta);
 	}
 
 }

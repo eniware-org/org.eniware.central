@@ -5,7 +5,7 @@
 (function() {
 'use strict';
 
-var nodeUrlHelperFunctions;
+var EdgeUrlHelperFunctions;
 var locationUrlHelperFunctions;
 
 if ( sn === undefined ) {
@@ -21,20 +21,20 @@ if ( sn === undefined ) {
 sn.datum = {};
 
 /**
- * A node-specific URL utility object.
+ * A Edge-specific URL utility object.
  * 
  * @class
  * @constructor
- * @param {Number} node The node ID to use.
+ * @param {Number} Edge The Edge ID to use.
  * @param {Object} configuration The configuration options to use.
- * @returns {sn.datum.nodeUrlHelper}
+ * @returns {sn.datum.EdgeUrlHelper}
  */
-sn.datum.nodeUrlHelper = function(node, configuration) {
+sn.datum.EdgeUrlHelper = function(Edge, configuration) {
 	var that = {
 		version : '1.1.0'
 	};
 	
-	var nodeId = node;
+	var EdgeId = Edge;
 	
 	var config = sn.util.copy(configuration, {
 		host : 'data.network.eniware.org/',
@@ -47,7 +47,7 @@ sn.datum.nodeUrlHelper = function(node, configuration) {
 	 * Get a URL for just the EniwareNet host, without any path.
 	 *
 	 * @returns {String} the URL to the EniwareNet host
-	 * @memberOf sn.datum.nodeUrlHelper
+	 * @memberOf sn.datum.EdgeUrlHelper
 	 */
 	function hostURL() {
 		return ('http' +(config.tls === true ? 's' : '') +'://' +config.host);
@@ -57,22 +57,22 @@ sn.datum.nodeUrlHelper = function(node, configuration) {
 	 * Get a URL for the EniwareNet host and the base API path, e.g. <code>/eniwarequery/api/v1/sec</code>.
 	 *
 	 * @returns {String} the URL to the EniwareNet base API path
-	 * @memberOf sn.datum.nodeUrlHelper
+	 * @memberOf sn.datum.EdgeUrlHelper
 	 */
 	function baseURL() {
 		return (hostURL() +config.path +'/api/v1/' +(config.secureQuery === true ? 'sec' : 'pub'));
 	}
 	
 	/**
-	 * Get a URL for the "reportable interval" for this node, optionally limited to a specific source ID.
+	 * Get a URL for the "reportable interval" for this Edge, optionally limited to a specific source ID.
 	 *
 	 * @param {Array} sourceIds An array of source IDs to limit query to. If not provided then all available 
 	 *                sources will be returned.
 	 * @returns {String} the URL to find the reportable interval
-	 * @memberOf sn.datum.nodeUrlHelper
+	 * @memberOf sn.datum.EdgeUrlHelper
 	 */
 	function reportableIntervalURL(sourceIds) {
-		var url = (baseURL() +'/range/interval?nodeId=' +nodeId);
+		var url = (baseURL() +'/range/interval?EdgeId=' +EdgeId);
 		if ( Array.isArray(sourceIds) ) {
 			url += '&' + sourceIds.map(function(e) { return 'sourceIds='+encodeURIComponent(e); }).join('&')
 		}
@@ -80,15 +80,15 @@ sn.datum.nodeUrlHelper = function(node, configuration) {
 	}
 	
 	/**
-	 * Get a available source IDs for this node, optionally limited to a date range.
+	 * Get a available source IDs for this Edge, optionally limited to a date range.
 	 *
 	 * @param {Date} startDate An optional start date to limit the results to.
 	 * @param {Date} endDate An optional end date to limit the results to.
 	 * @returns {String} the URL to find the available source
-	 * @memberOf sn.datum.nodeUrlHelper
+	 * @memberOf sn.datum.EdgeUrlHelper
 	 */
 	function availableSourcesURL(startDate, endDate) {
-		var url = (baseURL() +'/range/sources?nodeId=' +nodeId);
+		var url = (baseURL() +'/range/sources?EdgeId=' +EdgeId);
 		if ( startDate !== undefined ) {
 			url += '&start=' +encodeURIComponent(sn.dateFormat(startDate));
 		}
@@ -107,10 +107,10 @@ sn.datum.nodeUrlHelper = function(node, configuration) {
 	 * @param {Array} sourceIds Array of source IDs to limit query to
 	 * @param {Object} pagination An optional pagination object, with <code>offset</code> and <code>max</code> properties.
 	 * @return {String} the URL to perform the list with
-	 * @memberOf sn.datum.nodeUrlHelper
+	 * @memberOf sn.datum.EdgeUrlHelper
 	 */
 	function dateTimeListURL(startDate, endDate, agg, sourceIds, pagination) {
-		var url = (baseURL() +'/datum/list?nodeId=' +nodeId);
+		var url = (baseURL() +'/datum/list?EdgeId=' +EdgeId);
 		if ( startDate ) {
 			url += '&startDate=' +encodeURIComponent(sn.dateTimeFormatURL(startDate));
 		}
@@ -139,10 +139,10 @@ sn.datum.nodeUrlHelper = function(node, configuration) {
 	 * 
 	 * @param {Array} sourceIds Array of source IDs to limit query to
 	 * @return {String} the URL to perform the most recent query with
-	 * @memberOf sn.datum.nodeUrlHelper
+	 * @memberOf sn.datum.EdgeUrlHelper
 	 */
 	function mostRecentURL(sourceIds) {
-		var url = (baseURL() + '/datum/mostRecent?nodeId=' + nodeId);
+		var url = (baseURL() + '/datum/mostRecent?EdgeId=' + EdgeId);
 		if ( Array.isArray(sourceIds) ) {
 			url += '&' + sourceIds.map(function(e) { return 'sourceIds='+encodeURIComponent(e); }).join('&')
 		}
@@ -150,15 +150,15 @@ sn.datum.nodeUrlHelper = function(node, configuration) {
 	}
 	
 	/**
-	 * Get or set the node ID to use.
+	 * Get or set the Edge ID to use.
 	 * 
-	 * @param {String} [value] the node ID to use
-	 * @return when used as a getter, the node ID, otherwise this object
-	 * @memberOf sn.datum.nodeUrlHelper
+	 * @param {String} [value] the Edge ID to use
+	 * @return when used as a getter, the Edge ID, otherwise this object
+	 * @memberOf sn.datum.EdgeUrlHelper
 	 */
-	function nodeID(value) {
-		if ( !arguments.length ) return nodeId;
-		nodeId = value;
+	function EdgeID(value) {
+		if ( !arguments.length ) return EdgeId;
+		EdgeId = value;
 		return that;
 	}
 	
@@ -166,18 +166,18 @@ sn.datum.nodeUrlHelper = function(node, configuration) {
 	 * Get a description of this helper object.
 	 *
 	 * @return {String} The description of this object.
-	 * @memberOf sn.datum.nodeUrlHelper
+	 * @memberOf sn.datum.EdgeUrlHelper
 	 */
 	function keyDescription() {
-		return ('node ' +nodeId);
+		return ('Edge ' +EdgeId);
 	}
 	
 	// setup core properties
 	Object.defineProperties(that, {
 		secureQuery				: { get : function() { return (config.secureQuery === true); }, enumerable : true },
 		keyDescription			: { value : keyDescription },
-		nodeId					: { get : function() { return nodeId; }, enumerable : true },
-		nodeID					: { value : nodeID },
+		EdgeId					: { get : function() { return EdgeId; }, enumerable : true },
+		EdgeID					: { value : EdgeID },
 		hostURL					: { value : hostURL },
 		baseURL					: { value : baseURL },
 		reportableIntervalURL 	: { value : reportableIntervalURL },
@@ -188,8 +188,8 @@ sn.datum.nodeUrlHelper = function(node, configuration) {
 	
 	// allow plug-ins to supply URL helper methods, as long as they don't override built-in ones
 	(function() {
-		if ( Array.isArray(nodeUrlHelperFunctions) ) {
-			nodeUrlHelperFunctions.forEach(function(helper) {
+		if ( Array.isArray(EdgeUrlHelperFunctions) ) {
+			EdgeUrlHelperFunctions.forEach(function(helper) {
 				if ( that.hasOwnProperty(helper.name) === false ) {
 					Object.defineProperty(that, helper.name, { value : function() {
 						return helper.func.apply(that, arguments);
@@ -203,21 +203,21 @@ sn.datum.nodeUrlHelper = function(node, configuration) {
 };
 
 /**
- * Register a custom function to generate URLs with {@link sn.datum.nodeUrlHelper}.
+ * Register a custom function to generate URLs with {@link sn.datum.EdgeUrlHelper}.
  * 
  * @param {String} name The name to give the custom function. By convention the function
  *                      names should end with 'URL'.
- * @param {Function} func The function to add to sn.datum.nodeUrlHelper instances.
+ * @param {Function} func The function to add to sn.datum.EdgeUrlHelper instances.
  */
-sn.datum.registerNodeUrlHelperFunction = function(name, func) {
+sn.datum.registerEdgeUrlHelperFunction = function(name, func) {
 	if ( typeof func !== 'function' ) {
 		return;
 	}
-	if ( nodeUrlHelperFunctions === undefined ) {
-		nodeUrlHelperFunctions = [];
+	if ( EdgeUrlHelperFunctions === undefined ) {
+		EdgeUrlHelperFunctions = [];
 	}
 	name = name.replace(/[^0-9a-zA-Z_]/, '');
-	nodeUrlHelperFunctions.push({name : name, func : func});
+	EdgeUrlHelperFunctions.push({name : name, func : func});
 };
 
 /**
@@ -247,7 +247,7 @@ sn.datum.locationUrlHelper = function(location, configuration) {
 	 * Get a URL for just the EniwareNet host, without any path.
 	 *
 	 * @returns {String} the URL to the EniwareNet host
-	 * @memberOf sn.datum.nodeUrlHelper
+	 * @memberOf sn.datum.EdgeUrlHelper
 	 */
 	function hostURL() {
 		return ('http' +(config.tls === true ? 's' : '') +'://' +config.host);
@@ -366,10 +366,10 @@ sn.datum.locationUrlHelper = function(location, configuration) {
 	 * Get a description of this helper object.
 	 *
 	 * @return {String} The description of this object.
-	 * @memberOf sn.datum.nodeUrlHelper
+	 * @memberOf sn.datum.EdgeUrlHelper
 	 */
 	function keyDescription() {
-		return ('node ' +nodeId);
+		return ('Edge ' +EdgeId);
 	}
 	
 	// setup core properties
@@ -424,7 +424,7 @@ sn.datum.registerLocationUrlHelperFunction = function(name, func) {
  * 
  * <p>The callback function will be passed an error object and the array of sources.
  * 
- * @param {sn.datum.nodeUrlHelper} urlHelper A {@link sn.datum.nodeUrlHelper} or 
+ * @param {sn.datum.EdgeUrlHelper} urlHelper A {@link sn.datum.EdgeUrlHelper} or 
                                              {@link sn.datum.locationUrlHelper} object.
  * @param {Function} callback A callback function which will be passed an error object
  *                            and the result array.
@@ -457,10 +457,10 @@ sn.datum.availableSources = function(urlHelper, callback) {
  * <p>The callback function will be passed the same 'data' object returned
  * by the {@code reportableIntervalURL} endpoint, but the start/end dates will be
  * a combination of the earliest available and latest available results for
- * every different node ID provided.
+ * every different Edge ID provided.
  * 
  * @param {Array} sourceSets An array of objects, each with a {@code sourceIds} array 
- *                property and a {@code nodeUrlHelper} {@code sn.datum.nodeUrlHelper}
+ *                property and a {@code EdgeUrlHelper} {@code sn.datum.EdgeUrlHelper}
  *                or {@code locationUrlHelper} {@code sn.datum.locationUrlHelper}
  *                propery.
  * @param {Function} [callback] A callback function which will be passed the result object.
@@ -475,8 +475,8 @@ sn.datum.availableDataRange = function(sourceSets, callback) {
 			url,
 			urlHelper;
 		for ( i = 0; i < sourceSets.length; i += 1 ) {
-			if ( sourceSets[i].nodeUrlHelper ) {
-				urlHelper = sourceSets[i].nodeUrlHelper;
+			if ( sourceSets[i].EdgeUrlHelper ) {
+				urlHelper = sourceSets[i].EdgeUrlHelper;
 			} else if ( sourceSets[i].locationUrlHelper ) {
 				urlHelper = sourceSets[i].locationUrlHelper;
 			} else {
@@ -638,7 +638,7 @@ sn.datum.loaderQueryRange = function(aggregate, aggregateTimeCount, endDate) {
  * 
  * @class
  * @param {string[]} sourceIds - array of source IDs to load data for
- * @param {function} urlHelper - a {@link sn.nodeUrlHelper} or {@link sn.locationUrlHelper}
+ * @param {function} urlHelper - a {@link sn.EdgeUrlHelper} or {@link sn.locationUrlHelper}
  * @param {date} start - the start date, or {@code null}
  * @param {date} end - the end date, or {@code null}
  * @param {string} aggregate - aggregate level

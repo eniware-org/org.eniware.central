@@ -20,7 +20,7 @@ import org.springframework.jdbc.core.JdbcOperations;
  *
  * @version 1.0
  */
-public class StaleGeneralLocationDatumProcessor extends StaleGeneralNodeDatumProcessor {
+public class StaleGeneralLocationDatumProcessor extends StaleGeneralEdgeDatumProcessor {
 
 	/**
 	 * Construct with properties.

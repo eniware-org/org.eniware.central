@@ -27,8 +27,8 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
  * @since 1.32
  */
 @JsonIgnoreProperties("id")
-@JsonPropertyOrder({ "nodeId", "created", "updated" })
-public class EniwareEdgeMetadata extends BaseEntity implements NodeMetadata, Cloneable, Serializable {
+@JsonPropertyOrder({ "EdgeId", "created", "updated" })
+public class EniwareEdgeMetadata extends BaseEntity implements EdgeMetadata, Cloneable, Serializable {
 
 	private static final long serialVersionUID = 7366747359583724835L;
 
@@ -39,21 +39,21 @@ public class EniwareEdgeMetadata extends BaseEntity implements NodeMetadata, Clo
 	/**
 	 * Convenience getter for {@link #getId()}.
 	 * 
-	 * @return the nodeId
+	 * @return the EdgeId
 	 */
 	@Override
-	public Long getNodeId() {
+	public Long getEdgeId() {
 		return getId();
 	}
 
 	/**
 	 * Convenience setter for {@link #setId(Long)}.
 	 * 
-	 * @param nodeId
-	 *        the nodeId to set
+	 * @param EdgeId
+	 *        the EdgeId to set
 	 */
-	public void setNodeId(Long nodeId) {
-		setId(nodeId);
+	public void setEdgeId(Long EdgeId) {
+		setId(EdgeId);
 	}
 
 	/**

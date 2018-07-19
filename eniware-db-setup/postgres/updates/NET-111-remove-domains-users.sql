@@ -20,10 +20,10 @@ BEGIN
 END;
 $BODY$;
 
-DROP FUNCTION solaruser.store_user_node_cert(solarcommon.ts, solarcommon.node_id, bigint, character, text, bytea);
-CREATE OR REPLACE FUNCTION solaruser.store_user_node_cert(
+DROP FUNCTION solaruser.store_user_Edge_cert(solarcommon.ts, solarcommon.Edge_id, bigint, character, text, bytea);
+CREATE OR REPLACE FUNCTION solaruser.store_user_Edge_cert(
 	created timestamp with time zone,
-	node bigint,
+	Edge bigint,
 	userid bigint,
 	stat char,
 	request text,
@@ -34,39 +34,39 @@ DECLARE
 	ts TIMESTAMP WITH TIME ZONE := (CASE WHEN created IS NULL THEN now() ELSE created END);
 BEGIN
 	BEGIN
-		INSERT INTO solaruser.user_node_cert(created, node_id, user_id, status, request_id, keystore)
-		VALUES (ts, node, userid, stat, request, keydata);
+		INSERT INTO solaruser.user_Edge_cert(created, Edge_id, user_id, status, request_id, keystore)
+		VALUES (ts, Edge, userid, stat, request, keydata);
 	EXCEPTION WHEN unique_violation THEN
-		UPDATE solaruser.user_node_cert SET
+		UPDATE solaruser.user_Edge_cert SET
 			keystore = keydata,
 			status = stat,
 			request_id = request
 		WHERE
-			node_id = node
+			Edge_id = Edge
 			AND user_id = userid;
 	END;
 END;$BODY$
   LANGUAGE plpgsql VOLATILE;
 
-ALTER TABLE solaruser.user_node_xfer
-	ALTER COLUMN node_id SET DATA TYPE bigint;
+ALTER TABLE solaruser.user_Edge_xfer
+	ALTER COLUMN Edge_id SET DATA TYPE bigint;
 
-DROP FUNCTION solaruser.store_user_node_xfer(solarcommon.node_id, bigint, character varying);
-CREATE OR REPLACE FUNCTION solaruser.store_user_node_xfer(
-	node bigint,
+DROP FUNCTION solaruser.store_user_Edge_xfer(solarcommon.Edge_id, bigint, character varying);
+CREATE OR REPLACE FUNCTION solaruser.store_user_Edge_xfer(
+	Edge bigint,
 	userid bigint,
 	recip CHARACTER VARYING(255))
   RETURNS void AS
 $BODY$
 BEGIN
 	BEGIN
-		INSERT INTO solaruser.user_node_xfer(node_id, user_id, recipient)
-		VALUES (node, userid, recip);
+		INSERT INTO solaruser.user_Edge_xfer(Edge_id, user_id, recipient)
+		VALUES (Edge, userid, recip);
 	EXCEPTION WHEN unique_violation THEN
-		UPDATE solaruser.user_node_xfer SET
+		UPDATE solaruser.user_Edge_xfer SET
 			recipient = recip
 		WHERE
-			node_id = node
+			Edge_id = Edge
 			AND user_id = userid;
 	END;
 END;$BODY$

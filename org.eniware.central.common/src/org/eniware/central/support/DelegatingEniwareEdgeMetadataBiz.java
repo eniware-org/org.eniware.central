@@ -37,18 +37,18 @@ public class DelegatingEniwareEdgeMetadataBiz implements EniwareEdgeMetadataBiz 
 	}
 
 	@Override
-	public void addEniwareEdgeMetadata(Long nodeId, GeneralDatumMetadata meta) {
-		delegate.addEniwareEdgeMetadata(nodeId, meta);
+	public void addEniwareEdgeMetadata(Long EdgeId, GeneralDatumMetadata meta) {
+		delegate.addEniwareEdgeMetadata(EdgeId, meta);
 	}
 
 	@Override
-	public void storeEniwareEdgeMetadata(Long nodeId, GeneralDatumMetadata meta) {
-		delegate.storeEniwareEdgeMetadata(nodeId, meta);
+	public void storeEniwareEdgeMetadata(Long EdgeId, GeneralDatumMetadata meta) {
+		delegate.storeEniwareEdgeMetadata(EdgeId, meta);
 	}
 
 	@Override
-	public void removeEniwareEdgeMetadata(Long nodeId) {
-		delegate.removeEniwareEdgeMetadata(nodeId);
+	public void removeEniwareEdgeMetadata(Long EdgeId) {
+		delegate.removeEniwareEdgeMetadata(EdgeId);
 	}
 
 	@Override

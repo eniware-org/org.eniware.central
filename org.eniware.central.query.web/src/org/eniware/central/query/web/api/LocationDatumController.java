@@ -211,7 +211,7 @@ public class LocationDatumController extends WebServiceControllerSupport {
 
 	@ResponseBody
 	@RequestMapping(value = "/mostRecent", method = RequestMethod.GET)
-	public Response<FilterResults<?>> getMostRecentGeneralNodeDatumData(final DatumFilterCommand cmd) {
+	public Response<FilterResults<?>> getMostRecentGeneralEdgeDatumData(final DatumFilterCommand cmd) {
 		cmd.setMostRecent(true);
 		return filterGeneralDatumData(cmd);
 	}

@@ -15,45 +15,45 @@ import org.eniware.central.domain.SortDescriptor;
 import org.eniware.domain.GeneralDatumMetadata;
 
 /**
- * API for manipulating node metadata.
+ * API for manipulating Edge metadata.
  * @version 1.0
  * @since 1.32
  */
 public interface EniwareEdgeMetadataBiz {
 
 	/**
-	 * Add metadata to a specific node. If metadata already exists for the given
-	 * node, the values will be merged such that tags are added and info values
+	 * Add metadata to a specific Edge. If metadata already exists for the given
+	 * Edge, the values will be merged such that tags are added and info values
 	 * are added or updated.
 	 * 
-	 * @param nodeId
-	 *        the node ID to add to
+	 * @param EdgeId
+	 *        the Edge ID to add to
 	 * @param meta
 	 *        the metadata to add
 	 */
-	void addEniwareEdgeMetadata(Long nodeId, GeneralDatumMetadata meta);
+	void addEniwareEdgeMetadata(Long EdgeId, GeneralDatumMetadata meta);
 
 	/**
-	 * Store metadata to a specific node, replacing any existing metadata with
+	 * Store metadata to a specific Edge, replacing any existing metadata with
 	 * the provided metadata.
 	 * 
-	 * @param nodeId
-	 *        the node ID to add to
+	 * @param EdgeId
+	 *        the Edge ID to add to
 	 * @param meta
 	 *        the metadata to store
 	 */
-	void storeEniwareEdgeMetadata(Long nodeId, GeneralDatumMetadata meta);
+	void storeEniwareEdgeMetadata(Long EdgeId, GeneralDatumMetadata meta);
 
 	/**
-	 * Remove all metadata to a specific node.
+	 * Remove all metadata to a specific Edge.
 	 * 
-	 * @param nodeId
-	 *        the node ID to remove from
+	 * @param EdgeId
+	 *        the Edge ID to remove from
 	 */
-	void removeEniwareEdgeMetadata(Long nodeId);
+	void removeEniwareEdgeMetadata(Long EdgeId);
 
 	/**
-	 * Search for node metadata.
+	 * Search for Edge metadata.
 	 * 
 	 * @param criteria
 	 *        the search criteria

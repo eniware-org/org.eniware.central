@@ -22,24 +22,24 @@ function isLogicOp(text) {
 }
 
 /**
- * Create a new logic node out of a logic operator.
+ * Create a new logic Edge out of a logic operator.
  *
  * @param {String} op The logic operator, e.g. <code>&</code>.
  *
- * @returns {Object} A logic node.
+ * @returns {Object} A logic Edge.
  * @constructor
  */
-function logicNode(op) {
+function logicEdge(op) {
 	var self = {};
 	var children = [];
 
 	/**
-	 * Add a child node. If this node does not allow children, the
+	 * Add a child Edge. If this Edge does not allow children, the
 	 * <code>child</code> will not be added.
 	 *
-	 * @param {pathNode} child The node to add.
+	 * @param {pathEdge} child The Edge to add.
 	 *
-	 * @returns {pathNode} This object.
+	 * @returns {pathEdge} This object.
 	 */
 	function addChild(child) {
 		children.push(child);
@@ -55,14 +55,14 @@ function logicNode(op) {
 }
 
 /**
- * Parse a simple search filter like <code>(foo=bar)</code> into a node object.
+ * Parse a simple search filter like <code>(foo=bar)</code> into a Edge object.
  *
  * @param {String} text The simple search filter text to parse.
  *
- * @returns {Object} The parsed node object, or <code>undefined</code> if not parsable.
+ * @returns {Object} The parsed Edge object, or <code>undefined</code> if not parsable.
  * @constructor
  */
-function compNode(text) {
+function compEdge(text) {
 	var self = {};
 
 	var key,
@@ -90,17 +90,17 @@ function compNode(text) {
 	}));
 }
 
-function walkNode(node, parent, callback) {
+function walkEdge(Edge, parent, callback) {
 	var i, len;
-	if ( node === undefined ) {
+	if ( Edge === undefined ) {
 		return;
 	}
-	if ( callback(null, node, parent) === false ) {
+	if ( callback(null, Edge, parent) === false ) {
 		return false;
 	}
-	if ( node.children !== undefined ) {
-		for ( i = 0, len = node.children.length; i < len; i += 1 ) {
-			if ( walkNode(node.children[i], node, callback) === false ) {
+	if ( Edge.children !== undefined ) {
+		for ( i = 0, len = Edge.children.length; i < len; i += 1 ) {
+			if ( walkEdge(Edge.children[i], Edge, callback) === false ) {
 				return false;
 			}
 		}
@@ -125,18 +125,18 @@ export default function searchFilter(filterText) {
 		version : '1'
 	};
 
-	var rootNode;
+	var rootEdge;
 
 	/**
-	 * Walk the node tree, invoking a callback function for each node.
+	 * Walk the Edge tree, invoking a callback function for each Edge.
 	 *
 	 * @param {Function} callback A callback function, which will be passed an error parameter,
-	 *                            the current node, and the current node's parent (or
-	 *                            <code>undefined</code> for the root node). If the callback
+	 *                            the current Edge, and the current Edge's parent (or
+	 *                            <code>undefined</code> for the root Edge). If the callback
 	 *                            returns <code>false</code> the walking will stop.
 	 */
 	function walk(callback) {
-		walkNode(rootNode, undefined, callback);
+		walkEdge(rootEdge, undefined, callback);
 	}
 
 	/**
@@ -152,8 +152,8 @@ export default function searchFilter(filterText) {
 	function parseTokens(tokens, start, end) {
 		var i,
 			c,
-			topNode,
-			node,
+			topEdge,
+			Edge,
 			tok,
 			stack = [];
 		for ( i = start; i < end; i += 1 ) {
@@ -167,37 +167,37 @@ export default function searchFilter(filterText) {
 				if ( tok.length > 1 ) {
 					// starting new logical group
 					c = tok.charAt(1);
-					node = logicNode(c);
-					if ( topNode ) {
-						topNode.addChild(node);
+					Edge = logicEdge(c);
+					if ( topEdge ) {
+						topEdge.addChild(Edge);
 					}
-					stack.push(node);
-					topNode = node;
+					stack.push(Edge);
+					topEdge = Edge;
 				} else {
 					// starting a key/value pair
 					if ( i + 1 < end ) {
-						node = compNode(tokens[i+1]);
+						Edge = compEdge(tokens[i+1]);
 					}
-					if ( topNode ) {
-						topNode.addChild(node);
+					if ( topEdge ) {
+						topEdge.addChild(Edge);
 					} else {
-						// our top node is not a group node, so only one node is possible and we can return now
-						return node;
+						// our top Edge is not a group Edge, so only one Edge is possible and we can return now
+						return Edge;
 					}
 					i += 2; // skip the comparison token + our assumed closing paren
 				}
 			} else if ( c === ')' ) {
 				if ( stack.length > 1 ) {
 					stack.length -= 1;
-					topNode = stack[stack.length - 1];
+					topEdge = stack[stack.length - 1];
 				} else {
-					return topNode;
+					return topEdge;
 				}
 			}
 		}
 
 		// don't expect to get here, unless badly formed filter
-		return (stack.length > 0 ? stack[0] : topNode);
+		return (stack.length > 0 ? stack[0] : topEdge);
 	}
 
 	function parseFilterText(text) {
@@ -208,11 +208,11 @@ export default function searchFilter(filterText) {
 		return parseTokens(tokens, 0, tokens.length);
 	}
 
-	rootNode = parseFilterText(filterText);
+	rootEdge = parseFilterText(filterText);
 
 	return Object.defineProperties(self, {
-		/** The root node, which could be either a comparison node or logic node. */
-		rootNode	: { value : rootNode },
+		/** The root Edge, which could be either a comparison Edge or logic Edge. */
+		rootEdge	: { value : rootEdge },
 
 		walk		: { value : walk },
 	});

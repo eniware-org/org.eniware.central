@@ -4,7 +4,7 @@ import datumAggregate from 'datum/datumAggregate';
 import mergeObjects from 'util/mergeObjects'
 
 /**
- * Aggregate rows of datum records for a single node ID and any number of source IDs
+ * Aggregate rows of datum records for a single Edge ID and any number of source IDs
  * across a fixed time span into a single aggregate result per source ID.
  *
  * Once instantiated, call the <code>addDatumRecord()</code> method repeatedly

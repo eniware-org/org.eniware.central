@@ -23,7 +23,6 @@ Import-Package:
  org.eniware.central.user.domain;version="1.13.0",
  org.eniware.util;version="1.0.0",
  org.eniware.web.domain;version="1.0.0",
- org.eniware.web.support;version="1.10.0",
  org.joda.time;version="[2.4,3.0)",
  org.slf4j;version="[1.7,2.0)",
  org.springframework.beans;version="[4.2,5.0)",

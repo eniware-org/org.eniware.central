@@ -11,8 +11,8 @@
 		<if test="class == &quot;ConsumptionDatum&quot;">
 			eniwarenet.sn_consum_datum
 		</if>
-		<if test="node != null">
-			WHERE node_id = #{node}
+		<if test="Edge != null">
+			WHERE Edge_id = #{Edge}
 		</if>
 		UNION ALL
 		SELECT max(created) AS created  FROM
@@ -22,8 +22,8 @@
 		<if test="class == &quot;ConsumptionDatum&quot;">
 			eniwarenet.sn_consum_datum
 		</if>
-		<if test="node != null">
-			WHERE node_id = #{node}
+		<if test="Edge != null">
+			WHERE Edge_id = #{Edge}
 		</if>
 	</select>
 

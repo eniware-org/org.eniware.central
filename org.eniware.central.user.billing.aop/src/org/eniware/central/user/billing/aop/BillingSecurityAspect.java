@@ -26,11 +26,11 @@ public class BillingSecurityAspect extends AuthorizationSupport {
 	/**
 	 * Constructor.
 	 * 
-	 * @param userNodeDao
-	 *        the UserNodeDao to use
+	 * @param userEdgeDao
+	 *        the UserEdgeDao to use
 	 */
-	public BillingSecurityAspect(UserEdgeDao userNodeDao) {
-		super(userNodeDao);
+	public BillingSecurityAspect(UserEdgeDao userEdgeDao) {
+		super(userEdgeDao);
 	}
 
 	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.billing.biz.*BillingBiz.*ForUser(..)) && args(userId, ..)")

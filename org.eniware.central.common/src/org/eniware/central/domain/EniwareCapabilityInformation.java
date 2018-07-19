@@ -8,7 +8,7 @@ package org.eniware.central.domain;
 
 /**
  * API for capability information for some identifiable object,
- * such as a node, node group, etc.
+ * such as a Edge, Edge group, etc.
  * 
  * <p>This API is meant to be used for both atomic measurements
  * and aggregated measurements, depending on the context it is
@@ -41,7 +41,7 @@ public interface EniwareCapabilityInformation<PK> extends Identity<PK> {
 	Long getStorageCapacityWattHours();
 	
 	/**
-	 * Get the location of the node.
+	 * Get the location of the Edge.
 	 * 
 	 * @return location
 	 */

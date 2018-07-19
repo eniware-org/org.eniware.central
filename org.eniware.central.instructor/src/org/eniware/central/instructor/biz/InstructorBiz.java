@@ -22,36 +22,36 @@ import org.eniware.central.instructor.domain.EdgeInstruction;
 public interface InstructorBiz {
 
 	/**
-	 * Return any active instructions for a specific node.
+	 * Return any active instructions for a specific Edge.
 	 * 
 	 * <p>
 	 * An instruction is considered <em>active</em> if it is in the
 	 * {@link InstructionState#Queued} state.
 	 * </p>
 	 * 
-	 * @param nodeId
-	 *        the ID of the node to get active instructions for
+	 * @param EdgeId
+	 *        the ID of the Edge to get active instructions for
 	 * @return the instructions
 	 */
-	List<Instruction> getActiveInstructionsForNode(Long nodeId);
+	List<Instruction> getActiveInstructionsForEdge(Long EdgeId);
 
 	/**
-	 * Return any active instructions for a set of nodes.
+	 * Return any active instructions for a set of Edges.
 	 * 
 	 * <p>
 	 * An instruction is considered <em>active</em> if it is in the
 	 * {@link InstructionState#Queued} state.
 	 * </p>
 	 * 
-	 * @param nodeIds
-	 *        the IDs of the nodes to get active instructions for
+	 * @param EdgeIds
+	 *        the IDs of the Edges to get active instructions for
 	 * @return the instructions
 	 * @since 1.3
 	 */
-	List<EdgeInstruction> getActiveInstructionsForNodes(Set<Long> nodeIds);
+	List<EdgeInstruction> getActiveInstructionsForEdges(Set<Long> EdgeIds);
 
 	/**
-	 * Return any pending instructions for a specific node.
+	 * Return any pending instructions for a specific Edge.
 	 * 
 	 * <p>
 	 * An instruction is considered <em>pending</em> if it is in
@@ -59,15 +59,15 @@ public interface InstructorBiz {
 	 * {@link InstructionState#Executing} states.
 	 * </p>
 	 * 
-	 * @param nodeId
-	 *        the ID of the node to get pending instructions for
+	 * @param EdgeId
+	 *        the ID of the Edge to get pending instructions for
 	 * @return the instructions
 	 * @since 1.1
 	 */
-	List<Instruction> getPendingInstructionsForNode(Long nodeId);
+	List<Instruction> getPendingInstructionsForEdge(Long EdgeId);
 
 	/**
-	 * Return any pending instructions for a set of nodes.
+	 * Return any pending instructions for a set of Edges.
 	 * 
 	 * <p>
 	 * An instruction is considered <em>pending</em> if it is in
@@ -75,37 +75,37 @@ public interface InstructorBiz {
 	 * {@link InstructionState#Executing} states.
 	 * </p>
 	 * 
-	 * @param nodeIds
-	 *        the IDs of the nodes to get pending instructions for
+	 * @param EdgeIds
+	 *        the IDs of the Edges to get pending instructions for
 	 * @return the instructions
 	 * @since 1.3
 	 */
-	List<EdgeInstruction> getPendingInstructionsForNodes(Set<Long> nodeIds);
+	List<EdgeInstruction> getPendingInstructionsForEdges(Set<Long> EdgeIds);
 
 	/**
-	 * Queue an instruction for a specific node. The instruction will be put
+	 * Queue an instruction for a specific Edge. The instruction will be put
 	 * into the {@link InstructionState#Queued} state.
 	 * 
-	 * @param nodeId
-	 *        the node ID
+	 * @param EdgeId
+	 *        the Edge ID
 	 * @param instruction
 	 *        the instruction
 	 * @return the persisted instruction
 	 */
-	EdgeInstruction queueInstruction(Long nodeId, Instruction instruction);
+	EdgeInstruction queueInstruction(Long EdgeId, Instruction instruction);
 
 	/**
-	 * Queue an instruction for multiple nodes. The instruction will be put into
+	 * Queue an instruction for multiple Edges. The instruction will be put into
 	 * the {@link InstructionState#Queued} state.
 	 * 
-	 * @param nodeIds
-	 *        a set of node IDs to enqueue the instruction on
+	 * @param EdgeIds
+	 *        a set of Edge IDs to enqueue the instruction on
 	 * @param instruction
 	 *        the instruction
-	 * @return the persisted instructions, in iteration order of {@code nodeIds}
+	 * @return the persisted instructions, in iteration order of {@code EdgeIds}
 	 * @since 1.3
 	 */
-	List<EdgeInstruction> queueInstructions(Set<Long> nodeIds, Instruction instruction);
+	List<EdgeInstruction> queueInstructions(Set<Long> EdgeIds, Instruction instruction);
 
 	/**
 	 * Get a specific instruction.
@@ -130,7 +130,7 @@ public interface InstructorBiz {
 	 * Update the state of a specific instruction.
 	 * 
 	 * <p>
-	 * As an instruction is processed, for example by a node, the state should
+	 * As an instruction is processed, for example by a Edge, the state should
 	 * be updated by that processor.
 	 * </p>
 	 * 
@@ -145,7 +145,7 @@ public interface InstructorBiz {
 	 * Update the state of a set of instructions.
 	 * 
 	 * <p>
-	 * As an instruction is processed, for example by a node, the state should
+	 * As an instruction is processed, for example by a Edge, the state should
 	 * be updated by that processor.
 	 * </p>
 	 * 
@@ -161,7 +161,7 @@ public interface InstructorBiz {
 	 * Update the state of a specific instruction.
 	 * 
 	 * <p>
-	 * As an instruction is processed, for example by a node, the state should
+	 * As an instruction is processed, for example by a Edge, the state should
 	 * be updated by that processor.
 	 * </p>
 	 * 
@@ -180,7 +180,7 @@ public interface InstructorBiz {
 	 * Update the state of a specific instruction.
 	 * 
 	 * <p>
-	 * As an instruction is processed, for example by a node, the state should
+	 * As an instruction is processed, for example by a Edge, the state should
 	 * be updated by that processor.
 	 * </p>
 	 * 

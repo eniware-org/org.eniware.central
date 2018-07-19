@@ -9,7 +9,7 @@ package org.eniware.central.domain;
 import java.io.Serializable;
 
 /**
- * A set of capabilities for a node.
+ * A set of capabilities for a Edge.
  * @version $Revision$
  */
 public class EniwareEdgeGroupCapability extends EniwareCapability implements Cloneable, Serializable {
@@ -28,7 +28,7 @@ public class EniwareEdgeGroupCapability extends EniwareCapability implements Clo
 	/**
 	 * Construct with values.
 	 * 
-	 * @param groupId the node group ID
+	 * @param groupId the Edge group ID
 	 * @param generationCapacityWatts the generation capacity
 	 * @param storageCapacityWattHours the energy storage capacity
 	 */

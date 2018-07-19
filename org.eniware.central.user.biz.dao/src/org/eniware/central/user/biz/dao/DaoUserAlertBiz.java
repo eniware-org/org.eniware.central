@@ -76,8 +76,8 @@ public class DaoUserAlertBiz implements UserAlertBiz {
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserAlert> alertSituationsForNode(Long nodeId) {
-		return userAlertDao.findActiveAlertSituationsForNode(nodeId);
+	public List<UserAlert> alertSituationsForEdge(Long EdgeId) {
+		return userAlertDao.findActiveAlertSituationsForEdge(EdgeId);
 	}
 
 	@Override

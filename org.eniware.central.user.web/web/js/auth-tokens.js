@@ -1,8 +1,8 @@
 $(document).ready(function() {
 	'use strict';
 
-	var nodeSourceMap = {};
-	var activePolicy = {nodeIds:[], sourceIds:[]};
+	var EdgeSourceMap = {};
+	var activePolicy = {EdgeIds:[], sourceIds:[]};
 	var tokenCreated = false;
 	
 	function handleAuthTokenCreated(json, status, xhr, form) {
@@ -67,20 +67,20 @@ $(document).ready(function() {
 			.addClass('btn-default');
 	}
 	
-	function togglePolicyNodeId(container, nodeId, add) {
-		var i = activePolicy.nodeIds.indexOf(nodeId);
+	function togglePolicyEdgeId(container, EdgeId, add) {
+		var i = activePolicy.EdgeIds.indexOf(EdgeId);
 		if ( add && i < 0 ) {
-			activePolicy.nodeIds.push(nodeId);
-			updatePolicySourceIdHint(container, activePolicy.nodeIds);
+			activePolicy.EdgeIds.push(EdgeId);
+			updatePolicySourceIdHint(container, activePolicy.EdgeIds);
 		} else if ( !add && i >= 0 ) {
-			activePolicy.nodeIds.splice(i, 1);
-			updatePolicySourceIdHint(container, activePolicy.nodeIds);
+			activePolicy.EdgeIds.splice(i, 1);
+			updatePolicySourceIdHint(container, activePolicy.EdgeIds);
 		}
 	}
 	
-	function updatePolicySourceIdHint(container, nodeIds) {
+	function updatePolicySourceIdHint(container, EdgeIds) {
 		var urls = [],
-			nodeKey,
+			EdgeKey,
 			sources,
 			sourceSet = [],
 			i;
@@ -102,12 +102,12 @@ $(document).ready(function() {
 			container.html(html.children());
 		}
 		
-		for ( i = 0; i < nodeIds.length; i += 1 ) {
-			nodeKey = ''+nodeIds[i];
-			sources = nodeSourceMap[nodeKey];
+		for ( i = 0; i < EdgeIds.length; i += 1 ) {
+			EdgeKey = ''+EdgeIds[i];
+			sources = EdgeSourceMap[EdgeKey];
 			if ( sources === undefined ) {
-				nodeSourceMap[nodeKey] = [];
-				urls.push({nodeKey:nodeKey, url:EniwareReg.eniwareUserURL('/sec/node-data/'+nodeKey+'/sources')});
+				EdgeSourceMap[EdgeKey] = [];
+				urls.push({EdgeKey:EdgeKey, url:EniwareReg.eniwareUserURL('/sec/Edge-data/'+EdgeKey+'/sources')});
 			} else {
 				populateSourceSet(sources);
 			}
@@ -116,15 +116,15 @@ $(document).ready(function() {
 			$.when.apply($,urls.map(function(url) {
 				return $.getJSON(url.url);
 			})).done(function() {
-				var j, json, nodeKey, max = urls.length
+				var j, json, EdgeKey, max = urls.length
 				for ( j = 0; j < max; j += 1 ) {
 					json = arguments[j];
 					if ( max > 1 ) {
 						json = json[0];
 					}
-					nodeKey = urls[j].nodeKey;
+					EdgeKey = urls[j].EdgeKey;
 					if ( json && json.success && Array.isArray(json.data) ) {
-						nodeSourceMap[nodeKey] = json.data;
+						EdgeSourceMap[EdgeKey] = json.data;
 						populateSourceSet(json.data);
 					}
 				}
@@ -140,29 +140,29 @@ $(document).ready(function() {
 		beforeSerialize: function(form, options) {
 			var containerText = form.find('textarea[name=sourceIds]').val(),
 				containerSourceIds = (containerText ? containerText.split(/\s*,\s*/) : []),
-				containerNodeMetadataText = form.find('textarea[name=nodeMetadataPaths]').val(),
-				containerNodeMetadataPaths = (containerNodeMetadataText ? containerNodeMetadataText.split(/\s*,\s*/) : []),
+				containerEdgeMetadataText = form.find('textarea[name=EdgeMetadataPaths]').val(),
+				containerEdgeMetadataPaths = (containerEdgeMetadataText ? containerEdgeMetadataText.split(/\s*,\s*/) : []),
 				containerUserMetadataText = form.find('textarea[name=userMetadataPaths]').val(),
 				containerUserMetadataPaths = (containerUserMetadataText ? containerUserMetadataText.split(/\s*,\s*/) : []);
 			activePolicy.sourceIds = containerSourceIds;
-			activePolicy.nodeMetadataPaths = containerNodeMetadataPaths;
+			activePolicy.EdgeMetadataPaths = containerEdgeMetadataPaths;
 			activePolicy.userMetadataPaths = containerUserMetadataPaths;
 		},
 		beforeSubmit: function(array, form, options) {
 			var sourceIdsIdx = array.findIndex(function(obj) {
 					return obj.name === 'sourceIds';
 				}),
-				nodeMetadataPathsIdx,
+				EdgeMetadataPathsIdx,
 				userMetadataPathsIdx;
 
 			if ( sourceIdsIdx >= 0 ) {
 				array.splice(sourceIdsIdx, 1);
 			}
-			nodeMetadataPathsIdx = array.findIndex(function(obj) {
-				return obj.name === 'nodeMetadataPaths';
+			EdgeMetadataPathsIdx = array.findIndex(function(obj) {
+				return obj.name === 'EdgeMetadataPaths';
 			});
-			if ( nodeMetadataPathsIdx >= 0 ) {
-				array.splice(nodeMetadataPathsIdx, 1);
+			if ( EdgeMetadataPathsIdx >= 0 ) {
+				array.splice(EdgeMetadataPathsIdx, 1);
 			}
 			userMetadataPathsIdx = array.findIndex(function(obj) {
 				return obj.name === 'userMetadataPaths';
@@ -178,16 +178,16 @@ $(document).ready(function() {
 					type : 'text'
 				});
 			});
-			activePolicy.nodeIds.forEach(function(nodeId) {
+			activePolicy.EdgeIds.forEach(function(EdgeId) {
 				array.push({
-					name : 'nodeId',
-					value : nodeId,
+					name : 'EdgeId',
+					value : EdgeId,
 					type : 'text'
 				});
 			});
-			activePolicy.nodeMetadataPaths.forEach(function(path) {
+			activePolicy.EdgeMetadataPaths.forEach(function(path) {
 				array.push({
-					name : 'nodeMetadataPath',
+					name : 'EdgeMetadataPath',
 					value : path,
 					type : 'text'
 				});
@@ -215,10 +215,10 @@ $(document).ready(function() {
 		reloadIfTokenCreated();
 	});
 	
-	$('#create-data-auth-token-policy-nodeids').on('click', function(event) {
+	$('#create-data-auth-token-policy-Edgeids').on('click', function(event) {
 		var target = $(event.target),
 			on = true,
-			nodeId = target.data('node-id');
+			EdgeId = target.data('Edge-id');
 		event.preventDefault();
 		if ( target.hasClass('toggle') ) {
 			if ( target.hasClass('btn-default') ) {
@@ -226,7 +226,7 @@ $(document).ready(function() {
 			}
 			target.toggleClass('btn-default', on)
 				.toggleClass('btn-primary', !on);
-			togglePolicyNodeId($('#create-data-auth-token-policy-sourceids-hint'), nodeId, !on);
+			togglePolicyEdgeId($('#create-data-auth-token-policy-sourceids-hint'), EdgeId, !on);
 		}
 	});
 	

@@ -4,13 +4,13 @@ ALTER TABLE solaruser.user_auth_token
 	ADD COLUMN jpolicy json;
 
 UPDATE solaruser.user_auth_token SET jpolicy = (
-	('{"nodeIds":' || array_to_json(ARRAY(SELECT n.node_id 
-				FROM solaruser.user_auth_token_node n 
+	('{"EdgeIds":' || array_to_json(ARRAY(SELECT n.Edge_id 
+				FROM solaruser.user_auth_token_Edge n 
 				WHERE n.auth_token = user_auth_token.auth_token)) || '}')::json
 	)
-WHERE (SELECT count(*) FROM solaruser.user_auth_token_node n WHERE n.auth_token = user_auth_token.auth_token) > 0;
+WHERE (SELECT count(*) FROM solaruser.user_auth_token_Edge n WHERE n.auth_token = user_auth_token.auth_token) > 0;
 
-DROP TABLE solaruser.user_auth_token_node;
+DROP TABLE solaruser.user_auth_token_Edge;
 
 CREATE OR REPLACE VIEW solaruser.user_auth_token_login AS 
  SELECT t.auth_token AS username,

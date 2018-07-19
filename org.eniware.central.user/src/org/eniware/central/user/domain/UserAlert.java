@@ -23,8 +23,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * such as
  * 
  * <ul>
- * <li>node <em>X</em> has not posted data in <em>Y</em> hours</li>
- * <li>node <em>X</em> posted value <em>V</em> for property <em>A</em> greater
+ * <li>Edge <em>X</em> has not posted data in <em>Y</em> hours</li>
+ * <li>Edge <em>X</em> posted value <em>V</em> for property <em>A</em> greater
  * than <em>T</em></li>
  * <li>location <em>L</em> posted value <em>V</em> for property <em>A</em> less
  * than <em>T</em></li>
@@ -32,7 +32,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  *
  * @version 1.0
  */
-@JsonPropertyOrder({ "id", "created", "userId", "nodeId", "type", "status", "validTo", "options" })
+@JsonPropertyOrder({ "id", "created", "userId", "EdgeId", "type", "status", "validTo", "options" })
 public class UserAlert extends BaseEntity {
 
 	private static final long serialVersionUID = 1374111067444093568L;
@@ -40,7 +40,7 @@ public class UserAlert extends BaseEntity {
 	private Long userId;
 	private UserAlertType type;
 	private UserAlertStatus status;
-	private Long nodeId;
+	private Long EdgeId;
 	private DateTime validTo;
 	private Map<String, Object> options;
 	private String optionsJson;
@@ -108,12 +108,12 @@ public class UserAlert extends BaseEntity {
 		this.status = status;
 	}
 
-	public Long getNodeId() {
-		return nodeId;
+	public Long getEdgeId() {
+		return EdgeId;
 	}
 
-	public void setNodeId(Long nodeId) {
-		this.nodeId = nodeId;
+	public void setEdgeId(Long EdgeId) {
+		this.EdgeId = EdgeId;
 	}
 
 	public DateTime getValidTo() {
@@ -161,10 +161,10 @@ public class UserAlert extends BaseEntity {
 		builder.append(type);
 		builder.append(", status=");
 		builder.append(status);
-		if ( nodeId != null ) {
+		if ( EdgeId != null ) {
 			builder.append(", ");
-			builder.append("nodeId=");
-			builder.append(nodeId);
+			builder.append("EdgeId=");
+			builder.append(EdgeId);
 		}
 		builder.append("}");
 		return builder.toString();

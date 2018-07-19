@@ -1,76 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?><!--Converted at: Tue Nov 11 06:02:38 NZDT 2014-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.eniware.central.user.dao.mybatis.UserNode">
+<mapper namespace="org.eniware.central.user.dao.mybatis.UserEdge">
 
 	<cache/>
 
-	<insert id="insert-UserNode" parameterType="UserNode">
-		INSERT INTO eniwareuser.user_node 
-			(node_id
+	<insert id="insert-UserEdge" parameterType="UserEdge">
+		INSERT INTO eniwareuser.user_Edge 
+			(Edge_id
 			<if test="created != null">,created</if>
 			, user_id, disp_name, description, private)
 		VALUES
-			(#{node.id}
+			(#{Edge.id}
 			<if test="created != null">,#{created}</if>
 			, #{user.id}, #{name}, #{description}, #{requiresAuthorization})
 	</insert>
 
-	<update id="update-UserNode" parameterType="UserNode">
+	<update id="update-UserEdge" parameterType="UserEdge">
 		UPDATE
-			eniwareuser.user_node 
+			eniwareuser.user_Edge 
 		SET
 			disp_name = #{name}, 
 			user_id = #{user.id},
 			description = #{description},
 			private = #{requiresAuthorization}
 		WHERE
-			node_id = #{node.id}
+			Edge_id = #{Edge.id}
 	</update>
 
-	<sql id="fragment-UserNode-full-result">
-		un.node_id AS user_node_node_id,
-		un.created AS user_node_created,
-		un.disp_name AS user_node_disp_name,
-		un.user_id AS user_node_user_id,
-		un.description AS user_node_description,
-		un.private AS user_node_private
+	<sql id="fragment-UserEdge-full-result">
+		un.Edge_id AS user_Edge_Edge_id,
+		un.created AS user_Edge_created,
+		un.disp_name AS user_Edge_disp_name,
+		un.user_id AS user_Edge_user_id,
+		un.description AS user_Edge_description,
+		un.private AS user_Edge_private
 	</sql>
 
-	<resultMap id="UserNodeFullResult" type="UserNode">
-		<id property="id" column="user_node_node_id"/>
-		<result property="created" column="user_node_created"/>
-		<result property="name" column="user_node_disp_name"/>
-		<result property="description" column="user_node_description"/>
-		<result property="requiresAuthorization" column="user_node_private"/>
-		<association property="node" resultMap="org.eniware.central.dao.mybatis.EniwareEdge.EniwareEdgeFullResult"/>
+	<resultMap id="UserEdgeFullResult" type="UserEdge">
+		<id property="id" column="user_Edge_Edge_id"/>
+		<result property="created" column="user_Edge_created"/>
+		<result property="name" column="user_Edge_disp_name"/>
+		<result property="description" column="user_Edge_description"/>
+		<result property="requiresAuthorization" column="user_Edge_private"/>
+		<association property="Edge" resultMap="org.eniware.central.dao.mybatis.EniwareEdge.EniwareEdgeFullResult"/>
 		<association property="user" resultMap="org.eniware.central.user.dao.mybatis.User.UserFullResult"/>
 	</resultMap>
 	
-	<sql id="fragment-UserNode-select-full">
+	<sql id="fragment-UserEdge-select-full">
 		SELECT
-			<include refid="fragment-UserNode-full-result"/>,
+			<include refid="fragment-UserEdge-full-result"/>,
 			<include refid="org.eniware.central.dao.mybatis.EniwareEdge.fragment-EniwareEdge-full-result"/>,
 			<include refid="org.eniware.central.dao.mybatis.EniwareLocation.fragment-EniwareLocation-full-result"/>,
 			<include refid="org.eniware.central.user.dao.mybatis.User.fragment-User-full-result"/>
 		FROM
-			eniwareuser.user_node un
+			eniwareuser.user_Edge un
 		INNER JOIN
-			eniwarenet.ew_edge n ON n.node_id = un.node_id
+			eniwarenet.ew_edge n ON n.Edge_id = un.Edge_id
 		INNER JOIN
 			eniwarenet.sn_loc l ON l.id = n.loc_id
 		INNER JOIN
 			eniwareuser.user_user u ON u.id = un.user_id
 	</sql>
 	
-	<select id="get-UserNode-for-id" parameterType="long" resultMap="UserNodeFullResult">
-		<include refid="fragment-UserNode-select-full"/>
+	<select id="get-UserEdge-for-id" parameterType="long" resultMap="UserEdgeFullResult">
+		<include refid="fragment-UserEdge-select-full"/>
 		WHERE
-			un.node_id = #{id}
+			un.Edge_id = #{id}
 	</select>
 	
-	<select id="find-UserNode-for-User" parameterType="long" resultMap="UserNodeFullResult">
-		<include refid="fragment-UserNode-select-full"/>
+	<select id="find-UserEdge-for-User" parameterType="long" resultMap="UserEdgeFullResult">
+		<include refid="fragment-UserEdge-select-full"/>
 		WHERE
 			u.id = #{id}
 			AND un.archived = FALSE
@@ -78,8 +78,8 @@
 			un.created
 	</select>
 	
-	<select id="find-archived-UserNode-for-User" parameterType="long" resultMap="UserNodeFullResult" useCache="false">
-		<include refid="fragment-UserNode-select-full"/>
+	<select id="find-archived-UserEdge-for-User" parameterType="long" resultMap="UserEdgeFullResult" useCache="false">
+		<include refid="fragment-UserEdge-select-full"/>
 		WHERE
 			u.id = #{id}
 			AND un.archived = TRUE
@@ -87,46 +87,46 @@
 			un.created
 	</select>
 
-	<update id="update-archived-UserNode-status" parameterType="map">
+	<update id="update-archived-UserEdge-status" parameterType="map">
 		UPDATE
-			eniwareuser.user_node 
+			eniwareuser.user_Edge 
 		SET
 			archived = #{archived}
 		WHERE
 			user_id = #{userId}
-			AND node_id = ANY (#{nodeIds,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.LongArrayTypeHandler})
+			AND Edge_id = ANY (#{EdgeIds,jdbcType=ARRAY,typeHandler=org.eniware.central.dao.mybatis.type.LongArrayTypeHandler})
 	</update>
 	
-	<resultMap id="UserNodeWithCertificates" type="UserNode" extends="UserNodeFullResult">
-		<association property="certificate" notNullColumn="uncert_user_id,uncert_node_id" resultMap="org.eniware.central.user.dao.mybatis.UserNodeCertificate.UserNodeCertificateFullResult"/>
-		<association property="transfer" notNullColumn="unxfer_user_id,unxfer_node_id" resultMap="org.eniware.central.user.dao.mybatis.UserNodeTransfer.UserNodeTransferFullResult"/>
+	<resultMap id="UserEdgeWithCertificates" type="UserEdge" extends="UserEdgeFullResult">
+		<association property="certificate" notNullColumn="uncert_user_id,uncert_Edge_id" resultMap="org.eniware.central.user.dao.mybatis.UserEdgeCertificate.UserEdgeCertificateFullResult"/>
+		<association property="transfer" notNullColumn="unxfer_user_id,unxfer_Edge_id" resultMap="org.eniware.central.user.dao.mybatis.UserEdgeTransfer.UserEdgeTransferFullResult"/>
 	</resultMap>
 	
-	<select id="find-UserNode-for-user-with-certs" parameterType="long" resultMap="UserNodeWithCertificates">
+	<select id="find-UserEdge-for-user-with-certs" parameterType="long" resultMap="UserEdgeWithCertificates">
 		SELECT
-			<include refid="fragment-UserNode-full-result"/>,
-			<include refid="org.eniware.central.user.dao.mybatis.UserNodeCertificate.fragment-UserNodeCertificate-full-result"/>,
-			<include refid="org.eniware.central.user.dao.mybatis.UserNodeTransfer.fragment-UserNodeTransfer-full-result"/>,
+			<include refid="fragment-UserEdge-full-result"/>,
+			<include refid="org.eniware.central.user.dao.mybatis.UserEdgeCertificate.fragment-UserEdgeCertificate-full-result"/>,
+			<include refid="org.eniware.central.user.dao.mybatis.UserEdgeTransfer.fragment-UserEdgeTransfer-full-result"/>,
 			<include refid="org.eniware.central.dao.mybatis.EniwareEdge.fragment-EniwareEdge-full-result"/>,
 			<include refid="org.eniware.central.dao.mybatis.EniwareLocation.fragment-EniwareLocation-full-result"/>,
 			<include refid="org.eniware.central.user.dao.mybatis.User.fragment-User-full-result"/>
 		FROM
-			eniwareuser.user_node un
+			eniwareuser.user_Edge un
 		INNER JOIN
-			eniwarenet.ew_edge n ON n.node_id = un.node_id
+			eniwarenet.ew_edge n ON n.Edge_id = un.Edge_id
 		INNER JOIN
 			eniwarenet.sn_loc l ON l.id = n.loc_id
 		INNER JOIN
 			eniwareuser.user_user u ON u.id = un.user_id
 		LEFT OUTER JOIN
-			eniwareuser.user_node_cert uncert ON uncert.user_id = un.user_id AND uncert.node_id = un.node_id
+			eniwareuser.user_Edge_cert uncert ON uncert.user_id = un.user_id AND uncert.Edge_id = un.Edge_id
 		LEFT OUTER JOIN
-			eniwareuser.user_node_xfer unxfer ON unxfer.user_id = un.user_id AND unxfer.node_id = un.node_id
+			eniwareuser.user_Edge_xfer unxfer ON unxfer.user_id = un.user_id AND unxfer.Edge_id = un.Edge_id
 		WHERE
 			un.user_id = #{id}
 			AND un.archived = FALSE
 		ORDER BY
-			un.node_id ASC
+			un.Edge_id ASC
 	</select>
 	
 </mapper>

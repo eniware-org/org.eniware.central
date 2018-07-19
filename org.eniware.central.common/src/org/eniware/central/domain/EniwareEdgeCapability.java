@@ -11,14 +11,14 @@ package org.eniware.central.domain;
 import java.io.Serializable;
 
 /**
- * A set of capabilities for a node.
+ * A set of capabilities for a Edge.
  * @version $Revision$
  */
 public class EniwareEdgeCapability extends EniwareCapability implements Cloneable, Serializable {
 
 	private static final long serialVersionUID = -1896754053131443476L;
 
-	private Long nodeId;
+	private Long EdgeId;
 	
 	/**
 	 * Default constructor.
@@ -30,22 +30,22 @@ public class EniwareEdgeCapability extends EniwareCapability implements Cloneabl
 	/**
 	 * Construct with values.
 	 * 
-	 * @param nodeId the node ID
+	 * @param EdgeId the Edge ID
 	 * @param generationCapacityWatts the generation capacity
 	 * @param storageCapacityWattHours the energy storage capacity
 	 */
-	public EniwareEdgeCapability(Long nodeId, Long generationCapacityWatts,
+	public EniwareEdgeCapability(Long EdgeId, Long generationCapacityWatts,
 			Long storageCapacityWattHours) {
-		setNodeId(nodeId);
+		setEdgeId(EdgeId);
 		setGenerationCapacityWatts(generationCapacityWatts);
 		setStorageCapacityWattHours(storageCapacityWattHours);
 	}
 	
-	public Long getNodeId() {
-		return nodeId;
+	public Long getEdgeId() {
+		return EdgeId;
 	}
-	public void setNodeId(Long nodeId) {
-		this.nodeId = nodeId;
+	public void setEdgeId(Long EdgeId) {
+		this.EdgeId = EdgeId;
 	}
 
 }

@@ -23,7 +23,7 @@
 	<!-- Service References -->
 
 	<reference id="generalLocationDatumMetadataDao" interface="org.eniware.central.datum.dao.GeneralLocationDatumMetadataDao"/>
-	<reference id="generalNodeDatumMetadataDao" interface="org.eniware.central.datum.dao.GeneralNodeDatumMetadataDao"/>
+	<reference id="generalEdgeDatumMetadataDao" interface="org.eniware.central.datum.dao.GeneralEdgeDatumMetadataDao"/>
 	
 	<reference id="transactionManager" interface="org.springframework.transaction.PlatformTransactionManager"/>
 	
@@ -40,7 +40,7 @@
 	
 	<bean id="daoDatumMetadataBiz" class="org.eniware.central.daum.biz.dao.DaoDatumMetadataBiz">
 		<property name="generalLocationDatumMetadataDao" ref="generalLocationDatumMetadataDao"/>
-		<property name="generalNodeDatumMetadataDao" ref="generalNodeDatumMetadataDao"/>
+		<property name="generalEdgeDatumMetadataDao" ref="generalEdgeDatumMetadataDao"/>
 	</bean>
 
 </blueprint>

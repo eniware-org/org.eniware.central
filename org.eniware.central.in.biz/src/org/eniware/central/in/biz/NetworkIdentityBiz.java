@@ -10,7 +10,7 @@ import org.eniware.domain.NetworkAssociation;
 import org.eniware.domain.NetworkIdentity;
 
 /**
- * API for identifying the EniwareIn service to nodes.
+ * API for identifying the EniwareIn service to Edges.
  *
  * @version $Revision$
  */
@@ -22,7 +22,7 @@ public interface NetworkIdentityBiz {
 	 * <p>
 	 * This is the information that should be publicly available for users to
 	 * view, so they can validate this against the same info presented during
-	 * node association.
+	 * Edge association.
 	 * </p>
 	 * 
 	 * @return identity key

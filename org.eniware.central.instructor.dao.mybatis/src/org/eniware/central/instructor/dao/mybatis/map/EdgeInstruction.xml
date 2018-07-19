@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed Nov 12 06:34:50 NZDT 2014-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.eniware.central.instructor.dao.mybatis.NodeInstruction">
+<mapper namespace="org.eniware.central.instructor.dao.mybatis.EdgeInstruction">
 
-	<insert id="insert-NodeInstruction" parameterType="NodeInstruction">
+	<insert id="insert-EdgeInstruction" parameterType="EdgeInstruction">
 		<selectKey keyProperty="id" resultType="long" order="BEFORE"> 
               SELECT nextval('eniwarenet.instruction_seq') AS id 
 		</selectKey>
 		INSERT INTO eniwarenet.ew_edge_instruction 
 			(id
 			<if test="created != null">,created</if>
-			, node_id, topic, instr_date, deliver_state)
+			, Edge_id, topic, instr_date, deliver_state)
 		VALUES
 			(#{id}
 			<if test="created != null">,#{created}</if>
-			, #{nodeId}, #{topic}, #{instructionDate}, 
+			, #{EdgeId}, #{topic}, #{instructionDate}, 
 			CAST(#{state} AS eniwarenet.instruction_delivery_state))
 	</insert>
 
-	<update id="update-NodeInstruction" parameterType="NodeInstruction">
+	<update id="update-EdgeInstruction" parameterType="EdgeInstruction">
 		UPDATE 
 			eniwarenet.ew_edge_instruction
 		SET
@@ -28,25 +28,25 @@
 			id = #{id}
 	</update>
 
-	<sql id="fragment-NodeInstruction-full-result">
+	<sql id="fragment-EdgeInstruction-full-result">
 		ni.id AS ew_edge_instruction_id,
 		ni.created AS ew_edge_instruction_created,
-		ni.node_id AS ew_edge_instruction_node_id,
+		ni.Edge_id AS ew_edge_instruction_Edge_id,
 		ni.topic AS ew_edge_instruction_topic,
 		ni.instr_date AS ew_edge_instruction_instr_date,
 		ni.deliver_state AS ew_edge_instruction_deliver_state,
 		ni.jresult_params AS ew_edge_instruction_jresult_params
 	</sql>
 	
-	<resultMap id="NodeInstructionFullResult" type="NodeInstruction">
+	<resultMap id="EdgeInstructionFullResult" type="EdgeInstruction">
 		<id property="id" column="ew_edge_instruction_id"/>
 		<result property="created" column="ew_edge_instruction_created"/>
-		<result property="nodeId" column="ew_edge_instruction_node_id"/>
+		<result property="EdgeId" column="ew_edge_instruction_Edge_id"/>
 		<result property="topic" column="ew_edge_instruction_topic"/>
 		<result property="instructionDate" column="ew_edge_instruction_instr_date"/>
 		<result property="state" column="ew_edge_instruction_deliver_state"/>
 		<result property="resultParametersJson" column="ew_edge_instruction_jresult_params"/>
-		<collection property="parameters" resultMap="org.eniware.central.instructor.dao.mybatis.NodeInstruction.InstructionParameterFullResult"/>
+		<collection property="parameters" resultMap="org.eniware.central.instructor.dao.mybatis.EdgeInstruction.InstructionParameterFullResult"/>
 	</resultMap>
 	
 	<sql id="fragment-InstructionParameter-full-result">
@@ -59,9 +59,9 @@
 		<result property="value" column="ew_edge_instruction_param_pvalue"/>
 	</resultMap>
 
-	<select id="get-NodeInstruction-for-id" parameterType="long" resultMap="NodeInstructionFullResult">
+	<select id="get-EdgeInstruction-for-id" parameterType="long" resultMap="EdgeInstructionFullResult">
 		SELECT
-			<include refid="fragment-NodeInstruction-full-result"/>,
+			<include refid="fragment-EdgeInstruction-full-result"/>,
 			<include refid="fragment-InstructionParameter-full-result"/>
 		FROM
 			eniwarenet.ew_edge_instruction ni
@@ -73,9 +73,9 @@
 	
 	<!--  Filter search -->
 	
-	<select id="findall-NodeInstruction-EntityMatch" parameterType="map" resultMap="NodeInstructionFullResult">
+	<select id="findall-EdgeInstruction-EntityMatch" parameterType="map" resultMap="EdgeInstructionFullResult">
 		SELECT 
-			<include refid="fragment-NodeInstruction-full-result"/>,
+			<include refid="fragment-EdgeInstruction-full-result"/>,
 			<include refid="fragment-InstructionParameter-full-result"/>
 		FROM
 			eniwarenet.ew_edge_instruction ni
@@ -89,9 +89,9 @@
 					       #{item,javaType=long,jdbcType=BIGINT}
 					</foreach>
 				</if>
-				<if test="filter.nodeIds != null">
-					AND ni.node_id IN
-					<foreach item="item" collection="filter.nodeIds" open="(" separator="," close=")">
+				<if test="filter.EdgeIds != null">
+					AND ni.Edge_id IN
+					<foreach item="item" collection="filter.EdgeIds" open="(" separator="," close=")">
 					       #{item,javaType=long,jdbcType=BIGINT}
 					</foreach>
 				</if>
@@ -106,7 +106,7 @@
 		ORDER BY ni.id
 	</select>
 	
-	<update id="delete-NodeInstruction-completed" statementType="CALLABLE" parameterType="map">
+	<update id="delete-EdgeInstruction-completed" statementType="CALLABLE" parameterType="map">
 		{#{result, mode=OUT, jdbcType=BIGINT} = call eniwarenet.purge_completed_instructions(
 			#{date, mode=IN, jdbcType=TIMESTAMP}
 		)}
@@ -114,7 +114,7 @@
 	
 	<!-- InstructionParameter support -->
 	
-	<select id="findall-NodeInstruction-InstructionParameter" parameterType="long" resultMap="InstructionParameterFullResult">
+	<select id="findall-EdgeInstruction-InstructionParameter" parameterType="long" resultMap="InstructionParameterFullResult">
 		SELECT 
 			<include refid="fragment-InstructionParameter-full-result"/>
 		FROM 
@@ -123,7 +123,7 @@
 		ORDER BY idx
 	</select>
 	
-	<delete id="delete-NodeInstruction-InstructionParameter" parameterType="map">
+	<delete id="delete-EdgeInstruction-InstructionParameter" parameterType="map">
 		DELETE FROM eniwarenet.ew_edge_instruction_param
 		WHERE instr_id = #{id,javaType=long,jdbcType=BIGINT}
 		<if test="index != null">
@@ -131,7 +131,7 @@
 		</if>
 	</delete>
 
-	<insert id="insert-NodeInstruction-InstructionParameter" parameterType="map">
+	<insert id="insert-EdgeInstruction-InstructionParameter" parameterType="map">
 		INSERT INTO eniwarenet.ew_edge_instruction_param
 			(instr_id, idx, pname, pvalue)
 		VALUES

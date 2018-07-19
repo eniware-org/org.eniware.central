@@ -1,11 +1,11 @@
 /**
- * Calculate an aggregated value for the running total of data for a given node or location and set of sources.
+ * Calculate an aggregated value for the running total of data for a given Edge or location and set of sources.
  * This function calls solaragg.find_running_datum() internally and calculates the weighted average of
  * all 'i' JSON property values, the sum of all 'a' JSON property values, and the most recent available
  * value for all 's' JSON property values.
  * 
- * @param query The node/location query to run. Must accept (bigint, text[], timestamptz) parameters.
- * @param pk The ID of the node/location to query for.
+ * @param query The Edge/location query to run. Must accept (bigint, text[], timestamptz) parameters.
+ * @param pk The ID of the Edge/location to query for.
  * @param sources An array of source IDs to query for.
  * @param end_ts An optional date to limit the results to. If not provided the current date is used.
  */
@@ -139,96 +139,96 @@ $BODY$;
 
 
 /**
- * Find aggregated data for a given node over all time up to an optional end date (else the current date).
+ * Find aggregated data for a given Edge over all time up to an optional end date (else the current date).
  * The purpose of this function is to find as few as possible records of already aggregated data
  * so they can be combined into a single running total aggregate result. Each result row includes a
  * <b>weight</b> column that represents the number of hours the given row spans. This number can be 
  * used to calculate a weighted average for all values over the entire result set.
  * 
- * @param node The ID of the node to query for.
+ * @param Edge The ID of the Edge to query for.
  * @param sources An array of source IDs to query for.
  * @param end_ts An optional date to limit the results to. If not provided the current date is used.
  */
 CREATE OR REPLACE FUNCTION solaragg.find_running_datum(
-	IN node bigint, 
+	IN Edge bigint, 
 	IN sources text[], 
 	IN end_ts timestamp with time zone DEFAULT CURRENT_TIMESTAMP)
-RETURNS TABLE(ts_start timestamp with time zone, local_date timestamp without time zone, node_id bigint, source_id text, jdata json, weight integer)
+RETURNS TABLE(ts_start timestamp with time zone, local_date timestamp without time zone, Edge_id bigint, source_id text, jdata json, weight integer)
 LANGUAGE sql 
 STABLE AS
 $BODY$
-	WITH nodetz AS (
-		SELECT n.node_id, COALESCE(l.time_zone, 'UTC') AS tz
-		FROM solarnet.sn_node n
+	WITH Edgetz AS (
+		SELECT n.Edge_id, COALESCE(l.time_zone, 'UTC') AS tz
+		FROM solarnet.sn_Edge n
 		LEFT OUTER JOIN solarnet.sn_loc l ON l.id = n.loc_id
-		WHERE n.node_id = node
+		WHERE n.Edge_id = Edge
 	)
-	SELECT d.ts_start, d.local_date, d.node_id, d.source_id, d.jdata, CAST(extract(epoch from (local_date + interval '1 month') - local_date) / 3600 AS integer) AS weight
+	SELECT d.ts_start, d.local_date, d.Edge_id, d.source_id, d.jdata, CAST(extract(epoch from (local_date + interval '1 month') - local_date) / 3600 AS integer) AS weight
 	FROM solaragg.agg_datum_monthly d
-	INNER JOIN nodetz ON nodetz.node_id = d.node_id
-	WHERE d.ts_start < date_trunc('month', end_ts AT TIME ZONE nodetz.tz) AT TIME ZONE nodetz.tz
+	INNER JOIN Edgetz ON Edgetz.Edge_id = d.Edge_id
+	WHERE d.ts_start < date_trunc('month', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
-	SELECT d.ts_start, d.local_date, d.node_id, d.source_id, d.jdata, 24::integer as weight
+	SELECT d.ts_start, d.local_date, d.Edge_id, d.source_id, d.jdata, 24::integer as weight
 	FROM solaragg.agg_datum_daily d
-	INNER JOIN nodetz ON nodetz.node_id = d.node_id
-	WHERE ts_start < date_trunc('day', end_ts AT TIME ZONE nodetz.tz) AT TIME ZONE nodetz.tz
-		AND d.ts_start >= date_trunc('month', end_ts AT TIME ZONE nodetz.tz) AT TIME ZONE nodetz.tz
+	INNER JOIN Edgetz ON Edgetz.Edge_id = d.Edge_id
+	WHERE ts_start < date_trunc('day', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
+		AND d.ts_start >= date_trunc('month', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
-	SELECT d.ts_start, d.local_date, d.node_id, d.source_id, d.jdata, 1::INTEGER as weight
+	SELECT d.ts_start, d.local_date, d.Edge_id, d.source_id, d.jdata, 1::INTEGER as weight
 	FROM solaragg.agg_datum_hourly d
-	INNER JOIN nodetz ON nodetz.node_id = d.node_id
-	WHERE d.ts_start < date_trunc('hour', end_ts AT TIME ZONE nodetz.tz) AT TIME ZONE nodetz.tz
-		AND d.ts_start >= date_trunc('day', end_ts AT TIME ZONE nodetz.tz) AT TIME ZONE nodetz.tz
+	INNER JOIN Edgetz ON Edgetz.Edge_id = d.Edge_id
+	WHERE d.ts_start < date_trunc('hour', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
+		AND d.ts_start >= date_trunc('day', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
-	SELECT ts_start, ts_start at time zone nodetz.tz AS local_date, nodetz.node_id, source_id, jdata, 1::integer as weight
+	SELECT ts_start, ts_start at time zone Edgetz.tz AS local_date, Edgetz.Edge_id, source_id, jdata, 1::integer as weight
 	FROM solaragg.calc_datum_time_slots(
-		node,
+		Edge,
 		sources,
 		date_trunc('hour', end_ts),
 		interval '1 hour',
 		0,
 		interval '1 hour')
-	INNER JOIN nodetz ON nodetz.node_id = node_id
+	INNER JOIN Edgetz ON Edgetz.Edge_id = Edge_id
 	ORDER BY ts_start, source_id
 $BODY$;
 
 
 /**
- * Calculate an aggregated value for the running total of data for a given node and set of sources.
+ * Calculate an aggregated value for the running total of data for a given Edge and set of sources.
  * This function calls solaragg.find_running_datum() internally and calculates the weighted average of
  * all 'i' JSON property values, the sum of all 'a' JSON property values, and the most recent available
  * value for all 's' JSON property values.
  * 
- * @param node The ID of the node to query for.
+ * @param Edge The ID of the Edge to query for.
  * @param sources An array of source IDs to query for.
  * @param end_ts An optional date to limit the results to. If not provided the current date is used.
  */
 CREATE OR REPLACE FUNCTION solaragg.calc_running_datum_total(
-	IN node bigint, 
+	IN Edge bigint, 
 	IN sources text[], 
 	IN end_ts timestamp with time zone DEFAULT CURRENT_TIMESTAMP)
-RETURNS TABLE(ts_start timestamp with time zone, local_date timestamp without time zone, node_id bigint, source_id text, jdata json)
+RETURNS TABLE(ts_start timestamp with time zone, local_date timestamp without time zone, Edge_id bigint, source_id text, jdata json)
 LANGUAGE sql 
 STABLE 
 ROWS 10 AS
 $BODY$
-	WITH nodetz AS (
-		SELECT n.node_id, COALESCE(l.time_zone, 'UTC') AS tz
-		FROM solarnet.sn_node n
+	WITH Edgetz AS (
+		SELECT n.Edge_id, COALESCE(l.time_zone, 'UTC') AS tz
+		FROM solarnet.sn_Edge n
 		LEFT OUTER JOIN solarnet.sn_loc l ON l.id = n.loc_id
-		WHERE n.node_id = node
+		WHERE n.Edge_id = Edge
 	)
-	SELECT end_ts, end_ts AT TIME ZONE nodetz.tz AS local_date, node, r.source_id, r.jdata
+	SELECT end_ts, end_ts AT TIME ZONE Edgetz.tz AS local_date, Edge, r.source_id, r.jdata
 	FROM solaragg.calc_running_total(
 		'SELECT * FROM solaragg.find_running_datum($1, $2, $3)',
-		node,
+		Edge,
 		sources,
 		end_ts
 	) r
-	INNER JOIN nodetz ON nodetz.node_id = r.id;
+	INNER JOIN Edgetz ON Edgetz.Edge_id = r.id;
 $BODY$;
 
 

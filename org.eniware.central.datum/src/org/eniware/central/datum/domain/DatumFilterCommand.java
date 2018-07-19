@@ -22,15 +22,15 @@ import org.eniware.central.support.MutableSortDescriptor;
 import org.joda.time.DateTime;
 
 /**
- * Implementation of {@link LocationDatumFilter}, {@link NodeDatumFilter}, and
- * {@link AggregateNodeDatumFilter}, and {@link GeneralNodeDatumFilter}.
+ * Implementation of {@link LocationDatumFilter}, {@link EdgeDatumFilter}, and
+ * {@link AggregateEdgeDatumFilter}, and {@link GeneralEdgeDatumFilter}.
  
  * @version 1.8
  */
-public class DatumFilterCommand implements LocationDatumFilter, NodeDatumFilter,
-		AggregateNodeDatumFilter, GeneralLocationDatumFilter, AggregateGeneralLocationDatumFilter,
-		GeneralNodeDatumFilter, AggregateGeneralNodeDatumFilter, GeneralLocationDatumMetadataFilter,
-		GeneralNodeDatumMetadataFilter, EniwareEdgeMetadataFilter {
+public class DatumFilterCommand implements LocationDatumFilter, EdgeDatumFilter,
+		AggregateEdgeDatumFilter, GeneralLocationDatumFilter, AggregateGeneralLocationDatumFilter,
+		GeneralEdgeDatumFilter, AggregateGeneralEdgeDatumFilter, GeneralLocationDatumMetadataFilter,
+		GeneralEdgeDatumMetadataFilter, EniwareEdgeMetadataFilter {
 
 	private final EniwareLocation location;
 	private DateTime startDate;
@@ -43,7 +43,7 @@ public class DatumFilterCommand implements LocationDatumFilter, NodeDatumFilter,
 	private String dataPath; // bean path expression to a data value, e.g. "i.watts"
 
 	private Long[] locationIds;
-	private Long[] nodeIds;
+	private Long[] EdgeIds;
 	private String[] sourceIds;
 	private Long[] userIds;
 	private String[] tags;
@@ -87,8 +87,8 @@ public class DatumFilterCommand implements LocationDatumFilter, NodeDatumFilter,
 		if ( location != null ) {
 			filter.putAll(location.getFilter());
 		}
-		if ( nodeIds != null ) {
-			filter.put("nodeIds", nodeIds);
+		if ( EdgeIds != null ) {
+			filter.put("EdgeIds", EdgeIds);
 		}
 		if ( sourceIds != null ) {
 			filter.put("sourceIds", sourceIds);
@@ -188,36 +188,36 @@ public class DatumFilterCommand implements LocationDatumFilter, NodeDatumFilter,
 	}
 
 	/**
-	 * Set a single node ID.
+	 * Set a single Edge ID.
 	 * 
 	 * <p>
-	 * This is a convenience method for requests that use a single node ID at a
-	 * time. The node ID is still stored on the {@code nodeIds} array, just as
+	 * This is a convenience method for requests that use a single Edge ID at a
+	 * time. The Edge ID is still stored on the {@code EdgeIds} array, just as
 	 * the first value. Calling this method replaces any existing
-	 * {@code nodeIds} value with a new array containing just the ID passed into
+	 * {@code EdgeIds} value with a new array containing just the ID passed into
 	 * this method.
 	 * </p>
 	 * 
-	 * @param nodeId
-	 *        the ID of the node
+	 * @param EdgeId
+	 *        the ID of the Edge
 	 */
-	public void setNodeId(Long nodeId) {
-		this.nodeIds = new Long[] { nodeId };
+	public void setEdgeId(Long EdgeId) {
+		this.EdgeIds = new Long[] { EdgeId };
 	}
 
 	/**
-	 * Get the first node ID.
+	 * Get the first Edge ID.
 	 * 
 	 * <p>
-	 * This returns the first available node ID from the {@code nodeIds} array,
+	 * This returns the first available Edge ID from the {@code EdgeIds} array,
 	 * or <em>null</em> if not available.
 	 * </p>
 	 * 
-	 * @return the first node ID
+	 * @return the first Edge ID
 	 */
 	@Override
-	public Long getNodeId() {
-		return this.nodeIds == null || this.nodeIds.length < 1 ? null : this.nodeIds[0];
+	public Long getEdgeId() {
+		return this.EdgeIds == null || this.EdgeIds.length < 1 ? null : this.EdgeIds[0];
 	}
 
 	/**
@@ -231,8 +231,8 @@ public class DatumFilterCommand implements LocationDatumFilter, NodeDatumFilter,
 	 * into this method.
 	 * </p>
 	 * 
-	 * @param nodeId
-	 *        the ID of the node
+	 * @param EdgeId
+	 *        the ID of the Edge
 	 */
 	public void setSourceId(String sourceId) {
 		if ( sourceId == null ) {
@@ -250,7 +250,7 @@ public class DatumFilterCommand implements LocationDatumFilter, NodeDatumFilter,
 	 * array, or <em>null</em> if not available.
 	 * </p>
 	 * 
-	 * @return the first node ID
+	 * @return the first Edge ID
 	 */
 	@Override
 	public String getSourceId() {
@@ -258,12 +258,12 @@ public class DatumFilterCommand implements LocationDatumFilter, NodeDatumFilter,
 	}
 
 	@Override
-	public Long[] getNodeIds() {
-		return nodeIds;
+	public Long[] getEdgeIds() {
+		return EdgeIds;
 	}
 
-	public void setNodeIds(Long[] nodeIds) {
-		this.nodeIds = nodeIds;
+	public void setEdgeIds(Long[] EdgeIds) {
+		this.EdgeIds = EdgeIds;
 	}
 
 	@Override
@@ -409,7 +409,7 @@ public class DatumFilterCommand implements LocationDatumFilter, NodeDatumFilter,
 		result = prime * result + Arrays.hashCode(locationIds);
 		result = prime * result + ((max == null) ? 0 : max.hashCode());
 		result = prime * result + (mostRecent ? 1231 : 1237);
-		result = prime * result + Arrays.hashCode(nodeIds);
+		result = prime * result + Arrays.hashCode(EdgeIds);
 		result = prime * result + ((offset == null) ? 0 : offset.hashCode());
 		result = prime * result + ((sorts == null) ? 0 : sorts.hashCode());
 		result = prime * result + Arrays.hashCode(sourceIds);
@@ -474,7 +474,7 @@ public class DatumFilterCommand implements LocationDatumFilter, NodeDatumFilter,
 		if ( mostRecent != other.mostRecent ) {
 			return false;
 		}
-		if ( !Arrays.equals(nodeIds, other.nodeIds) ) {
+		if ( !Arrays.equals(EdgeIds, other.EdgeIds) ) {
 			return false;
 		}
 		if ( offset == null ) {

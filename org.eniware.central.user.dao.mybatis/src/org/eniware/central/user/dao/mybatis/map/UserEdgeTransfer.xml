@@ -1,70 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.eniware.central.user.dao.mybatis.UserNodeTransfer">
+<mapper namespace="org.eniware.central.user.dao.mybatis.UserEdgeTransfer">
 
-	<cache-ref namespace="org.eniware.central.user.dao.mybatis.UserNode"/>
+	<cache-ref namespace="org.eniware.central.user.dao.mybatis.UserEdge"/>
 
-	<update id="store-UserNodeTransfer" statementType="CALLABLE">
-		{call eniwareuser.store_user_node_xfer(
-			#{nodeId, mode=IN, jdbcType=BIGINT}, 
+	<update id="store-UserEdgeTransfer" statementType="CALLABLE">
+		{call eniwareuser.store_user_Edge_xfer(
+			#{EdgeId, mode=IN, jdbcType=BIGINT}, 
 			#{userId, mode=IN, jdbcType=BIGINT}, 
 			#{email, mode=IN, jdbcType=VARCHAR}
 		)}
 	</update>
 	
-	<update id="delete-UserNodeTransfer" parameterType="UserNodePK">
-		DELETE FROM eniwareuser.user_node_xfer
+	<update id="delete-UserEdgeTransfer" parameterType="UserEdgePK">
+		DELETE FROM eniwareuser.user_Edge_xfer
 		WHERE
 			user_id = #{userId}
-			AND node_id = #{nodeId}
+			AND Edge_id = #{EdgeId}
 	</update>
 
-	<sql id="fragment-UserNodeTransfer-full-result">
+	<sql id="fragment-UserEdgeTransfer-full-result">
 		unxfer.created AS unxfer_created,
 		unxfer.user_id AS unxfer_user_id,
-		unxfer.node_id AS unxfer_node_id,
+		unxfer.Edge_id AS unxfer_Edge_id,
 		unxfer.recipient AS unxfer_recipient
 	</sql>
 
-	<resultMap id="UserNodeTransferFullResult" type="UserNodeTransfer">
+	<resultMap id="UserEdgeTransferFullResult" type="UserEdgeTransfer">
 		<id property="userId" column="unxfer_user_id"/>
-		<id property="nodeId" column="unxfer_node_id"/>
+		<id property="EdgeId" column="unxfer_Edge_id"/>
 		<result property="created" column="unxfer_created"/>
 		<result property="email" column="unxfer_recipient"/>
 		<association property="user" resultMap="org.eniware.central.user.dao.mybatis.User.UserFullResult"/>
-		<association property="node" resultMap="org.eniware.central.dao.mybatis.EniwareEdge.EniwareEdgeFullResult"/>
+		<association property="Edge" resultMap="org.eniware.central.dao.mybatis.EniwareEdge.EniwareEdgeFullResult"/>
 	</resultMap>
 	
-	<select id="get-UserNodeTransfer-for-id" parameterType="UserNodePK" resultMap="UserNodeTransferFullResult">
+	<select id="get-UserEdgeTransfer-for-id" parameterType="UserEdgePK" resultMap="UserEdgeTransferFullResult">
 		SELECT
-			<include refid="fragment-UserNodeTransfer-full-result"/>,
+			<include refid="fragment-UserEdgeTransfer-full-result"/>,
 			<include refid="org.eniware.central.dao.mybatis.EniwareEdge.fragment-EniwareEdge-share-result"/>,
 			<include refid="org.eniware.central.dao.mybatis.EniwareLocation.fragment-EniwareLocation-public-result"/>,
 			<include refid="org.eniware.central.user.dao.mybatis.User.fragment-User-share-result"/>
 		FROM
-			eniwareuser.user_node_xfer unxfer
+			eniwareuser.user_Edge_xfer unxfer
 		INNER JOIN
-			eniwarenet.ew_edge n ON n.node_id = unxfer.node_id
+			eniwarenet.ew_edge n ON n.Edge_id = unxfer.Edge_id
 		INNER JOIN
 			eniwarenet.sn_loc l ON l.id = n.loc_id
 		INNER JOIN
 			eniwareuser.user_user u ON u.id = unxfer.user_id
 		WHERE
 			unxfer.user_id = #{userId}
-			AND unxfer.node_id = #{nodeId}
+			AND unxfer.Edge_id = #{EdgeId}
 	</select>
 	
-	<select id="find-UserNodeTransfer-for-email" parameterType="string" resultMap="UserNodeTransferFullResult">
+	<select id="find-UserEdgeTransfer-for-email" parameterType="string" resultMap="UserEdgeTransferFullResult">
 		SELECT
-			<include refid="fragment-UserNodeTransfer-full-result"/>,
+			<include refid="fragment-UserEdgeTransfer-full-result"/>,
 			<include refid="org.eniware.central.dao.mybatis.EniwareEdge.fragment-EniwareEdge-share-result"/>,
 			<include refid="org.eniware.central.dao.mybatis.EniwareLocation.fragment-EniwareLocation-public-result"/>,
 			<include refid="org.eniware.central.user.dao.mybatis.User.fragment-User-share-result"/>
 		FROM
-			eniwareuser.user_node_xfer unxfer
+			eniwareuser.user_Edge_xfer unxfer
 		INNER JOIN
-			eniwarenet.ew_edge n ON n.node_id = unxfer.node_id
+			eniwarenet.ew_edge n ON n.Edge_id = unxfer.Edge_id
 		INNER JOIN
 			eniwarenet.sn_loc l ON l.id = n.loc_id
 		INNER JOIN
@@ -72,7 +72,7 @@
 		WHERE
 			unxfer.recipient = #{email}
 		ORDER BY
-			unxfer.created, unxfer.node_id
+			unxfer.created, unxfer.Edge_id
 	</select>
 	
 </mapper>

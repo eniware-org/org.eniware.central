@@ -32,7 +32,7 @@ public class DaoEniwareEdgeMetadataBiz implements EniwareEdgeMetadataBiz {
 	 * Constructor.
 	 * 
 	 * @param eniwareEdgeMetadataDao
-	 *        the node metadata DAO to use
+	 *        the Edge metadata DAO to use
 	 */
 	public DaoEniwareEdgeMetadataBiz(EniwareEdgeMetadataDao eniwareEdgeMetadataDao) {
 		super();
@@ -41,15 +41,15 @@ public class DaoEniwareEdgeMetadataBiz implements EniwareEdgeMetadataBiz {
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	@Override
-	public void addEniwareEdgeMetadata(Long nodeId, GeneralDatumMetadata meta) {
-		assert nodeId != null;
+	public void addEniwareEdgeMetadata(Long EdgeId, GeneralDatumMetadata meta) {
+		assert EdgeId != null;
 		assert meta != null;
-		EniwareEdgeMetadata snm = eniwareEdgeMetadataDao.get(nodeId);
+		EniwareEdgeMetadata snm = eniwareEdgeMetadataDao.get(EdgeId);
 		GeneralDatumMetadata newMeta = meta;
 		if ( snm == null ) {
 			snm = new EniwareEdgeMetadata();
 			snm.setCreated(new DateTime());
-			snm.setId(nodeId);
+			snm.setId(EdgeId);
 			newMeta = meta;
 		} else if ( snm.getMeta() != null && snm.getMeta().equals(meta) == false ) {
 			newMeta = new GeneralDatumMetadata(snm.getMeta());
@@ -64,14 +64,14 @@ public class DaoEniwareEdgeMetadataBiz implements EniwareEdgeMetadataBiz {
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	@Override
-	public void storeEniwareEdgeMetadata(Long nodeId, GeneralDatumMetadata meta) {
-		assert nodeId != null;
+	public void storeEniwareEdgeMetadata(Long EdgeId, GeneralDatumMetadata meta) {
+		assert EdgeId != null;
 		assert meta != null;
-		EniwareEdgeMetadata snm = eniwareEdgeMetadataDao.get(nodeId);
+		EniwareEdgeMetadata snm = eniwareEdgeMetadataDao.get(EdgeId);
 		if ( snm == null ) {
 			snm = new EniwareEdgeMetadata();
 			snm.setCreated(new DateTime());
-			snm.setId(nodeId);
+			snm.setId(EdgeId);
 			snm.setMeta(meta);
 		} else {
 			snm.setMeta(meta);
@@ -81,8 +81,8 @@ public class DaoEniwareEdgeMetadataBiz implements EniwareEdgeMetadataBiz {
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	@Override
-	public void removeEniwareEdgeMetadata(Long nodeId) {
-		EniwareEdgeMetadata meta = eniwareEdgeMetadataDao.get(nodeId);
+	public void removeEniwareEdgeMetadata(Long EdgeId) {
+		EniwareEdgeMetadata meta = eniwareEdgeMetadataDao.get(EdgeId);
 		if ( meta != null ) {
 			eniwareEdgeMetadataDao.delete(meta);
 		}

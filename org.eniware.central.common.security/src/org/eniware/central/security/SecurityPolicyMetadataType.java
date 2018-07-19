@@ -17,8 +17,8 @@ public enum SecurityPolicyMetadataType {
 	/** A datum or location specific metadata type. */
 	Datum,
 
-	/** A node specific mettadata type. */
-	Node,
+	/** A Edge specific mettadata type. */
+	Edge,
 
 	/** A user specific metadata type. */
 	User;

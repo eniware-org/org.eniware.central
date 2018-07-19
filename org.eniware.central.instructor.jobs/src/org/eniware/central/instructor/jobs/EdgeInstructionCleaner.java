@@ -31,7 +31,7 @@ public class EdgeInstructionCleaner extends JobSupport {
 	 * @param eventAdmin
 	 *        The EventAdmin to use.
 	 * @param dao
-	 *        The NodeInstructionDao to use.
+	 *        The EdgeInstructionDao to use.
 	 */
 	public EdgeInstructionCleaner(EventAdmin eventAdmin, EdgeInstructionDao dao) {
 		super(eventAdmin);
@@ -47,7 +47,7 @@ public class EdgeInstructionCleaner extends JobSupport {
 	protected boolean handleJob(Event job) throws Exception {
 		DateTime date = new DateTime().minusDays(daysOlder);
 		long result = dao.purgeCompletedInstructions(date);
-		log.info("Purged {} node instructions older than {} ({} days ago)", result, date, daysOlder);
+		log.info("Purged {} Edge instructions older than {} ({} days ago)", result, date, daysOlder);
 		return true;
 	}
 

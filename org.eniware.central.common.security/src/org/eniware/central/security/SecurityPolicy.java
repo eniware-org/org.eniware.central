@@ -19,11 +19,11 @@ import org.eniware.central.domain.LocationPrecision;
 public interface SecurityPolicy {
 
 	/**
-	 * Get a set of node IDs this policy applies to.
+	 * Get a set of Edge IDs this policy applies to.
 	 * 
-	 * @return set of node IDs, or {@code null}
+	 * @return set of Edge IDs, or {@code null}
 	 */
-	Set<Long> getNodeIds();
+	Set<Long> getEdgeIds();
 
 	/**
 	 * Get a set of source IDs this policy applies to.
@@ -61,12 +61,12 @@ public interface SecurityPolicy {
 	LocationPrecision getMinLocationPrecision();
 
 	/**
-	 * Get a set of node metadata paths this policy applies to.
+	 * Get a set of Edge metadata paths this policy applies to.
 	 * 
-	 * @return set of node metadata paths
+	 * @return set of Edge metadata paths
 	 * @since 1.1
 	 */
-	Set<String> getNodeMetadataPaths();
+	Set<String> getEdgeMetadataPaths();
 
 	/**
 	 * Get a set of user metadata paths this policy applies to.

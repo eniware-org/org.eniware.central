@@ -16,7 +16,7 @@ import org.eniware.central.ValidationException;
 import org.eniware.central.security.AuthorizationException;
 import org.eniware.central.security.SecurityActor;
 import org.eniware.central.security.SecurityException;
-import org.eniware.central.security.SecurityNode;
+import org.eniware.central.security.SecurityEdge;
 import org.eniware.central.security.SecurityToken;
 import org.eniware.central.security.SecurityUser;
 import org.eniware.central.security.SecurityUtils;
@@ -251,35 +251,35 @@ public abstract class WebServiceControllerSupport {
 	}
 
 	/**
-	 * Get all node IDs the current actor is authorized to access.
+	 * Get all Edge IDs the current actor is authorized to access.
 	 * 
 	 * @param userBiz
-	 *        The UserBiz to use to fill in all available nodes for user-based
-	 *        actors, or {@code null} to to fill in nodes.
-	 * @return The allowed node IDs.
+	 *        The UserBiz to use to fill in all available Edges for user-based
+	 *        actors, or {@code null} to to fill in Edges.
+	 * @return The allowed Edge IDs.
 	 * @throws AuthorizationException
-	 *         if no node IDs are allowed or there is no actor
+	 *         if no Edge IDs are allowed or there is no actor
 	 * @since 1.5
 	 */
-	protected Long[] authorizedNodeIdsForCurrentActor(UserBiz userBiz) {
+	protected Long[] authorizedEdgeIdsForCurrentActor(UserBiz userBiz) {
 		final SecurityActor actor;
 		try {
 			actor = SecurityUtils.getCurrentActor();
 		} catch ( SecurityException e ) {
-			log.warn("Access DENIED to node {} for non-authenticated user");
+			log.warn("Access DENIED to Edge {} for non-authenticated user");
 			throw new AuthorizationException(AuthorizationException.Reason.ACCESS_DENIED, null);
 		}
 
-		if ( actor instanceof SecurityNode ) {
-			SecurityNode node = (SecurityNode) actor;
-			return new Long[] { node.getNodeId() };
+		if ( actor instanceof SecurityEdge ) {
+			SecurityEdge Edge = (SecurityEdge) actor;
+			return new Long[] { Edge.getEdgeId() };
 		} else if ( actor instanceof SecurityUser ) {
 			SecurityUser user = (SecurityUser) actor;
-			// default to all nodes for actor
-			List<UserEdge> nodes = userBiz.getUserNodes(user.getUserId());
-			if ( nodes != null && !nodes.isEmpty() ) {
-				Long[] result = new Long[nodes.size()];
-				for ( ListIterator<UserEdge> itr = nodes.listIterator(); itr.hasNext(); ) {
+			// default to all Edges for actor
+			List<UserEdge> Edges = userBiz.getUserEdges(user.getUserId());
+			if ( Edges != null && !Edges.isEmpty() ) {
+				Long[] result = new Long[Edges.size()];
+				for ( ListIterator<UserEdge> itr = Edges.listIterator(); itr.hasNext(); ) {
 					result[itr.nextIndex()] = itr.next().getId();
 				}
 				return result;
@@ -288,19 +288,19 @@ public abstract class WebServiceControllerSupport {
 			SecurityToken token = (SecurityToken) actor;
 			Long[] result = null;
 			if ( UserAuthTokenType.User.toString().equals(token.getTokenType()) ) {
-				// default to all nodes for actor
-				List<UserEdge> nodes = userBiz.getUserNodes(token.getUserId());
-				if ( nodes != null && !nodes.isEmpty() ) {
-					result = new Long[nodes.size()];
-					for ( ListIterator<UserEdge> itr = nodes.listIterator(); itr.hasNext(); ) {
+				// default to all Edges for actor
+				List<UserEdge> Edges = userBiz.getUserEdges(token.getUserId());
+				if ( Edges != null && !Edges.isEmpty() ) {
+					result = new Long[Edges.size()];
+					for ( ListIterator<UserEdge> itr = Edges.listIterator(); itr.hasNext(); ) {
 						result[itr.nextIndex()] = itr.next().getId();
 					}
 				}
-			} else if ( UserAuthTokenType.ReadNodeData.toString().equals(token.getTokenType()) ) {
-				// all node IDs in token
-				if ( token.getPolicy() != null && token.getPolicy().getNodeIds() != null ) {
-					Set<Long> nodeIds = token.getPolicy().getNodeIds();
-					result = nodeIds.toArray(new Long[nodeIds.size()]);
+			} else if ( UserAuthTokenType.ReadEdgeData.toString().equals(token.getTokenType()) ) {
+				// all Edge IDs in token
+				if ( token.getPolicy() != null && token.getPolicy().getEdgeIds() != null ) {
+					Set<Long> EdgeIds = token.getPolicy().getEdgeIds();
+					result = EdgeIds.toArray(new Long[EdgeIds.size()]);
 				}
 			}
 			if ( result != null && result.length > 0 ) {

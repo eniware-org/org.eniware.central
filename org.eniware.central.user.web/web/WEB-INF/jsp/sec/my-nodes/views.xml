@@ -4,17 +4,17 @@
 	"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
 	
-	<definition name="myNodesLayout" extends="default">
-		<put-attribute name="navloc" type="string" value="my-nodes"/>
-		<put-attribute name="head" value="/WEB-INF/jsp/sec/my-nodes/head.jsp" />
+	<definition name="myEdgesLayout" extends="default">
+		<put-attribute name="navloc" type="string" value="my-Edges"/>
+		<put-attribute name="head" value="/WEB-INF/jsp/sec/my-Edges/head.jsp" />
 	</definition>
 	
-	<definition name="my-nodes/edit-node" extends="ajaxLayout">
-		<put-attribute name="body" value="/WEB-INF/jsp/sec/my-nodes/edit-node.jsp" />
+	<definition name="my-Edges/edit-Edge" extends="ajaxLayout">
+		<put-attribute name="body" value="/WEB-INF/jsp/sec/my-Edges/edit-Edge.jsp" />
 	</definition>
 	
-	<definition name="my-nodes/*" extends="myNodesLayout">
-		<put-attribute name="body" value="/WEB-INF/jsp/sec/my-nodes/{1}.jsp" />
+	<definition name="my-Edges/*" extends="myEdgesLayout">
+		<put-attribute name="body" value="/WEB-INF/jsp/sec/my-Edges/{1}.jsp" />
 	</definition>
 	
 </tiles-definitions>

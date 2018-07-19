@@ -629,7 +629,7 @@ $.fn.ajaxSubmit = function(options) {
             else {
                 doc = (new DOMParser()).parseFromString(s, 'text/xml');
             }
-            return (doc && doc.documentElement && doc.documentElement.nodeName != 'parsererror') ? doc : null;
+            return (doc && doc.documentElement && doc.documentElement.EdgeName != 'parsererror') ? doc : null;
         };
         var parseJSON = $.parseJSON || function(s) {
             /*jslint evil:true */
@@ -642,7 +642,7 @@ $.fn.ajaxSubmit = function(options) {
                 xml = type === 'xml' || !type && ct.indexOf('xml') >= 0,
                 data = xml ? xhr.responseXML : xhr.responseText;
 
-            if (xml && data.documentElement.nodeName === 'parsererror') {
+            if (xml && data.documentElement.EdgeName === 'parsererror') {
                 if ($.error)
                     $.error('parsererror');
             }
@@ -1015,7 +1015,7 @@ $.fn.resetForm = function() {
     return this.each(function() {
         // guard against an input with the name of 'reset'
         // note that IE reports the reset function as an 'object'
-        if (typeof this.reset == 'function' || (typeof this.reset == 'object' && !this.reset.nodeType)) {
+        if (typeof this.reset == 'function' || (typeof this.reset == 'object' && !this.reset.EdgeType)) {
             this.reset();
         }
     });

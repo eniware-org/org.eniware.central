@@ -7,7 +7,7 @@
 package org.eniware.central.domain;
 
 /**
- * Centralized node control entity.
+ * Centralized Edge control entity.
  * 
  * <p>This entity is designed to hold information about a control so that control
  * could be compared against other controls.</p>

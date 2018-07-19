@@ -7,7 +7,7 @@ DROP FUNCTION IF EXISTS solaragg.find_datum_for_time_slot(bigint, text[], timest
  * The query can return adjacent rows before or after the given span so that
  * accumulating values can be calculated from the results.
  *
- * @param node				node ID
+ * @param Edge				Edge ID
  * @param sources			array of source IDs
  * @param start_ts			the start timestamp
  * @param span				the length of time from start_ts to use as the end timestamp
@@ -15,7 +15,7 @@ DROP FUNCTION IF EXISTS solaragg.find_datum_for_time_slot(bigint, text[], timest
  *                          look for adjacent rows
  */
 CREATE OR REPLACE FUNCTION solaragg.find_datum_for_time_span(
-    IN node bigint,
+    IN Edge bigint,
     IN sources text[],
     IN start_ts timestamp with time zone,
     IN span interval,
@@ -34,7 +34,7 @@ SELECT sub.ts, sub.source_id, sub.jdata FROM (
 		END AS outside,
 		d.jdata as jdata
 	FROM solardatum.da_datum d
-	WHERE d.node_id = node
+	WHERE d.Edge_id = Edge
 		AND d.source_id = ANY(sources)
 		AND d.ts >= start_ts - tolerance
 		AND d.ts <= start_ts + span + tolerance
@@ -48,12 +48,12 @@ $BODY$
 
 
 /**
- * Dynamically calculate time slot aggregate values for a node and set of source IDs.
+ * Dynamically calculate time slot aggregate values for a Edge and set of source IDs.
  * If <code>slotsecs</code> is between 60 and 1800 then the the results will include
  * corresponding minute-level time slots per source ID. Otherwise at most a single
  * row per source ID will be returned.
  *
- * @param node				node ID
+ * @param Edge				Edge ID
  * @param sources			array of source IDs
  * @param start_ts			the start timestamp
  * @param span				the length of time from start_ts to use as the end timestamp
@@ -63,7 +63,7 @@ $BODY$
  *                          look for adjacent rows
  */
 CREATE OR REPLACE FUNCTION solaragg.calc_datum_time_slots(
-	IN node bigint,
+	IN Edge bigint,
 	IN sources text[],
 	IN start_ts timestamp with time zone,
 	IN span interval,
@@ -107,7 +107,7 @@ if ( slotMode ) {
 	});
 }
 
-cur = stmt.cursor([node, sources, start_ts, span, tolerance]);
+cur = stmt.cursor([Edge, sources, start_ts, span, tolerance]);
 
 while ( rec = cur.fetch() ) {
 	if ( !rec.jdata ) {
@@ -312,52 +312,52 @@ $BODY$;
 
 
 CREATE OR REPLACE FUNCTION solaragg.find_running_datum(
-    IN node bigint,
+    IN Edge bigint,
     IN sources text[],
     IN end_ts timestamp with time zone DEFAULT CURRENT_TIMESTAMP)
-  RETURNS TABLE(ts_start timestamp with time zone, local_date timestamp without time zone, node_id bigint, source_id text, jdata json, weight integer)
+  RETURNS TABLE(ts_start timestamp with time zone, local_date timestamp without time zone, Edge_id bigint, source_id text, jdata json, weight integer)
 LANGUAGE sql
 STABLE AS
 $BODY$
-	-- get the node TZ, falling back to UTC if not available so we always have a time zone even if node not found
-	WITH nodetz AS (
-		SELECT n.node_id, COALESCE(l.time_zone, 'UTC') AS tz
-		FROM solarnet.sn_node n
+	-- get the Edge TZ, falling back to UTC if not available so we always have a time zone even if Edge not found
+	WITH Edgetz AS (
+		SELECT n.Edge_id, COALESCE(l.time_zone, 'UTC') AS tz
+		FROM solarnet.sn_Edge n
 		LEFT OUTER JOIN solarnet.sn_loc l ON l.id = n.loc_id
-		WHERE n.node_id = node
+		WHERE n.Edge_id = Edge
 		UNION ALL
-		SELECT node::bigint AS node_id, 'UTC'::character varying AS tz
-		WHERE NOT EXISTS (SELECT node_id FROM solarnet.sn_node WHERE node_id = node)
+		SELECT Edge::bigint AS Edge_id, 'UTC'::character varying AS tz
+		WHERE NOT EXISTS (SELECT Edge_id FROM solarnet.sn_Edge WHERE Edge_id = Edge)
 	)
-	SELECT d.ts_start, d.local_date, d.node_id, d.source_id, d.jdata, CAST(extract(epoch from (local_date + interval '1 month') - local_date) / 3600 AS integer) AS weight
+	SELECT d.ts_start, d.local_date, d.Edge_id, d.source_id, d.jdata, CAST(extract(epoch from (local_date + interval '1 month') - local_date) / 3600 AS integer) AS weight
 	FROM solaragg.agg_datum_monthly d
-	INNER JOIN nodetz ON nodetz.node_id = d.node_id
-	WHERE d.ts_start < date_trunc('month', end_ts AT TIME ZONE nodetz.tz) AT TIME ZONE nodetz.tz
+	INNER JOIN Edgetz ON Edgetz.Edge_id = d.Edge_id
+	WHERE d.ts_start < date_trunc('month', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
-	SELECT d.ts_start, d.local_date, d.node_id, d.source_id, d.jdata, 24::integer as weight
+	SELECT d.ts_start, d.local_date, d.Edge_id, d.source_id, d.jdata, 24::integer as weight
 	FROM solaragg.agg_datum_daily d
-	INNER JOIN nodetz ON nodetz.node_id = d.node_id
-	WHERE ts_start < date_trunc('day', end_ts AT TIME ZONE nodetz.tz) AT TIME ZONE nodetz.tz
-		AND d.ts_start >= date_trunc('month', end_ts AT TIME ZONE nodetz.tz) AT TIME ZONE nodetz.tz
+	INNER JOIN Edgetz ON Edgetz.Edge_id = d.Edge_id
+	WHERE ts_start < date_trunc('day', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
+		AND d.ts_start >= date_trunc('month', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
-	SELECT d.ts_start, d.local_date, d.node_id, d.source_id, d.jdata, 1::INTEGER as weight
+	SELECT d.ts_start, d.local_date, d.Edge_id, d.source_id, d.jdata, 1::INTEGER as weight
 	FROM solaragg.agg_datum_hourly d
-	INNER JOIN nodetz ON nodetz.node_id = d.node_id
-	WHERE d.ts_start < date_trunc('hour', end_ts AT TIME ZONE nodetz.tz) AT TIME ZONE nodetz.tz
-		AND d.ts_start >= date_trunc('day', end_ts AT TIME ZONE nodetz.tz) AT TIME ZONE nodetz.tz
+	INNER JOIN Edgetz ON Edgetz.Edge_id = d.Edge_id
+	WHERE d.ts_start < date_trunc('hour', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
+		AND d.ts_start >= date_trunc('day', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
-	SELECT ts_start, ts_start at time zone nodetz.tz AS local_date, nodetz.node_id, source_id, jdata, 1::integer as weight
+	SELECT ts_start, ts_start at time zone Edgetz.tz AS local_date, Edgetz.Edge_id, source_id, jdata, 1::integer as weight
 	FROM solaragg.calc_datum_time_slots(
-		node,
+		Edge,
 		sources,
 		date_trunc('hour', end_ts),
 		interval '1 hour',
 		0,
 		interval '1 hour')
-	INNER JOIN nodetz ON nodetz.node_id = node_id
+	INNER JOIN Edgetz ON Edgetz.Edge_id = Edge_id
 	ORDER BY ts_start, source_id
 $BODY$;
 
@@ -366,36 +366,36 @@ $BODY$;
  * Calculate a running average of datum up to a specific end date. There will
  * be at most one result row per source ID in the returned data.
  *
- * @param node    The ID of the node to query for.
+ * @param Edge    The ID of the Edge to query for.
  * @param sources An array of source IDs to query for.
  * @param end_ts  An optional date to limit the results to. If not provided the current date is used.
  */
 CREATE OR REPLACE FUNCTION solaragg.calc_running_datum_total(
-	IN node bigint,
+	IN Edge bigint,
 	IN sources text[],
 	IN end_ts timestamp with time zone DEFAULT CURRENT_TIMESTAMP)
-RETURNS TABLE(ts_start timestamp with time zone, local_date timestamp without time zone, node_id bigint, source_id text, jdata json)
+RETURNS TABLE(ts_start timestamp with time zone, local_date timestamp without time zone, Edge_id bigint, source_id text, jdata json)
 LANGUAGE sql
 STABLE
 ROWS 10 AS
 $BODY$
-	WITH nodetz AS (
-		SELECT n.node_id, COALESCE(l.time_zone, 'UTC') AS tz
-		FROM solarnet.sn_node n
+	WITH Edgetz AS (
+		SELECT n.Edge_id, COALESCE(l.time_zone, 'UTC') AS tz
+		FROM solarnet.sn_Edge n
 		LEFT OUTER JOIN solarnet.sn_loc l ON l.id = n.loc_id
-		WHERE n.node_id = node
+		WHERE n.Edge_id = Edge
 		UNION ALL
-		SELECT node::bigint AS node_id, 'UTC'::character varying AS tz
-		WHERE NOT EXISTS (SELECT node_id FROM solarnet.sn_node WHERE node_id = node)
+		SELECT Edge::bigint AS Edge_id, 'UTC'::character varying AS tz
+		WHERE NOT EXISTS (SELECT Edge_id FROM solarnet.sn_Edge WHERE Edge_id = Edge)
 	)
-	SELECT end_ts, end_ts AT TIME ZONE nodetz.tz AS local_date, node, r.source_id, r.jdata
+	SELECT end_ts, end_ts AT TIME ZONE Edgetz.tz AS local_date, Edge, r.source_id, r.jdata
 	FROM solaragg.calc_running_total(
-		node,
+		Edge,
 		sources,
 		end_ts,
 		FALSE
 	) AS r
-	INNER JOIN nodetz ON nodetz.node_id = node;
+	INNER JOIN Edgetz ON Edgetz.Edge_id = Edge;
 $BODY$;
 
 

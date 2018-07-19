@@ -55,9 +55,9 @@ public class DaoUserBiz implements UserBiz, EdgeOwnershipBiz {
 
 	private UserDao userDao;
 	private UserAlertDao userAlertDao;
-	private UserEdgeDao userNodeDao;
-	private UserEdgeConfirmationDao userNodeConfirmationDao;
-	private UserEdgeCertificateDao userNodeCertificateDao;
+	private UserEdgeDao userEdgeDao;
+	private UserEdgeConfirmationDao userEdgeConfirmationDao;
+	private UserEdgeCertificateDao userEdgeCertificateDao;
 	private UserAuthTokenDao userAuthTokenDao;
 	private EniwareLocationDao eniwareLocationDao;
 	private EniwareEdgeDao eniwareEdgeDao;
@@ -70,40 +70,40 @@ public class DaoUserBiz implements UserBiz, EdgeOwnershipBiz {
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserEdge> getUserNodes(Long userId) {
-		return userNodeDao.findUserNodesAndCertificatesForUser(userId);
+	public List<UserEdge> getUserEdges(Long userId) {
+		return userEdgeDao.findUserEdgesAndCertificatesForUser(userId);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public UserEdge getUserNode(Long userId, Long nodeId) throws AuthorizationException {
+	public UserEdge getUserEdge(Long userId, Long EdgeId) throws AuthorizationException {
 		assert userId != null;
-		assert nodeId != null;
-		UserEdge result = userNodeDao.get(nodeId);
+		assert EdgeId != null;
+		UserEdge result = userEdgeDao.get(EdgeId);
 		if ( result == null ) {
-			throw new AuthorizationException(nodeId.toString(), Reason.UNKNOWN_OBJECT);
+			throw new AuthorizationException(EdgeId.toString(), Reason.UNKNOWN_OBJECT);
 		}
 		if ( result.getUser().getId().equals(userId) == false ) {
-			throw new AuthorizationException(Reason.ACCESS_DENIED, nodeId);
+			throw new AuthorizationException(Reason.ACCESS_DENIED, EdgeId);
 		}
 		return result;
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public UserEdge saveUserNode(UserEdge entry) throws AuthorizationException {
+	public UserEdge saveUserEdge(UserEdge entry) throws AuthorizationException {
 		assert entry != null;
-		assert entry.getNode() != null;
+		assert entry.getEdge() != null;
 		assert entry.getUser() != null;
-		if ( entry.getNode().getId() == null ) {
+		if ( entry.getEdge().getId() == null ) {
 			throw new AuthorizationException(Reason.UNKNOWN_OBJECT, null);
 		}
 		if ( entry.getUser().getId() == null ) {
 			throw new AuthorizationException(Reason.UNKNOWN_OBJECT, null);
 		}
-		UserEdge entity = userNodeDao.get(entry.getNode().getId());
+		UserEdge entity = userEdgeDao.get(entry.getEdge().getId());
 		if ( entity == null ) {
-			throw new AuthorizationException(Reason.UNKNOWN_OBJECT, entry.getNode().getId());
+			throw new AuthorizationException(Reason.UNKNOWN_OBJECT, entry.getEdge().getId());
 		}
 		if ( entry.getName() != null ) {
 			entity.setName(entry.getName());
@@ -113,69 +113,69 @@ public class DaoUserBiz implements UserBiz, EdgeOwnershipBiz {
 		}
 		entity.setRequiresAuthorization(entry.isRequiresAuthorization());
 
-		// Maintain the node's location as well; see if the location matches exactly one in the DB,
+		// Maintain the Edge's location as well; see if the location matches exactly one in the DB,
 		// and if so assign that location (if not already assigned). If no location matches, create
 		// a new location and assign that.
-		if ( entry.getNodeLocation() != null ) {
-			EniwareEdge node = entity.getNode();
-			EniwareLocation norm = EniwareLocation.normalizedLocation(entry.getNodeLocation());
+		if ( entry.getEdgeLocation() != null ) {
+			EniwareEdge Edge = entity.getEdge();
+			EniwareLocation norm = EniwareLocation.normalizedLocation(entry.getEdgeLocation());
 			EniwareLocation locEntity = eniwareLocationDao.getEniwareLocationForLocation(norm);
 			if ( locEntity == null ) {
 				log.debug("Saving new EniwareLocation {}", locEntity);
 				locEntity = eniwareLocationDao.get(eniwareLocationDao.store(norm));
 			}
-			if ( locEntity.getId().equals(node.getLocationId()) == false ) {
-				log.debug("Updating node {} location from {} to {}", node.getId(), node.getLocationId(),
+			if ( locEntity.getId().equals(Edge.getLocationId()) == false ) {
+				log.debug("Updating Edge {} location from {} to {}", Edge.getId(), Edge.getLocationId(),
 						locEntity.getId());
-				node.setLocationId(locEntity.getId());
-				eniwareEdgeDao.store(node);
+				Edge.setLocationId(locEntity.getId());
+				eniwareEdgeDao.store(Edge);
 			}
 		}
 
-		userNodeDao.store(entity);
+		userEdgeDao.store(entity);
 
 		return entity;
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void updateUserNodeArchivedStatus(Long userId, Long[] nodeIds, boolean archived)
+	public void updateUserEdgeArchivedStatus(Long userId, Long[] EdgeIds, boolean archived)
 			throws AuthorizationException {
-		userNodeDao.updateUserNodeArchivedStatus(userId, nodeIds, archived);
+		userEdgeDao.updateUserEdgeArchivedStatus(userId, EdgeIds, archived);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserEdge> getArchivedUserNodes(Long userId) throws AuthorizationException {
-		return userNodeDao.findArchivedUserNodesForUser(userId);
+	public List<UserEdge> getArchivedUserEdges(Long userId) throws AuthorizationException {
+		return userEdgeDao.findArchivedUserEdgesForUser(userId);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserEdgeConfirmation> getPendingUserNodeConfirmations(Long userId) {
+	public List<UserEdgeConfirmation> getPendingUserEdgeConfirmations(Long userId) {
 		User user = userDao.get(userId);
-		return userNodeConfirmationDao.findPendingConfirmationsForUser(user);
+		return userEdgeConfirmationDao.findPendingConfirmationsForUser(user);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public UserEdgeConfirmation getPendingUserNodeConfirmation(final Long userNodeConfirmationId) {
-		return userNodeConfirmationDao.get(userNodeConfirmationId);
+	public UserEdgeConfirmation getPendingUserEdgeConfirmation(final Long userEdgeConfirmationId) {
+		return userEdgeConfirmationDao.get(userEdgeConfirmationId);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public UserEdgeCertificate getUserNodeCertificate(Long userId, Long nodeId) {
+	public UserEdgeCertificate getUserEdgeCertificate(Long userId, Long EdgeId) {
 		assert userId != null;
-		assert nodeId != null;
-		return userNodeCertificateDao.get(new UserEdgePK(userId, nodeId));
+		assert EdgeId != null;
+		return userEdgeCertificateDao.get(new UserEdgePK(userId, EdgeId));
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public UserAuthToken generateUserAuthToken(final Long userId, final UserAuthTokenType type,
-			final Set<Long> nodeIds) {
-		BasicSecurityPolicy policy = new BasicSecurityPolicy.Builder().withNodeIds(nodeIds).build();
+			final Set<Long> EdgeIds) {
+		BasicSecurityPolicy policy = new BasicSecurityPolicy.Builder().withEdgeIds(EdgeIds).build();
 		return generateUserAuthToken(userId, type, policy);
 	}
 
@@ -200,16 +200,16 @@ public class DaoUserBiz implements UserBiz, EdgeOwnershipBiz {
 			if ( userAuthTokenDao.get(tok) == null ) {
 				UserAuthToken authToken = new UserAuthToken(tok, userId, secretString, type);
 
-				// verify user account has access to requested node IDs
-				Set<Long> nodeIds = (policy == null ? null : policy.getNodeIds());
-				if ( nodeIds != null ) {
-					for ( Long nodeId : nodeIds ) {
-						UserEdge userNode = userNodeDao.get(nodeId);
-						if ( userNode == null ) {
-							throw new AuthorizationException(Reason.UNKNOWN_OBJECT, nodeId);
+				// verify user account has access to requested Edge IDs
+				Set<Long> EdgeIds = (policy == null ? null : policy.getEdgeIds());
+				if ( EdgeIds != null ) {
+					for ( Long EdgeId : EdgeIds ) {
+						UserEdge userEdge = userEdgeDao.get(EdgeId);
+						if ( userEdge == null ) {
+							throw new AuthorizationException(Reason.UNKNOWN_OBJECT, EdgeId);
 						}
-						if ( userNode.getUser().getId().equals(userId) == false ) {
-							throw new AuthorizationException(Reason.ACCESS_DENIED, nodeId);
+						if ( userEdge.getUser().getId().equals(userId) == false ) {
+							throw new AuthorizationException(Reason.ACCESS_DENIED, EdgeId);
 						}
 					}
 				}
@@ -296,49 +296,49 @@ public class DaoUserBiz implements UserBiz, EdgeOwnershipBiz {
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserEdgeTransfer> pendingNodeOwnershipTransfersForEmail(String email) {
-		return userNodeDao.findUserNodeTransferRequestsForEmail(email);
+	public List<UserEdgeTransfer> pendingEdgeOwnershipTransfersForEmail(String email) {
+		return userEdgeDao.findUserEdgeTransferRequestsForEmail(email);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public UserEdgeTransfer getNodeOwnershipTransfer(Long userId, Long nodeId) {
-		return userNodeDao.getUserNodeTransfer(new UserEdgePK(userId, nodeId));
+	public UserEdgeTransfer getEdgeOwnershipTransfer(Long userId, Long EdgeId) {
+		return userEdgeDao.getUserEdgeTransfer(new UserEdgePK(userId, EdgeId));
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void requestNodeOwnershipTransfer(Long userId, Long nodeId, String newOwnerEmail)
+	public void requestEdgeOwnershipTransfer(Long userId, Long EdgeId, String newOwnerEmail)
 			throws AuthorizationException {
 		UserEdgeTransfer xfer = new UserEdgeTransfer();
 		xfer.setUserId(userId);
-		xfer.setNodeId(nodeId);
+		xfer.setEdgeId(EdgeId);
 		xfer.setEmail(newOwnerEmail);
-		userNodeDao.storeUserNodeTransfer(xfer);
+		userEdgeDao.storeUserEdgeTransfer(xfer);
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void cancelNodeOwnershipTransfer(Long userId, Long nodeId) throws AuthorizationException {
-		UserEdgeTransfer xfer = userNodeDao.getUserNodeTransfer(new UserEdgePK(userId, nodeId));
+	public void cancelEdgeOwnershipTransfer(Long userId, Long EdgeId) throws AuthorizationException {
+		UserEdgeTransfer xfer = userEdgeDao.getUserEdgeTransfer(new UserEdgePK(userId, EdgeId));
 		if ( xfer != null ) {
-			userNodeDao.deleteUserNodeTrasnfer(xfer);
+			userEdgeDao.deleteUserEdgeTrasnfer(xfer);
 		}
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public UserEdgeTransfer confirmNodeOwnershipTransfer(Long userId, Long nodeId, boolean accept)
+	public UserEdgeTransfer confirmEdgeOwnershipTransfer(Long userId, Long EdgeId, boolean accept)
 			throws AuthorizationException {
-		UserEdgePK pk = new UserEdgePK(userId, nodeId);
-		UserEdgeTransfer xfer = userNodeDao.getUserNodeTransfer(pk);
+		UserEdgePK pk = new UserEdgePK(userId, EdgeId);
+		UserEdgeTransfer xfer = userEdgeDao.getUserEdgeTransfer(pk);
 		if ( accept ) {
 			if ( xfer == null ) {
 				throw new AuthorizationException(Reason.UNKNOWN_OBJECT, pk);
 			}
-			UserEdge userNode = userNodeDao.get(nodeId);
-			if ( userNode == null ) {
-				throw new AuthorizationException(Reason.UNKNOWN_OBJECT, nodeId);
+			UserEdge userEdge = userEdgeDao.get(EdgeId);
+			if ( userEdge == null ) {
+				throw new AuthorizationException(Reason.UNKNOWN_OBJECT, EdgeId);
 			}
 			User recipient = userDao.getUserByEmail(xfer.getEmail());
 			if ( recipient == null ) {
@@ -346,31 +346,31 @@ public class DaoUserBiz implements UserBiz, EdgeOwnershipBiz {
 			}
 
 			// at this point, we can delete the transfer request
-			userNodeDao.deleteUserNodeTrasnfer(xfer);
+			userEdgeDao.deleteUserEdgeTrasnfer(xfer);
 
-			// remove any node alerts associated with this node
-			int deletedAlertCount = userAlertDao.deleteAllAlertsForNode(userId, nodeId);
-			log.debug("Deleted {} alerts associated with node {} for ownership transfer",
-					deletedAlertCount, nodeId);
+			// remove any Edge alerts associated with this Edge
+			int deletedAlertCount = userAlertDao.deleteAllAlertsForEdge(userId, EdgeId);
+			log.debug("Deleted {} alerts associated with Edge {} for ownership transfer",
+					deletedAlertCount, EdgeId);
 
-			// clean up auth tokens associated with node: if token contains just this node id, delete it
-			// but if it contains other node IDs, just remove this node ID from it
+			// clean up auth tokens associated with Edge: if token contains just this Edge id, delete it
+			// but if it contains other Edge IDs, just remove this Edge ID from it
 			for ( UserAuthToken token : userAuthTokenDao.findUserAuthTokensForUser(userId) ) {
-				if ( token.getNodeIds() != null && token.getNodeIds().contains(nodeId) ) {
-					if ( token.getNodeIds().size() == 1 ) {
-						// only this node ID associated, so delete token
-						log.debug("Deleting UserAuthToken {} for node ownership transfer",
+				if ( token.getEdgeIds() != null && token.getEdgeIds().contains(EdgeId) ) {
+					if ( token.getEdgeIds().size() == 1 ) {
+						// only this Edge ID associated, so delete token
+						log.debug("Deleting UserAuthToken {} for Edge ownership transfer",
 								token.getId());
 						userAuthTokenDao.delete(token);
 					} else {
-						// other node IDs associated, so remove the node ID from this token
+						// other Edge IDs associated, so remove the Edge ID from this token
 						log.debug(
-								"Removing node ID {} from UserAuthToken {} for node ownership transfer",
-								nodeId, token.getId());
-						Set<Long> nodeIds = new LinkedHashSet<Long>(token.getNodeIds()); // get mutable set
-						nodeIds.remove(nodeId);
+								"Removing Edge ID {} from UserAuthToken {} for Edge ownership transfer",
+								EdgeId, token.getId());
+						Set<Long> EdgeIds = new LinkedHashSet<Long>(token.getEdgeIds()); // get mutable set
+						EdgeIds.remove(EdgeId);
 						BasicSecurityPolicy.Builder secPolicyBuilder = new BasicSecurityPolicy.Builder()
-								.withPolicy(token.getPolicy()).withNodeIds(nodeIds);
+								.withPolicy(token.getPolicy()).withEdgeIds(EdgeIds);
 						token.setPolicy(secPolicyBuilder.build());
 
 						userAuthTokenDao.store(token);
@@ -379,13 +379,13 @@ public class DaoUserBiz implements UserBiz, EdgeOwnershipBiz {
 			}
 
 			// and now, transfer ownership
-			if ( recipient.getId().equals(userNode.getUser().getId()) == false ) {
-				userNode.setUser(recipient);
-				userNodeDao.store(userNode);
+			if ( recipient.getId().equals(userEdge.getUser().getId()) == false ) {
+				userEdge.setUser(recipient);
+				userEdgeDao.store(userEdge);
 			}
 		} else {
 			// rejecting
-			cancelNodeOwnershipTransfer(userId, nodeId);
+			cancelEdgeOwnershipTransfer(userId, EdgeId);
 		}
 		return xfer;
 	}
@@ -409,16 +409,16 @@ public class DaoUserBiz implements UserBiz, EdgeOwnershipBiz {
 		this.userDao = userDao;
 	}
 
-	public void setUserNodeDao(UserEdgeDao userNodeDao) {
-		this.userNodeDao = userNodeDao;
+	public void setUserEdgeDao(UserEdgeDao userEdgeDao) {
+		this.userEdgeDao = userEdgeDao;
 	}
 
-	public void setUserNodeConfirmationDao(UserEdgeConfirmationDao userNodeConfirmationDao) {
-		this.userNodeConfirmationDao = userNodeConfirmationDao;
+	public void setUserEdgeConfirmationDao(UserEdgeConfirmationDao userEdgeConfirmationDao) {
+		this.userEdgeConfirmationDao = userEdgeConfirmationDao;
 	}
 
-	public void setUserNodeCertificateDao(UserEdgeCertificateDao userNodeCertificateDao) {
-		this.userNodeCertificateDao = userNodeCertificateDao;
+	public void setUserEdgeCertificateDao(UserEdgeCertificateDao userEdgeCertificateDao) {
+		this.userEdgeCertificateDao = userEdgeCertificateDao;
 	}
 
 	public void setUserAuthTokenDao(UserAuthTokenDao userAuthTokenDao) {

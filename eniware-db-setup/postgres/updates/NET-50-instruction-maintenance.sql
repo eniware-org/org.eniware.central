@@ -13,7 +13,7 @@ $BODY$
 DECLARE
 	num_rows BIGINT := 0;
 BEGIN
-	DELETE FROM solarnet.sn_node_instruction
+	DELETE FROM solarnet.sn_Edge_instruction
 	WHERE instr_date < older_date
 		AND deliver_state IN (
 			'Declined'::solarnet.instruction_delivery_state, 
@@ -25,5 +25,5 @@ END;$BODY$
 
 CREATE SEQUENCE solarnet.instruction_seq;
 
-SELECT setval('solarnet.instruction_seq', (SELECT COALESCE(MAX(id), 1) FROM solarnet.sn_node_instruction), true);
-ALTER TABLE solarnet.sn_node_instruction ALTER COLUMN id SET DEFAULT nextval('solarnet.instruction_seq');
+SELECT setval('solarnet.instruction_seq', (SELECT COALESCE(MAX(id), 1) FROM solarnet.sn_Edge_instruction), true);
+ALTER TABLE solarnet.sn_Edge_instruction ALTER COLUMN id SET DEFAULT nextval('solarnet.instruction_seq');

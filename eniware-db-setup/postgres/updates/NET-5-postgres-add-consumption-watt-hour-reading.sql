@@ -21,13 +21,13 @@ $BODY$
 		solarnet.calc_avg_watt_hours(c.pv_amps, c2.pv_amps, c.pv_volts, c2.pv_volts, 
 			c.kwatt_hours * 1000, c2.kwatt_hours * 1000, (c.created - c2.created)) as watt_hours
 	FROM solarnet.sn_power_datum c
-	INNER JOIN solarnet.sn_node n ON n.node_id = c.node_id
+	INNER JOIN solarnet.sn_Edge n ON n.Edge_id = c.Edge_id
 	INNER JOIN solarnet.sn_loc l ON l.id = n.loc_id
 	LEFT OUTER JOIN solarnet.sn_power_datum c2 ON c2.id = c.prev_datum
 	WHERE 
 		c2.local_created >= $1
 		and c2.local_created < $1 + $2
-	ORDER BY c.created, c.node_id
+	ORDER BY c.created, c.Edge_id
 $BODY$
   LANGUAGE 'sql' STABLE;
 
@@ -66,7 +66,7 @@ $BODY$
 		) AS p ON p.created BETWEEN c.created - interval '1 hour' AND c.created
 			AND p.id = c.price_loc_id
 	WHERE 
-		c2.node_id = $1
+		c2.Edge_id = $1
 		AND c2.source_id = $2
 		AND c2.created >= $3 at time zone $4
 		AND c2.created < $3 at time zone $4 + $5
@@ -108,7 +108,7 @@ $BODY$
 		) AS p ON p.created BETWEEN c.created - interval '1 hour' AND c.created
 			AND p.id = c.price_loc_id
 	WHERE 
-		c2.node_id = $1
+		c2.Edge_id = $1
 		AND c2.source_id = $2
 		AND c2.created >= $3 at time zone $4
 		AND c2.created < $3 at time zone $4 + $5

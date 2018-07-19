@@ -112,20 +112,20 @@ public final class JsonUtils {
 	 * exceptions while deserializing the object are caught and ignored.
 	 * </p>
 	 * 
-	 * @param node
+	 * @param Edge
 	 *        the JSON object to convert
-	 * @return the map, or {@literal null} if {@code node} is not a JSON object,
+	 * @return the map, or {@literal null} if {@code Edge} is not a JSON object,
 	 *         is {@literal null}, or any exception occurs generating the JSON
 	 * @since 1.2
 	 */
-	public static Map<String, Object> getStringMapFromTree(final JsonNode node) {
-		if ( node == null || !node.isObject() ) {
+	public static Map<String, Object> getStringMapFromTree(final JsonNode Edge) {
+		if ( Edge == null || !Edge.isObject() ) {
 			return null;
 		}
 		try {
-			return OBJECT_MAPPER.readValue(OBJECT_MAPPER.treeAsTokens(node), STRING_MAP_TYPE);
+			return OBJECT_MAPPER.readValue(OBJECT_MAPPER.treeAsTokens(Edge), STRING_MAP_TYPE);
 		} catch ( Exception e ) {
-			LOG.error("Exception deserialzing JSON node {} to Map<String, Object>", node, e);
+			LOG.error("Exception deserialzing JSON Edge {} to Map<String, Object>", Edge, e);
 		}
 		return null;
 	}

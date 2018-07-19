@@ -11,15 +11,15 @@ import java.util.Set;
 
 import org.eniware.central.datum.biz.DatumMetadataBiz;
 import org.eniware.central.datum.dao.GeneralLocationDatumMetadataDao;
-import org.eniware.central.datum.dao.GeneralNodeDatumMetadataDao;
+import org.eniware.central.datum.dao.GeneralEdgeDatumMetadataDao;
 import org.eniware.central.datum.domain.GeneralLocationDatumMetadata;
 import org.eniware.central.datum.domain.GeneralLocationDatumMetadataFilter;
 import org.eniware.central.datum.domain.GeneralLocationDatumMetadataFilterMatch;
-import org.eniware.central.datum.domain.GeneralNodeDatumMetadata;
-import org.eniware.central.datum.domain.GeneralNodeDatumMetadataFilter;
-import org.eniware.central.datum.domain.GeneralNodeDatumMetadataFilterMatch;
+import org.eniware.central.datum.domain.GeneralEdgeDatumMetadata;
+import org.eniware.central.datum.domain.GeneralEdgeDatumMetadataFilter;
+import org.eniware.central.datum.domain.GeneralEdgeDatumMetadataFilterMatch;
 import org.eniware.central.datum.domain.LocationSourcePK;
-import org.eniware.central.datum.domain.NodeSourcePK;
+import org.eniware.central.datum.domain.EdgeSourcePK;
 import org.eniware.central.domain.FilterResults;
 import org.eniware.central.domain.SortDescriptor;
 import org.eniware.domain.GeneralDatumMetadata;
@@ -38,8 +38,8 @@ import org.springframework.transaction.annotation.Transactional;
  * <dt>generalLocationDatumMetadataDao</dt>
  * <dd>The {@link GeneralLocationDatumMetadataDao} to use.</dd>
  * 
- * <dt>generalNodeDatumMetadataDao</dt>
- * <dd>The {@link GeneralNodeDatumMetadataDao} to use.</dd>
+ * <dt>generalEdgeDatumMetadataDao</dt>
+ * <dd>The {@link GeneralEdgeDatumMetadataDao} to use.</dd>
  * </dl>
  *
  * @version 1.1
@@ -47,19 +47,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class DaoDatumMetadataBiz implements DatumMetadataBiz {
 
 	private GeneralLocationDatumMetadataDao generalLocationDatumMetadataDao = null;
-	private GeneralNodeDatumMetadataDao generalNodeDatumMetadataDao = null;
+	private GeneralEdgeDatumMetadataDao generalEdgeDatumMetadataDao = null;
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	@Override
-	public void addGeneralNodeDatumMetadata(Long nodeId, String sourceId, GeneralDatumMetadata meta) {
-		assert nodeId != null;
+	public void addGeneralEdgeDatumMetadata(Long EdgeId, String sourceId, GeneralDatumMetadata meta) {
+		assert EdgeId != null;
 		assert sourceId != null;
 		assert meta != null;
-		NodeSourcePK pk = new NodeSourcePK(nodeId, sourceId);
-		GeneralNodeDatumMetadata gdm = generalNodeDatumMetadataDao.get(pk);
+		EdgeSourcePK pk = new EdgeSourcePK(EdgeId, sourceId);
+		GeneralEdgeDatumMetadata gdm = generalEdgeDatumMetadataDao.get(pk);
 		GeneralDatumMetadata newMeta = meta;
 		if ( gdm == null ) {
-			gdm = new GeneralNodeDatumMetadata();
+			gdm = new GeneralEdgeDatumMetadata();
 			gdm.setCreated(new DateTime());
 			gdm.setId(pk);
 			newMeta = meta;
@@ -70,45 +70,45 @@ public class DaoDatumMetadataBiz implements DatumMetadataBiz {
 		if ( newMeta != null && newMeta.equals(gdm.getMeta()) == false ) {
 			// have changes, so persist
 			gdm.setMeta(newMeta);
-			generalNodeDatumMetadataDao.store(gdm);
+			generalEdgeDatumMetadataDao.store(gdm);
 		}
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	@Override
-	public void storeGeneralNodeDatumMetadata(Long nodeId, String sourceId, GeneralDatumMetadata meta) {
-		assert nodeId != null;
+	public void storeGeneralEdgeDatumMetadata(Long EdgeId, String sourceId, GeneralDatumMetadata meta) {
+		assert EdgeId != null;
 		assert sourceId != null;
 		assert meta != null;
-		NodeSourcePK pk = new NodeSourcePK(nodeId, sourceId);
-		GeneralNodeDatumMetadata gdm = generalNodeDatumMetadataDao.get(pk);
+		EdgeSourcePK pk = new EdgeSourcePK(EdgeId, sourceId);
+		GeneralEdgeDatumMetadata gdm = generalEdgeDatumMetadataDao.get(pk);
 		if ( gdm == null ) {
-			gdm = new GeneralNodeDatumMetadata();
+			gdm = new GeneralEdgeDatumMetadata();
 			gdm.setCreated(new DateTime());
 			gdm.setId(pk);
 			gdm.setMeta(meta);
 		} else {
 			gdm.setMeta(meta);
 		}
-		generalNodeDatumMetadataDao.store(gdm);
+		generalEdgeDatumMetadataDao.store(gdm);
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	@Override
-	public void removeGeneralNodeDatumMetadata(Long nodeId, String sourceId) {
-		GeneralNodeDatumMetadata meta = generalNodeDatumMetadataDao
-				.get(new NodeSourcePK(nodeId, sourceId));
+	public void removeGeneralEdgeDatumMetadata(Long EdgeId, String sourceId) {
+		GeneralEdgeDatumMetadata meta = generalEdgeDatumMetadataDao
+				.get(new EdgeSourcePK(EdgeId, sourceId));
 		if ( meta != null ) {
-			generalNodeDatumMetadataDao.delete(meta);
+			generalEdgeDatumMetadataDao.delete(meta);
 		}
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
-	public FilterResults<GeneralNodeDatumMetadataFilterMatch> findGeneralNodeDatumMetadata(
-			GeneralNodeDatumMetadataFilter criteria, List<SortDescriptor> sortDescriptors,
+	public FilterResults<GeneralEdgeDatumMetadataFilterMatch> findGeneralEdgeDatumMetadata(
+			GeneralEdgeDatumMetadataFilter criteria, List<SortDescriptor> sortDescriptors,
 			Integer offset, Integer max) {
-		return generalNodeDatumMetadataDao.findFiltered(criteria, sortDescriptors, offset, max);
+		return generalEdgeDatumMetadataDao.findFiltered(criteria, sortDescriptors, offset, max);
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -177,9 +177,9 @@ public class DaoDatumMetadataBiz implements DatumMetadataBiz {
 
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
-	public Set<NodeSourcePK> getGeneralNodeDatumMetadataFilteredSources(Long[] nodeIds,
+	public Set<EdgeSourcePK> getGeneralEdgeDatumMetadataFilteredSources(Long[] EdgeIds,
 			String metadataFilter) {
-		return generalNodeDatumMetadataDao.getFilteredSources(nodeIds, metadataFilter);
+		return generalEdgeDatumMetadataDao.getFilteredSources(EdgeIds, metadataFilter);
 	}
 
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
@@ -189,12 +189,12 @@ public class DaoDatumMetadataBiz implements DatumMetadataBiz {
 		return generalLocationDatumMetadataDao.getFilteredSources(locationIds, metadataFilter);
 	}
 
-	public GeneralNodeDatumMetadataDao getGeneralNodeDatumMetadataDao() {
-		return generalNodeDatumMetadataDao;
+	public GeneralEdgeDatumMetadataDao getGeneralEdgeDatumMetadataDao() {
+		return generalEdgeDatumMetadataDao;
 	}
 
-	public void setGeneralNodeDatumMetadataDao(GeneralNodeDatumMetadataDao generalNodeDatumMetadataDao) {
-		this.generalNodeDatumMetadataDao = generalNodeDatumMetadataDao;
+	public void setGeneralEdgeDatumMetadataDao(GeneralEdgeDatumMetadataDao generalEdgeDatumMetadataDao) {
+		this.generalEdgeDatumMetadataDao = generalEdgeDatumMetadataDao;
 	}
 
 	public GeneralLocationDatumMetadataDao getGeneralLocationDatumMetadataDao() {

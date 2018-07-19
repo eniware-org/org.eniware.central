@@ -11,7 +11,7 @@ import java.io.InputStream;
 
 import org.eniware.central.security.AuthorizationException;
 import org.eniware.central.user.biz.RegistrationBiz;
-import org.eniware.central.user.domain.NewNodeRequest;
+import org.eniware.central.user.domain.NewEdgeRequest;
 import org.eniware.central.user.domain.PasswordEntry;
 import org.eniware.central.user.domain.User;
 import org.eniware.central.user.domain.UserEdge;
@@ -58,59 +58,59 @@ public class DelegatingRegistrationBiz implements RegistrationBiz {
 	}
 
 	@Override
-	public NetworkAssociation createNodeAssociation(NewNodeRequest request) {
-		return delegate.createNodeAssociation(request);
+	public NetworkAssociation createEdgeAssociation(NewEdgeRequest request) {
+		return delegate.createEdgeAssociation(request);
 	}
 
 	@Override
-	public NetworkAssociation getNodeAssociation(Long userNodeConfirmationId)
+	public NetworkAssociation getEdgeAssociation(Long userEdgeConfirmationId)
 			throws AuthorizationException {
-		return delegate.getNodeAssociation(userNodeConfirmationId);
+		return delegate.getEdgeAssociation(userEdgeConfirmationId);
 	}
 
 	@Override
-	public void cancelNodeAssociation(Long userNodeConfirmationId) throws AuthorizationException {
-		delegate.cancelNodeAssociation(userNodeConfirmationId);
+	public void cancelEdgeAssociation(Long userEdgeConfirmationId) throws AuthorizationException {
+		delegate.cancelEdgeAssociation(userEdgeConfirmationId);
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public NetworkCertificate confirmNodeAssociation(String username, String confirmationKey)
+	public NetworkCertificate confirmEdgeAssociation(String username, String confirmationKey)
 			throws AuthorizationException {
-		return delegate.confirmNodeAssociation(username, confirmationKey);
+		return delegate.confirmEdgeAssociation(username, confirmationKey);
 	}
 
 	@Override
-	public NetworkCertificate confirmNodeAssociation(NetworkAssociation association)
+	public NetworkCertificate confirmEdgeAssociation(NetworkAssociation association)
 			throws AuthorizationException {
-		return delegate.confirmNodeAssociation(association);
+		return delegate.confirmEdgeAssociation(association);
 	}
 
 	@Override
-	public NetworkCertificate getNodeCertificate(NetworkAssociation association) {
-		return delegate.getNodeCertificate(association);
+	public NetworkCertificate getEdgeCertificate(NetworkAssociation association) {
+		return delegate.getEdgeCertificate(association);
 	}
 
 	@Override
-	public NetworkCertificate renewNodeCertificate(InputStream pkcs12InputStream,
+	public NetworkCertificate renewEdgeCertificate(InputStream pkcs12InputStream,
 			String keystorePassword) throws IOException {
-		return delegate.renewNodeCertificate(pkcs12InputStream, keystorePassword);
+		return delegate.renewEdgeCertificate(pkcs12InputStream, keystorePassword);
 	}
 
 	@Override
-	public ReadablePeriod getNodeCertificateRenewalPeriod() {
-		return delegate.getNodeCertificateRenewalPeriod();
+	public ReadablePeriod getEdgeCertificateRenewalPeriod() {
+		return delegate.getEdgeCertificateRenewalPeriod();
 	}
 
 	@Override
-	public UserEdgeCertificateRenewal renewNodeCertificate(UserEdge userNode, String keystorePassword) {
-		return delegate.renewNodeCertificate(userNode, keystorePassword);
+	public UserEdgeCertificateRenewal renewEdgeCertificate(UserEdge userEdge, String keystorePassword) {
+		return delegate.renewEdgeCertificate(userEdge, keystorePassword);
 	}
 
 	@Override
-	public UserEdgeCertificateRenewal getPendingNodeCertificateRenewal(UserEdge userNode,
+	public UserEdgeCertificateRenewal getPendingEdgeCertificateRenewal(UserEdge userEdge,
 			String confirmationKey) {
-		return delegate.getPendingNodeCertificateRenewal(userNode, confirmationKey);
+		return delegate.getPendingEdgeCertificateRenewal(userEdge, confirmationKey);
 	}
 
 	@Override

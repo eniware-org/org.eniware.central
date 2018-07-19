@@ -21,8 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class MyBatisUserEdgeCertificateDao extends
 		BaseMyBatisGenericDao<UserEdgeCertificate, UserEdgePK> implements UserEdgeCertificateDao {
 
-	/** The query name used for {@link #getActiveCertificateForNode(Long)}. */
-	public static final String QUERY_ACTIVE_FOR_NODE = "get-UserNodeCertificate-for-active-node";
+	/** The query name used for {@link #getActiveCertificateForEdge(Long)}. */
+	public static final String QUERY_ACTIVE_FOR_Edge = "get-UserEdgeCertificate-for-active-Edge";
 
 	/**
 	 * Default constructor.
@@ -33,7 +33,7 @@ public class MyBatisUserEdgeCertificateDao extends
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public UserEdgeCertificate getActiveCertificateForNode(Long nodeId) {
-		return selectFirst(QUERY_ACTIVE_FOR_NODE, nodeId);
+	public UserEdgeCertificate getActiveCertificateForEdge(Long EdgeId) {
+		return selectFirst(QUERY_ACTIVE_FOR_Edge, EdgeId);
 	}
 }

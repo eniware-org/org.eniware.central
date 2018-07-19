@@ -14,16 +14,16 @@
 
 	<!-- Configure Spring Security -->
 	<http auto-config="false" create-session="never" use-expressions="false">
-	    <intercept-url pattern="/**/*Collector.do" access="ROLE_NODE" requires-channel="https"/>
-	    <intercept-url pattern="/api/v1/sec/**" access="ROLE_NODE" requires-channel="https"/>
-		<x509 subject-principal-regex="UID=(.*?)," user-service-ref="nodeUserService"/>
+	    <intercept-url pattern="/**/*Collector.do" access="ROLE_Edge" requires-channel="https"/>
+	    <intercept-url pattern="/api/v1/sec/**" access="ROLE_Edge" requires-channel="https"/>
+		<x509 subject-principal-regex="UID=(.*?)," user-service-ref="EdgeUserService"/>
 		<csrf disabled="true"/>
 	</http>
 
 	<authentication-manager>
-		<authentication-provider user-service-ref="nodeUserService"/>
+		<authentication-provider user-service-ref="EdgeUserService"/>
 	</authentication-manager>
 
-	<beans:bean id="nodeUserService" class="org.eniware.central.security.NodeUserDetailsService"/>
+	<beans:bean id="EdgeUserService" class="org.eniware.central.security.EdgeUserDetailsService"/>
 
 </beans:beans>

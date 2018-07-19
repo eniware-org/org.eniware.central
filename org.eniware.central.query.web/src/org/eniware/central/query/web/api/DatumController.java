@@ -88,10 +88,10 @@ public class DatumController extends WebServiceControllerSupport {
 			return;
 		}
 		String sourceId = cmd.getSourceId();
-		if ( sourceId != null && pathMatcher.isPattern(sourceId) && cmd.getNodeIds() != null ) {
+		if ( sourceId != null && pathMatcher.isPattern(sourceId) && cmd.getEdgeIds() != null ) {
 			Set<String> allSources = new LinkedHashSet<String>();
-			for ( Long nodeId : cmd.getNodeIds() ) {
-				Set<String> data = queryBiz.getAvailableSources(nodeId, cmd.getStartDate(),
+			for ( Long EdgeId : cmd.getEdgeIds() ) {
+				Set<String> data = queryBiz.getAvailableSources(EdgeId, cmd.getStartDate(),
 						cmd.getEndDate());
 				if ( data != null ) {
 					allSources.addAll(data);
@@ -113,10 +113,10 @@ public class DatumController extends WebServiceControllerSupport {
 
 		FilterResults<?> results;
 		if ( cmd.getAggregation() != null ) {
-			results = queryBiz.findFilteredAggregateGeneralNodeDatum(cmd, cmd.getSortDescriptors(),
+			results = queryBiz.findFilteredAggregateGeneralEdgeDatum(cmd, cmd.getSortDescriptors(),
 					cmd.getOffset(), cmd.getMax());
 		} else {
-			results = queryBiz.findFilteredGeneralNodeDatum(cmd, cmd.getSortDescriptors(),
+			results = queryBiz.findFilteredGeneralEdgeDatum(cmd, cmd.getSortDescriptors(),
 					cmd.getOffset(), cmd.getMax());
 		}
 		return new Response<FilterResults<?>>(results);
@@ -124,7 +124,7 @@ public class DatumController extends WebServiceControllerSupport {
 
 	@ResponseBody
 	@RequestMapping(value = "/mostRecent", method = RequestMethod.GET, params = "!type")
-	public Response<FilterResults<?>> getMostRecentGeneralNodeDatumData(final DatumFilterCommand cmd) {
+	public Response<FilterResults<?>> getMostRecentGeneralEdgeDatumData(final DatumFilterCommand cmd) {
 		cmd.setMostRecent(true);
 		return filterGeneralDatumData(cmd);
 	}

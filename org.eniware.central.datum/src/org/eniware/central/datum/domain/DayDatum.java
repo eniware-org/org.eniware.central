@@ -16,8 +16,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * 
  * <p>
  * Note a {@code DayDatum} is not directly related to a {@code EniwareEdge}, and
- * the {@code nodeId} value may actually be <em>null</em>. This class implements
- * both {@link NodeDatum} and {@link LocationDatum} for ease of use, although
+ * the {@code EdgeId} value may actually be <em>null</em>. This class implements
+ * both {@link EdgeDatum} and {@link LocationDatum} for ease of use, although
  * strictly speaking it is only a {@link LocationDatum}.
  * </p>
  * 
@@ -29,12 +29,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * 
  * <p>
  * The {@code latitude} and {@long longitude} may or may not be used, it depends
- * on how granular the node wants to track day information.
+ * on how granular the Edge wants to track day information.
  * </p>
  *
  * @version 1.1
  */
-public class DayDatum extends BaseNodeDatum implements LocationDatum {
+public class DayDatum extends BaseEdgeDatum implements LocationDatum {
 
 	private static final long serialVersionUID = 2802754315725736855L;
 
@@ -75,7 +75,7 @@ public class DayDatum extends BaseNodeDatum implements LocationDatum {
 
 	@Override
 	public String toString() {
-		return "DayDatum{nodeId=" + getNodeId() + ",locationId=" + this.locationId + ",day=" + this.day
+		return "DayDatum{EdgeId=" + getEdgeId() + ",locationId=" + this.locationId + ",day=" + this.day
 				+ ",sunrize=" + this.sunrise + ",sunset=" + this.sunset + '}';
 	}
 

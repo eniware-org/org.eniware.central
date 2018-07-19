@@ -13,14 +13,14 @@ import org.eniware.central.user.domain.User;
 import org.eniware.central.user.domain.UserEdgeConfirmation;
 
 /**
- * DAO API for UserNodeConfirmation entities.
+ * DAO API for UserEdgeConfirmation entities.
  * 
  * @version $Revision$
  */
 public interface UserEdgeConfirmationDao extends GenericDao<UserEdgeConfirmation, Long> {
 
 	/**
-	 * Find a list of all pending UserNodeConfirmation objects for a particular
+	 * Find a list of all pending UserEdgeConfirmation objects for a particular
 	 * user.
 	 * 
 	 * @param user
@@ -37,7 +37,7 @@ public interface UserEdgeConfirmationDao extends GenericDao<UserEdgeConfirmation
 	 *        the user ID
 	 * @param key
 	 *        the confirmation key
-	 * @return the found UserNodeConfirmation, or <em>null</em> if not found
+	 * @return the found UserEdgeConfirmation, or <em>null</em> if not found
 	 */
 	UserEdgeConfirmation getConfirmationForKey(Long userId, String key);
 

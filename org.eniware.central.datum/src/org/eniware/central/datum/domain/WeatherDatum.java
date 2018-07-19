@@ -15,14 +15,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * 
  * <p>
  * Note a {@code WeatherDatum} is not directly related to a {@code EniwareEdge},
- * and the {@code nodeId} value may actually be <em>null</em>. This class
- * implements both {@link NodeDatum} and {@link LocationDatum} for ease of use,
+ * and the {@code EdgeId} value may actually be <em>null</em>. This class
+ * implements both {@link EdgeDatum} and {@link LocationDatum} for ease of use,
  * although strictly speaking it is only a {@link LocationDatum}.
  * </p>
  *
  * @version 1.1
  */
-public class WeatherDatum extends BaseNodeDatum implements LocationDatum {
+public class WeatherDatum extends BaseEdgeDatum implements LocationDatum {
 
 	private static final long serialVersionUID = 5090759003465856008L;
 
@@ -47,7 +47,7 @@ public class WeatherDatum extends BaseNodeDatum implements LocationDatum {
 
 	@Override
 	public String toString() {
-		return "WeatherDatum{nodeId=" + getNodeId() + ",locationId=" + this.locationId + ",infoDate="
+		return "WeatherDatum{EdgeId=" + getEdgeId() + ",locationId=" + this.locationId + ",infoDate="
 				+ this.infoDate + ",temp=" + this.temperatureCelsius + ",humidity=" + this.humidity
 				+ ",barometricPressure=" + this.barometricPressure + ",barometerDelta="
 				+ this.barometerDelta + '}';

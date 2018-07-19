@@ -16,16 +16,16 @@ import org.eniware.central.dao.PriceLocationDao;
 import org.eniware.central.dao.EniwareLocationDao;
 import org.eniware.central.dao.WeatherLocationDao;
 import org.eniware.central.datum.dao.GeneralLocationDatumDao;
-import org.eniware.central.datum.dao.GeneralNodeDatumDao;
+import org.eniware.central.datum.dao.GeneralEdgeDatumDao;
 import org.eniware.central.datum.domain.AggregateGeneralLocationDatumFilter;
-import org.eniware.central.datum.domain.AggregateGeneralNodeDatumFilter;
+import org.eniware.central.datum.domain.AggregateGeneralEdgeDatumFilter;
 import org.eniware.central.datum.domain.DatumFilterCommand;
 import org.eniware.central.datum.domain.GeneralLocationDatumFilter;
 import org.eniware.central.datum.domain.GeneralLocationDatumFilterMatch;
-import org.eniware.central.datum.domain.GeneralNodeDatumFilter;
-import org.eniware.central.datum.domain.GeneralNodeDatumFilterMatch;
+import org.eniware.central.datum.domain.GeneralEdgeDatumFilter;
+import org.eniware.central.datum.domain.GeneralEdgeDatumFilterMatch;
 import org.eniware.central.datum.domain.ReportingGeneralLocationDatumMatch;
-import org.eniware.central.datum.domain.ReportingGeneralNodeDatumMatch;
+import org.eniware.central.datum.domain.ReportingGeneralEdgeDatumMatch;
 import org.eniware.central.domain.Aggregation;
 import org.eniware.central.domain.Entity;
 import org.eniware.central.domain.Filter;
@@ -56,7 +56,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class DaoQueryBiz implements QueryBiz {
 
-	private GeneralNodeDatumDao generalNodeDatumDao;
+	private GeneralEdgeDatumDao generalEdgeDatumDao;
 	private GeneralLocationDatumDao generalLocationDatumDao;
 	private EniwareLocationDao eniwareLocationDao;
 	private int filteredResultsLimit = 1000;
@@ -81,8 +81,8 @@ public class DaoQueryBiz implements QueryBiz {
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public ReportableInterval getReportableInterval(Long nodeId, String sourceId) {
-		ReadableInterval interval = generalNodeDatumDao.getReportableInterval(nodeId, sourceId);
+	public ReportableInterval getReportableInterval(Long EdgeId, String sourceId) {
+		ReadableInterval interval = generalEdgeDatumDao.getReportableInterval(EdgeId, sourceId);
 		if ( interval == null ) {
 			return null;
 		}
@@ -95,25 +95,25 @@ public class DaoQueryBiz implements QueryBiz {
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public Set<String> getAvailableSources(Long nodeId, DateTime start, DateTime end) {
-		return generalNodeDatumDao.getAvailableSources(nodeId, start, end);
+	public Set<String> getAvailableSources(Long EdgeId, DateTime start, DateTime end) {
+		return generalEdgeDatumDao.getAvailableSources(EdgeId, start, end);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public FilterResults<GeneralNodeDatumFilterMatch> findFilteredGeneralNodeDatum(
-			GeneralNodeDatumFilter filter, List<SortDescriptor> sortDescriptors, Integer offset,
+	public FilterResults<GeneralEdgeDatumFilterMatch> findFilteredGeneralEdgeDatum(
+			GeneralEdgeDatumFilter filter, List<SortDescriptor> sortDescriptors, Integer offset,
 			Integer max) {
-		return generalNodeDatumDao.findFiltered(filter, sortDescriptors, limitFilterOffset(offset),
+		return generalEdgeDatumDao.findFiltered(filter, sortDescriptors, limitFilterOffset(offset),
 				limitFilterMaximum(max));
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public FilterResults<ReportingGeneralNodeDatumMatch> findFilteredAggregateGeneralNodeDatum(
-			AggregateGeneralNodeDatumFilter filter, List<SortDescriptor> sortDescriptors, Integer offset,
+	public FilterResults<ReportingGeneralEdgeDatumMatch> findFilteredAggregateGeneralEdgeDatum(
+			AggregateGeneralEdgeDatumFilter filter, List<SortDescriptor> sortDescriptors, Integer offset,
 			Integer max) {
-		return generalNodeDatumDao.findAggregationFiltered(enforceGeneralAggregateLevel(filter),
+		return generalEdgeDatumDao.findAggregationFiltered(enforceGeneralAggregateLevel(filter),
 				sortDescriptors, limitFilterOffset(offset), limitFilterMaximum(max));
 	}
 
@@ -171,8 +171,8 @@ public class DaoQueryBiz implements QueryBiz {
 		return (forced != null ? forced : agg);
 	}
 
-	private AggregateGeneralNodeDatumFilter enforceGeneralAggregateLevel(
-			AggregateGeneralNodeDatumFilter filter) {
+	private AggregateGeneralEdgeDatumFilter enforceGeneralAggregateLevel(
+			AggregateGeneralEdgeDatumFilter filter) {
 		if ( filter.isMostRecent() ) {
 			return filter;
 		}
@@ -182,7 +182,7 @@ public class DaoQueryBiz implements QueryBiz {
 			DatumFilterCommand cmd = new DatumFilterCommand();
 			cmd.setAggregate(forced);
 			cmd.setEndDate(filter.getEndDate());
-			cmd.setNodeIds(filter.getNodeIds());
+			cmd.setEdgeIds(filter.getEdgeIds());
 			cmd.setSourceIds(filter.getSourceIds());
 			cmd.setStartDate(filter.getStartDate());
 			cmd.setDataPath(filter.getDataPath());
@@ -290,13 +290,13 @@ public class DaoQueryBiz implements QueryBiz {
 		filterLocationDaoMapping.put(WeatherLocation.class, weatherLocationDao);
 	}
 
-	public GeneralNodeDatumDao getGeneralNodeDatumDao() {
-		return generalNodeDatumDao;
+	public GeneralEdgeDatumDao getGeneralEdgeDatumDao() {
+		return generalEdgeDatumDao;
 	}
 
 	@Autowired
-	public void setGeneralNodeDatumDao(GeneralNodeDatumDao generalNodeDatumDao) {
-		this.generalNodeDatumDao = generalNodeDatumDao;
+	public void setGeneralEdgeDatumDao(GeneralEdgeDatumDao generalEdgeDatumDao) {
+		this.generalEdgeDatumDao = generalEdgeDatumDao;
 	}
 
 	/**

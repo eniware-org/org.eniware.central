@@ -511,7 +511,7 @@
          id="rect3242"
          style="opacity:1;fill:none;fill-opacity:1;stroke:url(#linearGradient3244);stroke-width:1.0000006;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:1.20000057;stroke-opacity:1" />
       <path
-         sodipodi:nodetypes="cc"
+         sodipodi:Edgetypes="cc"
          id="rect3246"
          d="M 41.5,48.5 L 41.5,26.249989"
          style="fill:none;fill-opacity:1;stroke:url(#linearGradient3248);stroke-width:1.0000006;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dashoffset:1.20000057;stroke-opacity:1" />
@@ -538,24 +538,24 @@
        style="opacity:1;color:black;fill:url(#linearGradient2954);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible"
        d="M 13.076999,24.88047 C 14.182509,25.19633 17.625382,24.24875 17.625382,24.24875 C 17.625382,24.24875 19.504749,26.254461 21.352529,26.522941 C 23.20031,26.791422 25.016504,25.322674 25.016504,25.322674 C 25.016504,25.322674 23.184517,26.459769 21.352529,25.891222 C 19.520542,25.322674 17.688554,23.048482 17.688554,23.048482 C 17.688554,23.048482 15.019538,24.390887 13.898235,24.375094 C 12.776932,24.359301 13.203343,22.98531 13.203343,22.98531 C 13.203343,22.98531 11.971489,24.564609 13.076999,24.88047 z "
        id="path2045"
-       sodipodi:nodetypes="ccscscscs" />
+       sodipodi:Edgetypes="ccscscscs" />
     <path
        style="opacity:1;color:black;fill:white;fill-opacity:0.36979167;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible"
        d="M 26.813077,16.783748 C 28.675301,16.382086 30.371066,16.895951 31.762825,19.081845 C 31.762825,19.081845 31.055718,16.827942 29.818281,16.253418 C 28.580844,15.678894 26.813077,16.783748 26.813077,16.783748 z "
        id="path2047"
-       sodipodi:nodetypes="ccsc" />
+       sodipodi:Edgetypes="ccsc" />
     <path
-       sodipodi:nodetypes="ccsc"
+       sodipodi:Edgetypes="ccsc"
        id="path2934"
        d="M 18.025683,19.506745 C 19.068498,18.297967 20.302976,17.979504 21.887488,19.287026 C 21.887488,19.287026 20.71217,17.605939 19.74672,17.660869 C 18.781268,17.715799 18.025683,19.506745 18.025683,19.506745 z "
        style="opacity:1;color:black;fill:white;fill-opacity:0.453125;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible" />
     <path
-       sodipodi:nodetypes="ccsc"
+       sodipodi:Edgetypes="ccsc"
        id="path2936"
        d="M 39.243071,23.027281 C 38.433229,24.751626 36.996328,25.788444 34.414227,25.569627 C 34.414227,25.569627 36.635242,26.374098 37.842453,25.738511 C 39.049663,25.102924 39.243071,23.027281 39.243071,23.027281 z "
        style="opacity:1;color:black;fill:#838383;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible" />
     <path
-       sodipodi:nodetypes="ccscscscs"
+       sodipodi:Edgetypes="ccscscscs"
        id="path2938"
        d="M 32.931167,22.548546 C 32.146407,22.772763 30.078902,22.288342 30.078902,22.288342 C 30.078902,22.288342 29.058528,23.586634 27.056679,23.714475 C 25.733929,23.798947 24.518503,21.607578 24.518503,21.607578 C 24.518503,21.607578 26.069937,23.4814 27.370397,23.07781 C 28.670856,22.674219 29.657597,21.248086 29.657597,21.248086 C 29.657597,21.248086 31.552232,22.201009 32.348203,22.189798 C 33.144174,22.178588 33.594403,21.1405 33.594403,21.1405 C 33.594403,21.1405 33.715927,22.324328 32.931167,22.548546 z "
        style="opacity:1;color:black;fill:url(#linearGradient2946);fill-opacity:1.0;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible" />

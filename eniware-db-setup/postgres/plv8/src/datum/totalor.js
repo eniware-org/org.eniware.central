@@ -3,7 +3,7 @@
 import runningTotal from 'datum/runningTotal';
 
 /**
- * Aggregate rows of datum records for a single node ID and any number of source IDs
+ * Aggregate rows of datum records for a single Edge ID and any number of source IDs
  * into a single running total result per source ID.
  *
  * Once instantiated, call the <code>addDatumRecord()</code> method repeatedly

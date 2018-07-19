@@ -96,15 +96,15 @@ public interface UserAlertBiz {
 	List<UserAlert> alertSituationsForUser(Long userId);
 
 	/**
-	 * Get all available <em>active</em> alert situations for a given node. The
+	 * Get all available <em>active</em> alert situations for a given Edge. The
 	 * {@link UserAlert#getSituation()} property will be populated with matching
 	 * {@link UserAlertSituation}.
 	 * 
-	 * @param nodeId
-	 *        The ID of the node to get alert situations for.
+	 * @param EdgeId
+	 *        The ID of the Edge to get alert situations for.
 	 * @return List of alerts, or an empty list if none available.
 	 * @since 1.1
 	 */
-	List<UserAlert> alertSituationsForNode(Long nodeId);
+	List<UserAlert> alertSituationsForEdge(Long EdgeId);
 
 }

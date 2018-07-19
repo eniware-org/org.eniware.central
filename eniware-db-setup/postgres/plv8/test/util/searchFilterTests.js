@@ -6,36 +6,36 @@ import searchFilter from '../../src/util/searchFilter'
 
 test('util:searchFilter:createEmpty', t => {
 	const service = searchFilter();
-	t.falsy(service.rootNode);
+	t.falsy(service.rootEdge);
 });
 
 test('util:searchFilter:parseSimple', t => {
 	const service = searchFilter('(foo=bar)');
-	const root = service.rootNode;
+	const root = service.rootEdge;
 	t.deepEqual(root, {key:'foo', op:'=', val:'bar'});
 });
 
 test('util:searchFilter:parseJunk', t => {
 	const service = searchFilter('Hey! This is junk.');
-	const root = service.rootNode;
+	const root = service.rootEdge;
 	t.falsy(root);
 });
 
 test('util:searchFilter:nefarious', t => {
 	const service = searchFilter('Hey! This is junk. (Or is it?)');
-	const root = service.rootNode;
+	const root = service.rootEdge;
 	t.falsy(root);
 });
 
 test('util:searchFilter:simpleMissingEnd', t => {
 	const service = searchFilter('(foo=bar');
-	const root = service.rootNode;
+	const root = service.rootEdge;
 	t.deepEqual(root, {key:'foo', op:'=', val:'bar'});
 });
 
 test('util:searchFilter:complexMissingEnd', t => {
 	const service = searchFilter('(&(foo=bar)(bim=bam)');
-	const root = service.rootNode;
+	const root = service.rootEdge;
 	t.deepEqual(root, {op:'&', children:[
 		{key:'foo', op:'=', val:'bar'},
 		{key:'bim', op:'=', val:'bam'},
@@ -44,13 +44,13 @@ test('util:searchFilter:complexMissingEnd', t => {
 
 test('util:searchFilter:emptyComplex', t => {
 	const service = searchFilter('(&)');
-	const root = service.rootNode;
+	const root = service.rootEdge;
 	t.deepEqual(root, {op:'&', children:[]});
 });
 
 test('util:searchFilter:simpleNestedMissingEnds', t => {
 	const service = searchFilter('(&(foo=bar');
-	const root = service.rootNode;
+	const root = service.rootEdge;
 	t.deepEqual(root, {op:'&', children:[
 		{key:'foo', op:'=', val:'bar'},
 	]});
@@ -58,13 +58,13 @@ test('util:searchFilter:simpleNestedMissingEnds', t => {
 
 test('util:searchFilter:parseMultiNoRootGroup', t => {
 	const service = searchFilter('(foo=bar)(bim=bam)');
-	const root = service.rootNode;
+	const root = service.rootEdge;
 	t.deepEqual(root, {key:'foo', op:'=', val:'bar'});
 });
 
 test('util:searchFilter:parseSimpleNested', t => {
 	const service = searchFilter('(&(foo=bar))');
-	const root = service.rootNode;
+	const root = service.rootEdge;
 	t.deepEqual(root, {op:'&',
 		children: [{key:'foo', op:'=', val:'bar'}]
 	});
@@ -72,7 +72,7 @@ test('util:searchFilter:parseSimpleNested', t => {
 
 test('util:searchFilter:parseNested', t => {
 	const service = searchFilter('(& (/m/foo=bar) (| (/pm/bam/pop~=whiz) (/pm/boo/boo>0) (!(/pm/bam/ding<=9))))');
-	const root = service.rootNode;
+	const root = service.rootEdge;
 	t.deepEqual(root, {op:'&', children:[
 		{key:'/m/foo', op:'=', val:'bar'},
 		{op:'|', children:[
@@ -87,7 +87,7 @@ test('util:searchFilter:parseNested', t => {
 
 test('util:searchFilter:parseNestedMiddle', t => {
 	const service = searchFilter('(& (/m/foo=bar) (| (/pm/bam/pop~=whiz) (/pm/boo/boo>0) ) (/pm/bam/ding<=9))');
-	const root = service.rootNode;
+	const root = service.rootEdge;
 	t.deepEqual(root, {op:'&', children:[
 		{key:'/m/foo', op:'=', val:'bar'},
 		{op:'|', children:[
@@ -100,31 +100,31 @@ test('util:searchFilter:parseNestedMiddle', t => {
 
 test('util:searchFilter:walkSimple', t => {
 	const service = searchFilter('(foo=bar)');
-	var nodes = [];
-	service.walk(function(err, node) {
-		if ( node ) {
-			nodes.push(node);
+	var Edges = [];
+	service.walk(function(err, Edge) {
+		if ( Edge ) {
+			Edges.push(Edge);
 		}
 	});
-	t.deepEqual(nodes, [{key:'foo', op:'=', val:'bar'}]);
+	t.deepEqual(Edges, [{key:'foo', op:'=', val:'bar'}]);
 });
 
 test('util:searchFilter:walkComplex', t => {
 	const service = searchFilter('(& (/m/foo=bar) (| (/pm/bam/pop~=whiz) (/pm/boo/boo>0) (!(/pm/bam/ding<=9))))');
 	var currParent,
-		nodes = [];
-	service.walk(function(err, node, parent) {
-		if ( node ) {
-			if ( node.children ) {
-				currParent = node;
-				nodes.push({op:node.op});
+		Edges = [];
+	service.walk(function(err, Edge, parent) {
+		if ( Edge ) {
+			if ( Edge.children ) {
+				currParent = Edge;
+				Edges.push({op:Edge.op});
 			} else {
 				t.is(parent, currParent);
-				nodes.push(node);
+				Edges.push(Edge);
 			}
 		}
 	});
-	t.deepEqual(nodes, [
+	t.deepEqual(Edges, [
 		{op:'&'},
 		{key:'/m/foo', op:'=', val:'bar'},
 		{op:'|'},
@@ -138,23 +138,23 @@ test('util:searchFilter:walkComplex', t => {
 test('util:searchFilter:walkAbortEarly', t => {
 	const service = searchFilter('(&(foo=bar)(bim=bam)');
 	var root,
-		nodes = [];
-	service.walk(function(err, node, parent) {
-		if ( node ) {
-			if ( node.children ) {
+		Edges = [];
+	service.walk(function(err, Edge, parent) {
+		if ( Edge ) {
+			if ( Edge.children ) {
 				if ( root === undefined ) {
-					root = node;
-					t.falsy(parent, 'parent should not exist for root node');
+					root = Edge;
+					t.falsy(parent, 'parent should not exist for root Edge');
 				}
-				nodes.push({op:node.op});
+				Edges.push({op:Edge.op});
 			} else {
-				t.is(parent, root, 'the parent is the root node');
-				nodes.push(node);
+				t.is(parent, root, 'the parent is the root Edge');
+				Edges.push(Edge);
 				return false
 			}
 		}
 	});
-	t.deepEqual(nodes, [
+	t.deepEqual(Edges, [
 		{op:'&'},
 		{key:'foo', op:'=', val:'bar'},
 	]);
@@ -163,23 +163,23 @@ test('util:searchFilter:walkAbortEarly', t => {
 test('util:searchFilter:walkNestedMiddle', t => {
 	const service = searchFilter('(& (/m/foo=bar) (| (/pm/bam/pop~=whiz) (/pm/boo/boo>0) ) (/pm/bam/ding<=9))');
 	var parents = [],
-		nodes = [];
-	service.walk(function(err, node, parent) {
-		if ( node ) {
-			if ( node.children ) {
-				parents.push(node);
-				nodes.push({op:node.op});
+		Edges = [];
+	service.walk(function(err, Edge, parent) {
+		if ( Edge ) {
+			if ( Edge.children ) {
+				parents.push(Edge);
+				Edges.push({op:Edge.op});
 			} else {
 				if ( parent !== parents[parents.length - 1] ) {
 					t.is(parent, parents[parents.length -2], 'popped back to previous parent');
 				} else {
 					t.is(parent, parents[parents.length - 1], 'on same parent');
 				}
-				nodes.push(node);
+				Edges.push(Edge);
 			}
 		}
 	});
-	t.deepEqual(nodes, [
+	t.deepEqual(Edges, [
 		{op:'&'},
 		{key:'/m/foo', op:'=', val:'bar'},
 		{op:'|'},
@@ -191,9 +191,9 @@ test('util:searchFilter:walkNestedMiddle', t => {
 
 test('util:searchFilter:walkEmptyString', t => {
 	const service = searchFilter('');
-	t.falsy(service.rootNode);
-	service.walk(function(err, node, parent) {
-		t.fail('Should not have walked any nodes.');
+	t.falsy(service.rootEdge);
+	service.walk(function(err, Edge, parent) {
+		t.fail('Should not have walked any Edges.');
 	});
 });
 

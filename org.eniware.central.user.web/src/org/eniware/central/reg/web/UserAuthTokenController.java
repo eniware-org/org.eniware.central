@@ -68,7 +68,7 @@ public class UserAuthTokenController extends ControllerSupport {
 						userTokens.add(token);
 						break;
 
-					case ReadNodeData:
+					case ReadEdgeData:
 						dataTokens.add(token);
 						break;
 				}
@@ -76,7 +76,7 @@ public class UserAuthTokenController extends ControllerSupport {
 			model.addAttribute("userAuthTokens", userTokens);
 			model.addAttribute("dataAuthTokens", dataTokens);
 		}
-		model.addAttribute("userNodes", userBiz.getUserNodes(user.getUserId()));
+		model.addAttribute("userEdges", userBiz.getUserEdges(user.getUserId()));
 		return "auth-tokens/view";
 	}
 
@@ -109,16 +109,16 @@ public class UserAuthTokenController extends ControllerSupport {
 	@RequestMapping(value = "/generateData", method = RequestMethod.POST)
 	@ResponseBody
 	public Response<UserAuthToken> generateDataToken(
-			@RequestParam(value = "nodeId", required = false) Set<Long> nodeIds,
+			@RequestParam(value = "EdgeId", required = false) Set<Long> EdgeIds,
 			@RequestParam(value = "sourceId", required = false) Set<String> sourceIds,
 			@RequestParam(value = "minAggregation", required = false) Aggregation minAggregation,
-			@RequestParam(value = "nodeMetadataPath", required = false) Set<String> nodeMetadataPaths,
+			@RequestParam(value = "EdgeMetadataPath", required = false) Set<String> EdgeMetadataPaths,
 			@RequestParam(value = "userMetadataPath", required = false) Set<String> userMetadataPaths) {
 		final SecurityUser user = SecurityUtils.getCurrentUser();
 		UserAuthToken token = userBiz.generateUserAuthToken(user.getUserId(),
-				UserAuthTokenType.ReadNodeData,
-				new BasicSecurityPolicy.Builder().withNodeIds(nodeIds).withSourceIds(sourceIds)
-						.withMinAggregation(minAggregation).withNodeMetadataPaths(nodeMetadataPaths)
+				UserAuthTokenType.ReadEdgeData,
+				new BasicSecurityPolicy.Builder().withEdgeIds(EdgeIds).withSourceIds(sourceIds)
+						.withMinAggregation(minAggregation).withEdgeMetadataPaths(EdgeMetadataPaths)
 						.withUserMetadataPaths(userMetadataPaths).build());
 		return new Response<UserAuthToken>(token);
 	}

@@ -14,7 +14,7 @@ import org.eniware.central.domain.FilterResults;
 import org.eniware.central.security.AuthorizationException;
 import org.eniware.central.security.SecurityActor;
 import org.eniware.central.security.SecurityException;
-import org.eniware.central.security.SecurityNode;
+import org.eniware.central.security.SecurityEdge;
 import org.eniware.central.security.SecurityPolicy;
 import org.eniware.central.security.SecurityPolicyEnforcer;
 import org.eniware.central.security.SecurityPolicyMetadataType;
@@ -37,7 +37,7 @@ import org.springframework.util.PathMatcher;
  */
 public abstract class AuthorizationSupport {
 
-	private final UserEdgeDao userNodeDao;
+	private final UserEdgeDao userEdgeDao;
 	private PathMatcher pathMatcher;
 
 	protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -45,12 +45,12 @@ public abstract class AuthorizationSupport {
 	/**
 	 * Constructor.
 	 * 
-	 * @param userNodeDao
-	 *        the UserNodeDao to use
+	 * @param userEdgeDao
+	 *        the UserEdgeDao to use
 	 */
-	public AuthorizationSupport(UserEdgeDao userNodeDao) {
+	public AuthorizationSupport(UserEdgeDao userEdgeDao) {
 		super();
-		this.userNodeDao = userNodeDao;
+		this.userEdgeDao = userEdgeDao;
 	}
 
 	/**
@@ -59,41 +59,41 @@ public abstract class AuthorizationSupport {
 	 * @return The {@link UserEdgeDao}.
 	 * @since 1.1
 	 */
-	protected UserEdgeDao getUserNodeDao() {
-		return userNodeDao;
+	protected UserEdgeDao getUserEdgeDao() {
+		return userEdgeDao;
 	}
 
 	/**
-	 * Require the active user have "write" access to a given node ID. If the
+	 * Require the active user have "write" access to a given Edge ID. If the
 	 * active user is not authorized, a {@link AuthorizationException} will be
 	 * thrown.
 	 * 
-	 * @param nodeId
-	 *        the node ID to check
+	 * @param EdgeId
+	 *        the Edge ID to check
 	 * @throws AuthorizationException
 	 *         if the authorization check fails
 	 */
-	protected void requireNodeWriteAccess(Long nodeId) {
-		UserEdge userNode = (nodeId == null ? null : userNodeDao.get(nodeId));
-		if ( userNode == null ) {
-			log.warn("Access DENIED to node {}; not found", nodeId);
-			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, nodeId);
+	protected void requireEdgeWriteAccess(Long EdgeId) {
+		UserEdge userEdge = (EdgeId == null ? null : userEdgeDao.get(EdgeId));
+		if ( userEdge == null ) {
+			log.warn("Access DENIED to Edge {}; not found", EdgeId);
+			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, EdgeId);
 		}
 
 		final SecurityActor actor;
 		try {
 			actor = SecurityUtils.getCurrentActor();
 		} catch ( SecurityException e ) {
-			log.warn("Access DENIED to node {} for non-authenticated user", nodeId);
-			throw new AuthorizationException(AuthorizationException.Reason.ACCESS_DENIED, nodeId);
+			log.warn("Access DENIED to Edge {} for non-authenticated user", EdgeId);
+			throw new AuthorizationException(AuthorizationException.Reason.ACCESS_DENIED, EdgeId);
 		}
 
-		// node requires authentication
-		if ( actor instanceof SecurityNode ) {
-			SecurityNode node = (SecurityNode) actor;
-			if ( !nodeId.equals(node.getNodeId()) ) {
-				log.warn("Access DENIED to node {} for node {}; wrong node", nodeId, node.getNodeId());
-				throw new AuthorizationException(node.getNodeId().toString(),
+		// Edge requires authentication
+		if ( actor instanceof SecurityEdge ) {
+			SecurityEdge Edge = (SecurityEdge) actor;
+			if ( !EdgeId.equals(Edge.getEdgeId()) ) {
+				log.warn("Access DENIED to Edge {} for Edge {}; wrong Edge", EdgeId, Edge.getEdgeId());
+				throw new AuthorizationException(Edge.getEdgeId().toString(),
 						AuthorizationException.Reason.ACCESS_DENIED);
 			}
 			return;
@@ -101,8 +101,8 @@ public abstract class AuthorizationSupport {
 
 		if ( actor instanceof SecurityUser ) {
 			SecurityUser user = (SecurityUser) actor;
-			if ( !user.getUserId().equals(userNode.getUser().getId()) ) {
-				log.warn("Access DENIED to node {} for user {}; wrong user", nodeId, user.getEmail());
+			if ( !user.getUserId().equals(userEdge.getUser().getId()) ) {
+				log.warn("Access DENIED to Edge {} for user {}; wrong user", EdgeId, user.getEmail());
 				throw new AuthorizationException(user.getEmail(),
 						AuthorizationException.Reason.ACCESS_DENIED);
 			}
@@ -112,9 +112,9 @@ public abstract class AuthorizationSupport {
 		if ( actor instanceof SecurityToken ) {
 			SecurityToken token = (SecurityToken) actor;
 			if ( UserAuthTokenType.User.toString().equals(token.getTokenType()) ) {
-				// user token, so user ID must match node user's ID
-				if ( !token.getUserId().equals(userNode.getUser().getId()) ) {
-					log.warn("Access DENIED to node {} for token {}; wrong user", nodeId,
+				// user token, so user ID must match Edge user's ID
+				if ( !token.getUserId().equals(userEdge.getUser().getId()) ) {
+					log.warn("Access DENIED to Edge {} for token {}; wrong user", EdgeId,
 							token.getToken());
 					throw new AuthorizationException(token.getToken(),
 							AuthorizationException.Reason.ACCESS_DENIED);
@@ -123,27 +123,27 @@ public abstract class AuthorizationSupport {
 			}
 		}
 
-		log.warn("Access DENIED to node {} for actor {}", nodeId, actor);
-		throw new AuthorizationException(AuthorizationException.Reason.ACCESS_DENIED, nodeId);
+		log.warn("Access DENIED to Edge {} for actor {}", EdgeId, actor);
+		throw new AuthorizationException(AuthorizationException.Reason.ACCESS_DENIED, EdgeId);
 	}
 
 	/**
-	 * Require the active user have "read" access to a given node ID. If the
+	 * Require the active user have "read" access to a given Edge ID. If the
 	 * active user is not authorized, a {@link AuthorizationException} will be
 	 * thrown.
 	 * 
-	 * @param nodeId
-	 *        the node ID to check
+	 * @param EdgeId
+	 *        the Edge ID to check
 	 * @throws AuthorizationException
 	 *         if the authorization check fails
 	 */
-	protected void requireNodeReadAccess(Long nodeId) {
-		UserEdge userNode = (nodeId == null ? null : userNodeDao.get(nodeId));
-		if ( userNode == null ) {
-			log.warn("Access DENIED to node {}; not found", nodeId);
-			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, nodeId);
+	protected void requireEdgeReadAccess(Long EdgeId) {
+		UserEdge userEdge = (EdgeId == null ? null : userEdgeDao.get(EdgeId));
+		if ( userEdge == null ) {
+			log.warn("Access DENIED to Edge {}; not found", EdgeId);
+			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, EdgeId);
 		}
-		if ( !userNode.isRequiresAuthorization() ) {
+		if ( !userEdge.isRequiresAuthorization() ) {
 			return;
 		}
 
@@ -151,16 +151,16 @@ public abstract class AuthorizationSupport {
 		try {
 			actor = SecurityUtils.getCurrentActor();
 		} catch ( SecurityException e ) {
-			log.warn("Access DENIED to node {} for non-authenticated user", nodeId);
-			throw new AuthorizationException(AuthorizationException.Reason.ACCESS_DENIED, nodeId);
+			log.warn("Access DENIED to Edge {} for non-authenticated user", EdgeId);
+			throw new AuthorizationException(AuthorizationException.Reason.ACCESS_DENIED, EdgeId);
 		}
 
-		// node requires authentication
-		if ( actor instanceof SecurityNode ) {
-			SecurityNode node = (SecurityNode) actor;
-			if ( !nodeId.equals(node.getNodeId()) ) {
-				log.warn("Access DENIED to node {} for node {}; wrong node", nodeId, node.getNodeId());
-				throw new AuthorizationException(node.getNodeId().toString(),
+		// Edge requires authentication
+		if ( actor instanceof SecurityEdge ) {
+			SecurityEdge Edge = (SecurityEdge) actor;
+			if ( !EdgeId.equals(Edge.getEdgeId()) ) {
+				log.warn("Access DENIED to Edge {} for Edge {}; wrong Edge", EdgeId, Edge.getEdgeId());
+				throw new AuthorizationException(Edge.getEdgeId().toString(),
 						AuthorizationException.Reason.ACCESS_DENIED);
 			}
 			return;
@@ -168,8 +168,8 @@ public abstract class AuthorizationSupport {
 
 		if ( actor instanceof SecurityUser ) {
 			SecurityUser user = (SecurityUser) actor;
-			if ( !user.getUserId().equals(userNode.getUser().getId()) ) {
-				log.warn("Access DENIED to node {} for user {}; wrong user", nodeId, user.getEmail());
+			if ( !user.getUserId().equals(userEdge.getUser().getId()) ) {
+				log.warn("Access DENIED to Edge {} for user {}; wrong user", EdgeId, user.getEmail());
 				throw new AuthorizationException(user.getEmail(),
 						AuthorizationException.Reason.ACCESS_DENIED);
 			}
@@ -179,20 +179,20 @@ public abstract class AuthorizationSupport {
 		if ( actor instanceof SecurityToken ) {
 			SecurityToken token = (SecurityToken) actor;
 			if ( UserAuthTokenType.User.toString().equals(token.getTokenType()) ) {
-				// user token, so user ID must match node user's ID
-				if ( !token.getUserId().equals(userNode.getUser().getId()) ) {
-					log.warn("Access DENIED to node {} for token {}; wrong user", nodeId,
+				// user token, so user ID must match Edge user's ID
+				if ( !token.getUserId().equals(userEdge.getUser().getId()) ) {
+					log.warn("Access DENIED to Edge {} for token {}; wrong user", EdgeId,
 							token.getToken());
 					throw new AuthorizationException(token.getToken(),
 							AuthorizationException.Reason.ACCESS_DENIED);
 				}
 				return;
 			}
-			if ( UserAuthTokenType.ReadNodeData.toString().equals(token.getTokenType()) ) {
-				// data token, so token must include the requested node ID
-				if ( token.getPolicy() == null || token.getPolicy().getNodeIds() == null
-						|| !token.getPolicy().getNodeIds().contains(nodeId) ) {
-					log.warn("Access DENIED to node {} for token {}; node not included", nodeId,
+			if ( UserAuthTokenType.ReadEdgeData.toString().equals(token.getTokenType()) ) {
+				// data token, so token must include the requested Edge ID
+				if ( token.getPolicy() == null || token.getPolicy().getEdgeIds() == null
+						|| !token.getPolicy().getEdgeIds().contains(EdgeId) ) {
+					log.warn("Access DENIED to Edge {} for token {}; Edge not included", EdgeId,
 							token.getToken());
 					throw new AuthorizationException(token.getToken(),
 							AuthorizationException.Reason.ACCESS_DENIED);
@@ -201,8 +201,8 @@ public abstract class AuthorizationSupport {
 			}
 		}
 
-		log.warn("Access DENIED to node {} for actor {}", nodeId, actor);
-		throw new AuthorizationException(AuthorizationException.Reason.ACCESS_DENIED, nodeId);
+		log.warn("Access DENIED to Edge {} for actor {}", EdgeId, actor);
+		throw new AuthorizationException(AuthorizationException.Reason.ACCESS_DENIED, EdgeId);
 	}
 
 	/**
@@ -237,7 +237,7 @@ public abstract class AuthorizationSupport {
 		if ( actor instanceof SecurityToken ) {
 			SecurityToken token = (SecurityToken) actor;
 			if ( UserAuthTokenType.User.toString().equals(token.getTokenType()) ) {
-				// user token, so user ID must match node user's ID
+				// user token, so user ID must match Edge user's ID
 				if ( !token.getUserId().equals(userId) ) {
 					log.warn("Access DENIED to user {} for token {}; wrong user", userId,
 							token.getToken());
@@ -294,16 +294,16 @@ public abstract class AuthorizationSupport {
 			throw new AuthorizationException(AuthorizationException.Reason.ACCESS_DENIED, userId);
 		}
 
-		// node requires authentication
-		if ( actor instanceof SecurityNode ) {
-			SecurityNode node = (SecurityNode) actor;
-			UserEdge userNode = (node.getNodeId() == null ? null : userNodeDao.get(node.getNodeId()));
-			if ( userNode == null ) {
-				log.warn("Access DENIED to user {} for node {}; not found", userId, node.getNodeId());
+		// Edge requires authentication
+		if ( actor instanceof SecurityEdge ) {
+			SecurityEdge Edge = (SecurityEdge) actor;
+			UserEdge userEdge = (Edge.getEdgeId() == null ? null : userEdgeDao.get(Edge.getEdgeId()));
+			if ( userEdge == null ) {
+				log.warn("Access DENIED to user {} for Edge {}; not found", userId, Edge.getEdgeId());
 				throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, userId);
 			}
-			if ( !userId.equals(userNode.getUser().getId()) ) {
-				log.warn("Access DENIED to user {} for node {}; wrong node", userId, node.getNodeId());
+			if ( !userId.equals(userEdge.getUser().getId()) ) {
+				log.warn("Access DENIED to user {} for Edge {}; wrong Edge", userId, Edge.getEdgeId());
 				throw new AuthorizationException(AuthorizationException.Reason.ACCESS_DENIED, userId);
 			}
 			return;
@@ -327,7 +327,7 @@ public abstract class AuthorizationSupport {
 				throw new AuthorizationException(token.getToken(),
 						AuthorizationException.Reason.ACCESS_DENIED);
 			}
-			if ( UserAuthTokenType.ReadNodeData.toString().equals(token.getTokenType()) ) {
+			if ( UserAuthTokenType.ReadEdgeData.toString().equals(token.getTokenType()) ) {
 				// data token, the token must include a user metadata policy that can be enforced
 				if ( token.getPolicy() == null || token.getPolicy().getUserMetadataPaths() == null
 						|| token.getPolicy().getUserMetadataPaths().isEmpty() ) {
@@ -347,7 +347,7 @@ public abstract class AuthorizationSupport {
 
 	/**
 	 * Enforce a security policy on a domain object and
-	 * {@code SecurityPolicyMetadataType#Node} metadata type.
+	 * {@code SecurityPolicyMetadataType#Edge} metadata type.
 	 * 
 	 * @param domainObject
 	 *        The domain object to enforce the active policy on.
@@ -357,7 +357,7 @@ public abstract class AuthorizationSupport {
 	 * @since 1.4
 	 */
 	protected <T> T policyEnforcerCheck(T domainObject) {
-		return policyEnforcerCheck(domainObject, SecurityPolicyMetadataType.Node);
+		return policyEnforcerCheck(domainObject, SecurityPolicyMetadataType.Edge);
 	}
 
 	/**

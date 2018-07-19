@@ -1,89 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?><!--Converted at: Tue Nov 11 06:02:39 NZDT 2014-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.eniware.central.user.dao.mybatis.UserNodeCertificate">
+<mapper namespace="org.eniware.central.user.dao.mybatis.UserEdgeCertificate">
 
-	<cache-ref namespace="org.eniware.central.user.dao.mybatis.UserNode"/>
+	<cache-ref namespace="org.eniware.central.user.dao.mybatis.UserEdge"/>
 
-	<parameterMap id="pmap-UserNodeCertificate" type="UserNodeCertificate">
+	<parameterMap id="pmap-UserEdgeCertificate" type="UserEdgeCertificate">
 		<parameter property="created" jdbcType="TIMESTAMP" mode="IN"/>
-		<parameter property="nodeId" jdbcType="BIGINT" mode="IN"/>
+		<parameter property="EdgeId" jdbcType="BIGINT" mode="IN"/>
 		<parameter property="userId" jdbcType="BIGINT" mode="IN"/>
 		<parameter property="status" jdbcType="CHAR" mode="IN"/>
 		<parameter property="requestId" jdbcType="VARCHAR" mode="IN"/>
 		<parameter property="keystoreData" jdbcType="BINARY" mode="IN"/>
 	</parameterMap>
 
-	<update id="insert-UserNodeCertificate" parameterMap="pmap-UserNodeCertificate" statementType="CALLABLE">
-		{call eniwareuser.store_user_node_cert(?, ?, ?, ?, ?, ?)}
+	<update id="insert-UserEdgeCertificate" parameterMap="pmap-UserEdgeCertificate" statementType="CALLABLE">
+		{call eniwareuser.store_user_Edge_cert(?, ?, ?, ?, ?, ?)}
 	</update>
 	
-	<update id="update-UserNodeCertificate" parameterMap="pmap-UserNodeCertificate" statementType="CALLABLE">
-		{call eniwareuser.store_user_node_cert(?, ?, ?, ?, ?, ?)}
+	<update id="update-UserEdgeCertificate" parameterMap="pmap-UserEdgeCertificate" statementType="CALLABLE">
+		{call eniwareuser.store_user_Edge_cert(?, ?, ?, ?, ?, ?)}
 	</update>
 
-	<update id="delete-UserNodeCertificate" parameterType="UserNodePK">
-		DELETE FROM eniwareuser.user_node_cert
+	<update id="delete-UserEdgeCertificate" parameterType="UserEdgePK">
+		DELETE FROM eniwareuser.user_Edge_cert
 		WHERE
 			user_id = #{userId}
-			AND node_id = #{nodeId}
+			AND Edge_id = #{EdgeId}
 	</update>
 
-	<sql id="fragment-UserNodeCertificate-full-result">
+	<sql id="fragment-UserEdgeCertificate-full-result">
 		uncert.created AS uncert_created,
 		uncert.user_id AS uncert_user_id,
-		uncert.node_id AS uncert_node_id,
+		uncert.Edge_id AS uncert_Edge_id,
 		uncert.keystore AS uncert_keystore,
 		uncert.status AS uncert_status,
 		uncert.request_id AS uncert_request_id
 	</sql>
 
-	<resultMap id="UserNodeCertificateFullResult" type="UserNodeCertificate">
+	<resultMap id="UserEdgeCertificateFullResult" type="UserEdgeCertificate">
 		<id property="userId" column="uncert_user_id"/>
-		<id property="nodeId" column="uncert_node_id"/>
+		<id property="EdgeId" column="uncert_Edge_id"/>
 		<result property="created" column="uncert_created"/>
 		<result property="keystoreData" column="uncert_keystore"/>
 		<result property="status" column="uncert_status"/>
 		<result property="requestId" column="uncert_request_id"/>
 		<association property="user" resultMap="org.eniware.central.user.dao.mybatis.User.UserFullResult"/>
-		<association property="node" resultMap="org.eniware.central.dao.mybatis.EniwareEdge.EniwareEdgeFullResult"/>
+		<association property="Edge" resultMap="org.eniware.central.dao.mybatis.EniwareEdge.EniwareEdgeFullResult"/>
 	</resultMap>
 	
-	<select id="get-UserNodeCertificate-for-id" parameterType="UserNodePK" resultMap="UserNodeCertificateFullResult">
+	<select id="get-UserEdgeCertificate-for-id" parameterType="UserEdgePK" resultMap="UserEdgeCertificateFullResult">
 		SELECT
-			<include refid="fragment-UserNodeCertificate-full-result"/>,
+			<include refid="fragment-UserEdgeCertificate-full-result"/>,
 			<include refid="org.eniware.central.dao.mybatis.EniwareEdge.fragment-EniwareEdge-full-result"/>,
 			<include refid="org.eniware.central.dao.mybatis.EniwareLocation.fragment-EniwareLocation-full-result"/>,
 			<include refid="org.eniware.central.user.dao.mybatis.User.fragment-User-full-result"/>
 		FROM
-			eniwareuser.user_node_cert uncert
+			eniwareuser.user_Edge_cert uncert
 		INNER JOIN
-			eniwarenet.ew_edge n ON n.node_id = uncert.node_id
+			eniwarenet.ew_edge n ON n.Edge_id = uncert.Edge_id
 		INNER JOIN
 			eniwarenet.sn_loc l ON l.id = n.loc_id
 		INNER JOIN
 			eniwareuser.user_user u ON u.id = uncert.user_id
 		WHERE
 			uncert.user_id = #{userId}
-			AND uncert.node_id = #{nodeId}
+			AND uncert.Edge_id = #{EdgeId}
 	</select>
 	
-	<select id="get-UserNodeCertificate-for-active-node" parameterType="long" resultMap="UserNodeCertificateFullResult">
+	<select id="get-UserEdgeCertificate-for-active-Edge" parameterType="long" resultMap="UserEdgeCertificateFullResult">
 		SELECT
-			<include refid="fragment-UserNodeCertificate-full-result"/>,
+			<include refid="fragment-UserEdgeCertificate-full-result"/>,
 			<include refid="org.eniware.central.dao.mybatis.EniwareEdge.fragment-EniwareEdge-full-result"/>,
 			<include refid="org.eniware.central.dao.mybatis.EniwareLocation.fragment-EniwareLocation-full-result"/>,
 			<include refid="org.eniware.central.user.dao.mybatis.User.fragment-User-full-result"/>
 		FROM
-			eniwareuser.user_node_cert uncert
+			eniwareuser.user_Edge_cert uncert
 		INNER JOIN
-			eniwarenet.ew_edge n ON n.node_id = uncert.node_id
+			eniwarenet.ew_edge n ON n.Edge_id = uncert.Edge_id
 		INNER JOIN
 			eniwarenet.sn_loc l ON l.id = n.loc_id
 		INNER JOIN
 			eniwareuser.user_user u ON u.id = uncert.user_id
 		WHERE
-			uncert.node_id = #{nodeId}
+			uncert.Edge_id = #{EdgeId}
 			AND uncert.status = 'a'::bpchar
 	</select>
 	

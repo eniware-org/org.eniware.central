@@ -12,22 +12,22 @@ import org.eniware.central.security.AuthorizationException;
 import org.eniware.central.user.domain.UserEdgeTransfer;
 
 /**
- * API for node owner tasks.
+ * API for Edge owner tasks.
  * 
  * @version 1.0
  */
 public interface EdgeOwnershipBiz {
 
 	/**
-	 * Get a specific transfer for a given node.
+	 * Get a specific transfer for a given Edge.
 	 * 
 	 * @param userId
 	 *        The ID of the user making the request.
-	 * @param nodeId
-	 *        The ID of the node to transfer.
+	 * @param EdgeId
+	 *        The ID of the Edge to transfer.
 	 * @return The transfer, or <em>null</em> if none exists.
 	 */
-	UserEdgeTransfer getNodeOwnershipTransfer(Long userId, Long nodeId);
+	UserEdgeTransfer getEdgeOwnershipTransfer(Long userId, Long EdgeId);
 
 	/**
 	 * Get a complete list of transfers for a given recipient.
@@ -42,54 +42,54 @@ public interface EdgeOwnershipBiz {
 	 * @return A list of all ownership requests associated with the given
 	 *         recipient (never <em>null</em>).
 	 */
-	List<UserEdgeTransfer> pendingNodeOwnershipTransfersForEmail(String email);
+	List<UserEdgeTransfer> pendingEdgeOwnershipTransfersForEmail(String email);
 
 	/**
-	 * Request a transfer of ownership of a node.
+	 * Request a transfer of ownership of a Edge.
 	 * 
-	 * When requesting a new owner for a node, the email address of the new
+	 * When requesting a new owner for a Edge, the email address of the new
 	 * owner is provided and an email will be sent a message with a special link
-	 * for confirming or rejecting the transfer request. The node will not be
+	 * for confirming or rejecting the transfer request. The Edge will not be
 	 * transferred until the request is confirmed, via the
-	 * {@link #confirmNodeOwnershipTransfer()}.
+	 * {@link #confirmEdgeOwnershipTransfer()}.
 	 * 
 	 * @param userId
 	 *        The ID of the user making the request.
-	 * @param nodeId
-	 *        The ID of the node to transfer.
+	 * @param EdgeId
+	 *        The ID of the Edge to transfer.
 	 * @param newOwnerEmail
 	 *        The email address of the user requested to take ownership of the
-	 *        node.
+	 *        Edge.
 	 * @throws AuthorizationException
 	 *         If the active user is not authorized to transfer ownership of the
-	 *         given node.
+	 *         given Edge.
 	 */
-	void requestNodeOwnershipTransfer(Long userId, Long nodeId, String newOwnerEmail)
+	void requestEdgeOwnershipTransfer(Long userId, Long EdgeId, String newOwnerEmail)
 			throws AuthorizationException;
 
 	/**
-	 * Cancel a node ownership transfer request.
+	 * Cancel a Edge ownership transfer request.
 	 * 
-	 * After a node transfer request has been made via
-	 * {@link #requestNodeOwnershipTransfer(Long, Long, String)} but before the
+	 * After a Edge transfer request has been made via
+	 * {@link #requestEdgeOwnershipTransfer(Long, Long, String)} but before the
 	 * new owner has accepted the request, the original owner can cancel the
 	 * request by calling this method.
 	 * 
 	 * @param userId
 	 *        The ID of the user making the request.
-	 * @param nodeId
-	 *        The ID of the node to transfer.
+	 * @param EdgeId
+	 *        The ID of the Edge to transfer.
 	 * @throws AuthorizationException
 	 *         If the active user is not authorized to transfer ownership of the
-	 *         given node.
+	 *         given Edge.
 	 */
-	void cancelNodeOwnershipTransfer(Long userId, Long nodeId) throws AuthorizationException;
+	void cancelEdgeOwnershipTransfer(Long userId, Long EdgeId) throws AuthorizationException;
 
 	/**
-	 * Confirm or reject a node transfer request.
+	 * Confirm or reject a Edge transfer request.
 	 * 
-	 * After a node transfer request has been made via
-	 * {@link #requestNodeOwnershipTransfer(Long, Long, String)} the recipient
+	 * After a Edge transfer request has been made via
+	 * {@link #requestEdgeOwnershipTransfer(Long, Long, String)} the recipient
 	 * of the transfer request can confirm or reject the request by calling this
 	 * method.
 	 * 
@@ -98,8 +98,8 @@ public interface EdgeOwnershipBiz {
 	 * 
 	 * @param userId
 	 *        The ID of the user making the request.
-	 * @param nodeId
-	 *        The node ID if the node to accept or reject ownership of.
+	 * @param EdgeId
+	 *        The Edge ID if the Edge to accept or reject ownership of.
 	 * @param accept
 	 *        If <em>true</em> then accept the transfer request, otherwise
 	 *        reject (canceling the request).
@@ -108,7 +108,7 @@ public interface EdgeOwnershipBiz {
 	 *         If the active user is not authorized to confirm (or reject) the
 	 *         ownership transfer.
 	 */
-	UserEdgeTransfer confirmNodeOwnershipTransfer(Long userId, Long nodeId, boolean accept)
+	UserEdgeTransfer confirmEdgeOwnershipTransfer(Long userId, Long EdgeId, boolean accept)
 			throws AuthorizationException;
 
 }

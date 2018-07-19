@@ -26,39 +26,39 @@ import org.eniware.central.user.support.AuthorizationSupport;
 @Aspect
 public class InstructorSecurityAspect extends AuthorizationSupport {
 
-	private final EdgeInstructionDao nodeInstructionDao;
+	private final EdgeInstructionDao EdgeInstructionDao;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param userNodeDao
-	 *        the UserNodeDao to use
+	 * @param userEdgeDao
+	 *        the UserEdgeDao to use
 	 */
-	public InstructorSecurityAspect(UserEdgeDao userNodeDao, EdgeInstructionDao nodeInstructionDao) {
-		super(userNodeDao);
-		this.nodeInstructionDao = nodeInstructionDao;
+	public InstructorSecurityAspect(UserEdgeDao userEdgeDao, EdgeInstructionDao EdgeInstructionDao) {
+		super(userEdgeDao);
+		this.EdgeInstructionDao = EdgeInstructionDao;
 	}
 
-	// Hmm, can't use execution(* org.eniware.central.instructor.biz.InstructorBiz.getActiveInstructionsForNode(..))
+	// Hmm, can't use execution(* org.eniware.central.instructor.biz.InstructorBiz.getActiveInstructionsForEdge(..))
 	// because end up with AspectJ exception "can't determine superclass of missing type 
 	// org.eniware.central.instructor.aop.InstructorSecurityAspect" which is being thrown because the OSGi
 	// base ClassLoader is somehow being used after trying to inspect the osgi:service exporting the
 	// advised bean. All very strange, and I've given up trying to figure it out, after finding tweaking
 	// the execution() expression lets the whole thing work.
-	@Pointcut("bean(aop*) && execution(* org.eniware.central.instructor.biz.*.get*ForNode(..)) && args(nodeId)")
-	public void instructionsForNode(Long nodeId) {
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.instructor.biz.*.get*ForEdge(..)) && args(EdgeId)")
+	public void instructionsForEdge(Long EdgeId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* org.eniware.central.instructor.biz.*.get*ForNodes(..)) && args(nodeIds)")
-	public void instructionsForNodes(Set<Long> nodeIds) {
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.instructor.biz.*.get*ForEdges(..)) && args(EdgeIds)")
+	public void instructionsForEdges(Set<Long> EdgeIds) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* org.eniware.central.instructor.biz.*.queueInstruction(..)) && args(nodeId,..)")
-	public void queueInstruction(Long nodeId) {
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.instructor.biz.*.queueInstruction(..)) && args(EdgeId,..)")
+	public void queueInstruction(Long EdgeId) {
 	}
 
-	@Pointcut("bean(aop*) && execution(* org.eniware.central.instructor.biz.*.queueInstructions(..)) && args(nodeIds,..)")
-	public void queueInstructions(Set<Long> nodeIds) {
+	@Pointcut("bean(aop*) && execution(* org.eniware.central.instructor.biz.*.queueInstructions(..)) && args(EdgeIds,..)")
+	public void queueInstructions(Set<Long> EdgeIds) {
 	}
 
 	@Pointcut("bean(aop*) && execution(* org.eniware.central.instructor.biz.*.getInstruction(..)) && args(instructionId,..)")
@@ -78,37 +78,37 @@ public class InstructorSecurityAspect extends AuthorizationSupport {
 	}
 
 	/**
-	 * Allow the current user (or current node) access to node instructions.
+	 * Allow the current user (or current Edge) access to Edge instructions.
 	 * 
-	 * @param nodeId
-	 *        the ID of the node to verify
+	 * @param EdgeId
+	 *        the ID of the Edge to verify
 	 */
-	@Before("instructionsForNode(nodeId) || queueInstruction(nodeId)")
-	public void instructionsForNodeCheck(Long nodeId) {
-		if ( nodeId == null ) {
+	@Before("instructionsForEdge(EdgeId) || queueInstruction(EdgeId)")
+	public void instructionsForEdgeCheck(Long EdgeId) {
+		if ( EdgeId == null ) {
 			return;
 		}
-		requireNodeWriteAccess(nodeId);
+		requireEdgeWriteAccess(EdgeId);
 	}
 
 	/**
-	 * Allow the current user (or current node) access to node instructions.
+	 * Allow the current user (or current Edge) access to Edge instructions.
 	 * 
-	 * @param nodeIds
-	 *        the IDs of the nodes to verify
+	 * @param EdgeIds
+	 *        the IDs of the Edges to verify
 	 */
-	@Before("instructionsForNodes(nodeIds) || queueInstructions(nodeIds)")
-	public void instructionsForNodesCheck(Set<Long> nodeIds) {
-		if ( nodeIds == null ) {
+	@Before("instructionsForEdges(EdgeIds) || queueInstructions(EdgeIds)")
+	public void instructionsForEdgesCheck(Set<Long> EdgeIds) {
+		if ( EdgeIds == null ) {
 			return;
 		}
-		for ( Long nodeId : nodeIds ) {
-			instructionsForNodeCheck(nodeId);
+		for ( Long EdgeId : EdgeIds ) {
+			instructionsForEdgeCheck(EdgeId);
 		}
 	}
 
 	/**
-	 * Allow the current user (or current node) access to viewing instructions
+	 * Allow the current user (or current Edge) access to viewing instructions
 	 * by ID.
 	 * 
 	 * @param instructionId
@@ -121,15 +121,15 @@ public class InstructorSecurityAspect extends AuthorizationSupport {
 		if ( instructionId == null ) {
 			return;
 		}
-		final Long nodeId = (instruction != null ? instruction.getNodeId() : null);
-		if ( nodeId == null ) {
+		final Long EdgeId = (instruction != null ? instruction.getEdgeId() : null);
+		if ( EdgeId == null ) {
 			return;
 		}
-		requireNodeWriteAccess(nodeId);
+		requireEdgeWriteAccess(EdgeId);
 	}
 
 	/**
-	 * Allow the current user (or current node) access to viewing instructions
+	 * Allow the current user (or current Edge) access to viewing instructions
 	 * by IDs.
 	 * 
 	 * @param instructionIds
@@ -144,12 +144,12 @@ public class InstructorSecurityAspect extends AuthorizationSupport {
 			return;
 		}
 		for ( EdgeInstruction instr : instructions ) {
-			viewInstructionAccessCheck(instr.getNodeId(), instr);
+			viewInstructionAccessCheck(instr.getEdgeId(), instr);
 		}
 	}
 
 	/**
-	 * Allow the current user (or current node) access to updating instructions
+	 * Allow the current user (or current Edge) access to updating instructions
 	 * by ID.
 	 * 
 	 * @param instructionId
@@ -160,19 +160,19 @@ public class InstructorSecurityAspect extends AuthorizationSupport {
 		if ( instructionId == null ) {
 			return;
 		}
-		final EdgeInstruction instruction = nodeInstructionDao.get(instructionId);
+		final EdgeInstruction instruction = EdgeInstructionDao.get(instructionId);
 		if ( instruction == null ) {
 			return;
 		}
-		final Long nodeId = instruction.getNodeId();
-		if ( nodeId == null ) {
+		final Long EdgeId = instruction.getEdgeId();
+		if ( EdgeId == null ) {
 			return;
 		}
-		requireNodeWriteAccess(nodeId);
+		requireEdgeWriteAccess(EdgeId);
 	}
 
 	/**
-	 * Allow the current user (or current node) access to updating instructions
+	 * Allow the current user (or current Edge) access to updating instructions
 	 * by ID.
 	 * 
 	 * @param instructionId
