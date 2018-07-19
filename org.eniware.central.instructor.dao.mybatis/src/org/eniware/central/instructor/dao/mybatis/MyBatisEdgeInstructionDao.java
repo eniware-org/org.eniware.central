@@ -11,32 +11,32 @@ import java.util.Map;
 
 import org.eniware.central.dao.mybatis.support.BaseMyBatisFilterableDao;
 import org.eniware.central.domain.EntityMatch;
-import org.eniware.central.instructor.dao.NodeInstructionDao;
+import org.eniware.central.instructor.dao.EdgeInstructionDao;
 import org.eniware.central.instructor.domain.InstructionFilter;
 import org.eniware.central.instructor.domain.InstructionParameter;
-import org.eniware.central.instructor.domain.NodeInstruction;
+import org.eniware.central.instructor.domain.EdgeInstruction;
 import org.joda.time.DateTime;
 
 /**
- * MyBatis implementation of {@link NodeInstructionDao}.
+ * MyBatis implementation of {@link EdgeInstructionDao}.
  * 
  * @version 1.1
  */
-public class MyBatisNodeInstructionDao extends
-		BaseMyBatisFilterableDao<NodeInstruction, EntityMatch, InstructionFilter, Long> implements
-		NodeInstructionDao {
+public class MyBatisEdgeInstructionDao extends
+		BaseMyBatisFilterableDao<EdgeInstruction, EntityMatch, InstructionFilter, Long> implements
+		EdgeInstructionDao {
 
 	public static final String UPDATE_PURGE_COMPLETED_INSTRUCTIONS = "delete-NodeInstruction-completed";
 
 	/**
 	 * Default constructor.
 	 */
-	public MyBatisNodeInstructionDao() {
-		super(NodeInstruction.class, Long.class, EntityMatch.class);
+	public MyBatisEdgeInstructionDao() {
+		super(EdgeInstruction.class, Long.class, EntityMatch.class);
 	}
 
 	@Override
-	protected Long handleInsert(NodeInstruction datum) {
+	protected Long handleInsert(EdgeInstruction datum) {
 		Long result = super.handleInsert(datum);
 		handleRelation(result, datum.getParameters(), InstructionParameter.class, null);
 		return result;

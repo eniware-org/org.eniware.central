@@ -21,7 +21,7 @@ import org.eniware.central.domain.EniwareEdge;
  * 
  * @version 1.3
  */
-public class UserNode extends BaseEntity {
+public class UserEdge extends BaseEntity {
 
 	private static final long serialVersionUID = -3247965742224565205L;
 
@@ -33,13 +33,13 @@ public class UserNode extends BaseEntity {
 	private EniwareEdge node;
 
 	// transient
-	private UserNodeCertificate certificate;
-	private UserNodeTransfer transfer;
+	private UserEdgeCertificate certificate;
+	private UserEdgeTransfer transfer;
 
 	/**
 	 * Default constructor.
 	 */
-	public UserNode() {
+	public UserEdge() {
 		super();
 	}
 
@@ -51,7 +51,7 @@ public class UserNode extends BaseEntity {
 	 * @param node
 	 *        the node
 	 */
-	public UserNode(User user, EniwareEdge node) {
+	public UserEdge(User user, EniwareEdge node) {
 		super();
 		setUser(user);
 		setNode(node);
@@ -107,11 +107,11 @@ public class UserNode extends BaseEntity {
 		this.node = node;
 	}
 
-	public UserNodeCertificate getCertificate() {
+	public UserEdgeCertificate getCertificate() {
 		return certificate;
 	}
 
-	public void setCertificate(UserNodeCertificate certificate) {
+	public void setCertificate(UserEdgeCertificate certificate) {
 		this.certificate = certificate;
 	}
 
@@ -132,11 +132,11 @@ public class UserNode extends BaseEntity {
 		return (node != null ? node.getLocation() : null);
 	}
 
-	public UserNodeTransfer getTransfer() {
+	public UserEdgeTransfer getTransfer() {
 		return transfer;
 	}
 
-	public void setTransfer(UserNodeTransfer transfer) {
+	public void setTransfer(UserEdgeTransfer transfer) {
 		this.transfer = transfer;
 	}
 

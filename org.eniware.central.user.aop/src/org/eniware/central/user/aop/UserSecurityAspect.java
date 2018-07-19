@@ -13,10 +13,10 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.eniware.central.security.AuthorizationException;
 import org.eniware.central.user.biz.UserBiz;
 import org.eniware.central.user.dao.UserAuthTokenDao;
-import org.eniware.central.user.dao.UserNodeDao;
+import org.eniware.central.user.dao.UserEdgeDao;
 import org.eniware.central.user.domain.UserAuthToken;
 import org.eniware.central.user.domain.UserAuthTokenType;
-import org.eniware.central.user.domain.UserNode;
+import org.eniware.central.user.domain.UserEdge;
 import org.eniware.central.user.support.AuthorizationSupport;
 
 /**
@@ -37,7 +37,7 @@ public class UserSecurityAspect extends AuthorizationSupport {
 	 * @param userAuthTokenDao
 	 *        the UserAuthTokenDao
 	 */
-	public UserSecurityAspect(UserNodeDao userNodeDao, UserAuthTokenDao userAuthTokenDao) {
+	public UserSecurityAspect(UserEdgeDao userNodeDao, UserAuthTokenDao userAuthTokenDao) {
 		super(userNodeDao);
 		this.userAuthTokenDao = userAuthTokenDao;
 	}
@@ -83,7 +83,7 @@ public class UserSecurityAspect extends AuthorizationSupport {
 	}
 
 	@Pointcut("bean(aop*) && execution(* org.eniware.central.user.biz.*UserBiz.saveUserNode(..)) && args(entry)")
-	public void updateUserNode(UserNode entry) {
+	public void updateUserNode(UserEdge entry) {
 	}
 
 	@Before("readUser(userId) || readUserNodeConfirmations(userId) || readerUserAuthTokens(userId) || readArchivedUserNodes(userId)")
@@ -121,7 +121,7 @@ public class UserSecurityAspect extends AuthorizationSupport {
 	}
 
 	@Before("updateUserNode(entry)")
-	public void updateUserNodeAccessCheck(UserNode entry) {
+	public void updateUserNodeAccessCheck(UserEdge entry) {
 		if ( entry.getUser() == null ) {
 			log.warn("Access DENIED to user node; no user ID");
 			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, null);

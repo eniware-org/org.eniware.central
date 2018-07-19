@@ -10,21 +10,21 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.eniware.central.security.AuthorizationException;
-import org.eniware.central.user.biz.NodeOwnershipBiz;
+import org.eniware.central.user.biz.EdgeOwnershipBiz;
 import org.eniware.central.user.dao.UserDao;
-import org.eniware.central.user.dao.UserNodeDao;
+import org.eniware.central.user.dao.UserEdgeDao;
 import org.eniware.central.user.domain.User;
-import org.eniware.central.user.domain.UserNodePK;
-import org.eniware.central.user.domain.UserNodeTransfer;
+import org.eniware.central.user.domain.UserEdgePK;
+import org.eniware.central.user.domain.UserEdgeTransfer;
 import org.eniware.central.user.support.AuthorizationSupport;
 
 /**
- * Security enforcing AOP aspect for {@link NodeOwnershipBiz}.
+ * Security enforcing AOP aspect for {@link EdgeOwnershipBiz}.
  * 
  * @version 1.0
  */
 @Aspect
-public class NodeOwnershipSecurityAspect extends AuthorizationSupport {
+public class EdgeOwnershipSecurityAspect extends AuthorizationSupport {
 
 	private final UserDao userDao;
 
@@ -32,9 +32,9 @@ public class NodeOwnershipSecurityAspect extends AuthorizationSupport {
 	 * Constructor.
 	 * 
 	 * @param userNodeDao
-	 *        The {@link UserNodeDao} to use.
+	 *        The {@link UserEdgeDao} to use.
 	 */
-	public NodeOwnershipSecurityAspect(UserNodeDao userNodeDao, UserDao userDao) {
+	public EdgeOwnershipSecurityAspect(UserEdgeDao userNodeDao, UserDao userDao) {
 		super(userNodeDao);
 		this.userDao = userDao;
 	}
@@ -78,8 +78,8 @@ public class NodeOwnershipSecurityAspect extends AuthorizationSupport {
 	@Before("confirmTransferRequest(userId, nodeId)")
 	public void checkUserNodeConfirmTransferAccess(Long userId, Long nodeId) {
 		// the active user must be the recipient of the transfer request
-		final UserNodePK userNodePK = new UserNodePK(userId, nodeId);
-		UserNodeTransfer xfer = getUserNodeDao().getUserNodeTransfer(userNodePK);
+		final UserEdgePK userNodePK = new UserEdgePK(userId, nodeId);
+		UserEdgeTransfer xfer = getUserNodeDao().getUserNodeTransfer(userNodePK);
 		if ( xfer == null ) {
 			log.warn("Access DENIED to transfer {}; not found", userNodePK);
 			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, userNodePK);

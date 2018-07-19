@@ -14,7 +14,7 @@ import org.joda.time.DateTime;
  * 
  * @version $Revision$
  */
-public class NodeInstruction extends Instruction implements EntityMatch {
+public class EdgeInstruction extends Instruction implements EntityMatch {
 
 	private static final long serialVersionUID = -8910808111207075055L;
 
@@ -23,7 +23,7 @@ public class NodeInstruction extends Instruction implements EntityMatch {
 	/**
 	 * Default constructor.
 	 */
-	public NodeInstruction() {
+	public EdgeInstruction() {
 		super();
 	}
 	
@@ -34,7 +34,7 @@ public class NodeInstruction extends Instruction implements EntityMatch {
 	 * @param instructionDate the instruction date
 	 * @param nodeId the node ID
 	 */
-	public NodeInstruction(String topic, DateTime instructionDate, Long nodeId) {
+	public EdgeInstruction(String topic, DateTime instructionDate, Long nodeId) {
 		super(topic, instructionDate);
 		this.nodeId = nodeId;
 	}

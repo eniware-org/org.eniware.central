@@ -45,3 +45,4 @@ Import-Package:
  org.springframework.web.servlet;version="[4.2,5.0)",
  org.springframework.web.servlet.view;version="[4.2,5.0)",
  org.springframework.web.servlet.view.tiles2;version="[4.2,5.0)";resolution:=optional
+Automatic-Module-Name: org.eniware.central.common.web

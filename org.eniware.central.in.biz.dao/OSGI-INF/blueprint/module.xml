@@ -28,8 +28,8 @@
 		<beans:prop key="SimpleNetworkIdentityBiz.host">localhost</beans:prop>
 		<beans:prop key="SimpleNetworkIdentityBiz.port">8080</beans:prop>
 		<beans:prop key="SimpleNetworkIdentityBiz.forceTLS">false</beans:prop>
-		<beans:prop key="SimpleNetworkIdentityBiz.eniwareUserBaseURL">http://localhost/eniwareuser</beans:prop>
-		<beans:prop key="SimpleNetworkIdentityBiz.eniwareQueryBaseURL">http://localhost/eniwarequery</beans:prop>
+		<beans:prop key="SimpleNetworkIdentityBiz.eniwareUserBaseURL">data.network.eniware.orgs.mobi/:8080s.mobi/:8080eniwareuser</beans:prop>
+		<beans:prop key="SimpleNetworkIdentityBiz.eniwareQueryBaseURL">data.network.eniware.orgs.mobi/:8080s.mobi/:8080eniwarequery</beans:prop>
 	</osgix:cm-properties>
 
 	<!-- Service References -->

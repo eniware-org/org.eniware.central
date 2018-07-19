@@ -18,3 +18,4 @@ Import-Package:
  org.springframework.core;version="[4.2,5.0)",
  org.springframework.dao;version="[4.2,5.0)",
  org.springframework.jdbc.core;version="[4.2,5.0)"
+Automatic-Module-Name: org.eniware.central.datum.agg

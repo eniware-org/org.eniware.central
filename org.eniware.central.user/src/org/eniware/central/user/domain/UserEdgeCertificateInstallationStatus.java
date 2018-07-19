@@ -11,7 +11,7 @@ package org.eniware.central.user.domain;
  * 
  * @version 1.0
  */
-public enum UserNodeCertificateInstallationStatus {
+public enum UserEdgeCertificateInstallationStatus {
 
 	/** A request to install the certificate on a node has been queued. */
 	RequestQueued,

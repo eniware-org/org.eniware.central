@@ -39,12 +39,12 @@ import org.eniware.central.user.billing.killbill.domain.Subscription;
 import org.eniware.central.user.billing.killbill.domain.TagDefinition;
 import org.eniware.central.user.billing.killbill.domain.UsageRecord;
 import org.eniware.central.user.dao.UserDao;
-import org.eniware.central.user.dao.UserNodeDao;
+import org.eniware.central.user.dao.UserEdgeDao;
 import org.eniware.central.user.domain.User;
 import org.eniware.central.user.domain.UserFilterCommand;
 import org.eniware.central.user.domain.UserFilterMatch;
 import org.eniware.central.user.domain.UserInfo;
-import org.eniware.central.user.domain.UserNode;
+import org.eniware.central.user.domain.UserEdge;
 import org.eniware.util.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -168,7 +168,7 @@ public class DatumMetricsDailyUsageUpdaterService {
 	private final EniwareLocationDao locationDao;
 	private final GeneralNodeDatumDao nodeDatumDao;
 	private final UserDao userDao;
-	private final UserNodeDao userNodeDao;
+	private final UserEdgeDao userNodeDao;
 	private final KillbillClient client;
 	private int batchSize = DEFAULT_BATCH_SIZE;
 	private Map<String, String> countryCurrencyMap = DEFAULT_CURRENCY_MAP;
@@ -209,14 +209,14 @@ public class DatumMetricsDailyUsageUpdaterService {
 	 * @param userDao
 	 *        the {@link UserDao} to use
 	 * @param userNodeDao
-	 *        the {@link UserNodeDao} to use
+	 *        the {@link UserEdgeDao} to use
 	 * @param nodeDatumDao
 	 *        the {@link GeneralNodeDatumDao} to use
 	 * @param client
 	 *        the {@link KillbillClient} to use
 	 */
 	public DatumMetricsDailyUsageUpdaterService(EniwareLocationDao locationDao, UserDao userDao,
-			UserNodeDao userNodeDao, GeneralNodeDatumDao nodeDatumDao, KillbillClient client) {
+			UserEdgeDao userNodeDao, GeneralNodeDatumDao nodeDatumDao, KillbillClient client) {
 		this.locationDao = locationDao;
 		this.userDao = userDao;
 		this.userNodeDao = userNodeDao;
@@ -362,11 +362,11 @@ public class DatumMetricsDailyUsageUpdaterService {
 
 		// get or create bundles for all nodes
 		DateTimeZone timeZone = DateTimeZone.forTimeZone(timeZoneForAccount(account));
-		List<UserNode> userNodes = userNodeDao
+		List<UserEdge> userNodes = userNodeDao
 				.findUserNodesForUser((user instanceof User ? (User) user : userDao.get(user.getId())));
 
 		Map<String, String> nodeMostRecentUsagekeys = mostRecentUsageKeys(user);
-		for ( UserNode userNode : userNodes ) {
+		for ( UserEdge userNode : userNodes ) {
 			processOneUserNode(account, userNode, timeZone, nodeMostRecentUsagekeys);
 		}
 	}
@@ -381,7 +381,7 @@ public class DatumMetricsDailyUsageUpdaterService {
 		return map;
 	}
 
-	private void processOneUserNode(Account account, UserNode userNode, DateTimeZone timeZone,
+	private void processOneUserNode(Account account, UserEdge userNode, DateTimeZone timeZone,
 			Map<String, String> nodeMostRecentUsageDateKeys) {
 		// get the range of available audit data for this node, to help know when to start/stop
 		ReadableInterval auditInterval = nodeDatumDao.getAuditInterval(userNode.getNode().getId(), null);
@@ -460,7 +460,7 @@ public class DatumMetricsDailyUsageUpdaterService {
 		}
 	}
 
-	private Bundle bundleForUserNode(UserNode userNode, Account account) {
+	private Bundle bundleForUserNode(UserEdge userNode, Account account) {
 		final String bundleKey = String.format(this.bundleKeyTemplate, userNode.getNode().getId());
 		Bundle bundle = client.bundleForExternalKey(account, bundleKey);
 		if ( bundle == null ) {

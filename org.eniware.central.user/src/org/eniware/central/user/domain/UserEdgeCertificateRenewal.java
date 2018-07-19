@@ -13,13 +13,13 @@ import org.eniware.domain.NetworkCertificate;
  *
  * @version 1.0
  */
-public interface UserNodeCertificateRenewal extends NetworkCertificate {
+public interface UserEdgeCertificateRenewal extends NetworkCertificate {
 
 	/**
 	 * Get the status of the renewed certificate installation process.
 	 * 
 	 * @return The certificate installation status.
 	 */
-	UserNodeCertificateInstallationStatus getInstallationStatus();
+	UserEdgeCertificateInstallationStatus getInstallationStatus();
 
 }

@@ -11,19 +11,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.eniware.central.dao.mybatis.support.BaseMyBatisGenericDao;
-import org.eniware.central.user.dao.UserNodeConfirmationDao;
+import org.eniware.central.user.dao.UserEdgeConfirmationDao;
 import org.eniware.central.user.domain.User;
-import org.eniware.central.user.domain.UserNodeConfirmation;
+import org.eniware.central.user.domain.UserEdgeConfirmation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * MyBatis implementation of {@link UserNodeConfirmationDao}.
+ * MyBatis implementation of {@link UserEdgeConfirmationDao}.
  * 
  * @version 1.0
  */
-public class MyBatisUserNodeConfirmationDao extends BaseMyBatisGenericDao<UserNodeConfirmation, Long>
-		implements UserNodeConfirmationDao {
+public class MyBatisUserEdgeConfirmationDao extends BaseMyBatisGenericDao<UserEdgeConfirmation, Long>
+		implements UserEdgeConfirmationDao {
 
 	/** The query name used for {@link #getConfirmationForKey(String, String)}. */
 	public static final String QUERY_FOR_KEY = "get-UserNodeConfirmation-for-key";
@@ -34,13 +34,13 @@ public class MyBatisUserNodeConfirmationDao extends BaseMyBatisGenericDao<UserNo
 	/**
 	 * Default constructor.
 	 */
-	public MyBatisUserNodeConfirmationDao() {
-		super(UserNodeConfirmation.class, Long.class);
+	public MyBatisUserEdgeConfirmationDao() {
+		super(UserEdgeConfirmation.class, Long.class);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public UserNodeConfirmation getConfirmationForKey(Long userId, String key) {
+	public UserEdgeConfirmation getConfirmationForKey(Long userId, String key) {
 		Map<String, Object> params = new HashMap<String, Object>(2);
 		params.put("userId", userId);
 		params.put("key", key);
@@ -49,7 +49,7 @@ public class MyBatisUserNodeConfirmationDao extends BaseMyBatisGenericDao<UserNo
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserNodeConfirmation> findPendingConfirmationsForUser(User user) {
+	public List<UserEdgeConfirmation> findPendingConfirmationsForUser(User user) {
 		Map<String, Object> params = new HashMap<String, Object>(2);
 		params.put("user", user);
 		params.put("pending", Boolean.TRUE);

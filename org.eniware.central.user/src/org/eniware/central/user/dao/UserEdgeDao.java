@@ -10,17 +10,17 @@ import java.util.List;
 
 import org.eniware.central.dao.GenericDao;
 import org.eniware.central.user.domain.User;
-import org.eniware.central.user.domain.UserNode;
-import org.eniware.central.user.domain.UserNodeCertificate;
-import org.eniware.central.user.domain.UserNodePK;
-import org.eniware.central.user.domain.UserNodeTransfer;
+import org.eniware.central.user.domain.UserEdge;
+import org.eniware.central.user.domain.UserEdgeCertificate;
+import org.eniware.central.user.domain.UserEdgePK;
+import org.eniware.central.user.domain.UserEdgeTransfer;
 
 /**
  * DAO API for UserNode objects.
  * 
  * @version 1.3
  */
-public interface UserNodeDao extends GenericDao<UserNode, Long> {
+public interface UserEdgeDao extends GenericDao<UserEdge, Long> {
 
 	/**
 	 * Find a list of all UserNode objects for a particular user.
@@ -30,35 +30,35 @@ public interface UserNodeDao extends GenericDao<UserNode, Long> {
 	 * 
 	 * @param user
 	 *        the user to get all nodes for
-	 * @return list of {@link UserNode} objects, or an empty list if none found
+	 * @return list of {@link UserEdge} objects, or an empty list if none found
 	 */
-	List<UserNode> findUserNodesForUser(User user);
+	List<UserEdge> findUserNodesForUser(User user);
 
 	/**
 	 * Find all UserNodes for a given user.
 	 * 
 	 * <p>
-	 * The returned nodes will have {@link UserNodeCertificate} values populated
-	 * in {@link UserNode#getCertificate()}, with the priority being requested,
-	 * active, disabled. The {@link UserNodeTransfer} values will be populated
-	 * in {@link UserNode#getTransfer()} as well.
+	 * The returned nodes will have {@link UserEdgeCertificate} values populated
+	 * in {@link UserEdge#getCertificate()}, with the priority being requested,
+	 * active, disabled. The {@link UserEdgeTransfer} values will be populated
+	 * in {@link UserEdge#getTransfer()} as well.
 	 * </p>
 	 * 
 	 * @param userId
 	 *        the user ID
 	 * @return the nodes
 	 */
-	List<UserNode> findUserNodesAndCertificatesForUser(Long userId);
+	List<UserEdge> findUserNodesAndCertificatesForUser(Long userId);
 
 	/**
 	 * Find a list of all archived UserNode objects for a particular user.
 	 * 
 	 * @param userId
 	 *        the user ID to get all archived nodes for
-	 * @return list of {@link UserNode} objects, or an empty list if none found
+	 * @return list of {@link UserEdge} objects, or an empty list if none found
 	 * @since 1.3
 	 */
-	List<UserNode> findArchivedUserNodesForUser(Long userId);
+	List<UserEdge> findArchivedUserNodesForUser(Long userId);
 
 	/**
 	 * Update the archived status of a set of node IDs.
@@ -75,41 +75,41 @@ public interface UserNodeDao extends GenericDao<UserNode, Long> {
 	void updateUserNodeArchivedStatus(Long userId, Long[] nodeIds, boolean archived);
 
 	/**
-	 * Store a {@link UserNodeTransfer}.
+	 * Store a {@link UserEdgeTransfer}.
 	 * 
 	 * @param transfer
 	 *        The transfer to store.
 	 * @since 1.2
 	 */
-	void storeUserNodeTransfer(UserNodeTransfer transfer);
+	void storeUserNodeTransfer(UserEdgeTransfer transfer);
 
 	/**
-	 * Get a {@link UserNodeTransfer} by primary key.
+	 * Get a {@link UserEdgeTransfer} by primary key.
 	 * 
 	 * @param pk
 	 *        The ID of the transfer to get.
 	 * @return The matching UserNodeTransfer, or <em>null</em> if not available.
 	 * @since 1.2
 	 */
-	UserNodeTransfer getUserNodeTransfer(UserNodePK pk);
+	UserEdgeTransfer getUserNodeTransfer(UserEdgePK pk);
 
 	/**
-	 * Delete a {@link UserNodeTransfer}.
+	 * Delete a {@link UserEdgeTransfer}.
 	 * 
 	 * @param transfer
 	 *        The transfer to delete.
 	 * @since 1.2
 	 */
-	void deleteUserNodeTrasnfer(UserNodeTransfer transfer);
+	void deleteUserNodeTrasnfer(UserEdgeTransfer transfer);
 
 	/**
-	 * Get all {@link UserNodeTransfer} instances for a given email address.
+	 * Get all {@link UserEdgeTransfer} instances for a given email address.
 	 * 
 	 * @param email
 	 *        The email of the requested recipient of the ownership trasnfer.
 	 * @return The available node transfers, never <em>null</em>.
 	 * @since 1.2
 	 */
-	List<UserNodeTransfer> findUserNodeTransferRequestsForEmail(String email);
+	List<UserEdgeTransfer> findUserNodeTransferRequestsForEmail(String email);
 
 }

@@ -23,7 +23,7 @@ import org.eniware.central.datum.domain.PowerDatum;
 import org.eniware.central.datum.domain.PriceDatum;
 import org.eniware.central.datum.domain.WeatherDatum;
 import org.eniware.domain.GeneralLocationDatumSamples;
-import org.eniware.domain.GeneralNodeDatumSamples;
+import org.eniware.domain.GeneralEdgeDatumSamples;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormatter;
@@ -83,7 +83,7 @@ public class GeneralDatumMapper {
 		assert datum != null;
 		assert datum.getSourceId() != null;
 
-		GeneralNodeDatumSamples samples = new GeneralNodeDatumSamples();
+		GeneralEdgeDatumSamples samples = new GeneralEdgeDatumSamples();
 		if ( datum.getWatts() != null ) {
 			samples.putInstantaneousSampleValue("watts", datum.getWatts());
 		}
@@ -113,7 +113,7 @@ public class GeneralDatumMapper {
 			propKey = source[1];
 		}
 
-		GeneralNodeDatumSamples samples = new GeneralNodeDatumSamples();
+		GeneralEdgeDatumSamples samples = new GeneralEdgeDatumSamples();
 		if ( datum.getIntegerValue() != null ) {
 			samples.putStatusSampleValue(propKey, datum.getIntegerValue());
 		} else if ( datum.getFloatValue() != null ) {
@@ -132,7 +132,7 @@ public class GeneralDatumMapper {
 		assert datum != null;
 		assert datum.getSourceId() != null;
 
-		GeneralNodeDatumSamples samples = new GeneralNodeDatumSamples();
+		GeneralEdgeDatumSamples samples = new GeneralEdgeDatumSamples();
 		if ( datum.getWatts() != null ) {
 			samples.putInstantaneousSampleValue("watts", datum.getWatts());
 		}

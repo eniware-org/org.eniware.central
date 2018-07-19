@@ -11,7 +11,7 @@ import java.util.Map;
 
 import org.eniware.central.datum.domain.GeneralNodeDatum;
 import org.eniware.central.datum.domain.ReportingDatum;
-import org.eniware.domain.GeneralNodeDatumSamples;
+import org.eniware.domain.GeneralEdgeDatumSamples;
 import org.eniware.util.PropertySerializer;
 import org.eniware.util.StringUtils;
 
@@ -38,7 +38,7 @@ public class GeneralNodeDatumMapPropertySerializer implements PropertySerializer
 		props.put("nodeId", datum.getNodeId());
 		props.put("sourceId", datum.getSourceId());
 
-		GeneralNodeDatumSamples samples = datum.getSamples();
+		GeneralEdgeDatumSamples samples = datum.getSamples();
 		if ( samples != null ) {
 			addProps(props, samples.getInstantaneous());
 			addProps(props, samples.getAccumulating());

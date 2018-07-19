@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * 
  * @version 1.2
  */
-public class UserNodeCertificate implements Entity<UserNodePK>, Cloneable, Serializable {
+public class UserEdgeCertificate implements Entity<UserEdgePK>, Cloneable, Serializable {
 
 	private static final long serialVersionUID = 3070315335910395052L;
 
@@ -39,10 +39,10 @@ public class UserNodeCertificate implements Entity<UserNodePK>, Cloneable, Seria
 	/** The alias of the node certificate in the keystore. */
 	public static final String KEYSTORE_NODE_ALIAS = "node";
 
-	private UserNodePK id = new UserNodePK();
+	private UserEdgePK id = new UserEdgePK();
 	private DateTime created;
 	private byte[] keystoreData;
-	private UserNodeCertificateStatus status;
+	private UserEdgeCertificateStatus status;
 	private String requestId;
 
 	private User user;
@@ -135,7 +135,7 @@ public class UserNodeCertificate implements Entity<UserNodePK>, Cloneable, Seria
 	}
 
 	/**
-	 * Convenience getter for {@link UserNodePK#getNodeId()}.
+	 * Convenience getter for {@link UserEdgePK#getNodeId()}.
 	 * 
 	 * @return the nodeId
 	 */
@@ -144,20 +144,20 @@ public class UserNodeCertificate implements Entity<UserNodePK>, Cloneable, Seria
 	}
 
 	/**
-	 * Convenience setter for {@link UserNodePK#setNodeId(Long)}.
+	 * Convenience setter for {@link UserEdgePK#setNodeId(Long)}.
 	 * 
 	 * @param nodeId
 	 *        the nodeId to set
 	 */
 	public void setNodeId(Long nodeId) {
 		if ( id == null ) {
-			id = new UserNodePK();
+			id = new UserEdgePK();
 		}
 		id.setNodeId(nodeId);
 	}
 
 	/**
-	 * Convenience getter for {@link UserNodePK#getUserId()}.
+	 * Convenience getter for {@link UserEdgePK#getUserId()}.
 	 * 
 	 * @return the userId
 	 */
@@ -166,14 +166,14 @@ public class UserNodeCertificate implements Entity<UserNodePK>, Cloneable, Seria
 	}
 
 	/**
-	 * Convenience setter for {@link UserNodePK#setUserId(String)}.
+	 * Convenience setter for {@link UserEdgePK#setUserId(String)}.
 	 * 
 	 * @param userId
 	 *        the userId to set
 	 */
 	public void setUserId(Long userId) {
 		if ( id == null ) {
-			id = new UserNodePK();
+			id = new UserEdgePK();
 		}
 		id.setUserId(userId);
 	}
@@ -181,16 +181,16 @@ public class UserNodeCertificate implements Entity<UserNodePK>, Cloneable, Seria
 	@JsonIgnore
 	@SerializeIgnore
 	@Override
-	public UserNodePK getId() {
+	public UserEdgePK getId() {
 		return id;
 	}
 
-	public void setId(UserNodePK id) {
+	public void setId(UserEdgePK id) {
 		this.id = id;
 	}
 
 	@Override
-	public int compareTo(UserNodePK o) {
+	public int compareTo(UserEdgePK o) {
 		return id.compareTo(o);
 	}
 
@@ -223,7 +223,7 @@ public class UserNodeCertificate implements Entity<UserNodePK>, Cloneable, Seria
 		if ( getClass() != obj.getClass() ) {
 			return false;
 		}
-		UserNodeCertificate other = (UserNodeCertificate) obj;
+		UserEdgeCertificate other = (UserEdgeCertificate) obj;
 		if ( id == null ) {
 			if ( other.id != null ) {
 				return false;
@@ -249,11 +249,11 @@ public class UserNodeCertificate implements Entity<UserNodePK>, Cloneable, Seria
 		this.keystoreData = keystoreData;
 	}
 
-	public UserNodeCertificateStatus getStatus() {
+	public UserEdgeCertificateStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(UserNodeCertificateStatus status) {
+	public void setStatus(UserEdgeCertificateStatus status) {
 		this.status = status;
 	}
 

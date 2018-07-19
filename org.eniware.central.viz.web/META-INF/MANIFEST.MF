@@ -124,3 +124,4 @@ Import-Package:
  org.springframework.webflow.mvc.view;version="[2.3,3.0)",
  org.springframework.webflow.security;version="[2.3,3.0)",
  org.tuckey.web.filters.urlrewrite;version="3.0"
+Automatic-Module-Name: org.eniware.central.viz.web

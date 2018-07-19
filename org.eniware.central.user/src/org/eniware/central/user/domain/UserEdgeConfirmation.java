@@ -16,7 +16,7 @@ import org.joda.time.DateTime;
  * 
  * @version 1.2
  */
-public class UserNodeConfirmation extends BaseEntity {
+public class UserEdgeConfirmation extends BaseEntity {
 
 	private static final long serialVersionUID = -598611218946751443L;
 

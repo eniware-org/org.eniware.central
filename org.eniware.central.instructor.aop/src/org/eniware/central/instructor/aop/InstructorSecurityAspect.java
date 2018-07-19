@@ -13,9 +13,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.eniware.central.instructor.biz.InstructorBiz;
-import org.eniware.central.instructor.dao.NodeInstructionDao;
-import org.eniware.central.instructor.domain.NodeInstruction;
-import org.eniware.central.user.dao.UserNodeDao;
+import org.eniware.central.instructor.dao.EdgeInstructionDao;
+import org.eniware.central.instructor.domain.EdgeInstruction;
+import org.eniware.central.user.dao.UserEdgeDao;
 import org.eniware.central.user.support.AuthorizationSupport;
 
 /**
@@ -26,7 +26,7 @@ import org.eniware.central.user.support.AuthorizationSupport;
 @Aspect
 public class InstructorSecurityAspect extends AuthorizationSupport {
 
-	private final NodeInstructionDao nodeInstructionDao;
+	private final EdgeInstructionDao nodeInstructionDao;
 
 	/**
 	 * Constructor.
@@ -34,7 +34,7 @@ public class InstructorSecurityAspect extends AuthorizationSupport {
 	 * @param userNodeDao
 	 *        the UserNodeDao to use
 	 */
-	public InstructorSecurityAspect(UserNodeDao userNodeDao, NodeInstructionDao nodeInstructionDao) {
+	public InstructorSecurityAspect(UserEdgeDao userNodeDao, EdgeInstructionDao nodeInstructionDao) {
 		super(userNodeDao);
 		this.nodeInstructionDao = nodeInstructionDao;
 	}
@@ -117,7 +117,7 @@ public class InstructorSecurityAspect extends AuthorizationSupport {
 	 *        the instruction
 	 */
 	@AfterReturning(pointcut = "viewInstruction(instructionId)", returning = "instruction")
-	public void viewInstructionAccessCheck(Long instructionId, NodeInstruction instruction) {
+	public void viewInstructionAccessCheck(Long instructionId, EdgeInstruction instruction) {
 		if ( instructionId == null ) {
 			return;
 		}
@@ -139,11 +139,11 @@ public class InstructorSecurityAspect extends AuthorizationSupport {
 	 */
 	@AfterReturning(pointcut = "viewInstructions(instructionIds)", returning = "instructions")
 	public void viewInstructionsAccessCheck(Set<Long> instructionIds,
-			List<NodeInstruction> instructions) {
+			List<EdgeInstruction> instructions) {
 		if ( instructionIds == null || instructions == null ) {
 			return;
 		}
-		for ( NodeInstruction instr : instructions ) {
+		for ( EdgeInstruction instr : instructions ) {
 			viewInstructionAccessCheck(instr.getNodeId(), instr);
 		}
 	}
@@ -160,7 +160,7 @@ public class InstructorSecurityAspect extends AuthorizationSupport {
 		if ( instructionId == null ) {
 			return;
 		}
-		final NodeInstruction instruction = nodeInstructionDao.get(instructionId);
+		final EdgeInstruction instruction = nodeInstructionDao.get(instructionId);
 		if ( instruction == null ) {
 			return;
 		}

@@ -21,3 +21,4 @@ Import-Package:
  org.eniware.central.support;version="[1.12.2,2.0)",
  org.eniware.util;version="1.4.0",
  org.joda.time;version="[2.4,3.0)"
+Automatic-Module-Name: org.eniware.central.instructor

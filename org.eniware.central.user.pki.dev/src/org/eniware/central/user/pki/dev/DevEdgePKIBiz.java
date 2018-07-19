@@ -30,7 +30,7 @@ import java.security.cert.X509Certificate;
 import java.util.UUID;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.eniware.central.security.SecurityException;
-import org.eniware.central.user.biz.NodePKIBiz;
+import org.eniware.central.user.biz.EdgePKIBiz;
 import org.eniware.support.CertificateException;
 import org.eniware.support.CertificateService;
 import org.eniware.support.CertificationAuthorityService;
@@ -39,11 +39,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.FileCopyUtils;
 
 /**
- * Developer implementation of {@link NodePKIBiz}.
+ * Developer implementation of {@link EdgePKIBiz}.
  * 
  * @version 1.2
  */
-public class DevNodePKIBiz implements NodePKIBiz {
+public class DevEdgePKIBiz implements EdgePKIBiz {
 
 	private static final String WEBSERVER_KEYSTORE_PASSWORD = "dev123";
 	private static final String CA_ALIAS = "ca";

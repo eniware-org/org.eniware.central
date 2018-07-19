@@ -12,7 +12,7 @@ import java.util.Map;
 
 import org.eniware.central.datum.support.DatumUtils;
 import org.eniware.central.domain.Entity;
-import org.eniware.domain.GeneralNodeDatumSamples;
+import org.eniware.domain.GeneralEdgeDatumSamples;
 import org.eniware.util.SerializeIgnore;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -37,7 +37,7 @@ public class GeneralNodeDatum implements Entity<GeneralNodeDatumPK>, Cloneable, 
 	private static final long serialVersionUID = 1099409416648794740L;
 
 	private GeneralNodeDatumPK id = new GeneralNodeDatumPK();
-	private GeneralNodeDatumSamples samples;
+	private GeneralEdgeDatumSamples samples;
 	private DateTime posted;
 	private String sampleJson;
 
@@ -111,14 +111,14 @@ public class GeneralNodeDatum implements Entity<GeneralNodeDatumPK>, Cloneable, 
 	}
 
 	/**
-	 * Convenience method for {@link GeneralNodeDatumSamples#getSampleData()}.
+	 * Convenience method for {@link GeneralEdgeDatumSamples#getSampleData()}.
 	 * 
 	 * @return the sample data, or <em>null</em> if none available
 	 */
 	@JsonUnwrapped
 	@JsonAnyGetter
 	public Map<String, ?> getSampleData() {
-		GeneralNodeDatumSamples s = getSamples();
+		GeneralEdgeDatumSamples s = getSamples();
 		return (s == null ? null : s.getSampleData());
 	}
 
@@ -177,7 +177,7 @@ public class GeneralNodeDatum implements Entity<GeneralNodeDatumPK>, Cloneable, 
 	}
 
 	/**
-	 * Get the {@link GeneralNodeDatumSamples} object as a JSON string.
+	 * Get the {@link GeneralEdgeDatumSamples} object as a JSON string.
 	 * 
 	 * <p>
 	 * This method will ignore <em>null</em> values.
@@ -195,7 +195,7 @@ public class GeneralNodeDatum implements Entity<GeneralNodeDatumPK>, Cloneable, 
 	}
 
 	/**
-	 * Set the {@link GeneralNodeDatumSamples} object via a JSON string.
+	 * Set the {@link GeneralEdgeDatumSamples} object via a JSON string.
 	 * 
 	 * <p>
 	 * This method will remove any previously created GeneralNodeDatumSamples
@@ -224,15 +224,15 @@ public class GeneralNodeDatum implements Entity<GeneralNodeDatumPK>, Cloneable, 
 
 	@SerializeIgnore
 	@JsonIgnore
-	public GeneralNodeDatumSamples getSamples() {
+	public GeneralEdgeDatumSamples getSamples() {
 		if ( samples == null && sampleJson != null ) {
-			samples = DatumUtils.getObjectFromJSON(sampleJson, GeneralNodeDatumSamples.class);
+			samples = DatumUtils.getObjectFromJSON(sampleJson, GeneralEdgeDatumSamples.class);
 		}
 		return samples;
 	}
 
 	/**
-	 * Set the {@link GeneralNodeDatumSamples} instance to use.
+	 * Set the {@link GeneralEdgeDatumSamples} instance to use.
 	 * 
 	 * <p>
 	 * This will replace any value set previously via
@@ -244,7 +244,7 @@ public class GeneralNodeDatum implements Entity<GeneralNodeDatumPK>, Cloneable, 
 	 */
 	@JsonProperty
 	// @JsonProperty needed because of @JsonIgnore on getter
-	public void setSamples(GeneralNodeDatumSamples samples) {
+	public void setSamples(GeneralEdgeDatumSamples samples) {
 		this.samples = samples;
 		sampleJson = null;
 	}

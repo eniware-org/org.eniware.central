@@ -12,7 +12,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.eniware.central.security.AuthorizationException;
 import org.eniware.central.user.biz.UserAlertBiz;
 import org.eniware.central.user.dao.UserAlertDao;
-import org.eniware.central.user.dao.UserNodeDao;
+import org.eniware.central.user.dao.UserEdgeDao;
 import org.eniware.central.user.domain.UserAlert;
 import org.eniware.central.user.support.AuthorizationSupport;
 
@@ -30,11 +30,11 @@ public class UserAlertSecurityAspect extends AuthorizationSupport {
 	 * Constructor.
 	 * 
 	 * @param userNodeDao
-	 *        The {@link UserNodeDao} to use.
+	 *        The {@link UserEdgeDao} to use.
 	 * @param userAlertDao
 	 *        The {@link UserAlertDao} to use.
 	 */
-	public UserAlertSecurityAspect(UserNodeDao userNodeDao, UserAlertDao userAlertDao) {
+	public UserAlertSecurityAspect(UserEdgeDao userNodeDao, UserAlertDao userAlertDao) {
 		super(userNodeDao);
 		this.userAlertDao = userAlertDao;
 	}

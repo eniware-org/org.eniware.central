@@ -16,11 +16,11 @@ import java.util.Set;
 import org.eniware.central.domain.EntityMatch;
 import org.eniware.central.domain.FilterResults;
 import org.eniware.central.instructor.biz.InstructorBiz;
-import org.eniware.central.instructor.dao.NodeInstructionDao;
+import org.eniware.central.instructor.dao.EdgeInstructionDao;
 import org.eniware.central.instructor.domain.Instruction;
 import org.eniware.central.instructor.domain.InstructionParameter;
 import org.eniware.central.instructor.domain.InstructionState;
-import org.eniware.central.instructor.domain.NodeInstruction;
+import org.eniware.central.instructor.domain.EdgeInstruction;
 import org.eniware.central.instructor.support.SimpleInstructionFilter;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DaoInstructorBiz implements InstructorBiz {
 
 	@Autowired
-	private NodeInstructionDao nodeInstructionDao;
+	private EdgeInstructionDao nodeInstructionDao;
 
 	private List<Instruction> asResultList(FilterResults<EntityMatch> matches) {
 		List<Instruction> results = new ArrayList<Instruction>(matches.getReturnedResultCount());
@@ -51,11 +51,11 @@ public class DaoInstructorBiz implements InstructorBiz {
 		return results;
 	}
 
-	private List<NodeInstruction> asNodeInstructionList(FilterResults<EntityMatch> matches) {
-		List<NodeInstruction> results = new ArrayList<NodeInstruction>(matches.getReturnedResultCount());
+	private List<EdgeInstruction> asNodeInstructionList(FilterResults<EntityMatch> matches) {
+		List<EdgeInstruction> results = new ArrayList<EdgeInstruction>(matches.getReturnedResultCount());
 		for ( EntityMatch match : matches.getResults() ) {
-			if ( match instanceof NodeInstruction ) {
-				results.add((NodeInstruction) match);
+			if ( match instanceof EdgeInstruction ) {
+				results.add((EdgeInstruction) match);
 			} else {
 				results.add(nodeInstructionDao.get(match.getId()));
 			}
@@ -65,13 +65,13 @@ public class DaoInstructorBiz implements InstructorBiz {
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public NodeInstruction getInstruction(Long instructionId) {
+	public EdgeInstruction getInstruction(Long instructionId) {
 		return nodeInstructionDao.get(instructionId);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<NodeInstruction> getInstructions(Set<Long> instructionIds) {
+	public List<EdgeInstruction> getInstructions(Set<Long> instructionIds) {
 		Long[] ids = instructionIds.toArray(new Long[instructionIds.size()]);
 		SimpleInstructionFilter filter = new SimpleInstructionFilter();
 		filter.setInstructionIds(ids);
@@ -91,7 +91,7 @@ public class DaoInstructorBiz implements InstructorBiz {
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<NodeInstruction> getActiveInstructionsForNodes(Set<Long> nodeIds) {
+	public List<EdgeInstruction> getActiveInstructionsForNodes(Set<Long> nodeIds) {
 		Long[] ids = nodeIds.toArray(new Long[nodeIds.size()]);
 		SimpleInstructionFilter filter = new SimpleInstructionFilter();
 		filter.setNodeIds(ids);
@@ -113,7 +113,7 @@ public class DaoInstructorBiz implements InstructorBiz {
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<NodeInstruction> getPendingInstructionsForNodes(Set<Long> nodeIds) {
+	public List<EdgeInstruction> getPendingInstructionsForNodes(Set<Long> nodeIds) {
 		Long[] ids = nodeIds.toArray(new Long[nodeIds.size()]);
 		SimpleInstructionFilter filter = new SimpleInstructionFilter();
 		filter.setNodeIds(ids);
@@ -125,8 +125,8 @@ public class DaoInstructorBiz implements InstructorBiz {
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public NodeInstruction queueInstruction(Long nodeId, Instruction instruction) {
-		NodeInstruction instr = new NodeInstruction(instruction.getTopic(),
+	public EdgeInstruction queueInstruction(Long nodeId, Instruction instruction) {
+		EdgeInstruction instr = new EdgeInstruction(instruction.getTopic(),
 				instruction.getInstructionDate(), nodeId);
 		if ( instr.getInstructionDate() == null ) {
 			instr.setInstructionDate(new DateTime());
@@ -143,13 +143,13 @@ public class DaoInstructorBiz implements InstructorBiz {
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public List<NodeInstruction> queueInstructions(Set<Long> nodeIds, Instruction instruction) {
-		List<NodeInstruction> results = new ArrayList<NodeInstruction>(nodeIds.size());
+	public List<EdgeInstruction> queueInstructions(Set<Long> nodeIds, Instruction instruction) {
+		List<EdgeInstruction> results = new ArrayList<EdgeInstruction>(nodeIds.size());
 		for ( Long nodeId : nodeIds ) {
-			NodeInstruction copy = new NodeInstruction(instruction.getTopic(),
+			EdgeInstruction copy = new EdgeInstruction(instruction.getTopic(),
 					instruction.getInstructionDate(), nodeId);
 			copy.setParameters(instruction.getParameters());
-			NodeInstruction instr = queueInstruction(nodeId, copy);
+			EdgeInstruction instr = queueInstruction(nodeId, copy);
 			results.add(instr);
 		}
 		return results;
@@ -158,7 +158,7 @@ public class DaoInstructorBiz implements InstructorBiz {
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updateInstructionState(Long instructionId, InstructionState state) {
-		NodeInstruction instr = nodeInstructionDao.get(instructionId);
+		EdgeInstruction instr = nodeInstructionDao.get(instructionId);
 		if ( instr != null ) {
 			if ( !state.equals(instr.getState()) ) {
 				instr.setState(state);
@@ -179,7 +179,7 @@ public class DaoInstructorBiz implements InstructorBiz {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updateInstructionState(Long instructionId, InstructionState state,
 			Map<String, ?> resultParameters) {
-		NodeInstruction instr = nodeInstructionDao.get(instructionId);
+		EdgeInstruction instr = nodeInstructionDao.get(instructionId);
 		if ( instr != null ) {
 			if ( !state.equals(instr.getState()) ) {
 				instr.setState(state);

@@ -7,15 +7,15 @@
 package org.eniware.central.user.dao;
 
 import org.eniware.central.dao.GenericDao;
-import org.eniware.central.user.domain.UserNodeCertificate;
-import org.eniware.central.user.domain.UserNodePK;
+import org.eniware.central.user.domain.UserEdgeCertificate;
+import org.eniware.central.user.domain.UserEdgePK;
 
 /**
  * DAO API for user node certificates.
  * 
  * @version 1.1
  */
-public interface UserNodeCertificateDao extends GenericDao<UserNodeCertificate, UserNodePK> {
+public interface UserEdgeCertificateDao extends GenericDao<UserEdgeCertificate, UserEdgePK> {
 
 	/**
 	 * Get a certificate object for a given node ID and key.
@@ -24,6 +24,6 @@ public interface UserNodeCertificateDao extends GenericDao<UserNodeCertificate, 
 	 *        the node ID
 	 * @return the found UserNodeCertificate, or <em>null</em> if not found
 	 */
-	UserNodeCertificate getActiveCertificateForNode(Long nodeId);
+	UserEdgeCertificate getActiveCertificateForNode(Long nodeId);
 
 }

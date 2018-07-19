@@ -21,11 +21,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * 
  * @version 1.0
  */
-public class UserNodeTransfer implements Entity<UserNodePK>, Cloneable, Serializable {
+public class UserEdgeTransfer implements Entity<UserEdgePK>, Cloneable, Serializable {
 
 	private static final long serialVersionUID = -1316805739552206861L;
 
-	private UserNodePK id = new UserNodePK();
+	private UserEdgePK id = new UserEdgePK();
 	private DateTime created;
 	private String email;
 
@@ -35,7 +35,7 @@ public class UserNodeTransfer implements Entity<UserNodePK>, Cloneable, Serializ
 	/**
 	 * Default constructor.
 	 */
-	public UserNodeTransfer() {
+	public UserEdgeTransfer() {
 		super();
 	}
 
@@ -49,7 +49,7 @@ public class UserNodeTransfer implements Entity<UserNodePK>, Cloneable, Serializ
 	 * @param email
 	 *        The email.
 	 */
-	public UserNodeTransfer(Long userId, Long nodeId, String email) {
+	public UserEdgeTransfer(Long userId, Long nodeId, String email) {
 		super();
 		setUserId(userId);
 		setNodeId(nodeId);
@@ -85,7 +85,7 @@ public class UserNodeTransfer implements Entity<UserNodePK>, Cloneable, Serializ
 	}
 
 	/**
-	 * Convenience getter for {@link UserNodePK#getNodeId()}.
+	 * Convenience getter for {@link UserEdgePK#getNodeId()}.
 	 * 
 	 * @return the nodeId
 	 */
@@ -94,20 +94,20 @@ public class UserNodeTransfer implements Entity<UserNodePK>, Cloneable, Serializ
 	}
 
 	/**
-	 * Convenience setter for {@link UserNodePK#setNodeId(Long)}.
+	 * Convenience setter for {@link UserEdgePK#setNodeId(Long)}.
 	 * 
 	 * @param nodeId
 	 *        the nodeId to set
 	 */
 	public void setNodeId(Long nodeId) {
 		if ( id == null ) {
-			id = new UserNodePK();
+			id = new UserEdgePK();
 		}
 		id.setNodeId(nodeId);
 	}
 
 	/**
-	 * Convenience getter for {@link UserNodePK#getUserId()}.
+	 * Convenience getter for {@link UserEdgePK#getUserId()}.
 	 * 
 	 * @return the userId
 	 */
@@ -116,14 +116,14 @@ public class UserNodeTransfer implements Entity<UserNodePK>, Cloneable, Serializ
 	}
 
 	/**
-	 * Convenience setter for {@link UserNodePK#setUserId(String)}.
+	 * Convenience setter for {@link UserEdgePK#setUserId(String)}.
 	 * 
 	 * @param userId
 	 *        the userId to set
 	 */
 	public void setUserId(Long userId) {
 		if ( id == null ) {
-			id = new UserNodePK();
+			id = new UserEdgePK();
 		}
 		id.setUserId(userId);
 	}
@@ -131,16 +131,16 @@ public class UserNodeTransfer implements Entity<UserNodePK>, Cloneable, Serializ
 	@JsonIgnore
 	@SerializeIgnore
 	@Override
-	public UserNodePK getId() {
+	public UserEdgePK getId() {
 		return id;
 	}
 
-	public void setId(UserNodePK id) {
+	public void setId(UserEdgePK id) {
 		this.id = id;
 	}
 
 	@Override
-	public int compareTo(UserNodePK o) {
+	public int compareTo(UserEdgePK o) {
 		return id.compareTo(o);
 	}
 
@@ -173,7 +173,7 @@ public class UserNodeTransfer implements Entity<UserNodePK>, Cloneable, Serializ
 		if ( getClass() != obj.getClass() ) {
 			return false;
 		}
-		UserNodeTransfer other = (UserNodeTransfer) obj;
+		UserEdgeTransfer other = (UserEdgeTransfer) obj;
 		if ( id == null ) {
 			if ( other.id != null ) {
 				return false;

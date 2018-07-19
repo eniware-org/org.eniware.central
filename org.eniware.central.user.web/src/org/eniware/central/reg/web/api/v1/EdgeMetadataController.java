@@ -40,7 +40,7 @@ import org.eniware.web.domain.Response;
  */
 @Controller("v1NodeMetadataController")
 @RequestMapping(value = "/v1/sec/nodes/meta")
-public class NodeMetadataController extends WebServiceControllerSupport {
+public class EdgeMetadataController extends WebServiceControllerSupport {
 
 	private final UserBiz userBiz;
 	private final EniwareEdgeMetadataBiz eniwareEdgeMetadataBiz;
@@ -54,7 +54,7 @@ public class NodeMetadataController extends WebServiceControllerSupport {
 	 *        the EniwareEdgeMetadataBiz to use
 	 */
 	@Autowired
-	public NodeMetadataController(UserBiz userBiz, EniwareEdgeMetadataBiz eniwareEdgeMetadataBiz) {
+	public EdgeMetadataController(UserBiz userBiz, EniwareEdgeMetadataBiz eniwareEdgeMetadataBiz) {
 		super();
 		this.userBiz = userBiz;
 		this.eniwareEdgeMetadataBiz = eniwareEdgeMetadataBiz;

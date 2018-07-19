@@ -15,3 +15,4 @@ Import-Package:
  org.springframework.core.io;version="[4.2,5.0)",
  org.springframework.mail;version="[4.2,5.0)",
  org.springframework.util;version="[4.2,5.0)"
+Automatic-Module-Name: org.eniware.central.common.mail

@@ -13,7 +13,7 @@ import java.io.Serializable;
  * 
  * @version 1.0
  */
-public class UserNodePK implements Serializable, Cloneable, Comparable<UserNodePK> {
+public class UserEdgePK implements Serializable, Cloneable, Comparable<UserEdgePK> {
 
 	private static final long serialVersionUID = -2661140310545544324L;
 
@@ -23,7 +23,7 @@ public class UserNodePK implements Serializable, Cloneable, Comparable<UserNodeP
 	/**
 	 * Default constructor.
 	 */
-	public UserNodePK() {
+	public UserEdgePK() {
 		super();
 	}
 
@@ -35,7 +35,7 @@ public class UserNodePK implements Serializable, Cloneable, Comparable<UserNodeP
 	 * @param nodeId
 	 *        the node ID
 	 */
-	public UserNodePK(Long userId, Long nodeId) {
+	public UserEdgePK(Long userId, Long nodeId) {
 		super();
 		this.nodeId = nodeId;
 		this.userId = userId;
@@ -52,7 +52,7 @@ public class UserNodePK implements Serializable, Cloneable, Comparable<UserNodeP
 	 * <em>Null</em> values will be sorted before non-<em>null</em> values.
 	 */
 	@Override
-	public int compareTo(UserNodePK o) {
+	public int compareTo(UserEdgePK o) {
 		if ( o == null ) {
 			return 1;
 		}
@@ -110,7 +110,7 @@ public class UserNodePK implements Serializable, Cloneable, Comparable<UserNodeP
 		if ( getClass() != obj.getClass() ) {
 			return false;
 		}
-		UserNodePK other = (UserNodePK) obj;
+		UserEdgePK other = (UserEdgePK) obj;
 		if ( nodeId == null ) {
 			if ( other.nodeId != null ) {
 				return false;

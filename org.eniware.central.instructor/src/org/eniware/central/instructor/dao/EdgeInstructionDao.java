@@ -10,15 +10,15 @@ import org.eniware.central.dao.FilterableDao;
 import org.eniware.central.dao.GenericDao;
 import org.eniware.central.domain.EntityMatch;
 import org.eniware.central.instructor.domain.InstructionFilter;
-import org.eniware.central.instructor.domain.NodeInstruction;
+import org.eniware.central.instructor.domain.EdgeInstruction;
 import org.joda.time.DateTime;
 
 /**
- * DAO API for {@link NodeInstruction}.
+ * DAO API for {@link EdgeInstruction}.
  *
  * @version 1.1
  */
-public interface NodeInstructionDao extends GenericDao<NodeInstruction, Long>,
+public interface EdgeInstructionDao extends GenericDao<EdgeInstruction, Long>,
 		FilterableDao<EntityMatch, Long, InstructionFilter> {
 
 	/**

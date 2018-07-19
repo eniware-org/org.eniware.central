@@ -12,7 +12,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.eniware.central.user.billing.biz.BillingBiz;
 import org.eniware.central.user.billing.domain.InvoiceFilter;
 
-import org.eniware.central.user.dao.UserNodeDao;
+import org.eniware.central.user.dao.UserEdgeDao;
 import org.eniware.central.user.support.AuthorizationSupport;
 
 /**
@@ -29,7 +29,7 @@ public class BillingSecurityAspect extends AuthorizationSupport {
 	 * @param userNodeDao
 	 *        the UserNodeDao to use
 	 */
-	public BillingSecurityAspect(UserNodeDao userNodeDao) {
+	public BillingSecurityAspect(UserEdgeDao userNodeDao) {
 		super(userNodeDao);
 	}
 

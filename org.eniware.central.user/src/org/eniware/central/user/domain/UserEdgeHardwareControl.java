@@ -16,7 +16,7 @@ import org.eniware.central.domain.HardwareControl;
  * 
  * @version $Revision$
  */
-public class UserNodeHardwareControl extends BaseEntity {
+public class UserEdgeHardwareControl extends BaseEntity {
 
 	private static final long serialVersionUID = 9220118628409582403L;
 

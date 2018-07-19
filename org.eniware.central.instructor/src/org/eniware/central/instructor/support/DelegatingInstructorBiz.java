@@ -29,7 +29,7 @@ import java.util.Set;
 import org.eniware.central.instructor.biz.InstructorBiz;
 import org.eniware.central.instructor.domain.Instruction;
 import org.eniware.central.instructor.domain.InstructionState;
-import org.eniware.central.instructor.domain.NodeInstruction;
+import org.eniware.central.instructor.domain.EdgeInstruction;
 
 /**
  * Delegates to another InstructorBiz, designed for AOP use.
@@ -57,7 +57,7 @@ public class DelegatingInstructorBiz implements InstructorBiz {
 	}
 
 	@Override
-	public List<NodeInstruction> getActiveInstructionsForNodes(Set<Long> nodeIds) {
+	public List<EdgeInstruction> getActiveInstructionsForNodes(Set<Long> nodeIds) {
 		return delegate.getActiveInstructionsForNodes(nodeIds);
 	}
 
@@ -67,27 +67,27 @@ public class DelegatingInstructorBiz implements InstructorBiz {
 	}
 
 	@Override
-	public List<NodeInstruction> getPendingInstructionsForNodes(Set<Long> nodeIds) {
+	public List<EdgeInstruction> getPendingInstructionsForNodes(Set<Long> nodeIds) {
 		return delegate.getPendingInstructionsForNodes(nodeIds);
 	}
 
 	@Override
-	public NodeInstruction queueInstruction(Long nodeId, Instruction instruction) {
+	public EdgeInstruction queueInstruction(Long nodeId, Instruction instruction) {
 		return delegate.queueInstruction(nodeId, instruction);
 	}
 
 	@Override
-	public List<NodeInstruction> queueInstructions(Set<Long> nodeIds, Instruction instruction) {
+	public List<EdgeInstruction> queueInstructions(Set<Long> nodeIds, Instruction instruction) {
 		return delegate.queueInstructions(nodeIds, instruction);
 	}
 
 	@Override
-	public NodeInstruction getInstruction(Long instructionId) {
+	public EdgeInstruction getInstruction(Long instructionId) {
 		return delegate.getInstruction(instructionId);
 	}
 
 	@Override
-	public List<NodeInstruction> getInstructions(Set<Long> instructionIds) {
+	public List<EdgeInstruction> getInstructions(Set<Long> instructionIds) {
 		return delegate.getInstructions(instructionIds);
 	}
 

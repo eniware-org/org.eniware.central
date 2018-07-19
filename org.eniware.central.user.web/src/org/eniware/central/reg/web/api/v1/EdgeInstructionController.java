@@ -30,7 +30,7 @@ import org.eniware.web.domain.Response;
  */
 @Controller("v1nodeInstructionController")
 @RequestMapping(value = "/v1/sec/instr")
-public class NodeInstructionController extends WebServiceControllerSupport {
+public class EdgeInstructionController extends WebServiceControllerSupport {
 
 	@Autowired
 	private InstructorBiz instructorBiz;

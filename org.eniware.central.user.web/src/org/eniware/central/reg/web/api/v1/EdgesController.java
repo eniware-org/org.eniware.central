@@ -33,7 +33,7 @@ import org.eniware.web.domain.Response;
  */
 @Controller("v1nodesController")
 @RequestMapping(value = "/v1/sec/nodes")
-public class NodesController extends WebServiceControllerSupport {
+public class EdgesController extends WebServiceControllerSupport {
 
 	public final UserBiz userBiz;
 	public final CertificateService certificateService;
@@ -47,7 +47,7 @@ public class NodesController extends WebServiceControllerSupport {
 	 *        The {@link CertificateService}.
 	 */
 	@Autowired
-	public NodesController(UserBiz userBiz, CertificateService certificateService) {
+	public EdgesController(UserBiz userBiz, CertificateService certificateService) {
 		super();
 		this.userBiz = userBiz;
 		this.certificateService = certificateService;

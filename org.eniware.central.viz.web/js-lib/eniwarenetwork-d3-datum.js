@@ -37,7 +37,7 @@ sn.datum.nodeUrlHelper = function(node, configuration) {
 	var nodeId = node;
 	
 	var config = sn.util.copy(configuration, {
-		host : 'data.network.eniware.org',
+		host : 'data.network.eniware.org/',
 		tls : true,
 		path : '/eniwarequery',
 		secureQuery : false
@@ -237,7 +237,7 @@ sn.datum.locationUrlHelper = function(location, configuration) {
 	var locationId = location;
 	
 	var config = sn.util.copy(configuration, {
-		host : 'data.network.eniware.org',
+		host : 'data.network.eniware.org/',
 		tls : true,
 		path : '/eniwarequery',
 		secureQuery : false

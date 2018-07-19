@@ -16,9 +16,9 @@ import org.eniware.central.user.domain.User;
 import org.eniware.central.user.domain.UserAuthToken;
 import org.eniware.central.user.domain.UserAuthTokenStatus;
 import org.eniware.central.user.domain.UserAuthTokenType;
-import org.eniware.central.user.domain.UserNode;
-import org.eniware.central.user.domain.UserNodeCertificate;
-import org.eniware.central.user.domain.UserNodeConfirmation;
+import org.eniware.central.user.domain.UserEdge;
+import org.eniware.central.user.domain.UserEdgeCertificate;
+import org.eniware.central.user.domain.UserEdgeConfirmation;
 import org.joda.time.DateTime;
 
 import org.eniware.web.security.AuthorizationV2Builder;
@@ -49,7 +49,7 @@ public interface UserBiz {
 	 *        the ID of the user to get the nodes for
 	 * @return list of UserNode objects, or an empty list if none found
 	 */
-	List<UserNode> getUserNodes(Long userId) throws AuthorizationException;
+	List<UserEdge> getUserNodes(Long userId) throws AuthorizationException;
 
 	/**
 	 * Get a specific node belonging to a specific user.
@@ -62,7 +62,7 @@ public interface UserBiz {
 	 * @throws AuthorizationException
 	 *         if the user is not authorized to access the given node
 	 */
-	UserNode getUserNode(Long userId, Long nodeId) throws AuthorizationException;
+	UserEdge getUserNode(Long userId, Long nodeId) throws AuthorizationException;
 
 	/**
 	 * Update a specific node belonging to a specific user.
@@ -78,7 +78,7 @@ public interface UserBiz {
 	 * @throws AuthorizationException
 	 *         if the user is not authorized to access the given node
 	 */
-	UserNode saveUserNode(UserNode userNodeEntry) throws AuthorizationException;
+	UserEdge saveUserNode(UserEdge userNodeEntry) throws AuthorizationException;
 
 	/**
 	 * Archive, or un-archive a user node.
@@ -108,7 +108,7 @@ public interface UserBiz {
 	 * @return list of UserNode objects, or an empty list if none found
 	 * @since 1.4
 	 */
-	List<UserNode> getArchivedUserNodes(Long userId) throws AuthorizationException;
+	List<UserEdge> getArchivedUserNodes(Long userId) throws AuthorizationException;
 
 	/**
 	 * Get a list of pending node confirmations belonging to a specific user.
@@ -118,7 +118,7 @@ public interface UserBiz {
 	 * @return list of UserNodeConfirmation objects, or an empty list if none
 	 *         found
 	 */
-	List<UserNodeConfirmation> getPendingUserNodeConfirmations(Long userId);
+	List<UserEdgeConfirmation> getPendingUserNodeConfirmations(Long userId);
 
 	/**
 	 * Get a specific pending confirmation.
@@ -127,7 +127,7 @@ public interface UserBiz {
 	 *        the ID of the pending confirmation
 	 * @return the pending confirmation, or <em>null</em> if not found
 	 */
-	UserNodeConfirmation getPendingUserNodeConfirmation(Long userNodeConfirmationId);
+	UserEdgeConfirmation getPendingUserNodeConfirmation(Long userNodeConfirmationId);
 
 	/**
 	 * Get a specific UserNodeCertificate object.
@@ -138,7 +138,7 @@ public interface UserBiz {
 	 *        the node ID
 	 * @return the certificate, or <em>null</em> if not available
 	 */
-	UserNodeCertificate getUserNodeCertificate(Long userId, Long nodeId);
+	UserEdgeCertificate getUserNodeCertificate(Long userId, Long nodeId);
 
 	/**
 	 * Generate a new, unique {@link UserAuthToken} entity and return it.

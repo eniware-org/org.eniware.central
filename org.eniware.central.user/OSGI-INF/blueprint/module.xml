@@ -18,7 +18,7 @@
 	
 	<osgix:cm-properties id="central.user.cfg" persistent-id="org.eniware.central.user">
 		<beans:prop key="BasicAppConfigurationBiz.serviceUrls">
-			eniwareuser = http://localhost/eniwareuser
+			eniwareuser = data.network.eniware.orgs.mobi/:8080s.mobi/:8080eniwareuser
 		</beans:prop>
 	</osgix:cm-properties>
 

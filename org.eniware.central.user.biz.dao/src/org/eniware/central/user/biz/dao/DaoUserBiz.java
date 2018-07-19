@@ -19,23 +19,23 @@ import org.eniware.central.security.AuthorizationException;
 import org.eniware.central.security.BasicSecurityPolicy;
 import org.eniware.central.security.SecurityPolicy;
 import org.eniware.central.security.AuthorizationException.Reason;
-import org.eniware.central.user.biz.NodeOwnershipBiz;
+import org.eniware.central.user.biz.EdgeOwnershipBiz;
 import org.eniware.central.user.biz.UserBiz;
 import org.eniware.central.user.dao.UserAlertDao;
 import org.eniware.central.user.dao.UserAuthTokenDao;
 import org.eniware.central.user.dao.UserDao;
-import org.eniware.central.user.dao.UserNodeCertificateDao;
-import org.eniware.central.user.dao.UserNodeConfirmationDao;
-import org.eniware.central.user.dao.UserNodeDao;
+import org.eniware.central.user.dao.UserEdgeCertificateDao;
+import org.eniware.central.user.dao.UserEdgeConfirmationDao;
+import org.eniware.central.user.dao.UserEdgeDao;
 import org.eniware.central.user.domain.User;
 import org.eniware.central.user.domain.UserAuthToken;
 import org.eniware.central.user.domain.UserAuthTokenStatus;
 import org.eniware.central.user.domain.UserAuthTokenType;
-import org.eniware.central.user.domain.UserNode;
-import org.eniware.central.user.domain.UserNodeCertificate;
-import org.eniware.central.user.domain.UserNodeConfirmation;
-import org.eniware.central.user.domain.UserNodePK;
-import org.eniware.central.user.domain.UserNodeTransfer;
+import org.eniware.central.user.domain.UserEdge;
+import org.eniware.central.user.domain.UserEdgeCertificate;
+import org.eniware.central.user.domain.UserEdgeConfirmation;
+import org.eniware.central.user.domain.UserEdgePK;
+import org.eniware.central.user.domain.UserEdgeTransfer;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,15 +49,15 @@ import org.eniware.web.security.AuthorizationV2Builder;
  * 
  * @version 1.3
  */
-public class DaoUserBiz implements UserBiz, NodeOwnershipBiz {
+public class DaoUserBiz implements UserBiz, EdgeOwnershipBiz {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private UserDao userDao;
 	private UserAlertDao userAlertDao;
-	private UserNodeDao userNodeDao;
-	private UserNodeConfirmationDao userNodeConfirmationDao;
-	private UserNodeCertificateDao userNodeCertificateDao;
+	private UserEdgeDao userNodeDao;
+	private UserEdgeConfirmationDao userNodeConfirmationDao;
+	private UserEdgeCertificateDao userNodeCertificateDao;
 	private UserAuthTokenDao userAuthTokenDao;
 	private EniwareLocationDao eniwareLocationDao;
 	private EniwareEdgeDao eniwareEdgeDao;
@@ -70,16 +70,16 @@ public class DaoUserBiz implements UserBiz, NodeOwnershipBiz {
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserNode> getUserNodes(Long userId) {
+	public List<UserEdge> getUserNodes(Long userId) {
 		return userNodeDao.findUserNodesAndCertificatesForUser(userId);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public UserNode getUserNode(Long userId, Long nodeId) throws AuthorizationException {
+	public UserEdge getUserNode(Long userId, Long nodeId) throws AuthorizationException {
 		assert userId != null;
 		assert nodeId != null;
-		UserNode result = userNodeDao.get(nodeId);
+		UserEdge result = userNodeDao.get(nodeId);
 		if ( result == null ) {
 			throw new AuthorizationException(nodeId.toString(), Reason.UNKNOWN_OBJECT);
 		}
@@ -91,7 +91,7 @@ public class DaoUserBiz implements UserBiz, NodeOwnershipBiz {
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public UserNode saveUserNode(UserNode entry) throws AuthorizationException {
+	public UserEdge saveUserNode(UserEdge entry) throws AuthorizationException {
 		assert entry != null;
 		assert entry.getNode() != null;
 		assert entry.getUser() != null;
@@ -101,7 +101,7 @@ public class DaoUserBiz implements UserBiz, NodeOwnershipBiz {
 		if ( entry.getUser().getId() == null ) {
 			throw new AuthorizationException(Reason.UNKNOWN_OBJECT, null);
 		}
-		UserNode entity = userNodeDao.get(entry.getNode().getId());
+		UserEdge entity = userNodeDao.get(entry.getNode().getId());
 		if ( entity == null ) {
 			throw new AuthorizationException(Reason.UNKNOWN_OBJECT, entry.getNode().getId());
 		}
@@ -146,29 +146,29 @@ public class DaoUserBiz implements UserBiz, NodeOwnershipBiz {
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserNode> getArchivedUserNodes(Long userId) throws AuthorizationException {
+	public List<UserEdge> getArchivedUserNodes(Long userId) throws AuthorizationException {
 		return userNodeDao.findArchivedUserNodesForUser(userId);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserNodeConfirmation> getPendingUserNodeConfirmations(Long userId) {
+	public List<UserEdgeConfirmation> getPendingUserNodeConfirmations(Long userId) {
 		User user = userDao.get(userId);
 		return userNodeConfirmationDao.findPendingConfirmationsForUser(user);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public UserNodeConfirmation getPendingUserNodeConfirmation(final Long userNodeConfirmationId) {
+	public UserEdgeConfirmation getPendingUserNodeConfirmation(final Long userNodeConfirmationId) {
 		return userNodeConfirmationDao.get(userNodeConfirmationId);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public UserNodeCertificate getUserNodeCertificate(Long userId, Long nodeId) {
+	public UserEdgeCertificate getUserNodeCertificate(Long userId, Long nodeId) {
 		assert userId != null;
 		assert nodeId != null;
-		return userNodeCertificateDao.get(new UserNodePK(userId, nodeId));
+		return userNodeCertificateDao.get(new UserEdgePK(userId, nodeId));
 	}
 
 	@Override
@@ -204,7 +204,7 @@ public class DaoUserBiz implements UserBiz, NodeOwnershipBiz {
 				Set<Long> nodeIds = (policy == null ? null : policy.getNodeIds());
 				if ( nodeIds != null ) {
 					for ( Long nodeId : nodeIds ) {
-						UserNode userNode = userNodeDao.get(nodeId);
+						UserEdge userNode = userNodeDao.get(nodeId);
 						if ( userNode == null ) {
 							throw new AuthorizationException(Reason.UNKNOWN_OBJECT, nodeId);
 						}
@@ -296,21 +296,21 @@ public class DaoUserBiz implements UserBiz, NodeOwnershipBiz {
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserNodeTransfer> pendingNodeOwnershipTransfersForEmail(String email) {
+	public List<UserEdgeTransfer> pendingNodeOwnershipTransfersForEmail(String email) {
 		return userNodeDao.findUserNodeTransferRequestsForEmail(email);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public UserNodeTransfer getNodeOwnershipTransfer(Long userId, Long nodeId) {
-		return userNodeDao.getUserNodeTransfer(new UserNodePK(userId, nodeId));
+	public UserEdgeTransfer getNodeOwnershipTransfer(Long userId, Long nodeId) {
+		return userNodeDao.getUserNodeTransfer(new UserEdgePK(userId, nodeId));
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void requestNodeOwnershipTransfer(Long userId, Long nodeId, String newOwnerEmail)
 			throws AuthorizationException {
-		UserNodeTransfer xfer = new UserNodeTransfer();
+		UserEdgeTransfer xfer = new UserEdgeTransfer();
 		xfer.setUserId(userId);
 		xfer.setNodeId(nodeId);
 		xfer.setEmail(newOwnerEmail);
@@ -320,7 +320,7 @@ public class DaoUserBiz implements UserBiz, NodeOwnershipBiz {
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void cancelNodeOwnershipTransfer(Long userId, Long nodeId) throws AuthorizationException {
-		UserNodeTransfer xfer = userNodeDao.getUserNodeTransfer(new UserNodePK(userId, nodeId));
+		UserEdgeTransfer xfer = userNodeDao.getUserNodeTransfer(new UserEdgePK(userId, nodeId));
 		if ( xfer != null ) {
 			userNodeDao.deleteUserNodeTrasnfer(xfer);
 		}
@@ -328,15 +328,15 @@ public class DaoUserBiz implements UserBiz, NodeOwnershipBiz {
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public UserNodeTransfer confirmNodeOwnershipTransfer(Long userId, Long nodeId, boolean accept)
+	public UserEdgeTransfer confirmNodeOwnershipTransfer(Long userId, Long nodeId, boolean accept)
 			throws AuthorizationException {
-		UserNodePK pk = new UserNodePK(userId, nodeId);
-		UserNodeTransfer xfer = userNodeDao.getUserNodeTransfer(pk);
+		UserEdgePK pk = new UserEdgePK(userId, nodeId);
+		UserEdgeTransfer xfer = userNodeDao.getUserNodeTransfer(pk);
 		if ( accept ) {
 			if ( xfer == null ) {
 				throw new AuthorizationException(Reason.UNKNOWN_OBJECT, pk);
 			}
-			UserNode userNode = userNodeDao.get(nodeId);
+			UserEdge userNode = userNodeDao.get(nodeId);
 			if ( userNode == null ) {
 				throw new AuthorizationException(Reason.UNKNOWN_OBJECT, nodeId);
 			}
@@ -409,15 +409,15 @@ public class DaoUserBiz implements UserBiz, NodeOwnershipBiz {
 		this.userDao = userDao;
 	}
 
-	public void setUserNodeDao(UserNodeDao userNodeDao) {
+	public void setUserNodeDao(UserEdgeDao userNodeDao) {
 		this.userNodeDao = userNodeDao;
 	}
 
-	public void setUserNodeConfirmationDao(UserNodeConfirmationDao userNodeConfirmationDao) {
+	public void setUserNodeConfirmationDao(UserEdgeConfirmationDao userNodeConfirmationDao) {
 		this.userNodeConfirmationDao = userNodeConfirmationDao;
 	}
 
-	public void setUserNodeCertificateDao(UserNodeCertificateDao userNodeCertificateDao) {
+	public void setUserNodeCertificateDao(UserEdgeCertificateDao userNodeCertificateDao) {
 		this.userNodeCertificateDao = userNodeCertificateDao;
 	}
 

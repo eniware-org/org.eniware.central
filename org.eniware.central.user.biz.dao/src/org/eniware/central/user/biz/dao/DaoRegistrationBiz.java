@@ -49,29 +49,29 @@ import org.eniware.central.in.biz.NetworkIdentityBiz;
 import org.eniware.central.instructor.biz.InstructorBiz;
 import org.eniware.central.instructor.domain.Instruction;
 import org.eniware.central.instructor.domain.InstructionParameter;
-import org.eniware.central.instructor.domain.NodeInstruction;
+import org.eniware.central.instructor.domain.EdgeInstruction;
 import org.eniware.central.security.AuthorizationException;
 import org.eniware.central.security.PasswordEncoder;
 import org.eniware.central.security.SecurityNode;
 import org.eniware.central.security.SecurityUtils;
 import org.eniware.central.security.AuthorizationException.Reason;
-import org.eniware.central.user.biz.NodePKIBiz;
+import org.eniware.central.user.biz.EdgePKIBiz;
 import org.eniware.central.user.biz.RegistrationBiz;
 import org.eniware.central.user.dao.UserDao;
-import org.eniware.central.user.dao.UserNodeCertificateDao;
-import org.eniware.central.user.dao.UserNodeConfirmationDao;
-import org.eniware.central.user.dao.UserNodeDao;
+import org.eniware.central.user.dao.UserEdgeCertificateDao;
+import org.eniware.central.user.dao.UserEdgeConfirmationDao;
+import org.eniware.central.user.dao.UserEdgeDao;
 import org.eniware.central.user.domain.BasicUserNodeCertificateRenewal;
 import org.eniware.central.user.domain.NewNodeRequest;
 import org.eniware.central.user.domain.PasswordEntry;
 import org.eniware.central.user.domain.User;
-import org.eniware.central.user.domain.UserNode;
-import org.eniware.central.user.domain.UserNodeCertificate;
-import org.eniware.central.user.domain.UserNodeCertificateInstallationStatus;
-import org.eniware.central.user.domain.UserNodeCertificateRenewal;
-import org.eniware.central.user.domain.UserNodeCertificateStatus;
-import org.eniware.central.user.domain.UserNodeConfirmation;
-import org.eniware.central.user.domain.UserNodePK;
+import org.eniware.central.user.domain.UserEdge;
+import org.eniware.central.user.domain.UserEdgeCertificate;
+import org.eniware.central.user.domain.UserEdgeCertificateInstallationStatus;
+import org.eniware.central.user.domain.UserEdgeCertificateRenewal;
+import org.eniware.central.user.domain.UserEdgeCertificateStatus;
+import org.eniware.central.user.domain.UserEdgeConfirmation;
+import org.eniware.central.user.domain.UserEdgePK;
 import org.eniware.domain.BasicRegistrationReceipt;
 import org.eniware.domain.NetworkAssociation;
 import org.eniware.domain.NetworkAssociationDetails;
@@ -148,9 +148,9 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private UserDao userDao;
-	private UserNodeDao userNodeDao;
-	private UserNodeConfirmationDao userNodeConfirmationDao;
-	private UserNodeCertificateDao userNodeCertificateDao;
+	private UserEdgeDao userNodeDao;
+	private UserEdgeConfirmationDao userNodeConfirmationDao;
+	private UserEdgeCertificateDao userNodeCertificateDao;
 	private Validator userValidator;
 	private EniwareEdgeDao eniwareEdgeDao;
 	private EniwareLocationDao eniwareLocationDao;
@@ -160,7 +160,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 	private JavaBeanXmlSerializer xmlSerializer = new JavaBeanXmlSerializer();
 	private Ehcache emailThrottleCache;
 	private CertificateService certificateService;
-	private NodePKIBiz nodePKIBiz;
+	private EdgePKIBiz nodePKIBiz;
 	private int nodePrivateKeySize = 2048;
 	private String nodeKeystoreAlias = "node";
 	private ExecutorService executorService = Executors.newCachedThreadPool();
@@ -378,7 +378,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 		details.setTermsOfService(ident.getTermsOfService());
 
 		// create UserNodeConfirmation now
-		UserNodeConfirmation conf = new UserNodeConfirmation();
+		UserEdgeConfirmation conf = new UserEdgeConfirmation();
 		conf.setCreated(now);
 		conf.setUser(user);
 		conf.setConfirmationKey(confKey);
@@ -394,7 +394,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public NetworkAssociation getNodeAssociation(final Long userNodeConfirmationId)
 			throws AuthorizationException {
-		final UserNodeConfirmation conf = userNodeConfirmationDao.get(userNodeConfirmationId);
+		final UserEdgeConfirmation conf = userNodeConfirmationDao.get(userNodeConfirmationId);
 		if ( conf == null ) {
 			return null;
 		}
@@ -422,7 +422,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void cancelNodeAssociation(Long userNodeConfirmationId) throws AuthorizationException {
-		final UserNodeConfirmation conf = userNodeConfirmationDao.get(userNodeConfirmationId);
+		final UserEdgeConfirmation conf = userNodeConfirmationDao.get(userNodeConfirmationId);
 		if ( conf == null ) {
 			return;
 		}
@@ -466,7 +466,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 			throw new AuthorizationException(Reason.UNKNOWN_EMAIL, username);
 		}
 
-		final UserNodeConfirmation conf = userNodeConfirmationDao.getConfirmationForKey(user.getId(),
+		final UserEdgeConfirmation conf = userNodeConfirmationDao.getConfirmationForKey(user.getId(),
 				confirmationKey);
 		if ( conf == null ) {
 			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT,
@@ -478,8 +478,8 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, null);
 		}
 
-		final UserNodeCertificate cert = userNodeCertificateDao
-				.get(new UserNodePK(user.getId(), nodeId));
+		final UserEdgeCertificate cert = userNodeCertificateDao
+				.get(new UserEdgePK(user.getId(), nodeId));
 		if ( cert == null ) {
 			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, null);
 		}
@@ -512,7 +512,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public UserNodeCertificateRenewal renewNodeCertificate(final UserNode userNode,
+	public UserEdgeCertificateRenewal renewNodeCertificate(final UserEdge userNode,
 			final String keystorePassword) {
 		if ( userNode == null ) {
 			throw new IllegalArgumentException("UserNode must be provided.");
@@ -525,12 +525,12 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 		if ( nodeId == null ) {
 			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, null);
 		}
-		final UserNodeCertificate cert = userNodeCertificateDao
-				.get(new UserNodePK(userNode.getUser().getId(), nodeId));
+		final UserEdgeCertificate cert = userNodeCertificateDao
+				.get(new UserEdgePK(userNode.getUser().getId(), nodeId));
 		return renewNodeCertificate(cert, keystorePassword);
 	}
 
-	private UserNodeCertificateRenewal renewNodeCertificate(final UserNodeCertificate cert,
+	private UserEdgeCertificateRenewal renewNodeCertificate(final UserEdgeCertificate cert,
 			final String keystorePassword) {
 		if ( cert == null ) {
 			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, null);
@@ -571,15 +571,15 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 
 		// update the UserNodeCert's request ID to the renewal ID
 		cert.setRequestId(renewRequestID);
-		cert.setStatus(UserNodeCertificateStatus.a);
+		cert.setStatus(UserEdgeCertificateStatus.a);
 
 		final String certSubjectDN = String.format(networkCertificateSubjectDNFormat, nodeId.toString());
 
-		final Future<UserNodeCertificate> approval = approveCSR(certSubjectDN, keystorePassword, user,
+		final Future<UserEdgeCertificate> approval = approveCSR(certSubjectDN, keystorePassword, user,
 				cert);
 		Instruction installInstruction = null;
 		try {
-			UserNodeCertificate renewedCert = approval.get(approveCSRMaximumWaitSecs, TimeUnit.SECONDS);
+			UserEdgeCertificate renewedCert = approval.get(approveCSRMaximumWaitSecs, TimeUnit.SECONDS);
 			cert.setStatus(renewedCert.getStatus());
 			cert.setCreated(renewedCert.getCreated());
 			cert.setKeystoreData(renewedCert.getKeystoreData());
@@ -592,7 +592,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 				@Override
 				public void run() {
 					try {
-						UserNodeCertificate renewedCert = approval.get();
+						UserEdgeCertificate renewedCert = approval.get();
 						cert.setStatus(renewedCert.getStatus());
 						cert.setCreated(renewedCert.getCreated());
 						cert.setKeystoreData(renewedCert.getKeystoreData());
@@ -623,7 +623,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 		details.setNetworkId(nodeId);
 		if ( cert != null ) {
 			details.setNetworkCertificateStatus(cert.getStatus().getValue());
-			if ( cert.getStatus() == UserNodeCertificateStatus.v ) {
+			if ( cert.getStatus() == UserEdgeCertificateStatus.v ) {
 				details.setNetworkCertificate(getCertificateAsString(cert.getKeystoreData()));
 			}
 		}
@@ -639,7 +639,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public UserNodeCertificateRenewal getPendingNodeCertificateRenewal(UserNode userNode,
+	public UserEdgeCertificateRenewal getPendingNodeCertificateRenewal(UserEdge userNode,
 			String confirmationKey) {
 		Long instructionId;
 		try {
@@ -648,7 +648,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT,
 					confirmationKey);
 		}
-		NodeInstruction instruction = instructorBiz.getInstruction(instructionId);
+		EdgeInstruction instruction = instructorBiz.getInstruction(instructionId);
 		if ( instruction == null ) {
 			return null;
 		}
@@ -667,23 +667,23 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 		details.setNetworkId(userNode.getId());
 		details.setConfirmationKey(instructionId.toString());
 
-		UserNodeCertificateInstallationStatus installStatus;
+		UserEdgeCertificateInstallationStatus installStatus;
 		switch (instruction.getState()) {
 			case Queued:
-				installStatus = UserNodeCertificateInstallationStatus.RequestQueued;
+				installStatus = UserEdgeCertificateInstallationStatus.RequestQueued;
 				break;
 
 			case Received:
 			case Executing:
-				installStatus = UserNodeCertificateInstallationStatus.RequestReceived;
+				installStatus = UserEdgeCertificateInstallationStatus.RequestReceived;
 				break;
 
 			case Completed:
-				installStatus = UserNodeCertificateInstallationStatus.Installed;
+				installStatus = UserEdgeCertificateInstallationStatus.Installed;
 				break;
 
 			case Declined:
-				installStatus = UserNodeCertificateInstallationStatus.Declined;
+				installStatus = UserEdgeCertificateInstallationStatus.Declined;
 				break;
 
 			default:
@@ -716,7 +716,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 	 * @param keystorePassword
 	 *        The password to read the keystore with.
 	 */
-	private Instruction queueRenewedNodeCertificateInstruction(final UserNodeCertificate cert,
+	private Instruction queueRenewedNodeCertificateInstruction(final UserEdgeCertificate cert,
 			final String keystorePassword) {
 		final InstructorBiz instructor = instructorBiz;
 		final CertificateService certService = certificateService;
@@ -770,21 +770,21 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, null);
 		}
 
-		final UserNode userNode = userNodeDao.get(nodeId);
+		final UserEdge userNode = userNodeDao.get(nodeId);
 		if ( userNode == null ) {
 			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, null);
 		}
 
 		// get existing UserNodeCertificate, else create a new one
-		final UserNodePK userNodePK = new UserNodePK(userNode.getUser().getId(), nodeId);
-		UserNodeCertificate userNodeCert = userNodeCertificateDao.get(userNodePK);
+		final UserEdgePK userNodePK = new UserEdgePK(userNode.getUser().getId(), nodeId);
+		UserEdgeCertificate userNodeCert = userNodeCertificateDao.get(userNodePK);
 		if ( userNodeCert == null ) {
-			userNodeCert = new UserNodeCertificate();
+			userNodeCert = new UserEdgeCertificate();
 			userNodeCert.setId(userNodePK);
 			userNodeCert.setUser(userNode.getUser());
 			userNodeCert.setNode(userNode.getNode());
 			userNodeCert.setCreated(new DateTime());
-			userNodeCert.setStatus(UserNodeCertificateStatus.a);
+			userNodeCert.setStatus(UserEdgeCertificateStatus.a);
 		}
 
 		// extract the existing node certificate
@@ -813,7 +813,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 			throw new AuthorizationException(Reason.UNKNOWN_EMAIL, null);
 		}
 
-		UserNodeConfirmation conf = userNodeConfirmationDao.getConfirmationForKey(user.getId(),
+		UserEdgeConfirmation conf = userNodeConfirmationDao.getConfirmationForKey(user.getId(),
 				confirmationKey);
 		if ( conf == null ) {
 			log.info("Association failed: confirmation not found for username {} key {}", username,
@@ -871,9 +871,9 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 		}
 
 		// create UserNode now if it doesn't already exist
-		UserNode userNode = userNodeDao.get(nodeId);
+		UserEdge userNode = userNodeDao.get(nodeId);
 		if ( userNode == null ) {
-			userNode = new UserNode();
+			userNode = new UserEdge();
 			userNode.setNode(node);
 			userNode.setUser(user);
 			userNodeDao.store(userNode);
@@ -885,7 +885,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 
 		final String certSubjectDN = String.format(networkCertificateSubjectDNFormat, nodeId.toString());
 
-		UserNodeCertificate cert = null;
+		UserEdgeCertificate cert = null;
 		if ( association.getKeystorePassword() != null ) {
 			// we must become the User now for CSR to be generated
 			SecurityUtils.becomeUser(user.getEmail(), user.getName(), user.getId());
@@ -901,7 +901,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 			cert.setNodeId(node.getId());
 			cert.setUserId(user.getId());
 
-			final Future<UserNodeCertificate> approval = approveCSR(certSubjectDN,
+			final Future<UserEdgeCertificate> approval = approveCSR(certSubjectDN,
 					association.getKeystorePassword(), user, cert);
 			try {
 				cert = approval.get(approveCSRMaximumWaitSecs, TimeUnit.SECONDS);
@@ -913,7 +913,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 					@Override
 					public void run() {
 						try {
-							UserNodeCertificate approvedCert = approval.get();
+							UserEdgeCertificate approvedCert = approval.get();
 							userNodeCertificateDao.store(approvedCert);
 						} catch ( Exception e ) {
 							log.error("Error approving cert {}", certSubjectDN, e);
@@ -937,7 +937,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 				calculateNodeAssociationConfirmationCode(conf.getConfirmationDate(), nodeId));
 		if ( cert != null ) {
 			details.setNetworkCertificateStatus(cert.getStatus().getValue());
-			if ( cert.getStatus() == UserNodeCertificateStatus.v ) {
+			if ( cert.getStatus() == UserEdgeCertificateStatus.v ) {
 				details.setNetworkCertificate(getCertificateAsString(cert.getKeystoreData()));
 			}
 		}
@@ -949,12 +949,12 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 		return Base64.encodeBase64String(data);
 	}
 
-	private Future<UserNodeCertificate> approveCSR(final String certSubjectDN,
-			final String keystorePassword, final User user, final UserNodeCertificate cert) {
-		return executorService.submit(new Callable<UserNodeCertificate>() {
+	private Future<UserEdgeCertificate> approveCSR(final String certSubjectDN,
+			final String keystorePassword, final User user, final UserEdgeCertificate cert) {
+		return executorService.submit(new Callable<UserEdgeCertificate>() {
 
 			@Override
-			public UserNodeCertificate call() throws Exception {
+			public UserEdgeCertificate call() throws Exception {
 				SecurityUtils.becomeUser(user.getEmail(), user.getName(), user.getId());
 				log.debug("Approving CSR {} request ID {}", certSubjectDN, cert.getRequestId());
 				X509Certificate[] chain = nodePKIBiz.approveCSR(cert.getRequestId());
@@ -964,14 +964,14 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 		});
 	}
 
-	private void saveNodeSignedCertificate(final String keystorePassword, UserNodeCertificate cert,
+	private void saveNodeSignedCertificate(final String keystorePassword, UserEdgeCertificate cert,
 			X509Certificate[] chain) throws CertificateException {
 		log.debug("Saving approved certificate {}",
 				(chain != null && chain.length > 0 ? chain[0].getSubjectDN().getName() : null));
 		KeyStore keyStore = cert.getKeyStore(keystorePassword);
 		Key key;
 		try {
-			key = keyStore.getKey(UserNodeCertificate.KEYSTORE_NODE_ALIAS,
+			key = keyStore.getKey(UserEdgeCertificate.KEYSTORE_NODE_ALIAS,
 					keystorePassword.toCharArray());
 		} catch ( GeneralSecurityException e ) {
 			throw new CertificateException("Error opening node private key", e);
@@ -986,7 +986,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 				(chain != null && chain.length > 0 ? chain[0].getSubjectDN().getName() : null),
 				(chain != null && chain.length > 0 ? chain[0].getIssuerDN().getName() : null));
 		try {
-			keyStore.setKeyEntry(UserNodeCertificate.KEYSTORE_NODE_ALIAS, key,
+			keyStore.setKeyEntry(UserEdgeCertificate.KEYSTORE_NODE_ALIAS, key,
 					keystorePassword.toCharArray(), chain);
 		} catch ( KeyStoreException e ) {
 			throw new CertificateException("Error opening node certificate", e);
@@ -995,10 +995,10 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 		ByteArrayOutputStream byos = new ByteArrayOutputStream();
 		storeKeyStore(keyStore, keystorePassword, byos);
 		cert.setKeystoreData(byos.toByteArray());
-		cert.setStatus(UserNodeCertificateStatus.v);
+		cert.setStatus(UserEdgeCertificateStatus.v);
 	}
 
-	private UserNodeCertificate generateNodeCSR(NetworkAssociation association,
+	private UserEdgeCertificate generateNodeCSR(NetworkAssociation association,
 			final String certSubjectDN) {
 		log.debug("Generating private key and CSR for {}", certSubjectDN);
 		try {
@@ -1021,8 +1021,8 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 			ByteArrayOutputStream byos = new ByteArrayOutputStream();
 			storeKeyStore(keystore, association.getKeystorePassword(), byos);
 
-			UserNodeCertificate cert = new UserNodeCertificate();
-			cert.setStatus(UserNodeCertificateStatus.a);
+			UserEdgeCertificate cert = new UserEdgeCertificate();
+			cert.setStatus(UserEdgeCertificateStatus.a);
 			cert.setRequestId(csrID);
 			cert.setKeystoreData(byos.toByteArray());
 			return cert;
@@ -1216,11 +1216,11 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 		this.userDao = userDao;
 	}
 
-	public void setUserNodeDao(UserNodeDao userNodeDao) {
+	public void setUserNodeDao(UserEdgeDao userNodeDao) {
 		this.userNodeDao = userNodeDao;
 	}
 
-	public void setUserNodeConfirmationDao(UserNodeConfirmationDao userNodeConfirmationDao) {
+	public void setUserNodeConfirmationDao(UserEdgeConfirmationDao userNodeConfirmationDao) {
 		this.userNodeConfirmationDao = userNodeConfirmationDao;
 	}
 
@@ -1240,7 +1240,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 		this.networkIdentityBiz = networkIdentityBiz;
 	}
 
-	public void setUserNodeCertificateDao(UserNodeCertificateDao userNodeCertificateDao) {
+	public void setUserNodeCertificateDao(UserEdgeCertificateDao userNodeCertificateDao) {
 		this.userNodeCertificateDao = userNodeCertificateDao;
 	}
 
@@ -1260,7 +1260,7 @@ public class DaoRegistrationBiz implements RegistrationBiz {
 		this.emailThrottleCache = emailThrottleCache;
 	}
 
-	public void setNodePKIBiz(NodePKIBiz nodePKIBiz) {
+	public void setNodePKIBiz(EdgePKIBiz nodePKIBiz) {
 		this.nodePKIBiz = nodePKIBiz;
 	}
 

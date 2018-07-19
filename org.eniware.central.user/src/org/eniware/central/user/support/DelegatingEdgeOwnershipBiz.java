@@ -9,18 +9,18 @@ package org.eniware.central.user.support;
 import java.util.List;
 
 import org.eniware.central.security.AuthorizationException;
-import org.eniware.central.user.biz.NodeOwnershipBiz;
-import org.eniware.central.user.domain.UserNodeTransfer;
+import org.eniware.central.user.biz.EdgeOwnershipBiz;
+import org.eniware.central.user.domain.UserEdgeTransfer;
 
 /**
- * Delegating implementation of {@link NodeOwnershipBiz}, mostly to help with
+ * Delegating implementation of {@link EdgeOwnershipBiz}, mostly to help with
  * AOP.
  * 
  * @version 1.0
  */
-public class DelegatingNodeOwnershipBiz implements NodeOwnershipBiz {
+public class DelegatingEdgeOwnershipBiz implements EdgeOwnershipBiz {
 
-	private final NodeOwnershipBiz delegate;
+	private final EdgeOwnershipBiz delegate;
 
 	/**
 	 * Construct with a delegate.
@@ -28,18 +28,18 @@ public class DelegatingNodeOwnershipBiz implements NodeOwnershipBiz {
 	 * @param delegate
 	 *        The delegate.
 	 */
-	public DelegatingNodeOwnershipBiz(NodeOwnershipBiz delegate) {
+	public DelegatingEdgeOwnershipBiz(EdgeOwnershipBiz delegate) {
 		super();
 		this.delegate = delegate;
 	}
 
 	@Override
-	public UserNodeTransfer getNodeOwnershipTransfer(Long userId, Long nodeId) {
+	public UserEdgeTransfer getNodeOwnershipTransfer(Long userId, Long nodeId) {
 		return delegate.getNodeOwnershipTransfer(userId, nodeId);
 	}
 
 	@Override
-	public List<UserNodeTransfer> pendingNodeOwnershipTransfersForEmail(String email) {
+	public List<UserEdgeTransfer> pendingNodeOwnershipTransfersForEmail(String email) {
 		return delegate.pendingNodeOwnershipTransfersForEmail(email);
 	}
 
@@ -55,7 +55,7 @@ public class DelegatingNodeOwnershipBiz implements NodeOwnershipBiz {
 	}
 
 	@Override
-	public UserNodeTransfer confirmNodeOwnershipTransfer(Long userId, Long nodeId, boolean accept)
+	public UserEdgeTransfer confirmNodeOwnershipTransfer(Long userId, Long nodeId, boolean accept)
 			throws AuthorizationException {
 		return delegate.confirmNodeOwnershipTransfer(userId, nodeId, accept);
 	}

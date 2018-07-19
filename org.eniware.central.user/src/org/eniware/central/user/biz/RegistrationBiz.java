@@ -13,8 +13,8 @@ import org.eniware.central.security.AuthorizationException;
 import org.eniware.central.user.domain.NewNodeRequest;
 import org.eniware.central.user.domain.PasswordEntry;
 import org.eniware.central.user.domain.User;
-import org.eniware.central.user.domain.UserNode;
-import org.eniware.central.user.domain.UserNodeCertificateRenewal;
+import org.eniware.central.user.domain.UserEdge;
+import org.eniware.central.user.domain.UserEdgeCertificateRenewal;
 import org.eniware.domain.NetworkAssociation;
 import org.eniware.domain.NetworkAssociationDetails;
 import org.eniware.domain.NetworkCertificate;
@@ -229,7 +229,7 @@ public interface RegistrationBiz {
 	 * @throws AuthorizationException
 	 *         if the details do not match the active {@code SecurityActor}
 	 * @since 1.5
-	 * @see #renewNodeCertificate(UserNode, String)
+	 * @see #renewNodeCertificate(UserEdge, String)
 	 */
 	NetworkCertificate renewNodeCertificate(InputStream pkcs12InputStream, String keystorePassword)
 			throws IOException;
@@ -250,9 +250,9 @@ public interface RegistrationBiz {
 	 * {@code keystorePassword} was also supplied. After the certificate is
 	 * renewed, it must still be installed on the node. This method <em>may</em>
 	 * attempt to inform the node of the available certificate. If so,
-	 * {@link UserNodeCertificateRenewal#getConfirmationKey()} will provide a
+	 * {@link UserEdgeCertificateRenewal#getConfirmationKey()} will provide a
 	 * unique key that can be passed to the
-	 * {@link #getPendingNodeCertificateRenewal(UserNode, String)} method to
+	 * {@link #getPendingNodeCertificateRenewal(UserEdge, String)} method to
 	 * check the status of the node certificate install process.
 	 *
 	 * This method is meant to support renewing certificates via EniwareUser.
@@ -267,18 +267,18 @@ public interface RegistrationBiz {
 	 *         to {@link #confirmNodeAssociation(NetworkAssociation)}
 	 * @since 1.4
 	 */
-	UserNodeCertificateRenewal renewNodeCertificate(UserNode userNode, String keystorePassword);
+	UserEdgeCertificateRenewal renewNodeCertificate(UserEdge userNode, String keystorePassword);
 
 	/**
 	 * Get a certificate that has been renewed via
-	 * {@link #renewNodeCertificate(UserNode, String)}. This can be used to
+	 * {@link #renewNodeCertificate(UserEdge, String)}. This can be used to
 	 * check if the certificate has been installed by the node.
 	 * 
 	 * @param userNode
 	 *        the user node to renew the certificate for
 	 * @param confirmationKey
 	 *        a confirmation key previously returned by
-	 *        {@link RegistrationBiz#renewNodeCertificate(UserNode, String)}
+	 *        {@link RegistrationBiz#renewNodeCertificate(UserEdge, String)}
 	 * @return the network certificate renewal, or <em>null</em> if not
 	 *         available
 	 * @throws AuthorizationException
@@ -286,7 +286,7 @@ public interface RegistrationBiz {
 	 *         to {@link #confirmNodeAssociation(NetworkAssociation)}
 	 * @since 1.4
 	 */
-	UserNodeCertificateRenewal getPendingNodeCertificateRenewal(UserNode userNode,
+	UserEdgeCertificateRenewal getPendingNodeCertificateRenewal(UserEdge userNode,
 			String confirmationKey);
 
 	/**

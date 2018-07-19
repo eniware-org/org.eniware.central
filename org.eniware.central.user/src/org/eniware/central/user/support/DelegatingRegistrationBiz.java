@@ -14,8 +14,8 @@ import org.eniware.central.user.biz.RegistrationBiz;
 import org.eniware.central.user.domain.NewNodeRequest;
 import org.eniware.central.user.domain.PasswordEntry;
 import org.eniware.central.user.domain.User;
-import org.eniware.central.user.domain.UserNode;
-import org.eniware.central.user.domain.UserNodeCertificateRenewal;
+import org.eniware.central.user.domain.UserEdge;
+import org.eniware.central.user.domain.UserEdgeCertificateRenewal;
 import org.eniware.domain.NetworkAssociation;
 import org.eniware.domain.NetworkCertificate;
 import org.eniware.domain.RegistrationReceipt;
@@ -103,12 +103,12 @@ public class DelegatingRegistrationBiz implements RegistrationBiz {
 	}
 
 	@Override
-	public UserNodeCertificateRenewal renewNodeCertificate(UserNode userNode, String keystorePassword) {
+	public UserEdgeCertificateRenewal renewNodeCertificate(UserEdge userNode, String keystorePassword) {
 		return delegate.renewNodeCertificate(userNode, keystorePassword);
 	}
 
 	@Override
-	public UserNodeCertificateRenewal getPendingNodeCertificateRenewal(UserNode userNode,
+	public UserEdgeCertificateRenewal getPendingNodeCertificateRenewal(UserEdge userNode,
 			String confirmationKey) {
 		return delegate.getPendingNodeCertificateRenewal(userNode, confirmationKey);
 	}

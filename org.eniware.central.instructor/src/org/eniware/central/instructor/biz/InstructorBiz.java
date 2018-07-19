@@ -12,7 +12,7 @@ import java.util.Set;
 
 import org.eniware.central.instructor.domain.Instruction;
 import org.eniware.central.instructor.domain.InstructionState;
-import org.eniware.central.instructor.domain.NodeInstruction;
+import org.eniware.central.instructor.domain.EdgeInstruction;
 
 /**
  * API for central instruction service.
@@ -48,7 +48,7 @@ public interface InstructorBiz {
 	 * @return the instructions
 	 * @since 1.3
 	 */
-	List<NodeInstruction> getActiveInstructionsForNodes(Set<Long> nodeIds);
+	List<EdgeInstruction> getActiveInstructionsForNodes(Set<Long> nodeIds);
 
 	/**
 	 * Return any pending instructions for a specific node.
@@ -80,7 +80,7 @@ public interface InstructorBiz {
 	 * @return the instructions
 	 * @since 1.3
 	 */
-	List<NodeInstruction> getPendingInstructionsForNodes(Set<Long> nodeIds);
+	List<EdgeInstruction> getPendingInstructionsForNodes(Set<Long> nodeIds);
 
 	/**
 	 * Queue an instruction for a specific node. The instruction will be put
@@ -92,7 +92,7 @@ public interface InstructorBiz {
 	 *        the instruction
 	 * @return the persisted instruction
 	 */
-	NodeInstruction queueInstruction(Long nodeId, Instruction instruction);
+	EdgeInstruction queueInstruction(Long nodeId, Instruction instruction);
 
 	/**
 	 * Queue an instruction for multiple nodes. The instruction will be put into
@@ -105,7 +105,7 @@ public interface InstructorBiz {
 	 * @return the persisted instructions, in iteration order of {@code nodeIds}
 	 * @since 1.3
 	 */
-	List<NodeInstruction> queueInstructions(Set<Long> nodeIds, Instruction instruction);
+	List<EdgeInstruction> queueInstructions(Set<Long> nodeIds, Instruction instruction);
 
 	/**
 	 * Get a specific instruction.
@@ -114,7 +114,7 @@ public interface InstructorBiz {
 	 *        the instruction ID
 	 * @return the found instruction, or {@literal null} if not found
 	 */
-	NodeInstruction getInstruction(Long instructionId);
+	EdgeInstruction getInstruction(Long instructionId);
 
 	/**
 	 * Get a set of instructions.
@@ -124,7 +124,7 @@ public interface InstructorBiz {
 	 * @return the found instructions, or {@literal null} if not found
 	 * @since 1.3
 	 */
-	List<NodeInstruction> getInstructions(Set<Long> instructionIds);
+	List<EdgeInstruction> getInstructions(Set<Long> instructionIds);
 
 	/**
 	 * Update the state of a specific instruction.

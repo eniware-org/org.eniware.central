@@ -22,9 +22,9 @@ import org.eniware.central.security.SecurityToken;
 import org.eniware.central.security.SecurityUser;
 import org.eniware.central.security.SecurityUtils;
 import org.eniware.central.support.BasicFilterResults;
-import org.eniware.central.user.dao.UserNodeDao;
+import org.eniware.central.user.dao.UserEdgeDao;
 import org.eniware.central.user.domain.UserAuthTokenType;
-import org.eniware.central.user.domain.UserNode;
+import org.eniware.central.user.domain.UserEdge;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -37,7 +37,7 @@ import org.springframework.util.PathMatcher;
  */
 public abstract class AuthorizationSupport {
 
-	private final UserNodeDao userNodeDao;
+	private final UserEdgeDao userNodeDao;
 	private PathMatcher pathMatcher;
 
 	protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -48,18 +48,18 @@ public abstract class AuthorizationSupport {
 	 * @param userNodeDao
 	 *        the UserNodeDao to use
 	 */
-	public AuthorizationSupport(UserNodeDao userNodeDao) {
+	public AuthorizationSupport(UserEdgeDao userNodeDao) {
 		super();
 		this.userNodeDao = userNodeDao;
 	}
 
 	/**
-	 * Get the {@link UserNodeDao}.
+	 * Get the {@link UserEdgeDao}.
 	 * 
-	 * @return The {@link UserNodeDao}.
+	 * @return The {@link UserEdgeDao}.
 	 * @since 1.1
 	 */
-	protected UserNodeDao getUserNodeDao() {
+	protected UserEdgeDao getUserNodeDao() {
 		return userNodeDao;
 	}
 
@@ -74,7 +74,7 @@ public abstract class AuthorizationSupport {
 	 *         if the authorization check fails
 	 */
 	protected void requireNodeWriteAccess(Long nodeId) {
-		UserNode userNode = (nodeId == null ? null : userNodeDao.get(nodeId));
+		UserEdge userNode = (nodeId == null ? null : userNodeDao.get(nodeId));
 		if ( userNode == null ) {
 			log.warn("Access DENIED to node {}; not found", nodeId);
 			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, nodeId);
@@ -138,7 +138,7 @@ public abstract class AuthorizationSupport {
 	 *         if the authorization check fails
 	 */
 	protected void requireNodeReadAccess(Long nodeId) {
-		UserNode userNode = (nodeId == null ? null : userNodeDao.get(nodeId));
+		UserEdge userNode = (nodeId == null ? null : userNodeDao.get(nodeId));
 		if ( userNode == null ) {
 			log.warn("Access DENIED to node {}; not found", nodeId);
 			throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, nodeId);
@@ -297,7 +297,7 @@ public abstract class AuthorizationSupport {
 		// node requires authentication
 		if ( actor instanceof SecurityNode ) {
 			SecurityNode node = (SecurityNode) actor;
-			UserNode userNode = (node.getNodeId() == null ? null : userNodeDao.get(node.getNodeId()));
+			UserEdge userNode = (node.getNodeId() == null ? null : userNodeDao.get(node.getNodeId()));
 			if ( userNode == null ) {
 				log.warn("Access DENIED to user {} for node {}; not found", userId, node.getNodeId());
 				throw new AuthorizationException(AuthorizationException.Reason.UNKNOWN_OBJECT, userId);

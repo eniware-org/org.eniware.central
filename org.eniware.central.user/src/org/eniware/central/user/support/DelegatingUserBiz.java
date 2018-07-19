@@ -16,9 +16,9 @@ import org.eniware.central.user.domain.User;
 import org.eniware.central.user.domain.UserAuthToken;
 import org.eniware.central.user.domain.UserAuthTokenStatus;
 import org.eniware.central.user.domain.UserAuthTokenType;
-import org.eniware.central.user.domain.UserNode;
-import org.eniware.central.user.domain.UserNodeCertificate;
-import org.eniware.central.user.domain.UserNodeConfirmation;
+import org.eniware.central.user.domain.UserEdge;
+import org.eniware.central.user.domain.UserEdgeCertificate;
+import org.eniware.central.user.domain.UserEdgeConfirmation;
 import org.joda.time.DateTime;
 
 import org.eniware.web.security.AuthorizationV2Builder;
@@ -50,32 +50,32 @@ public class DelegatingUserBiz implements UserBiz {
 	}
 
 	@Override
-	public List<UserNode> getUserNodes(Long userId) {
+	public List<UserEdge> getUserNodes(Long userId) {
 		return delegate.getUserNodes(userId);
 	}
 
 	@Override
-	public UserNode getUserNode(Long userId, Long nodeId) throws AuthorizationException {
+	public UserEdge getUserNode(Long userId, Long nodeId) throws AuthorizationException {
 		return delegate.getUserNode(userId, nodeId);
 	}
 
 	@Override
-	public UserNode saveUserNode(UserNode userNodeEntry) throws AuthorizationException {
+	public UserEdge saveUserNode(UserEdge userNodeEntry) throws AuthorizationException {
 		return delegate.saveUserNode(userNodeEntry);
 	}
 
 	@Override
-	public List<UserNodeConfirmation> getPendingUserNodeConfirmations(Long userId) {
+	public List<UserEdgeConfirmation> getPendingUserNodeConfirmations(Long userId) {
 		return delegate.getPendingUserNodeConfirmations(userId);
 	}
 
 	@Override
-	public UserNodeConfirmation getPendingUserNodeConfirmation(Long userNodeConfirmationId) {
+	public UserEdgeConfirmation getPendingUserNodeConfirmation(Long userNodeConfirmationId) {
 		return delegate.getPendingUserNodeConfirmation(userNodeConfirmationId);
 	}
 
 	@Override
-	public UserNodeCertificate getUserNodeCertificate(Long userId, Long nodeId) {
+	public UserEdgeCertificate getUserNodeCertificate(Long userId, Long nodeId) {
 		return delegate.getUserNodeCertificate(userId, nodeId);
 	}
 
@@ -119,7 +119,7 @@ public class DelegatingUserBiz implements UserBiz {
 	}
 
 	@Override
-	public List<UserNode> getArchivedUserNodes(Long userId) throws AuthorizationException {
+	public List<UserEdge> getArchivedUserNodes(Long userId) throws AuthorizationException {
 		return delegate.getArchivedUserNodes(userId);
 	}
 

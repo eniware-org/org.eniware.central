@@ -22,7 +22,7 @@ import org.eniware.central.security.SecurityUser;
 import org.eniware.central.security.SecurityUtils;
 import org.eniware.central.user.biz.UserBiz;
 import org.eniware.central.user.domain.UserAuthTokenType;
-import org.eniware.central.user.domain.UserNode;
+import org.eniware.central.user.domain.UserEdge;
 import org.eniware.web.domain.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -276,10 +276,10 @@ public abstract class WebServiceControllerSupport {
 		} else if ( actor instanceof SecurityUser ) {
 			SecurityUser user = (SecurityUser) actor;
 			// default to all nodes for actor
-			List<UserNode> nodes = userBiz.getUserNodes(user.getUserId());
+			List<UserEdge> nodes = userBiz.getUserNodes(user.getUserId());
 			if ( nodes != null && !nodes.isEmpty() ) {
 				Long[] result = new Long[nodes.size()];
-				for ( ListIterator<UserNode> itr = nodes.listIterator(); itr.hasNext(); ) {
+				for ( ListIterator<UserEdge> itr = nodes.listIterator(); itr.hasNext(); ) {
 					result[itr.nextIndex()] = itr.next().getId();
 				}
 				return result;
@@ -289,10 +289,10 @@ public abstract class WebServiceControllerSupport {
 			Long[] result = null;
 			if ( UserAuthTokenType.User.toString().equals(token.getTokenType()) ) {
 				// default to all nodes for actor
-				List<UserNode> nodes = userBiz.getUserNodes(token.getUserId());
+				List<UserEdge> nodes = userBiz.getUserNodes(token.getUserId());
 				if ( nodes != null && !nodes.isEmpty() ) {
 					result = new Long[nodes.size()];
-					for ( ListIterator<UserNode> itr = nodes.listIterator(); itr.hasNext(); ) {
+					for ( ListIterator<UserEdge> itr = nodes.listIterator(); itr.hasNext(); ) {
 						result[itr.nextIndex()] = itr.next().getId();
 					}
 				}

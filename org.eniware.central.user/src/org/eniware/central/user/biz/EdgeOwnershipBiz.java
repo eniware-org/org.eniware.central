@@ -9,14 +9,14 @@ package org.eniware.central.user.biz;
 import java.util.List;
 
 import org.eniware.central.security.AuthorizationException;
-import org.eniware.central.user.domain.UserNodeTransfer;
+import org.eniware.central.user.domain.UserEdgeTransfer;
 
 /**
  * API for node owner tasks.
  * 
  * @version 1.0
  */
-public interface NodeOwnershipBiz {
+public interface EdgeOwnershipBiz {
 
 	/**
 	 * Get a specific transfer for a given node.
@@ -27,7 +27,7 @@ public interface NodeOwnershipBiz {
 	 *        The ID of the node to transfer.
 	 * @return The transfer, or <em>null</em> if none exists.
 	 */
-	UserNodeTransfer getNodeOwnershipTransfer(Long userId, Long nodeId);
+	UserEdgeTransfer getNodeOwnershipTransfer(Long userId, Long nodeId);
 
 	/**
 	 * Get a complete list of transfers for a given recipient.
@@ -42,7 +42,7 @@ public interface NodeOwnershipBiz {
 	 * @return A list of all ownership requests associated with the given
 	 *         recipient (never <em>null</em>).
 	 */
-	List<UserNodeTransfer> pendingNodeOwnershipTransfersForEmail(String email);
+	List<UserEdgeTransfer> pendingNodeOwnershipTransfersForEmail(String email);
 
 	/**
 	 * Request a transfer of ownership of a node.
@@ -108,7 +108,7 @@ public interface NodeOwnershipBiz {
 	 *         If the active user is not authorized to confirm (or reject) the
 	 *         ownership transfer.
 	 */
-	UserNodeTransfer confirmNodeOwnershipTransfer(Long userId, Long nodeId, boolean accept)
+	UserEdgeTransfer confirmNodeOwnershipTransfer(Long userId, Long nodeId, boolean accept)
 			throws AuthorizationException;
 
 }

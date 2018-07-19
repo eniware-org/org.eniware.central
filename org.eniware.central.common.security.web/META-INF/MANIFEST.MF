@@ -35,3 +35,4 @@ Import-Package:
  org.springframework.util;version="[4.2,5.0)",
  org.springframework.web.filter;version="[4.2,5.0)",
  org.springframework.web.util;version="[4.2,5.0)"
+Automatic-Module-Name: org.eniware.central.common.security.web

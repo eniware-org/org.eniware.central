@@ -16,7 +16,7 @@ import org.eniware.support.CertificateService;
  * 
  * @version 1.1
  */
-public interface NodePKIBiz extends CertificateService {
+public interface EdgePKIBiz extends CertificateService {
 
 	/**
 	 * Submit a certificate signing request (CSR) and obtain a unique request

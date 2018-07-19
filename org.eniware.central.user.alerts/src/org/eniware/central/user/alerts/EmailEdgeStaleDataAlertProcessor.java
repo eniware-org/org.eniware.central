@@ -31,7 +31,7 @@ import org.eniware.central.mail.support.ClasspathResourceMessageTemplateDataSour
 import org.eniware.central.user.dao.UserAlertDao;
 import org.eniware.central.user.dao.UserAlertSituationDao;
 import org.eniware.central.user.dao.UserDao;
-import org.eniware.central.user.dao.UserNodeDao;
+import org.eniware.central.user.dao.UserEdgeDao;
 import org.eniware.central.user.domain.User;
 import org.eniware.central.user.domain.UserAlert;
 import org.eniware.central.user.domain.UserAlertOptions;
@@ -39,7 +39,7 @@ import org.eniware.central.user.domain.UserAlertSituation;
 import org.eniware.central.user.domain.UserAlertSituationStatus;
 import org.eniware.central.user.domain.UserAlertStatus;
 import org.eniware.central.user.domain.UserAlertType;
-import org.eniware.central.user.domain.UserNode;
+import org.eniware.central.user.domain.UserEdge;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
@@ -55,7 +55,7 @@ import org.springframework.context.MessageSource;
  * 
  * @version 1.2
  */
-public class EmailNodeStaleDataAlertProcessor implements UserAlertBatchProcessor {
+public class EmailEdgeStaleDataAlertProcessor implements UserAlertBatchProcessor {
 
 	/** The default value for {@link #getBatchSize()}. */
 	public static final Integer DEFAULT_BATCH_SIZE = 50;
@@ -91,7 +91,7 @@ public class EmailNodeStaleDataAlertProcessor implements UserAlertBatchProcessor
 
 	private final EniwareEdgeDao eniwareEdgeDao;
 	private final UserDao userDao;
-	private final UserNodeDao userNodeDao;
+	private final UserEdgeDao userNodeDao;
 	private final UserAlertDao userAlertDao;
 	private final UserAlertSituationDao userAlertSituationDao;
 	private final GeneralNodeDatumDao generalNodeDatumDao;
@@ -121,7 +121,7 @@ public class EmailNodeStaleDataAlertProcessor implements UserAlertBatchProcessor
 	 * @param userDao
 	 *        The {@link UserDao} to use.
 	 * @param userNodeDao
-	 *        The {@link UserNodeDao} to use.
+	 *        The {@link UserEdgeDao} to use.
 	 * @param userAlertDao
 	 *        The {@link UserAlertDao} to use.
 	 * @param userAlertSituationDao
@@ -133,8 +133,8 @@ public class EmailNodeStaleDataAlertProcessor implements UserAlertBatchProcessor
 	 * @param messageSource
 	 *        The {@link MessageSource} to use.
 	 */
-	public EmailNodeStaleDataAlertProcessor(EniwareEdgeDao eniwareEdgeDao, UserDao userDao,
-			UserNodeDao userNodeDao, UserAlertDao userAlertDao,
+	public EmailEdgeStaleDataAlertProcessor(EniwareEdgeDao eniwareEdgeDao, UserDao userDao,
+			UserEdgeDao userNodeDao, UserAlertDao userAlertDao,
 			UserAlertSituationDao userAlertSituationDao, GeneralNodeDatumDao generalNodeDatumDao,
 			MailService mailService, MessageSource messageSource) {
 		super();
@@ -365,9 +365,9 @@ public class EmailNodeStaleDataAlertProcessor implements UserAlertBatchProcessor
 				userIds.add(alert.getUserId());
 
 				// need to associate all possible node IDs to this user ID
-				List<UserNode> nodes = userNodeDao
+				List<UserEdge> nodes = userNodeDao
 						.findUserNodesForUser(new User(alert.getUserId(), null));
-				for ( UserNode userNode : nodes ) {
+				for ( UserEdge userNode : nodes ) {
 					nodeCache.put(userNode.getNode().getId(), userNode.getNode());
 					nodeUserMapping.put(userNode.getNode().getId(), alert.getUserId());
 				}

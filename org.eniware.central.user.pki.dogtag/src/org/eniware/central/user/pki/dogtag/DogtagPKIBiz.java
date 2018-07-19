@@ -25,7 +25,7 @@ import org.eniware.central.security.SecurityException;
 import org.eniware.central.security.SecurityUser;
 import org.eniware.central.security.SecurityUtils;
 import org.eniware.central.support.CachedResult;
-import org.eniware.central.user.biz.NodePKIBiz;
+import org.eniware.central.user.biz.EdgePKIBiz;
 import org.eniware.support.CertificateException;
 import org.eniware.support.CertificateService;
 import org.eniware.support.XmlSupport;
@@ -42,11 +42,11 @@ import org.springframework.web.client.RestOperations;
 import org.w3c.dom.Node;
 
 /**
- * Dogtag implementation of {@link NodePKIBiz}.
+ * Dogtag implementation of {@link EdgePKIBiz}.
  * 
  * @version 1.1
  */
-public class DogtagPKIBiz implements NodePKIBiz, PingTest {
+public class DogtagPKIBiz implements EdgePKIBiz, PingTest {
 
 	public static final String DOGTAG_10_PROFILE_SUBMIT_PATH = "/ca/ee/ca/profileSubmit";
 

@@ -24,7 +24,7 @@ import org.eniware.central.datum.domain.HardwareControlDatum;
 import org.eniware.central.in.biz.DataCollectorBiz;
 import org.eniware.central.security.AuthenticatedNode;
 import org.eniware.central.security.SecurityException;
-import org.eniware.domain.NodeControlPropertyType;
+import org.eniware.domain.EdgeControlPropertyType;
 
 import org.eniware.central.RepeatableTaskException;
 import org.eniware.central.dao.EniwareEdgeDao;
@@ -309,7 +309,7 @@ public class BulkDataCollector extends AbstractDataCollector {
 		if ( type != null && value != null ) {
 			datum = new HardwareControlDatum();
 
-			NodeControlPropertyType t = NodeControlPropertyType.valueOf(type);
+			EdgeControlPropertyType t = EdgeControlPropertyType.valueOf(type);
 			switch (t) {
 				case Boolean:
 					if ( value.length() > 0

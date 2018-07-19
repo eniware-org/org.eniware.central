@@ -25,7 +25,7 @@ import org.eniware.central.security.AuthorizationException;
 import org.eniware.central.security.SecurityPolicy;
 import org.eniware.central.security.SecurityPolicyEnforcer;
 import org.eniware.central.security.SecurityUtils;
-import org.eniware.central.user.dao.UserNodeDao;
+import org.eniware.central.user.dao.UserEdgeDao;
 import org.eniware.central.user.support.AuthorizationSupport;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.AntPathMatcher;
@@ -53,7 +53,7 @@ public class DatumMetadataSecurityAspect extends AuthorizationSupport {
 	 * @param userNodeDao
 	 *        the UserNodeDao to use
 	 */
-	public DatumMetadataSecurityAspect(UserNodeDao userNodeDao) {
+	public DatumMetadataSecurityAspect(UserEdgeDao userNodeDao) {
 		super(userNodeDao);
 		AntPathMatcher antMatch = new AntPathMatcher();
 		antMatch.setCachePatterns(false);

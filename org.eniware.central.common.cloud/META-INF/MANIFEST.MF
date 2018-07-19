@@ -12,3 +12,4 @@ Import-Package:
  org.eniware.central.domain;version="1.23",
  org.eniware.domain;version="1.11",
  org.joda.time;version="2.9.0"
+Automatic-Module-Name: org.eniware.central.common.cloud

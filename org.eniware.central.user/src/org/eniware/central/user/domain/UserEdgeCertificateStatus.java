@@ -7,11 +7,11 @@
 package org.eniware.central.user.domain;
 
 /**
- * A status enum for {@link UserNodeCertificate}.
+ * A status enum for {@link UserEdgeCertificate}.
  * 
  * @version 1.0
  */
-public enum UserNodeCertificateStatus {
+public enum UserEdgeCertificateStatus {
 
 	/** The certificate has been requested, but has not been generated yet. */
 	a("Requested"),
@@ -24,7 +24,7 @@ public enum UserNodeCertificateStatus {
 
 	private final String value;
 
-	private UserNodeCertificateStatus(String value) {
+	private UserEdgeCertificateStatus(String value) {
 		this.value = value;
 	}
 

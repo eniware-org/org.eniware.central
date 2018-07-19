@@ -176,3 +176,4 @@ Import-Package:
  org.springframework.webflow.mvc.servlet;version="[2.3,3.0)",
  org.springframework.webflow.mvc.view;version="[2.3,3.0)",
  org.springframework.webflow.security;version="[2.3,3.0)"
+Automatic-Module-Name: org.eniware.central.user.web

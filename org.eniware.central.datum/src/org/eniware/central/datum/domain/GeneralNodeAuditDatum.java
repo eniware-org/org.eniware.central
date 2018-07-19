@@ -12,7 +12,7 @@ import java.util.Map;
 
 import org.eniware.central.datum.support.DatumUtils;
 import org.eniware.central.domain.Entity;
-import org.eniware.domain.GeneralNodeDatumSamples;
+import org.eniware.domain.GeneralEdgeDatumSamples;
 import org.eniware.util.JsonUtils;
 import org.eniware.util.SerializeIgnore;
 import org.joda.time.DateTime;
@@ -141,7 +141,7 @@ public class GeneralNodeAuditDatum implements Entity<GeneralNodeDatumPK>, Clonea
 	}
 
 	/**
-	 * Convenience method for {@link GeneralNodeDatumSamples#getSampleData()}.
+	 * Convenience method for {@link GeneralEdgeDatumSamples#getSampleData()}.
 	 * 
 	 * @return the sample data, or <em>null</em> if none available
 	 */
@@ -209,7 +209,7 @@ public class GeneralNodeAuditDatum implements Entity<GeneralNodeDatumPK>, Clonea
 	}
 
 	/**
-	 * Get the {@link GeneralNodeDatumSamples} object as a JSON string.
+	 * Get the {@link GeneralEdgeDatumSamples} object as a JSON string.
 	 * 
 	 * <p>
 	 * This method will ignore <em>null</em> values.

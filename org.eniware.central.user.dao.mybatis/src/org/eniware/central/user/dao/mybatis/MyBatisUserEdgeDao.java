@@ -11,20 +11,20 @@ import java.util.List;
 import java.util.Map;
 
 import org.eniware.central.dao.mybatis.support.BaseMyBatisGenericDao;
-import org.eniware.central.user.dao.UserNodeDao;
+import org.eniware.central.user.dao.UserEdgeDao;
 import org.eniware.central.user.domain.User;
-import org.eniware.central.user.domain.UserNode;
-import org.eniware.central.user.domain.UserNodePK;
-import org.eniware.central.user.domain.UserNodeTransfer;
+import org.eniware.central.user.domain.UserEdge;
+import org.eniware.central.user.domain.UserEdgePK;
+import org.eniware.central.user.domain.UserEdgeTransfer;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * MyBatis implementation of {@link UserNodeDao}.
+ * MyBatis implementation of {@link UserEdgeDao}.
  *
  * @version 1.1
  */
-public class MyBatisUserNodeDao extends BaseMyBatisGenericDao<UserNode, Long> implements UserNodeDao {
+public class MyBatisUserEdgeDao extends BaseMyBatisGenericDao<UserEdge, Long> implements UserEdgeDao {
 
 	/** The query name used for {@link #findUserNodesForUser(User)}. */
 	public static final String QUERY_FOR_USER = "find-UserNode-for-User";
@@ -52,15 +52,15 @@ public class MyBatisUserNodeDao extends BaseMyBatisGenericDao<UserNode, Long> im
 
 	/**
 	 * The callable statement used in
-	 * {@link #storeUserNodeTransfer(UserNodeTransfer)}.
+	 * {@link #storeUserNodeTransfer(UserEdgeTransfer)}.
 	 */
 	public static final String CALL_STORE_USER_NODE_TRANSFER = "store-UserNodeTransfer";
 
-	/** The query name for {@link #deleteUserNodeTrasnfer(UserNodeTransfer)}. */
+	/** The query name for {@link #deleteUserNodeTrasnfer(UserEdgeTransfer)}. */
 	public static final String DELETE_USER_NODE_TRANSFER = "delete-UserNodeTransfer";
 
 	/**
-	 * The query name used for {@link #getUserNodeTransfer(UserNodePK)}.
+	 * The query name used for {@link #getUserNodeTransfer(UserEdgePK)}.
 	 */
 	public static final String QUERY_USER_NODE_TRANSFERS_FOR_ID = "get-UserNodeTransfer-for-id";
 
@@ -73,12 +73,12 @@ public class MyBatisUserNodeDao extends BaseMyBatisGenericDao<UserNode, Long> im
 	/**
 	 * Default constructor.
 	 */
-	public MyBatisUserNodeDao() {
-		super(UserNode.class, Long.class);
+	public MyBatisUserEdgeDao() {
+		super(UserEdge.class, Long.class);
 	}
 
 	@Override
-	protected Long handleInsert(UserNode datum) {
+	protected Long handleInsert(UserEdge datum) {
 		super.handleInsert(datum);
 		// as our primary key is actually the node ID, return that
 		assert datum.getNode() != null;
@@ -87,9 +87,9 @@ public class MyBatisUserNodeDao extends BaseMyBatisGenericDao<UserNode, Long> im
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserNode> findUserNodesForUser(User user) {
-		List<UserNode> results = getSqlSession().selectList(QUERY_FOR_USER, user.getId());
-		for ( UserNode userNode : results ) {
+	public List<UserEdge> findUserNodesForUser(User user) {
+		List<UserEdge> results = getSqlSession().selectList(QUERY_FOR_USER, user.getId());
+		for ( UserEdge userNode : results ) {
 			userNode.setUser(user);
 		}
 		return results;
@@ -97,32 +97,32 @@ public class MyBatisUserNodeDao extends BaseMyBatisGenericDao<UserNode, Long> im
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserNode> findUserNodesAndCertificatesForUser(Long userId) {
+	public List<UserEdge> findUserNodesAndCertificatesForUser(Long userId) {
 		return getSqlSession().selectList(QUERY_FOR_USER_WITH_CERT, userId);
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.SUPPORTS)
-	public void storeUserNodeTransfer(UserNodeTransfer transfer) {
+	public void storeUserNodeTransfer(UserEdgeTransfer transfer) {
 		getSqlSession().update(CALL_STORE_USER_NODE_TRANSFER, transfer);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public UserNodeTransfer getUserNodeTransfer(UserNodePK pk) {
+	public UserEdgeTransfer getUserNodeTransfer(UserEdgePK pk) {
 		return getSqlSession().selectOne(QUERY_USER_NODE_TRANSFERS_FOR_ID, pk);
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.SUPPORTS)
-	public void deleteUserNodeTrasnfer(UserNodeTransfer transfer) {
+	public void deleteUserNodeTrasnfer(UserEdgeTransfer transfer) {
 		int count = getSqlSession().delete(DELETE_USER_NODE_TRANSFER, transfer.getId());
 		log.debug("Deleted {} UserNodeTransfer entities for ID {}", count, transfer.getId());
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserNodeTransfer> findUserNodeTransferRequestsForEmail(String email) {
+	public List<UserEdgeTransfer> findUserNodeTransferRequestsForEmail(String email) {
 		return getSqlSession().selectList(QUERY_USER_NODE_TRANSFERS_FOR_EMAIL, email);
 	}
 
@@ -133,7 +133,7 @@ public class MyBatisUserNodeDao extends BaseMyBatisGenericDao<UserNode, Long> im
 	 */
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<UserNode> findArchivedUserNodesForUser(Long userId) {
+	public List<UserEdge> findArchivedUserNodesForUser(Long userId) {
 		return getSqlSession().selectList(QUERY_FOR_USER_ARCHIVED, userId);
 	}
 

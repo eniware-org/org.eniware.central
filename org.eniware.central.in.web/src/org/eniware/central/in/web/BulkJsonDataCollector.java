@@ -37,7 +37,7 @@ import org.eniware.central.datum.domain.HardwareControlDatum;
 import org.eniware.central.in.biz.DataCollectorBiz;
 import org.eniware.central.instructor.biz.InstructorBiz;
 import org.eniware.central.security.AuthenticatedNode;
-import org.eniware.domain.NodeControlPropertyType;
+import org.eniware.domain.EdgeControlPropertyType;
 import org.eniware.web.domain.Response;
 
 /**
@@ -237,7 +237,7 @@ public class BulkJsonDataCollector extends AbstractDataCollector {
 		if ( type != null && value != null ) {
 			datum = new HardwareControlDatum();
 
-			NodeControlPropertyType t = NodeControlPropertyType.valueOf(type);
+			EdgeControlPropertyType t = EdgeControlPropertyType.valueOf(type);
 			switch (t) {
 				case Boolean:
 					if ( value.length() > 0 && (value.equals("1") || value.equalsIgnoreCase("yes")

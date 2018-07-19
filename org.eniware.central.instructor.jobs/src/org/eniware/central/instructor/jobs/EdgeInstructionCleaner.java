@@ -6,7 +6,7 @@
 
 package org.eniware.central.instructor.jobs;
 
-import org.eniware.central.instructor.dao.NodeInstructionDao;
+import org.eniware.central.instructor.dao.EdgeInstructionDao;
 import org.eniware.central.scheduler.JobSupport;
 import org.joda.time.DateTime;
 import org.osgi.service.event.Event;
@@ -17,12 +17,12 @@ import org.osgi.service.event.EventAdmin;
  *
  * @version 1.0
  */
-public class NodeInstructionCleaner extends JobSupport {
+public class EdgeInstructionCleaner extends JobSupport {
 
 	/** The default value for the {@code daysOlder} property. */
 	public static final int DEFAULT_DAYS_OLDER = 30;
 
-	private final NodeInstructionDao dao;
+	private final EdgeInstructionDao dao;
 	private int daysOlder = DEFAULT_DAYS_OLDER;
 
 	/**
@@ -33,14 +33,14 @@ public class NodeInstructionCleaner extends JobSupport {
 	 * @param dao
 	 *        The NodeInstructionDao to use.
 	 */
-	public NodeInstructionCleaner(EventAdmin eventAdmin, NodeInstructionDao dao) {
+	public EdgeInstructionCleaner(EventAdmin eventAdmin, EdgeInstructionDao dao) {
 		super(eventAdmin);
 		this.dao = dao;
 	}
 
 	/**
 	 * Purge completed instructions by calling
-	 * {@link NodeInstructionDao#purgeCompletedInstructions(org.joda.time.DateTime)}
+	 * {@link EdgeInstructionDao#purgeCompletedInstructions(org.joda.time.DateTime)}
 	 * .
 	 */
 	@Override

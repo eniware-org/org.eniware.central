@@ -11,7 +11,7 @@ import java.util.Map;
 
 import org.eniware.central.domain.BaseEntity;
 import org.eniware.central.support.JsonUtils;
-import org.eniware.domain.GeneralNodeDatumSamples;
+import org.eniware.domain.GeneralEdgeDatumSamples;
 import org.eniware.util.SerializeIgnore;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -134,7 +134,7 @@ public class UserAlert extends BaseEntity {
 	}
 
 	/**
-	 * Set the {@link GeneralNodeDatumSamples} instance to use.
+	 * Set the {@link GeneralEdgeDatumSamples} instance to use.
 	 * 
 	 * <p>
 	 * This will replace any value set previously via

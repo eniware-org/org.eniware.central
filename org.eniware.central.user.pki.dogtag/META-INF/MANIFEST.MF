@@ -32,3 +32,4 @@ Import-Package:
  org.springframework.util;version="[4.2,5.0)",
  org.springframework.web.client;version="[4.2,5.0)"
 Require-Bundle: org.eniware.common
+Automatic-Module-Name: org.eniware.central.user.pki.dogtag
