@@ -1,14 +1,14 @@
 /* ============================================================================
- * Sample script to create a new user and database for the SolarNet
+ * Sample script to create a new user and database for the eniwarenet
  * application. Use this as a guide only, and modify names and passwords as
  * appropriate.
  * ============================================================================
  */
-CREATE ROLE solarnet LOGIN ENCRYPTED PASSWORD 'solarnet' VALID UNTIL 'infinity';
+CREATE ROLE eniware LOGIN ENCRYPTED PASSWORD 'Eniware8' VALID UNTIL 'infinity';
 
-CREATE DATABASE solarnet WITH ENCODING='UTF8' OWNER=solarnet TEMPLATE=template0;
+CREATE DATABASE eniware WITH ENCODING='UTF8' OWNER=eniware TEMPLATE=template0;
 
-\connect solarnet
+\connect eniware
 
 -- pgpgsql is included by default in Postgres 9.x now
 -- CREATE LANGUAGE plpgsql;

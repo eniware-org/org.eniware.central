@@ -1,39 +1,39 @@
-ALTER TABLE solardatum.da_loc_meta
+ALTER TABLE eniwaredatum.da_loc_meta
   ALTER COLUMN jdata SET DATA TYPE jsonb;
 
-DROP VIEW solaragg.da_loc_datum_avail_hourly;
-DROP VIEW solaragg.da_loc_datum_avail_daily;
-DROP VIEW solaragg.da_loc_datum_avail_monthly;
+DROP VIEW eniwareagg.da_loc_datum_avail_hourly;
+DROP VIEW eniwareagg.da_loc_datum_avail_daily;
+DROP VIEW eniwareagg.da_loc_datum_avail_monthly;
 
-CREATE OR REPLACE FUNCTION solardatum.jdata_from_datum(datum solardatum.da_loc_datum)
+CREATE OR REPLACE FUNCTION eniwaredatum.jdata_from_datum(datum eniwaredatum.da_loc_datum)
 	RETURNS jsonb
 	LANGUAGE SQL IMMUTABLE AS
 $$
-	SELECT solarcommon.jdata_from_components(datum.jdata_i, datum.jdata_a, datum.jdata_s, datum.jdata_t);
+	SELECT eniwarecommon.jdata_from_components(datum.jdata_i, datum.jdata_a, datum.jdata_s, datum.jdata_t);
 $$;
 
-CREATE OR REPLACE FUNCTION solaragg.jdata_from_datum(datum solaragg.agg_loc_datum_hourly)
+CREATE OR REPLACE FUNCTION eniwareagg.jdata_from_datum(datum eniwareagg.agg_loc_datum_hourly)
 	RETURNS jsonb
 	LANGUAGE SQL IMMUTABLE AS
 $$
-	SELECT solarcommon.jdata_from_components(datum.jdata_i, datum.jdata_a, datum.jdata_s, datum.jdata_t);
+	SELECT eniwarecommon.jdata_from_components(datum.jdata_i, datum.jdata_a, datum.jdata_s, datum.jdata_t);
 $$;
 
-CREATE OR REPLACE FUNCTION solaragg.jdata_from_datum(datum solaragg.agg_loc_datum_daily)
+CREATE OR REPLACE FUNCTION eniwareagg.jdata_from_datum(datum eniwareagg.agg_loc_datum_daily)
 	RETURNS jsonb
 	LANGUAGE SQL IMMUTABLE AS
 $$
-	SELECT solarcommon.jdata_from_components(datum.jdata_i, datum.jdata_a, datum.jdata_s, datum.jdata_t);
+	SELECT eniwarecommon.jdata_from_components(datum.jdata_i, datum.jdata_a, datum.jdata_s, datum.jdata_t);
 $$;
 
-CREATE OR REPLACE FUNCTION solaragg.jdata_from_datum(datum solaragg.agg_loc_datum_monthly)
+CREATE OR REPLACE FUNCTION eniwareagg.jdata_from_datum(datum eniwareagg.agg_loc_datum_monthly)
 	RETURNS jsonb
 	LANGUAGE SQL IMMUTABLE AS
 $$
-	SELECT solarcommon.jdata_from_components(datum.jdata_i, datum.jdata_a, datum.jdata_s, datum.jdata_t);
+	SELECT eniwarecommon.jdata_from_components(datum.jdata_i, datum.jdata_a, datum.jdata_s, datum.jdata_t);
 $$;
 
-CREATE OR REPLACE FUNCTION solardatum.store_loc_meta(
+CREATE OR REPLACE FUNCTION eniwaredatum.store_loc_meta(
 	cdate timestamp with time zone,
 	loc bigint,
 	src text,
@@ -44,33 +44,33 @@ DECLARE
 	udate timestamp with time zone := now();
 	jdata_json jsonb := jdata::jsonb;
 BEGIN
-	INSERT INTO solardatum.da_loc_meta(loc_id, source_id, created, updated, jdata)
+	INSERT INTO eniwaredatum.da_loc_meta(loc_id, source_id, created, updated, jdata)
 	VALUES (loc, src, cdate, udate, jdata_json)
 	ON CONFLICT (loc_id, source_id) DO UPDATE
 	SET jdata = EXCLUDED.jdata, updated = EXCLUDED.updated;
 END;
 $BODY$;
 
-DROP FUNCTION solardatum.find_loc_most_recent(bigint, text[]);
-CREATE OR REPLACE FUNCTION solardatum.find_loc_most_recent(
+DROP FUNCTION eniwaredatum.find_loc_most_recent(bigint, text[]);
+CREATE OR REPLACE FUNCTION eniwaredatum.find_loc_most_recent(
 	loc bigint,
 	sources text[] DEFAULT NULL)
-  RETURNS SETOF solardatum.da_loc_datum_data AS
+  RETURNS SETOF eniwaredatum.da_loc_datum_data AS
 $BODY$
 BEGIN
 	IF sources IS NULL OR array_length(sources, 1) < 1 THEN
 		RETURN QUERY
-		SELECT dd.* FROM solardatum.da_loc_datum_data dd
+		SELECT dd.* FROM eniwaredatum.da_loc_datum_data dd
 		INNER JOIN (
 			-- to speed up query for sources (which can be very slow when queried directly on da_loc_datum),
 			-- we find the most recent hour time slot in agg_loc_datum_hourly, and then join to da_loc_datum with that narrow time range
 			WITH days AS (
-				SELECT max(d.ts_start) as ts_start, d.source_id FROM solaragg.agg_loc_datum_hourly d
-				INNER JOIN (SELECT solardatum.find_loc_available_sources(loc) AS source_id) AS s ON s.source_id = d.source_id
+				SELECT max(d.ts_start) as ts_start, d.source_id FROM eniwareagg.agg_loc_datum_hourly d
+				INNER JOIN (SELECT eniwaredatum.find_loc_available_sources(loc) AS source_id) AS s ON s.source_id = d.source_id
 				WHERE d.loc_id = loc
 				GROUP BY d.source_id
 			)
-			SELECT max(d.ts) as ts, d.source_id FROM solardatum.da_loc_datum d
+			SELECT max(d.ts) as ts, d.source_id FROM eniwaredatum.da_loc_datum d
 			INNER JOIN days ON days.source_id = d.source_id
 			WHERE d.loc_id = loc
 				AND d.ts >= days.ts_start
@@ -80,15 +80,15 @@ BEGIN
 		ORDER BY dd.source_id ASC;
 	ELSE
 		RETURN QUERY
-		SELECT dd.* FROM solardatum.da_loc_datum_data dd
+		SELECT dd.* FROM eniwaredatum.da_loc_datum_data dd
 		INNER JOIN (
 			WITH days AS (
-				SELECT max(d.ts_start) as ts_start, d.source_id FROM solaragg.agg_loc_datum_hourly d
+				SELECT max(d.ts_start) as ts_start, d.source_id FROM eniwareagg.agg_loc_datum_hourly d
 				INNER JOIN (SELECT unnest(sources) AS source_id) AS s ON s.source_id = d.source_id
 				WHERE d. loc_id = loc
 				GROUP BY d.source_id
 			)
-			SELECT max(d.ts) as ts, d.source_id FROM solardatum.da_loc_datum d
+			SELECT max(d.ts) as ts, d.source_id FROM eniwaredatum.da_loc_datum d
 			INNER JOIN days ON days.source_id = d.source_id
 			WHERE d.loc_id = loc
 				AND d.ts >= days.ts_start

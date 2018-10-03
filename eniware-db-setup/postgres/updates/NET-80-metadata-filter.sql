@@ -8,11 +8,11 @@
  *
  * @returns All matching source IDs.
  */
-CREATE OR REPLACE FUNCTION solardatum.find_sources_for_meta(
+CREATE OR REPLACE FUNCTION eniwaredatum.find_sources_for_meta(
     IN Edges bigint[],
     IN criteria text
   )
-  RETURNS TABLE(Edge_id solarcommon.Edge_id, source_id solarcommon.source_id)
+  RETURNS TABLE(Edge_id eniwarecommon.Edge_id, source_id eniwarecommon.source_id)
   LANGUAGE plv8 ROWS 100 STABLE AS
 $BODY$
 'use strict';
@@ -33,7 +33,7 @@ if ( !filter.rootEdge ) {
 	return;
 }
 
-stmt = plv8.prepare('SELECT Edge_id, source_id, jdata FROM solardatum.da_meta WHERE Edge_id = ANY($1)', ['bigint[]']);
+stmt = plv8.prepare('SELECT Edge_id, source_id, jdata FROM eniwaredatum.da_meta WHERE Edge_id = ANY($1)', ['bigint[]']);
 curs = stmt.cursor([Edges]);
 
 while ( rec = curs.fetch() ) {
@@ -61,11 +61,11 @@ $BODY$;
  *
  * @returns All matching source IDs.
  */
-CREATE OR REPLACE FUNCTION solardatum.find_sources_for_loc_meta(
+CREATE OR REPLACE FUNCTION eniwaredatum.find_sources_for_loc_meta(
     IN locs bigint[],
     IN criteria text
   )
-  RETURNS TABLE(loc_id solarcommon.loc_id ,source_id solarcommon.source_id)
+  RETURNS TABLE(loc_id eniwarecommon.loc_id ,source_id eniwarecommon.source_id)
   LANGUAGE plv8 ROWS 100 STABLE AS
 $BODY$
 'use strict';
@@ -86,7 +86,7 @@ if ( !filter.rootEdge ) {
 	return;
 }
 
-stmt = plv8.prepare('SELECT loc_id, source_id, jdata FROM solardatum.da_loc_meta WHERE loc_id = ANY($1)', ['bigint[]']);
+stmt = plv8.prepare('SELECT loc_id, source_id, jdata FROM eniwaredatum.da_loc_meta WHERE loc_id = ANY($1)', ['bigint[]']);
 curs = stmt.cursor([locs]);
 
 while ( rec = curs.fetch() ) {

@@ -1,29 +1,29 @@
 /**
- * Trigger that inserts a row into the <b>solaragg.agg_stale_loc_datum<b> table based on
- * a change to a <b>solardatum.da_loc_datum</b> type row. The <b>agg_kind</b> column is
+ * Trigger that inserts a row into the <b>eniwareagg.agg_stale_loc_datum<b> table based on
+ * a change to a <b>eniwaredatum.da_loc_datum</b> type row. The <b>agg_kind</b> column is
  * set to <code>h</code> and the <b>ts_start</b> column to the changed row's <b>ts</b>
  * timestamp, truncated to the <b>hour</b>. The changed row's <b>loc_id</b> and
  * <b>source_id</b> columns are copied as-is. The trigger ignores any
  * a <code>unique_violation</code> exception thrown by the <code>INSERT</code>.
  */
-CREATE OR REPLACE FUNCTION solardatum.trigger_agg_stale_loc_datum()
+CREATE OR REPLACE FUNCTION eniwaredatum.trigger_agg_stale_loc_datum()
   RETURNS trigger AS
 $BODY$
 DECLARE
 	datum_ts timestamp with time zone;
-	neighbor solardatum.da_loc_datum;
+	neighbor eniwaredatum.da_loc_datum;
 BEGIN
 	CASE TG_OP
 		WHEN 'INSERT', 'UPDATE' THEN
 			datum_ts := NEW.ts;
 			BEGIN
-				INSERT INTO solaragg.agg_stale_loc_datum (ts_start, loc_id, source_id, agg_kind)
+				INSERT INTO eniwareagg.agg_stale_loc_datum (ts_start, loc_id, source_id, agg_kind)
 				VALUES (date_trunc('hour', datum_ts), NEW.loc_id, NEW.source_id, 'h');
 			EXCEPTION WHEN unique_violation THEN
 				-- Nothing to do, just continue
 			END;
 
-			SELECT * FROM solardatum.da_loc_datum d
+			SELECT * FROM eniwaredatum.da_loc_datum d
 			WHERE d.ts < datum_ts
 				AND d.ts > datum_ts - interval '1 hour'
 				AND d.loc_id = NEW.loc_id
@@ -34,13 +34,13 @@ BEGIN
 		ELSE
 			datum_ts := OLD.ts;
 			BEGIN
-				INSERT INTO solaragg.agg_stale_loc_datum (ts_start, loc_id, source_id, agg_kind)
+				INSERT INTO eniwareagg.agg_stale_loc_datum (ts_start, loc_id, source_id, agg_kind)
 				VALUES (date_trunc('hour', datum_ts), OLD.loc_id, OLD.source_id, 'h');
 			EXCEPTION WHEN unique_violation THEN
 				-- Nothing to do, just continue
 			END;
 
-			SELECT * FROM solardatum.da_loc_datum d
+			SELECT * FROM eniwaredatum.da_loc_datum d
 			WHERE d.ts < datum_ts
 				AND d.ts > datum_ts - interval '1 hour'
 				AND d.loc_id = OLD.loc_id
@@ -52,7 +52,7 @@ BEGIN
 	IF FOUND AND neighbor.ts < date_trunc('hour', datum_ts) THEN
 		-- the previous record for this source falls on the previous hour; we have to mark that hour as stale as well
 		BEGIN
-			INSERT INTO solaragg.agg_stale_loc_datum (ts_start, loc_id, source_id, agg_kind)
+			INSERT INTO eniwareagg.agg_stale_loc_datum (ts_start, loc_id, source_id, agg_kind)
 			VALUES (date_trunc('hour', neighbor.ts), neighbor.loc_id, neighbor.source_id, 'h');
 		EXCEPTION WHEN unique_violation THEN
 			-- Nothing to do, just continue
@@ -60,7 +60,7 @@ BEGIN
 	END IF;
 	CASE TG_OP
 		WHEN 'INSERT', 'UPDATE' THEN
-			SELECT * FROM solardatum.da_loc_datum d
+			SELECT * FROM eniwaredatum.da_loc_datum d
 			WHERE d.ts > datum_ts
 				AND d.ts < datum_ts + interval '1 hour'
 				AND d.loc_id = NEW.loc_id
@@ -69,7 +69,7 @@ BEGIN
 			LIMIT 1
 			INTO neighbor;
 		ELSE
-			SELECT * FROM solardatum.da_loc_datum d
+			SELECT * FROM eniwaredatum.da_loc_datum d
 			WHERE d.ts > datum_ts
 				AND d.ts < datum_ts + interval '1 hour'
 				AND d.loc_id = OLD.loc_id
@@ -81,7 +81,7 @@ BEGIN
 	IF FOUND AND neighbor.ts > date_trunc('hour', datum_ts) THEN
 		-- the next record for this source falls on the next hour; we have to mark that hour as stale as well
 		BEGIN
-			INSERT INTO solaragg.agg_stale_loc_datum (ts_start, loc_id, source_id, agg_kind)
+			INSERT INTO eniwareagg.agg_stale_loc_datum (ts_start, loc_id, source_id, agg_kind)
 			VALUES (date_trunc('hour', neighbor.ts), neighbor.loc_id, neighbor.source_id, 'h');
 		EXCEPTION WHEN unique_violation THEN
 			-- Nothing to do, just continue
@@ -109,7 +109,7 @@ END;$BODY$
  * @param tolerance			the number of milliseconds tolerance before/after span to
  *                          look for adjacent rows
  */
-CREATE OR REPLACE FUNCTION solaragg.find_loc_datum_for_time_span(
+CREATE OR REPLACE FUNCTION eniwareagg.find_loc_datum_for_time_span(
     IN loc bigint,
     IN sources text[],
     IN start_ts timestamp with time zone,
@@ -127,8 +127,8 @@ SELECT sub.ts, sub.source_id, sub.jdata FROM (
 				THEN TRUE
 			ELSE FALSE
 		END AS outside,
-		solardatum.jdata_from_datum(d) as jdata
-	FROM solardatum.da_loc_datum d
+		eniwaredatum.jdata_from_datum(d) as jdata
+	FROM eniwaredatum.da_loc_datum d
 	WHERE d.loc_id = loc
 		AND d.source_id = ANY(sources)
 		AND d.ts >= start_ts - tolerance
@@ -157,7 +157,7 @@ $BODY$
  * @param tolerance			the number of milliseconds tolerance before/after time slots to
  *                          look for adjacent rows
  */
-CREATE OR REPLACE FUNCTION solaragg.calc_loc_datum_time_slots(
+CREATE OR REPLACE FUNCTION eniwareagg.calc_loc_datum_time_slots(
 	IN loc bigint,
 	IN sources text[],
 	IN start_ts timestamp with time zone,
@@ -185,7 +185,7 @@ var spanMs = intervalMs(span),
 
 if ( slotMode ) {
 	stmt = plv8.prepare(
-		'SELECT ts, solaragg.minute_time_slot(ts, '+slotsecs+') as ts_start, source_id, jdata FROM solaragg.find_loc_datum_for_time_span($1, $2, $3, $4, $5)',
+		'SELECT ts, eniwareagg.minute_time_slot(ts, '+slotsecs+') as ts_start, source_id, jdata FROM eniwareagg.find_loc_datum_for_time_span($1, $2, $3, $4, $5)',
 		['bigint', 'text[]', 'timestamp with time zone', 'interval', 'interval']);
 	helper = slotAggregator({
 		startTs : start_ts.getTime(),
@@ -194,7 +194,7 @@ if ( slotMode ) {
 	});
 } else {
 	stmt = plv8.prepare(
-		'SELECT ts, source_id, jdata FROM solaragg.find_loc_datum_for_time_span($1, $2, $3, $4, $5)',
+		'SELECT ts, source_id, jdata FROM eniwareagg.find_loc_datum_for_time_span($1, $2, $3, $4, $5)',
 		['bigint', 'text[]', 'timestamp with time zone', 'interval', 'interval']);
 	helper = aggregator({
 		startTs : start_ts.getTime(),
@@ -235,7 +235,7 @@ $BODY$ STABLE;
  * @param end_ts			the end timestamp
  * @param slotsecs			the number of seconds per time slot, e.g. 600 == 10 minutes.
  */
-CREATE OR REPLACE FUNCTION solaragg.find_agg_loc_datum_minute(
+CREATE OR REPLACE FUNCTION eniwareagg.find_agg_loc_datum_minute(
 	IN loc bigint,
 	IN source text[],
 	IN start_ts timestamp with time zone,
@@ -257,15 +257,15 @@ SELECT
 	d.ts_start AT TIME ZONE COALESCE(l.time_zone, 'UTC') AS local_date,
 	d.source_id,
 	d.jdata
- FROM solaragg.calc_loc_datum_time_slots(
+ FROM eniwareagg.calc_loc_datum_time_slots(
 	loc,
 	source,
-	solaragg.minute_time_slot(start_ts, solaragg.slot_seconds(slotsecs)),
-	(end_ts - solaragg.minute_time_slot(start_ts, solaragg.slot_seconds(slotsecs))),
-	solaragg.slot_seconds(slotsecs),
+	eniwareagg.minute_time_slot(start_ts, eniwareagg.slot_seconds(slotsecs)),
+	(end_ts - eniwareagg.minute_time_slot(start_ts, eniwareagg.slot_seconds(slotsecs))),
+	eniwareagg.slot_seconds(slotsecs),
 	tolerance
 ) AS d
-LEFT OUTER JOIN solarnet.sn_loc l ON l.id = loc
+LEFT OUTER JOIN eniwarenet.sn_loc l ON l.id = loc
 $BODY$;
 
 
@@ -280,7 +280,7 @@ $BODY$;
  * @param start_ts			the start timestamp (defaults to SN epoch)
  * @param end_ts			the end timestamp (defaults to CURRENT_TIMESTAMP)
  */
-CREATE OR REPLACE FUNCTION solaragg.find_agg_loc_datum_hod(
+CREATE OR REPLACE FUNCTION eniwareagg.find_agg_loc_datum_hod(
 	IN loc bigint,
 	IN source text[],
 	IN path text[],
@@ -301,9 +301,9 @@ SELECT
 	(CAST('2001-01-01 ' || to_char(EXTRACT(hour FROM d.local_date), '00') || ':00' AS TIMESTAMP)) AS local_date,
 	d.source_id,
 	('{"' || path[1] || '":{"' || path[2] || '":'
-		|| ROUND(AVG(CAST(jsonb_extract_path_text(solaragg.jdata_from_datum(d), VARIADIC path) AS double precision)) * 1000) / 1000
+		|| ROUND(AVG(CAST(jsonb_extract_path_text(eniwareagg.jdata_from_datum(d), VARIADIC path) AS double precision)) * 1000) / 1000
 		|| '}}')::jsonb as jdata
-FROM solaragg.agg_loc_datum_hourly d
+FROM eniwareagg.agg_loc_datum_hourly d
 WHERE
 	d.loc_id = loc
 	AND d.source_id = ANY(source)
@@ -326,7 +326,7 @@ $BODY$;
  * @param start_ts			the start timestamp (defaults to SN epoch)
  * @param end_ts			the end timestamp (defaults to CURRENT_TIMESTAMP)
  */
-CREATE OR REPLACE FUNCTION solaragg.find_agg_loc_datum_seasonal_hod(
+CREATE OR REPLACE FUNCTION eniwareagg.find_agg_loc_datum_seasonal_hod(
 	IN loc bigint,
 	IN source text[],
 	IN path text[],
@@ -343,22 +343,22 @@ CREATE OR REPLACE FUNCTION solaragg.find_agg_loc_datum_seasonal_hod(
 $BODY$
 SELECT
 	loc AS loc_id,
-	(solarnet.get_season_monday_start(CAST(d.local_date AS DATE))
+	(eniwarenet.get_season_monday_start(CAST(d.local_date AS DATE))
 		+ CAST(EXTRACT(hour FROM d.local_date) || ' hour' AS INTERVAL)) AT TIME ZONE 'UTC' AS ts_start,
-	solarnet.get_season_monday_start(CAST(d.local_date AS DATE))
+	eniwarenet.get_season_monday_start(CAST(d.local_date AS DATE))
 		+ CAST(EXTRACT(hour FROM d.local_date) || ' hour' AS INTERVAL) AS local_date,
 	d.source_id,
 	('{"' || path[1] || '":{"' || path[2] || '":'
-		|| ROUND(AVG(CAST(jsonb_extract_path_text(solaragg.jdata_from_datum(d), VARIADIC path) AS double precision)) * 1000) / 1000
+		|| ROUND(AVG(CAST(jsonb_extract_path_text(eniwareagg.jdata_from_datum(d), VARIADIC path) AS double precision)) * 1000) / 1000
 		|| '}}')::jsonb as jdata
-FROM solaragg.agg_loc_datum_hourly d
+FROM eniwareagg.agg_loc_datum_hourly d
 WHERE
 	d.loc_id = loc
 	AND d.source_id = ANY(source)
 	AND d.ts_start >= start_ts
 	AND d.ts_start < end_ts
 GROUP BY
-	solarnet.get_season_monday_start(CAST(d.local_date AS date)),
+	eniwarenet.get_season_monday_start(CAST(d.local_date AS date)),
 	EXTRACT(hour FROM d.local_date),
 	d.source_id
 $BODY$;
@@ -375,7 +375,7 @@ $BODY$;
  * @param start_ts			the start timestamp (defaults to SN epoch)
  * @param end_ts			the end timestamp (defaults to CURRENT_TIMESTAMP)
  */
-CREATE OR REPLACE FUNCTION solaragg.find_agg_loc_datum_dow(
+CREATE OR REPLACE FUNCTION eniwareagg.find_agg_loc_datum_dow(
 	IN loc bigint,
 	IN source text[],
 	IN path text[],
@@ -396,9 +396,9 @@ SELECT
 	(DATE '2001-01-01' + CAST((EXTRACT(isodow FROM d.local_date) - 1) || ' day' AS INTERVAL)) AS local_date,
 	d.source_id,
 	('{"' || path[1] || '":{"' || path[2] || '":'
-		|| ROUND(AVG(CAST(jsonb_extract_path_text(solaragg.jdata_from_datum(d), VARIADIC path) AS double precision)) * 1000) / 1000
+		|| ROUND(AVG(CAST(jsonb_extract_path_text(eniwareagg.jdata_from_datum(d), VARIADIC path) AS double precision)) * 1000) / 1000
 		|| '}}')::jsonb as jdata
-FROM solaragg.agg_loc_datum_daily d
+FROM eniwareagg.agg_loc_datum_daily d
 WHERE
 	d.loc_id = loc
 	AND d.source_id = ANY(source)
@@ -421,7 +421,7 @@ $BODY$;
  * @param start_ts			the start timestamp (defaults to SN epoch)
  * @param end_ts			the end timestamp (defaults to CURRENT_TIMESTAMP)
  */
-CREATE OR REPLACE FUNCTION solaragg.find_agg_loc_datum_seasonal_dow(
+CREATE OR REPLACE FUNCTION eniwareagg.find_agg_loc_datum_seasonal_dow(
 	IN loc bigint,
 	IN source text[],
 	IN path text[],
@@ -438,33 +438,33 @@ CREATE OR REPLACE FUNCTION solaragg.find_agg_loc_datum_seasonal_dow(
 $BODY$
 SELECT
 	loc AS loc_id,
-	(solarnet.get_season_monday_start(d.local_date)
+	(eniwarenet.get_season_monday_start(d.local_date)
 		+ CAST((EXTRACT(isodow FROM d.local_date) - 1) || ' day' AS INTERVAL)) AT TIME ZONE 'UTC' AS ts_start,
-	(solarnet.get_season_monday_start(d.local_date)
+	(eniwarenet.get_season_monday_start(d.local_date)
 		+ CAST((EXTRACT(isodow FROM d.local_date) - 1) || ' day' AS INTERVAL)) AS local_date,
 	d.source_id,
 	('{"' || path[1] || '":{"' || path[2] || '":'
-		|| ROUND(AVG(CAST(jsonb_extract_path_text(solaragg.jdata_from_datum(d), VARIADIC path) AS double precision)) * 1000) / 1000
+		|| ROUND(AVG(CAST(jsonb_extract_path_text(eniwareagg.jdata_from_datum(d), VARIADIC path) AS double precision)) * 1000) / 1000
 		|| '}}')::jsonb as jdata
-FROM solaragg.agg_loc_datum_daily d
+FROM eniwareagg.agg_loc_datum_daily d
 WHERE
 	d.loc_id = loc
 	AND d.source_id = ANY(source)
 	AND d.ts_start >= start_ts
 	AND d.ts_start < end_ts
 GROUP BY
-	solarnet.get_season_monday_start(CAST(d.local_date AS date)),
+	eniwarenet.get_season_monday_start(CAST(d.local_date AS date)),
 	EXTRACT(isodow FROM d.local_date),
 	d.source_id
 $BODY$;
 
 
-CREATE OR REPLACE FUNCTION solaragg.process_one_agg_stale_loc_datum(kind char)
+CREATE OR REPLACE FUNCTION eniwareagg.process_one_agg_stale_loc_datum(kind char)
   RETURNS integer LANGUAGE plpgsql VOLATILE AS
 $BODY$
 DECLARE
 	stale record;
-	curs CURSOR FOR SELECT * FROM solaragg.agg_stale_loc_datum
+	curs CURSOR FOR SELECT * FROM eniwareagg.agg_stale_loc_datum
 			WHERE agg_kind = kind
 			ORDER BY ts_start ASC, created ASC, loc_id ASC, source_id ASC
 			LIMIT 1
@@ -488,7 +488,7 @@ BEGIN
 
 	IF FOUND THEN
 		-- get the loc TZ for local date/time
-		SELECT l.time_zone FROM solarnet.sn_loc l
+		SELECT l.time_zone FROM eniwarenet.sn_loc l
 		WHERE l.id = stale.loc_id
 		INTO loc_tz;
 
@@ -497,23 +497,23 @@ BEGIN
 			loc_tz := 'UTC';
 		END IF;
 
-		SELECT jdata FROM solaragg.calc_loc_datum_time_slots(stale.loc_id, ARRAY[stale.source_id::text],
+		SELECT jdata FROM eniwareagg.calc_loc_datum_time_slots(stale.loc_id, ARRAY[stale.source_id::text],
 			stale.ts_start, agg_span, 0, interval '1 hour')
 		INTO agg_json;
 		IF agg_json IS NULL THEN
 			CASE kind
 				WHEN 'h' THEN
-					DELETE FROM solaragg.agg_loc_datum_hourly
+					DELETE FROM eniwareagg.agg_loc_datum_hourly
 					WHERE loc_id = stale.loc_id
 						AND source_id = stale.source_id
 						AND ts_start = stale.ts_start;
 				WHEN 'd' THEN
-					DELETE FROM solaragg.agg_loc_datum_daily
+					DELETE FROM eniwareagg.agg_loc_datum_daily
 					WHERE loc_id = stale.loc_id
 						AND source_id = stale.source_id
 						AND ts_start = stale.ts_start;
 				ELSE
-					DELETE FROM solaragg.agg_loc_datum_monthly
+					DELETE FROM eniwareagg.agg_loc_datum_monthly
 					WHERE loc_id = stale.loc_id
 						AND source_id = stale.source_id
 						AND ts_start = stale.ts_start;
@@ -521,7 +521,7 @@ BEGIN
 		ELSE
 			CASE kind
 				WHEN 'h' THEN
-					INSERT INTO solaragg.agg_loc_datum_hourly (
+					INSERT INTO eniwareagg.agg_loc_datum_hourly (
 						ts_start, local_date, loc_id, source_id,
 						jdata_i, jdata_a, jdata_s, jdata_t)
 					VALUES (
@@ -532,7 +532,7 @@ BEGIN
 						agg_json->'i',
 						agg_json->'a',
 						agg_json->'s',
-						solarcommon.json_array_to_text_array(agg_json->'t')
+						eniwarecommon.json_array_to_text_array(agg_json->'t')
 					)
 					ON CONFLICT (loc_id, ts_start, source_id) DO UPDATE
 					SET jdata_i = EXCLUDED.jdata_i,
@@ -540,7 +540,7 @@ BEGIN
 						jdata_s = EXCLUDED.jdata_s,
 						jdata_t = EXCLUDED.jdata_t;
 				WHEN 'd' THEN
-					INSERT INTO solaragg.agg_loc_datum_daily (
+					INSERT INTO eniwareagg.agg_loc_datum_daily (
 						ts_start, local_date, loc_id, source_id,
 						jdata_i, jdata_a, jdata_s, jdata_t)
 					VALUES (
@@ -551,7 +551,7 @@ BEGIN
 						agg_json->'i',
 						agg_json->'a',
 						agg_json->'s',
-						solarcommon.json_array_to_text_array(agg_json->'t')
+						eniwarecommon.json_array_to_text_array(agg_json->'t')
 					)
 					ON CONFLICT (loc_id, ts_start, source_id) DO UPDATE
 					SET jdata_i = EXCLUDED.jdata_i,
@@ -559,7 +559,7 @@ BEGIN
 						jdata_s = EXCLUDED.jdata_s,
 						jdata_t = EXCLUDED.jdata_t;
 				ELSE
-					INSERT INTO solaragg.agg_loc_datum_monthly (
+					INSERT INTO eniwareagg.agg_loc_datum_monthly (
 						ts_start, local_date, loc_id, source_id,
 						jdata_i, jdata_a, jdata_s, jdata_t)
 					VALUES (
@@ -570,7 +570,7 @@ BEGIN
 						agg_json->'i',
 						agg_json->'a',
 						agg_json->'s',
-						solarcommon.json_array_to_text_array(agg_json->'t')
+						eniwarecommon.json_array_to_text_array(agg_json->'t')
 					)
 					ON CONFLICT (loc_id, ts_start, source_id) DO UPDATE
 					SET jdata_i = EXCLUDED.jdata_i,
@@ -579,17 +579,17 @@ BEGIN
 						jdata_t = EXCLUDED.jdata_t;
 			END CASE;
 		END IF;
-		DELETE FROM solaragg.agg_stale_loc_datum WHERE CURRENT OF curs;
+		DELETE FROM eniwareagg.agg_stale_loc_datum WHERE CURRENT OF curs;
 		result := 1;
 
 		-- now make sure we recalculate the next aggregate level by submitting a stale record for the next level
 		CASE kind
 			WHEN 'h' THEN
-				INSERT INTO solaragg.agg_stale_loc_datum (ts_start, loc_id, source_id, agg_kind)
+				INSERT INTO eniwareagg.agg_stale_loc_datum (ts_start, loc_id, source_id, agg_kind)
 				VALUES (date_trunc('day', stale.ts_start at time zone loc_tz) at time zone loc_tz, stale.loc_id, stale.source_id, 'd')
 				ON CONFLICT (agg_kind, loc_id, ts_start, source_id) DO NOTHING;
 			WHEN 'd' THEN
-				INSERT INTO solaragg.agg_stale_loc_datum (ts_start, loc_id, source_id, agg_kind)
+				INSERT INTO eniwareagg.agg_stale_loc_datum (ts_start, loc_id, source_id, agg_kind)
 				VALUES (date_trunc('month', stale.ts_start at time zone loc_tz) at time zone loc_tz, stale.loc_id, stale.source_id, 'm')
 				ON CONFLICT (agg_kind, loc_id, ts_start, source_id) DO NOTHING;
 			ELSE
@@ -601,7 +601,7 @@ BEGIN
 END;
 $BODY$;
 
-CREATE OR REPLACE FUNCTION solaragg.process_agg_stale_loc_datum(kind char, max integer)
+CREATE OR REPLACE FUNCTION eniwareagg.process_agg_stale_loc_datum(kind char, max integer)
   RETURNS INTEGER AS
 $BODY$
 DECLARE
@@ -612,7 +612,7 @@ BEGIN
 		IF one_result < 1 OR (max > -1 AND total_result >= max) THEN
 			EXIT;
 		END IF;
-		SELECT solaragg.process_one_agg_stale_loc_datum(kind) INTO one_result;
+		SELECT eniwareagg.process_one_agg_stale_loc_datum(kind) INTO one_result;
 		total_result := total_result + one_result;
 	END LOOP;
 	RETURN total_result;
@@ -631,7 +631,7 @@ END;$BODY$
  * @param sources An array of source IDs to query for.
  * @param end_ts An optional date to limit the results to. If not provided the current date is used.
  */
-CREATE OR REPLACE FUNCTION solaragg.find_running_loc_datum(
+CREATE OR REPLACE FUNCTION eniwareagg.find_running_loc_datum(
 	IN loc bigint,
 	IN sources text[],
 	IN end_ts timestamp with time zone DEFAULT CURRENT_TIMESTAMP)
@@ -647,34 +647,34 @@ STABLE AS
 $BODY$
 	WITH loctz AS (
 		SELECT l.id as loc_id, COALESCE(l.time_zone, 'UTC') AS tz
-		FROM solarnet.sn_loc l
+		FROM eniwarenet.sn_loc l
 		WHERE l.id = loc
 		UNION ALL
 		SELECT loc::bigint AS loc_id, 'UTC'::character varying AS tz
-		WHERE NOT EXISTS (SELECT id AS loc_id FROM solarnet.sn_loc WHERE id = loc)
+		WHERE NOT EXISTS (SELECT id AS loc_id FROM eniwarenet.sn_loc WHERE id = loc)
 	)
-	SELECT d.ts_start, d.local_date, d.loc_id, d.source_id, solaragg.jdata_from_datum(d), CAST(extract(epoch from (local_date + interval '1 month') - local_date) / 3600 AS integer) AS weight
-	FROM solaragg.agg_loc_datum_monthly d
+	SELECT d.ts_start, d.local_date, d.loc_id, d.source_id, eniwareagg.jdata_from_datum(d), CAST(extract(epoch from (local_date + interval '1 month') - local_date) / 3600 AS integer) AS weight
+	FROM eniwareagg.agg_loc_datum_monthly d
 	INNER JOIN loctz ON loctz.loc_id = d.loc_id
 	WHERE d.ts_start < date_trunc('month', end_ts AT TIME ZONE loctz.tz) AT TIME ZONE loctz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
-	SELECT d.ts_start, d.local_date, d.loc_id, d.source_id, solaragg.jdata_from_datum(d), 24::integer as weight
-	FROM solaragg.agg_loc_datum_daily d
+	SELECT d.ts_start, d.local_date, d.loc_id, d.source_id, eniwareagg.jdata_from_datum(d), 24::integer as weight
+	FROM eniwareagg.agg_loc_datum_daily d
 	INNER JOIN loctz ON loctz.loc_id = d.loc_id
 	WHERE ts_start < date_trunc('day', end_ts AT TIME ZONE loctz.tz) AT TIME ZONE loctz.tz
 		AND d.ts_start >= date_trunc('month', end_ts AT TIME ZONE loctz.tz) AT TIME ZONE loctz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
-	SELECT d.ts_start, d.local_date, d.loc_id, d.source_id, solaragg.jdata_from_datum(d), 1::INTEGER as weight
-	FROM solaragg.agg_loc_datum_hourly d
+	SELECT d.ts_start, d.local_date, d.loc_id, d.source_id, eniwareagg.jdata_from_datum(d), 1::INTEGER as weight
+	FROM eniwareagg.agg_loc_datum_hourly d
 	INNER JOIN loctz ON loctz.loc_id = d.loc_id
 	WHERE d.ts_start < date_trunc('hour', end_ts AT TIME ZONE loctz.tz) AT TIME ZONE loctz.tz
 		AND d.ts_start >= date_trunc('day', end_ts AT TIME ZONE loctz.tz) AT TIME ZONE loctz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
 	SELECT ts_start, ts_start at time zone loctz.tz AS local_date, loctz.loc_id, source_id, jdata, 1::integer as weight
-	FROM solaragg.calc_loc_datum_time_slots(
+	FROM eniwareagg.calc_loc_datum_time_slots(
 		loc,
 		sources,
 		date_trunc('hour', end_ts),
@@ -694,7 +694,7 @@ $BODY$;
  * @param sources An array of source IDs to query for.
  * @param end_ts  An optional date to limit the results to. If not provided the current date is used.
  */
-CREATE OR REPLACE FUNCTION solaragg.calc_running_loc_datum_total(
+CREATE OR REPLACE FUNCTION eniwareagg.calc_running_loc_datum_total(
 	IN loc bigint,
 	IN sources text[],
 	IN end_ts timestamp with time zone DEFAULT CURRENT_TIMESTAMP)
@@ -710,14 +710,14 @@ ROWS 10 AS
 $BODY$
 	WITH loctz AS (
 		SELECT l.id as loc_id, COALESCE(l.time_zone, 'UTC') AS tz
-		FROM solarnet.sn_loc l
+		FROM eniwarenet.sn_loc l
 		WHERE l.id = loc
 		UNION ALL
 		SELECT loc::bigint AS loc_id, 'UTC'::character varying AS tz
-		WHERE NOT EXISTS (SELECT id AS loc_id FROM solarnet.sn_loc WHERE id = loc)
+		WHERE NOT EXISTS (SELECT id AS loc_id FROM eniwarenet.sn_loc WHERE id = loc)
 	)
 	SELECT end_ts, end_ts AT TIME ZONE loctz.tz AS local_date, loc, r.source_id, r.jdata
-	FROM solaragg.calc_running_total(
+	FROM eniwareagg.calc_running_total(
 		loc,
 		sources,
 		end_ts,

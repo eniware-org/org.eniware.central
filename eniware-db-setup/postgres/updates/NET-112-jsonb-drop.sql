@@ -1,24 +1,24 @@
-ALTER TABLE solardatum.da_datum
+ALTER TABLE eniwaredatum.da_datum
 	DROP COLUMN jdata;
 
-ALTER TABLE solaragg.agg_datum_hourly
+ALTER TABLE eniwareagg.agg_datum_hourly
 	DROP COLUMN jdata;
 
-ALTER TABLE solaragg.agg_datum_daily
+ALTER TABLE eniwareagg.agg_datum_daily
 	DROP COLUMN jdata;
 
-ALTER TABLE solaragg.agg_datum_monthly
+ALTER TABLE eniwareagg.agg_datum_monthly
 	DROP COLUMN jdata;
 
 
-ALTER TABLE solardatum.da_loc_datum
+ALTER TABLE eniwaredatum.da_loc_datum
 	DROP COLUMN jdata;
 
-ALTER TABLE solaragg.agg_loc_datum_hourly
+ALTER TABLE eniwareagg.agg_loc_datum_hourly
 	DROP COLUMN jdata;
 
-ALTER TABLE solaragg.agg_loc_datum_daily
+ALTER TABLE eniwareagg.agg_loc_datum_daily
 	DROP COLUMN jdata;
 
-ALTER TABLE solaragg.agg_loc_datum_monthly
+ALTER TABLE eniwareagg.agg_loc_datum_monthly
 	DROP COLUMN jdata;

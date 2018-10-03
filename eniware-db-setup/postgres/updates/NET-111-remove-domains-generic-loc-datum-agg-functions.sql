@@ -1,5 +1,5 @@
-DROP FUNCTION solaragg.find_agg_loc_datum_minute(bigint,text[],timestamptz,timestamptz,integer,interval);
-CREATE OR REPLACE FUNCTION solaragg.find_agg_loc_datum_minute(
+DROP FUNCTION eniwareagg.find_agg_loc_datum_minute(bigint,text[],timestamptz,timestamptz,integer,interval);
+CREATE OR REPLACE FUNCTION eniwareagg.find_agg_loc_datum_minute(
 	IN loc bigint,
 	IN source text[],
 	IN start_ts timestamp with time zone,
@@ -21,19 +21,19 @@ SELECT
 	d.ts_start AT TIME ZONE COALESCE(l.time_zone, 'UTC') AS local_date,
 	d.source_id,
 	d.jdata
- FROM solaragg.calc_loc_datum_time_slots(
+ FROM eniwareagg.calc_loc_datum_time_slots(
 	loc,
 	source,
-	solaragg.minute_time_slot(start_ts, solaragg.slot_seconds(slotsecs)),
-	(end_ts - solaragg.minute_time_slot(start_ts, solaragg.slot_seconds(slotsecs))),
-	solaragg.slot_seconds(slotsecs),
+	eniwareagg.minute_time_slot(start_ts, eniwareagg.slot_seconds(slotsecs)),
+	(end_ts - eniwareagg.minute_time_slot(start_ts, eniwareagg.slot_seconds(slotsecs))),
+	eniwareagg.slot_seconds(slotsecs),
 	tolerance
 ) AS d
-LEFT OUTER JOIN solarnet.sn_loc l ON l.id = loc
+LEFT OUTER JOIN eniwarenet.sn_loc l ON l.id = loc
 $BODY$;
 
-DROP FUNCTION solaragg.find_agg_loc_datum_hod(bigint,text[],text[],timestamptz,timestamptz);
-CREATE OR REPLACE FUNCTION solaragg.find_agg_loc_datum_hod(
+DROP FUNCTION eniwareagg.find_agg_loc_datum_hod(bigint,text[],text[],timestamptz,timestamptz);
+CREATE OR REPLACE FUNCTION eniwareagg.find_agg_loc_datum_hod(
 	IN loc bigint,
 	IN source text[],
 	IN path text[],
@@ -56,7 +56,7 @@ SELECT
 	('{"' || path[1] || '":{"' || path[2] || '":'
 		|| ROUND(AVG(CAST(json_extract_path_text(jdata, VARIADIC path) AS double precision)) * 1000) / 1000
 		|| '}}')::json as jdata
-FROM solaragg.agg_loc_datum_hourly d
+FROM eniwareagg.agg_loc_datum_hourly d
 WHERE
 	d.loc_id = loc
 	AND d.source_id = ANY(source)
@@ -67,8 +67,8 @@ GROUP BY
 	d.source_id
 $BODY$;
 
-DROP FUNCTION solaragg.find_agg_loc_datum_seasonal_hod(bigint,text[],text[],timestamptz,timestamptz);
-CREATE OR REPLACE FUNCTION solaragg.find_agg_loc_datum_seasonal_hod(
+DROP FUNCTION eniwareagg.find_agg_loc_datum_seasonal_hod(bigint,text[],text[],timestamptz,timestamptz);
+CREATE OR REPLACE FUNCTION eniwareagg.find_agg_loc_datum_seasonal_hod(
 	IN loc bigint,
 	IN source text[],
 	IN path text[],
@@ -85,28 +85,28 @@ CREATE OR REPLACE FUNCTION solaragg.find_agg_loc_datum_seasonal_hod(
 $BODY$
 SELECT
 	loc AS loc_id,
-	(solarnet.get_season_monday_start(CAST(d.local_date AS DATE))
+	(eniwarenet.get_season_monday_start(CAST(d.local_date AS DATE))
 		+ CAST(EXTRACT(hour FROM d.local_date) || ' hour' AS INTERVAL)) AT TIME ZONE 'UTC' AS ts_start,
-	solarnet.get_season_monday_start(CAST(d.local_date AS DATE))
+	eniwarenet.get_season_monday_start(CAST(d.local_date AS DATE))
 		+ CAST(EXTRACT(hour FROM d.local_date) || ' hour' AS INTERVAL) AS local_date,
 	d.source_id,
 	('{"' || path[1] || '":{"' || path[2] || '":'
 		|| ROUND(AVG(CAST(json_extract_path_text(jdata, VARIADIC path) AS double precision)) * 1000) / 1000
 		|| '}}')::json as jdata
-FROM solaragg.agg_loc_datum_hourly d
+FROM eniwareagg.agg_loc_datum_hourly d
 WHERE
 	d.loc_id = loc
 	AND d.source_id = ANY(source)
 	AND d.ts_start >= start_ts
 	AND d.ts_start < end_ts
 GROUP BY
-	solarnet.get_season_monday_start(CAST(d.local_date AS date)),
+	eniwarenet.get_season_monday_start(CAST(d.local_date AS date)),
 	EXTRACT(hour FROM d.local_date),
 	d.source_id
 $BODY$;
 
-DROP FUNCTION solaragg.find_agg_loc_datum_dow(bigint,text[],text[],timestamptz,timestamptz);
-CREATE OR REPLACE FUNCTION solaragg.find_agg_loc_datum_dow(
+DROP FUNCTION eniwareagg.find_agg_loc_datum_dow(bigint,text[],text[],timestamptz,timestamptz);
+CREATE OR REPLACE FUNCTION eniwareagg.find_agg_loc_datum_dow(
 	IN loc bigint,
 	IN source text[],
 	IN path text[],
@@ -129,7 +129,7 @@ SELECT
 	('{"' || path[1] || '":{"' || path[2] || '":'
 		|| ROUND(AVG(CAST(json_extract_path_text(jdata, VARIADIC path) AS double precision)) * 1000) / 1000
 		|| '}}')::json as jdata
-FROM solaragg.agg_loc_datum_daily d
+FROM eniwareagg.agg_loc_datum_daily d
 WHERE
 	d.loc_id = loc
 	AND d.source_id = ANY(source)
@@ -140,8 +140,8 @@ GROUP BY
 	d.source_id
 $BODY$;
 
-DROP FUNCTION solaragg.find_agg_loc_datum_seasonal_dow(bigint,text[],text[],timestamptz,timestamptz);
-CREATE OR REPLACE FUNCTION solaragg.find_agg_loc_datum_seasonal_dow(
+DROP FUNCTION eniwareagg.find_agg_loc_datum_seasonal_dow(bigint,text[],text[],timestamptz,timestamptz);
+CREATE OR REPLACE FUNCTION eniwareagg.find_agg_loc_datum_seasonal_dow(
 	IN loc bigint,
 	IN source text[],
 	IN path text[],
@@ -158,22 +158,22 @@ CREATE OR REPLACE FUNCTION solaragg.find_agg_loc_datum_seasonal_dow(
 $BODY$
 SELECT
 	loc AS loc_id,
-	(solarnet.get_season_monday_start(d.local_date)
+	(eniwarenet.get_season_monday_start(d.local_date)
 		+ CAST((EXTRACT(isodow FROM d.local_date) - 1) || ' day' AS INTERVAL)) AT TIME ZONE 'UTC' AS ts_start,
-	(solarnet.get_season_monday_start(d.local_date)
+	(eniwarenet.get_season_monday_start(d.local_date)
 		+ CAST((EXTRACT(isodow FROM d.local_date) - 1) || ' day' AS INTERVAL)) AS local_date,
 	d.source_id,
 	('{"' || path[1] || '":{"' || path[2] || '":'
 		|| ROUND(AVG(CAST(json_extract_path_text(jdata, VARIADIC path) AS double precision)) * 1000) / 1000
 		|| '}}')::json as jdata
-FROM solaragg.agg_loc_datum_daily d
+FROM eniwareagg.agg_loc_datum_daily d
 WHERE
 	d.loc_id = loc
 	AND d.source_id = ANY(source)
 	AND d.ts_start >= start_ts
 	AND d.ts_start < end_ts
 GROUP BY
-	solarnet.get_season_monday_start(CAST(d.local_date AS date)),
+	eniwarenet.get_season_monday_start(CAST(d.local_date AS date)),
 	EXTRACT(isodow FROM d.local_date),
 	d.source_id
 $BODY$;

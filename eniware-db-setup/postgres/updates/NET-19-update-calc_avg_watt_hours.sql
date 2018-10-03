@@ -1,5 +1,5 @@
 /**************************************************************************************************
- * FUNCTION solarnet.calc_avg_watt_hours(integer, integer, double precision, 
+ * FUNCTION eniwarenet.calc_avg_watt_hours(integer, integer, double precision, 
  *                                       double precision, interval)
  * 
  * Calculate average watt hours between two watt values and a time interval. If

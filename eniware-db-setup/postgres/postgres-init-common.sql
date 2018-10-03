@@ -1,6 +1,6 @@
-CREATE SCHEMA IF NOT EXISTS solarcommon;
+CREATE SCHEMA IF NOT EXISTS eniwarecommon;
 
-CREATE OR REPLACE FUNCTION solarcommon.plainto_prefix_tsquery(config regconfig, qtext TEXT)
+CREATE OR REPLACE FUNCTION eniwarecommon.plainto_prefix_tsquery(config regconfig, qtext TEXT)
 RETURNS tsquery AS $$
 SELECT to_tsquery(config,
 	regexp_replace(
@@ -11,9 +11,9 @@ SELECT to_tsquery(config,
 );
 $$ LANGUAGE SQL STRICT IMMUTABLE;
 
-CREATE OR REPLACE FUNCTION solarcommon.plainto_prefix_tsquery(qtext TEXT)
+CREATE OR REPLACE FUNCTION eniwarecommon.plainto_prefix_tsquery(qtext TEXT)
 RETURNS tsquery AS $$
-SELECT solarcommon.plainto_prefix_tsquery(get_current_ts_config(), qtext);
+SELECT eniwarecommon.plainto_prefix_tsquery(get_current_ts_config(), qtext);
 $$ LANGUAGE SQL STRICT IMMUTABLE;
 
 /**
@@ -22,7 +22,7 @@ $$ LANGUAGE SQL STRICT IMMUTABLE;
  * @param jdata the JSON array value to convert
  * @returns text array, or NULL if jdata is NULL
  */
-CREATE OR REPLACE FUNCTION solarcommon.json_array_to_text_array(jdata jsonb)
+CREATE OR REPLACE FUNCTION eniwarecommon.json_array_to_text_array(jdata jsonb)
    RETURNS text[] LANGUAGE sql IMMUTABLE AS
 $$
 SELECT
@@ -32,7 +32,7 @@ SELECT
 	END
 $$;
 
-CREATE OR REPLACE FUNCTION solarcommon.json_array_to_text_array(jdata json)
+CREATE OR REPLACE FUNCTION eniwarecommon.json_array_to_text_array(jdata json)
    RETURNS text[] LANGUAGE sql IMMUTABLE AS
 $$
 SELECT
@@ -51,7 +51,7 @@ $$;
  * @param jdata_t the tag array
  * @returns JSON object
  */
-CREATE OR REPLACE FUNCTION solarcommon.jdata_from_components(
+CREATE OR REPLACE FUNCTION eniwarecommon.jdata_from_components(
 		jdata_i jsonb,
 		jdata_a jsonb,
 		jdata_s jsonb,
@@ -68,7 +68,7 @@ $$;
  * @param jdata the "jdata" JSON object
  * @returns the component values
  */
-CREATE OR REPLACE FUNCTION solarcommon.components_from_jdata(
+CREATE OR REPLACE FUNCTION eniwarecommon.components_from_jdata(
 	IN jdata jsonb,
 	OUT jdata_i jsonb,
 	OUT jdata_a jsonb,
@@ -76,5 +76,5 @@ CREATE OR REPLACE FUNCTION solarcommon.components_from_jdata(
 	OUT jdata_t text[])
 	LANGUAGE SQL IMMUTABLE AS
 $$
-SELECT jdata->'i', jdata->'a', jdata->'s', solarcommon.json_array_to_text_array(jdata->'t')
+SELECT jdata->'i', jdata->'a', jdata->'s', eniwarecommon.json_array_to_text_array(jdata->'t')
 $$;

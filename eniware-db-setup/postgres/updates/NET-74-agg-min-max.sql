@@ -1,6 +1,6 @@
 
-DROP FUNCTION IF EXISTS solaragg.find_datum_for_minute_time_slots(bigint, text[], timestamp with time zone, interval, integer, interval);
-DROP FUNCTION IF EXISTS solaragg.find_datum_for_time_slot(bigint, text[], timestamp with time zone, interval, interval);
+DROP FUNCTION IF EXISTS eniwareagg.find_datum_for_minute_time_slots(bigint, text[], timestamp with time zone, interval, integer, interval);
+DROP FUNCTION IF EXISTS eniwareagg.find_datum_for_time_slot(bigint, text[], timestamp with time zone, interval, interval);
 
 /**
  * Find matching datum rows for aggregation purposes across a specific time span.
@@ -14,7 +14,7 @@ DROP FUNCTION IF EXISTS solaragg.find_datum_for_time_slot(bigint, text[], timest
  * @param tolerance			the number of milliseconds tolerance before/after span to
  *                          look for adjacent rows
  */
-CREATE OR REPLACE FUNCTION solaragg.find_datum_for_time_span(
+CREATE OR REPLACE FUNCTION eniwareagg.find_datum_for_time_span(
     IN Edge bigint,
     IN sources text[],
     IN start_ts timestamp with time zone,
@@ -33,7 +33,7 @@ SELECT sub.ts, sub.source_id, sub.jdata FROM (
 			ELSE FALSE
 		END AS outside,
 		d.jdata as jdata
-	FROM solardatum.da_datum d
+	FROM eniwaredatum.da_datum d
 	WHERE d.Edge_id = Edge
 		AND d.source_id = ANY(sources)
 		AND d.ts >= start_ts - tolerance
@@ -62,7 +62,7 @@ $BODY$
  * @param tolerance			the number of milliseconds tolerance before/after time slots to
  *                          look for adjacent rows
  */
-CREATE OR REPLACE FUNCTION solaragg.calc_datum_time_slots(
+CREATE OR REPLACE FUNCTION eniwareagg.calc_datum_time_slots(
 	IN Edge bigint,
 	IN sources text[],
 	IN start_ts timestamp with time zone,
@@ -90,7 +90,7 @@ var spanMs = intervalMs(span),
 
 if ( slotMode ) {
 	stmt = plv8.prepare(
-		'SELECT ts, solaragg.minute_time_slot(ts, '+slotsecs+') as ts_start, source_id, jdata FROM solaragg.find_datum_for_time_span($1, $2, $3, $4, $5)',
+		'SELECT ts, eniwareagg.minute_time_slot(ts, '+slotsecs+') as ts_start, source_id, jdata FROM eniwareagg.find_datum_for_time_span($1, $2, $3, $4, $5)',
 		['bigint', 'text[]', 'timestamp with time zone', 'interval', 'interval']);
 	helper = slotAggregator({
 		startTs : start_ts.getTime(),
@@ -99,7 +99,7 @@ if ( slotMode ) {
 	});
 } else {
 	stmt = plv8.prepare(
-		'SELECT ts, source_id, jdata FROM solaragg.find_datum_for_time_span($1, $2, $3, $4, $5)',
+		'SELECT ts, source_id, jdata FROM eniwareagg.find_datum_for_time_span($1, $2, $3, $4, $5)',
 		['bigint', 'text[]', 'timestamp with time zone', 'interval', 'interval']);
 	helper = aggregator({
 		startTs : start_ts.getTime(),
@@ -131,8 +131,8 @@ stmt.free();
 $BODY$ STABLE;
 
 
-DROP FUNCTION IF EXISTS solaragg.find_loc_datum_for_minute_time_slots(bigint, text[], timestamp with time zone, interval, integer, interval);
-DROP FUNCTION IF EXISTS solaragg.find_loc_datum_for_time_slot(bigint, text[], timestamp with time zone, interval, interval);
+DROP FUNCTION IF EXISTS eniwareagg.find_loc_datum_for_minute_time_slots(bigint, text[], timestamp with time zone, interval, integer, interval);
+DROP FUNCTION IF EXISTS eniwareagg.find_loc_datum_for_time_slot(bigint, text[], timestamp with time zone, interval, interval);
 
 /**
  * Find matching location datum rows for aggregation purposes across a specific time
@@ -146,7 +146,7 @@ DROP FUNCTION IF EXISTS solaragg.find_loc_datum_for_time_slot(bigint, text[], ti
  * @param tolerance			the number of milliseconds tolerance before/after span to
  *                          look for adjacent rows
  */
-CREATE OR REPLACE FUNCTION solaragg.find_loc_datum_for_time_span(
+CREATE OR REPLACE FUNCTION eniwareagg.find_loc_datum_for_time_span(
     IN loc bigint,
     IN sources text[],
     IN start_ts timestamp with time zone,
@@ -165,7 +165,7 @@ SELECT sub.ts, sub.source_id, sub.jdata FROM (
 			ELSE FALSE
 		END AS outside,
 		d.jdata as jdata
-	FROM solardatum.da_loc_datum d
+	FROM eniwaredatum.da_loc_datum d
 	WHERE d.loc_id = loc
 		AND d.source_id = ANY(sources)
 		AND d.ts >= start_ts - tolerance
@@ -194,7 +194,7 @@ $BODY$
  * @param tolerance			the number of milliseconds tolerance before/after time slots to
  *                          look for adjacent rows
  */
-CREATE OR REPLACE FUNCTION solaragg.calc_loc_datum_time_slots(
+CREATE OR REPLACE FUNCTION eniwareagg.calc_loc_datum_time_slots(
 	IN loc bigint,
 	IN sources text[],
 	IN start_ts timestamp with time zone,
@@ -222,7 +222,7 @@ var spanMs = intervalMs(span),
 
 if ( slotMode ) {
 	stmt = plv8.prepare(
-		'SELECT ts, solaragg.minute_time_slot(ts, '+slotsecs+') as ts_start, source_id, jdata FROM solaragg.find_loc_datum_for_time_span($1, $2, $3, $4, $5)',
+		'SELECT ts, eniwareagg.minute_time_slot(ts, '+slotsecs+') as ts_start, source_id, jdata FROM eniwareagg.find_loc_datum_for_time_span($1, $2, $3, $4, $5)',
 		['bigint', 'text[]', 'timestamp with time zone', 'interval', 'interval']);
 	helper = slotAggregator({
 		startTs : start_ts.getTime(),
@@ -231,7 +231,7 @@ if ( slotMode ) {
 	});
 } else {
 	stmt = plv8.prepare(
-		'SELECT ts, source_id, jdata FROM solaragg.find_loc_datum_for_time_span($1, $2, $3, $4, $5)',
+		'SELECT ts, source_id, jdata FROM eniwareagg.find_loc_datum_for_time_span($1, $2, $3, $4, $5)',
 		['bigint', 'text[]', 'timestamp with time zone', 'interval', 'interval']);
 	helper = aggregator({
 		startTs : start_ts.getTime(),
@@ -262,9 +262,9 @@ stmt.free();
 
 $BODY$ STABLE;
 
-DROP FUNCTION IF EXISTS solaragg.calc_running_total(text, bigint, text[], timestamp with time zone);
+DROP FUNCTION IF EXISTS eniwareagg.calc_running_total(text, bigint, text[], timestamp with time zone);
 
-CREATE OR REPLACE FUNCTION solaragg.calc_running_total(
+CREATE OR REPLACE FUNCTION eniwareagg.calc_running_total(
 	IN pk bigint,
 	IN sources text[],
 	IN end_ts timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
@@ -279,8 +279,8 @@ $BODY$
 var totalor = require('datum/totalor').default;
 
 var query = (loc_mode === true
-		? 'SELECT * FROM solaragg.find_running_loc_datum($1, $2, $3)'
-		: 'SELECT * FROM solaragg.find_running_datum($1, $2, $3)'),
+		? 'SELECT * FROM eniwareagg.find_running_loc_datum($1, $2, $3)'
+		: 'SELECT * FROM eniwareagg.find_running_datum($1, $2, $3)'),
 	stmt,
 	cur,
 	rec,
@@ -311,7 +311,7 @@ stmt.free();
 $BODY$;
 
 
-CREATE OR REPLACE FUNCTION solaragg.find_running_datum(
+CREATE OR REPLACE FUNCTION eniwareagg.find_running_datum(
     IN Edge bigint,
     IN sources text[],
     IN end_ts timestamp with time zone DEFAULT CURRENT_TIMESTAMP)
@@ -322,35 +322,35 @@ $BODY$
 	-- get the Edge TZ, falling back to UTC if not available so we always have a time zone even if Edge not found
 	WITH Edgetz AS (
 		SELECT n.Edge_id, COALESCE(l.time_zone, 'UTC') AS tz
-		FROM solarnet.sn_Edge n
-		LEFT OUTER JOIN solarnet.sn_loc l ON l.id = n.loc_id
+		FROM eniwarenet.sn_Edge n
+		LEFT OUTER JOIN eniwarenet.sn_loc l ON l.id = n.loc_id
 		WHERE n.Edge_id = Edge
 		UNION ALL
 		SELECT Edge::bigint AS Edge_id, 'UTC'::character varying AS tz
-		WHERE NOT EXISTS (SELECT Edge_id FROM solarnet.sn_Edge WHERE Edge_id = Edge)
+		WHERE NOT EXISTS (SELECT Edge_id FROM eniwarenet.sn_Edge WHERE Edge_id = Edge)
 	)
 	SELECT d.ts_start, d.local_date, d.Edge_id, d.source_id, d.jdata, CAST(extract(epoch from (local_date + interval '1 month') - local_date) / 3600 AS integer) AS weight
-	FROM solaragg.agg_datum_monthly d
+	FROM eniwareagg.agg_datum_monthly d
 	INNER JOIN Edgetz ON Edgetz.Edge_id = d.Edge_id
 	WHERE d.ts_start < date_trunc('month', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
 	SELECT d.ts_start, d.local_date, d.Edge_id, d.source_id, d.jdata, 24::integer as weight
-	FROM solaragg.agg_datum_daily d
+	FROM eniwareagg.agg_datum_daily d
 	INNER JOIN Edgetz ON Edgetz.Edge_id = d.Edge_id
 	WHERE ts_start < date_trunc('day', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
 		AND d.ts_start >= date_trunc('month', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
 	SELECT d.ts_start, d.local_date, d.Edge_id, d.source_id, d.jdata, 1::INTEGER as weight
-	FROM solaragg.agg_datum_hourly d
+	FROM eniwareagg.agg_datum_hourly d
 	INNER JOIN Edgetz ON Edgetz.Edge_id = d.Edge_id
 	WHERE d.ts_start < date_trunc('hour', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
 		AND d.ts_start >= date_trunc('day', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
 	SELECT ts_start, ts_start at time zone Edgetz.tz AS local_date, Edgetz.Edge_id, source_id, jdata, 1::integer as weight
-	FROM solaragg.calc_datum_time_slots(
+	FROM eniwareagg.calc_datum_time_slots(
 		Edge,
 		sources,
 		date_trunc('hour', end_ts),
@@ -370,7 +370,7 @@ $BODY$;
  * @param sources An array of source IDs to query for.
  * @param end_ts  An optional date to limit the results to. If not provided the current date is used.
  */
-CREATE OR REPLACE FUNCTION solaragg.calc_running_datum_total(
+CREATE OR REPLACE FUNCTION eniwareagg.calc_running_datum_total(
 	IN Edge bigint,
 	IN sources text[],
 	IN end_ts timestamp with time zone DEFAULT CURRENT_TIMESTAMP)
@@ -381,15 +381,15 @@ ROWS 10 AS
 $BODY$
 	WITH Edgetz AS (
 		SELECT n.Edge_id, COALESCE(l.time_zone, 'UTC') AS tz
-		FROM solarnet.sn_Edge n
-		LEFT OUTER JOIN solarnet.sn_loc l ON l.id = n.loc_id
+		FROM eniwarenet.sn_Edge n
+		LEFT OUTER JOIN eniwarenet.sn_loc l ON l.id = n.loc_id
 		WHERE n.Edge_id = Edge
 		UNION ALL
 		SELECT Edge::bigint AS Edge_id, 'UTC'::character varying AS tz
-		WHERE NOT EXISTS (SELECT Edge_id FROM solarnet.sn_Edge WHERE Edge_id = Edge)
+		WHERE NOT EXISTS (SELECT Edge_id FROM eniwarenet.sn_Edge WHERE Edge_id = Edge)
 	)
 	SELECT end_ts, end_ts AT TIME ZONE Edgetz.tz AS local_date, Edge, r.source_id, r.jdata
-	FROM solaragg.calc_running_total(
+	FROM eniwareagg.calc_running_total(
 		Edge,
 		sources,
 		end_ts,
@@ -399,7 +399,7 @@ $BODY$
 $BODY$;
 
 
-CREATE OR REPLACE FUNCTION solaragg.find_running_loc_datum(
+CREATE OR REPLACE FUNCTION eniwareagg.find_running_loc_datum(
 	IN loc bigint,
 	IN sources text[],
 	IN end_ts timestamp with time zone DEFAULT CURRENT_TIMESTAMP)
@@ -409,34 +409,34 @@ STABLE AS
 $BODY$
 	WITH loctz AS (
 		SELECT l.id as loc_id, COALESCE(l.time_zone, 'UTC') AS tz
-		FROM solarnet.sn_loc l
+		FROM eniwarenet.sn_loc l
 		WHERE l.id = loc
 		UNION ALL
 		SELECT loc::bigint AS loc_id, 'UTC'::character varying AS tz
-		WHERE NOT EXISTS (SELECT id AS loc_id FROM solarnet.sn_loc WHERE id = loc)
+		WHERE NOT EXISTS (SELECT id AS loc_id FROM eniwarenet.sn_loc WHERE id = loc)
 	)
 	SELECT d.ts_start, d.local_date, d.loc_id, d.source_id, d.jdata, CAST(extract(epoch from (local_date + interval '1 month') - local_date) / 3600 AS integer) AS weight
-	FROM solaragg.agg_loc_datum_monthly d
+	FROM eniwareagg.agg_loc_datum_monthly d
 	INNER JOIN loctz ON loctz.loc_id = d.loc_id
 	WHERE d.ts_start < date_trunc('month', end_ts AT TIME ZONE loctz.tz) AT TIME ZONE loctz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
 	SELECT d.ts_start, d.local_date, d.loc_id, d.source_id, d.jdata, 24::integer as weight
-	FROM solaragg.agg_loc_datum_daily d
+	FROM eniwareagg.agg_loc_datum_daily d
 	INNER JOIN loctz ON loctz.loc_id = d.loc_id
 	WHERE ts_start < date_trunc('day', end_ts AT TIME ZONE loctz.tz) AT TIME ZONE loctz.tz
 		AND d.ts_start >= date_trunc('month', end_ts AT TIME ZONE loctz.tz) AT TIME ZONE loctz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
 	SELECT d.ts_start, d.local_date, d.loc_id, d.source_id, d.jdata, 1::INTEGER as weight
-	FROM solaragg.agg_loc_datum_hourly d
+	FROM eniwareagg.agg_loc_datum_hourly d
 	INNER JOIN loctz ON loctz.loc_id = d.loc_id
 	WHERE d.ts_start < date_trunc('hour', end_ts AT TIME ZONE loctz.tz) AT TIME ZONE loctz.tz
 		AND d.ts_start >= date_trunc('day', end_ts AT TIME ZONE loctz.tz) AT TIME ZONE loctz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
 	SELECT ts_start, ts_start at time zone loctz.tz AS local_date, loctz.loc_id, source_id, jdata, 1::integer as weight
-	FROM solaragg.calc_loc_datum_time_slots(
+	FROM eniwareagg.calc_loc_datum_time_slots(
 		loc,
 		sources,
 		date_trunc('hour', end_ts),
@@ -456,7 +456,7 @@ $BODY$;
  * @param sources An array of source IDs to query for.
  * @param end_ts  An optional date to limit the results to. If not provided the current date is used.
  */
-CREATE OR REPLACE FUNCTION solaragg.calc_running_loc_datum_total(
+CREATE OR REPLACE FUNCTION eniwareagg.calc_running_loc_datum_total(
 	IN loc bigint,
 	IN sources text[],
 	IN end_ts timestamp with time zone DEFAULT CURRENT_TIMESTAMP)
@@ -467,14 +467,14 @@ ROWS 10 AS
 $BODY$
 	WITH loctz AS (
 		SELECT l.id as loc_id, COALESCE(l.time_zone, 'UTC') AS tz
-		FROM solarnet.sn_loc l
+		FROM eniwarenet.sn_loc l
 		WHERE l.id = loc
 		UNION ALL
 		SELECT loc::bigint AS loc_id, 'UTC'::character varying AS tz
-		WHERE NOT EXISTS (SELECT id AS loc_id FROM solarnet.sn_loc WHERE id = loc)
+		WHERE NOT EXISTS (SELECT id AS loc_id FROM eniwarenet.sn_loc WHERE id = loc)
 	)
 	SELECT end_ts, end_ts AT TIME ZONE loctz.tz AS local_date, loc, r.source_id, r.jdata
-	FROM solaragg.calc_running_total(
+	FROM eniwareagg.calc_running_total(
 		loc,
 		sources,
 		end_ts,

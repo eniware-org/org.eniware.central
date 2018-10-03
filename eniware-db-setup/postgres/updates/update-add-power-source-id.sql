@@ -1,5 +1,5 @@
-CREATE TABLE solarnet.sn_power_datum_new (
-	id				BIGINT NOT NULL DEFAULT nextval('solarnet.solarnet_seq'),
+CREATE TABLE eniwarenet.sn_power_datum_new (
+	id				BIGINT NOT NULL DEFAULT nextval('eniwarenet.eniwarenet_seq'),
 	created			TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	posted			TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	Edge_id 		BIGINT NOT NULL,
@@ -19,44 +19,44 @@ CREATE TABLE solarnet.sn_power_datum_new (
 	local_created	TIMESTAMP WITHOUT TIME ZONE NOT NULL,
 	PRIMARY KEY (id),
 	CONSTRAINT sn_power_datum_Edge_fk
-		FOREIGN KEY (Edge_id) REFERENCES solarnet.sn_Edge (Edge_id)
+		FOREIGN KEY (Edge_id) REFERENCES eniwarenet.sn_Edge (Edge_id)
 		ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
-INSERT INTO solarnet.sn_power_datum_new
+INSERT INTO eniwarenet.sn_power_datum_new
 	SELECT id,created,posted,Edge_id,'',pv_volts,
 	pv_amps,bat_volts,bat_amp_hrs,dc_out_volts,dc_out_amps,ac_out_volts,ac_out_amps,
 	amp_hours,kwatt_hours,error_msg,prev_datum,local_created
-	FROM solarnet.sn_power_datum;
+	FROM eniwarenet.sn_power_datum;
 
-DROP FUNCTION solarnet.find_prev_power_datum(solarnet.sn_power_datum, interval) CASCADE;
+DROP FUNCTION eniwarenet.find_prev_power_datum(eniwarenet.sn_power_datum, interval) CASCADE;
 
-ALTER TABLE solarnet.sn_power_datum RENAME TO sn_power_datum_old;
-ALTER TABLE solarnet.sn_power_datum_new RENAME TO sn_power_datum;
-DROP TABLE solarnet.sn_power_datum_old CASCADE;
+ALTER TABLE eniwarenet.sn_power_datum RENAME TO sn_power_datum_old;
+ALTER TABLE eniwarenet.sn_power_datum_new RENAME TO sn_power_datum;
+DROP TABLE eniwarenet.sn_power_datum_old CASCADE;
 
-CREATE UNIQUE INDEX power_datum_Edge_unq_idx ON solarnet.sn_power_datum (created, Edge_id, source_id);
-CREATE INDEX power_datum_prev_datum_idx ON solarnet.sn_power_datum (prev_datum);
-CREATE INDEX power_datum_local_created_idx ON solarnet.sn_power_datum (local_created);
+CREATE UNIQUE INDEX power_datum_Edge_unq_idx ON eniwarenet.sn_power_datum (created, Edge_id, source_id);
+CREATE INDEX power_datum_prev_datum_idx ON eniwarenet.sn_power_datum (prev_datum);
+CREATE INDEX power_datum_local_created_idx ON eniwarenet.sn_power_datum (local_created);
 
-CLUSTER solarnet.sn_power_datum USING power_datum_Edge_unq_idx;
+CLUSTER eniwarenet.sn_power_datum USING power_datum_Edge_unq_idx;
 
 CREATE TRIGGER populate_prev_power_datum
   BEFORE INSERT
-  ON solarnet.sn_power_datum
+  ON eniwarenet.sn_power_datum
   FOR EACH ROW
-  EXECUTE PROCEDURE solarnet.populate_prev_power_datum();
+  EXECUTE PROCEDURE eniwarenet.populate_prev_power_datum();
 
 CREATE TRIGGER populate_local_created
    BEFORE INSERT OR UPDATE
-   ON solarnet.sn_power_datum FOR EACH ROW
-   EXECUTE PROCEDURE solarnet.populate_local_created();
+   ON eniwarenet.sn_power_datum FOR EACH ROW
+   EXECUTE PROCEDURE eniwarenet.populate_local_created();
 
-CREATE OR REPLACE FUNCTION solarnet.find_prev_power_datum(solarnet.sn_power_datum, interval)
+CREATE OR REPLACE FUNCTION eniwarenet.find_prev_power_datum(eniwarenet.sn_power_datum, interval)
   RETURNS bigint AS
 $BODY$
 	SELECT c.id
-	FROM solarnet.sn_power_datum c
+	FROM eniwarenet.sn_power_datum c
 	WHERE c.created < $1.created
 		AND c.created >= ($1.created - $2)
 		AND c.Edge_id = $1.Edge_id
@@ -66,11 +66,11 @@ $BODY$
 $BODY$
   LANGUAGE 'sql' STABLE;
 
-CREATE OR REPLACE FUNCTION solarnet.find_prev_power_datum(solarnet.sn_power_datum, interval)
+CREATE OR REPLACE FUNCTION eniwarenet.find_prev_power_datum(eniwarenet.sn_power_datum, interval)
   RETURNS bigint AS
 $BODY$
 	SELECT c.id
-	FROM solarnet.sn_power_datum c
+	FROM eniwarenet.sn_power_datum c
 	WHERE c.created < $1.created
 		AND c.created >= ($1.created - $2)
 		AND c.Edge_id = $1.Edge_id
@@ -80,19 +80,19 @@ $BODY$
 $BODY$
   LANGUAGE 'sql' STABLE;
 
-DROP TABLE IF EXISTS solarnet.rep_power_datum_hourly CASCADE;
-DROP TABLE IF EXISTS solarnet.rep_power_datum_daily CASCADE;
-DROP FUNCTION IF EXISTS solarnet.populate_rep_power_datum_hourly(solarnet.sn_power_datum) CASCADE;
-DROP FUNCTION IF EXISTS solarnet.populate_rep_net_power_datum_hourly(solarnet.sn_power_datum) CASCADE;
-DROP FUNCTION IF EXISTS solarnet.populate_rep_power_datum_daily(solarnet.sn_power_datum) CASCADE;
-DROP FUNCTION IF EXISTS solarnet.populate_rep_net_power_datum_daily(datum solarnet.sn_power_datum) CASCADE;
+DROP TABLE IF EXISTS eniwarenet.rep_power_datum_hourly CASCADE;
+DROP TABLE IF EXISTS eniwarenet.rep_power_datum_daily CASCADE;
+DROP FUNCTION IF EXISTS eniwarenet.populate_rep_power_datum_hourly(eniwarenet.sn_power_datum) CASCADE;
+DROP FUNCTION IF EXISTS eniwarenet.populate_rep_net_power_datum_hourly(eniwarenet.sn_power_datum) CASCADE;
+DROP FUNCTION IF EXISTS eniwarenet.populate_rep_power_datum_daily(eniwarenet.sn_power_datum) CASCADE;
+DROP FUNCTION IF EXISTS eniwarenet.populate_rep_net_power_datum_daily(datum eniwarenet.sn_power_datum) CASCADE;
 
 
 
 
 
 
-CREATE TABLE solarnet.rep_power_datum_hourly (
+CREATE TABLE eniwarenet.rep_power_datum_hourly (
   created_hour 	timestamp without time zone NOT NULL,
   Edge_id 		BIGINT NOT NULL,
   source_id		CHARACTER VARYING(255) NOT NULL,
@@ -104,22 +104,22 @@ CREATE TABLE solarnet.rep_power_datum_hourly (
   cost_currency	CHARACTER VARYING(10),
   PRIMARY KEY (created_hour, Edge_id, source_id),
   CONSTRAINT rep_power_datum_hourly_Edge_fk FOREIGN KEY (Edge_id)
-      REFERENCES solarnet.sn_Edge (Edge_id) MATCH SIMPLE
+      REFERENCES eniwarenet.sn_Edge (Edge_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
-COMMENT ON TABLE solarnet.rep_power_datum_hourly IS 
+COMMENT ON TABLE eniwarenet.rep_power_datum_hourly IS 
 'To refresh this table, call something like this:
 
-select solarnet.populate_rep_power_datum_hourly(c) from solarnet.sn_power_datum c
+select eniwarenet.populate_rep_power_datum_hourly(c) from eniwarenet.sn_power_datum c
 where c.id in (
-	select max(id) from solarnet.sn_power_datum
+	select max(id) from eniwarenet.sn_power_datum
 	group by date_trunc(''hour'', created), Edge_id
 )';
 
-CLUSTER solarnet.rep_power_datum_hourly USING rep_power_datum_hourly_pkey;
+CLUSTER eniwarenet.rep_power_datum_hourly USING rep_power_datum_hourly_pkey;
 
-CREATE TABLE solarnet.rep_power_datum_daily (
+CREATE TABLE eniwarenet.rep_power_datum_daily (
   created_day 	date NOT NULL,
   Edge_id 		BIGINT NOT NULL,
   source_id		CHARACTER VARYING(255) NOT NULL,
@@ -131,23 +131,23 @@ CREATE TABLE solarnet.rep_power_datum_daily (
   cost_currency	CHARACTER VARYING(10),
   PRIMARY KEY (created_day, Edge_id, source_id),
   CONSTRAINT rep_power_datum_daily_Edge_fk FOREIGN KEY (Edge_id)
-      REFERENCES solarnet.sn_Edge (Edge_id) MATCH SIMPLE
+      REFERENCES eniwarenet.sn_Edge (Edge_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
-COMMENT ON TABLE solarnet.rep_power_datum_daily IS 
+COMMENT ON TABLE eniwarenet.rep_power_datum_daily IS 
 'To refresh this table, call something like this:
 
-select solarnet.populate_rep_power_datum_daily(c) from solarnet.sn_power_datum c
+select eniwarenet.populate_rep_power_datum_daily(c) from eniwarenet.sn_power_datum c
 where c.id in (
-	select max(id) from solarnet.sn_power_datum
+	select max(id) from eniwarenet.sn_power_datum
 	group by date_trunc(''day'', created), Edge_id
 )';
 
-CLUSTER solarnet.rep_power_datum_daily USING rep_power_datum_daily_pkey;
+CLUSTER eniwarenet.rep_power_datum_daily USING rep_power_datum_daily_pkey;
 
 /**************************************************************************************************
- * FUNCTION solarnet.find_rep_power_datum(bigint, text, timestamp, text, interval)
+ * FUNCTION eniwarenet.find_rep_power_datum(bigint, text, timestamp, text, interval)
  * 
  * SQL function to return a set of reporting PowerDatum records for a specific Edge within a given
  * date range.
@@ -158,7 +158,7 @@ CLUSTER solarnet.rep_power_datum_daily USING rep_power_datum_daily_pkey;
  * @param text			a valid time zone ID (e.g. 'Pacific/Auckland')
  * @param interval		an interval to calculate the end date from the starting date
  */
-CREATE OR REPLACE FUNCTION solarnet.find_rep_power_datum(IN bigint, IN text, IN timestamp without time zone, IN text, IN interval)
+CREATE OR REPLACE FUNCTION eniwarenet.find_rep_power_datum(IN bigint, IN text, IN timestamp without time zone, IN text, IN interval)
   RETURNS TABLE(
 	created 		timestamp with time zone, 
 	avg_pv_amps 	double precision, 
@@ -175,16 +175,16 @@ $BODY$
 		(c.pv_amps + c2.pv_amps) / 2 as avg_pv_amps,
 		(c.pv_volts + c2.pv_volts) / 2 as avg_pv_volts,
 		(c.bat_volts + c2.bat_volts) / 2 as avg_bat_volts,
-		solarnet.calc_avg_watt_hours(c.pv_amps, c2.pv_amps, c.pv_volts, c2.pv_volts, 
+		eniwarenet.calc_avg_watt_hours(c.pv_amps, c2.pv_amps, c.pv_volts, c2.pv_volts, 
 			c.kwatt_hours, c2.kwatt_hours, (c.created - c2.created)) as watt_hours,
-		solarnet.calc_price_per_watt_hours(p.price, p.unit) as price_per_Wh,
-		solarnet.calc_price_per_watt_hours(p.price, p.unit) * 
-			solarnet.calc_avg_watt_hours(c.pv_amps, c2.pv_amps, c.pv_volts, c2.pv_volts, 
+		eniwarenet.calc_price_per_watt_hours(p.price, p.unit) as price_per_Wh,
+		eniwarenet.calc_price_per_watt_hours(p.price, p.unit) * 
+			eniwarenet.calc_avg_watt_hours(c.pv_amps, c2.pv_amps, c.pv_volts, c2.pv_volts, 
 			c.kwatt_hours, c2.kwatt_hours, (c.created - c2.created)) as cost_amt,
 		p.currency
-	FROM solarnet.sn_power_datum c
-	INNER JOIN solarnet.sn_power_datum c2 ON c2.id = c.prev_datum
-	LEFT OUTER JOIN solarnet.sn_price_datum p ON p.Edge_id = c.Edge_id 
+	FROM eniwarenet.sn_power_datum c
+	INNER JOIN eniwarenet.sn_power_datum c2 ON c2.id = c.prev_datum
+	LEFT OUTER JOIN eniwarenet.sn_price_datum p ON p.Edge_id = c.Edge_id 
 		AND p.created BETWEEN c.created - interval '1 hour' AND c.created
 	WHERE 
 		c2.Edge_id = $1
@@ -196,31 +196,31 @@ $BODY$
 LANGUAGE 'sql' STABLE;
 
 /**************************************************************************************************
- * FUNCTION solarnet.populate_rep_power_datum_hourly(solarnet.sn_power_datum)
+ * FUNCTION eniwarenet.populate_rep_power_datum_hourly(eniwarenet.sn_power_datum)
  * 
  * Pl/PgSQL function to aggreage PowerDatum rows at an hourly level and populate the results into
- * the solarnet.rep_power_datum_hourly table. This function is designed to be exectued via a 
- * trigger function on the solarnet.sn_power_datum table and thus treat the rep_power_datum_hourly
+ * the eniwarenet.rep_power_datum_hourly table. This function is designed to be exectued via a 
+ * trigger function on the eniwarenet.sn_power_datum table and thus treat the rep_power_datum_hourly
  * table like a materialized view.
  * 
  * The hour to update is derived from the created column of the input record's "previous" record
  * (the sn_power_datum.prev_datum ID).
  * 
- * @param solarnet.sn_power_datum		the PowerDatum row to update aggregated data for
+ * @param eniwarenet.sn_power_datum		the PowerDatum row to update aggregated data for
  */
-CREATE OR REPLACE FUNCTION solarnet.populate_rep_power_datum_hourly(datum solarnet.sn_power_datum)
+CREATE OR REPLACE FUNCTION eniwarenet.populate_rep_power_datum_hourly(datum eniwarenet.sn_power_datum)
   RETURNS void AS
 $BODY$
 DECLARE
 	chour timestamp;
 	Edge_tz text;
-	data solarnet.rep_power_datum_hourly;
+	data eniwarenet.rep_power_datum_hourly;
 BEGIN
-	SELECT time_zone from solarnet.sn_Edge where Edge_id = datum.Edge_id
+	SELECT time_zone from eniwarenet.sn_Edge where Edge_id = datum.Edge_id
 	INTO Edge_tz;
 	
 	SELECT date_trunc('hour', c.created at time zone Edge_tz)
-	FROM solarnet.sn_power_datum c
+	FROM eniwarenet.sn_power_datum c
 	WHERE c.id = datum.prev_datum
 	INTO chour;
 
@@ -239,7 +239,7 @@ BEGIN
 		sum(sub.watt_hours) as watt_hours,
 		sum(sub.cost_amt) as cost_amt,
 		min(sub.currency) as cost_currency
-	FROM solarnet.find_rep_power_datum(datum.Edge_id, datum.source_id, chour, Edge_tz, interval '1 hour') AS sub
+	FROM eniwarenet.find_rep_power_datum(datum.Edge_id, datum.source_id, chour, Edge_tz, interval '1 hour') AS sub
 	GROUP BY date_trunc('hour', sub.created at time zone Edge_tz)
 	ORDER BY date_trunc('hour', sub.created at time zone Edge_tz)
 	INTO data;
@@ -252,7 +252,7 @@ BEGIN
 	
 	<<insert_update>>
 	LOOP
-		UPDATE solarnet.rep_power_datum_hourly SET
+		UPDATE eniwarenet.rep_power_datum_hourly SET
 			pv_amps = data.pv_amps, 
 			pv_volts = data.pv_volts,
 			bat_volts = data.bat_volts,
@@ -265,7 +265,7 @@ BEGIN
 		
 		EXIT insert_update WHEN FOUND;
 
-		INSERT INTO solarnet.rep_power_datum_hourly (
+		INSERT INTO eniwarenet.rep_power_datum_hourly (
 			created_hour, Edge_id, source_id, pv_amps, pv_volts, bat_volts, 
 			watt_hours, cost_amt, cost_currency)
 		VALUES (data.created_hour, data.Edge_id, data.source_id,	
@@ -278,43 +278,43 @@ BEGIN
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE;
 
-CREATE OR REPLACE FUNCTION solarnet.populate_rep_power_hourly()
+CREATE OR REPLACE FUNCTION eniwarenet.populate_rep_power_hourly()
   RETURNS "trigger" AS
 $BODY$BEGIN
-	PERFORM solarnet.populate_rep_power_datum_hourly(NEW);
+	PERFORM eniwarenet.populate_rep_power_datum_hourly(NEW);
 	RETURN NEW;
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE;
 
 CREATE TRIGGER populate_rep_power_hourly
   AFTER INSERT OR UPDATE
-  ON solarnet.sn_power_datum
+  ON eniwarenet.sn_power_datum
   FOR EACH ROW
-  EXECUTE PROCEDURE solarnet.populate_rep_power_hourly();
+  EXECUTE PROCEDURE eniwarenet.populate_rep_power_hourly();
 
 /**************************************************************************************************
- * FUNCTION solarnet.populate_rep_net_power_datum_hourly(solarnet.sn_power_datum)
+ * FUNCTION eniwarenet.populate_rep_net_power_datum_hourly(eniwarenet.sn_power_datum)
  * 
  * Pl/PgSQL function to aggreage PowerDatum rows at an hourly level and populate the results into
- * the solarnet.rep_net_power_datum_hourly table. This function is designed to be exectued via a 
- * trigger function on the solarnet.sn_power_datum table and thus treat the 
+ * the eniwarenet.rep_net_power_datum_hourly table. This function is designed to be exectued via a 
+ * trigger function on the eniwarenet.sn_power_datum table and thus treat the 
  * rep_net_power_datum_hourly table like a materialized view.
  * 
  * The hour to update is derived from the created column of the input record's "previous" record
  * (the sn_power_datum.prev_datum ID).
  * 
- * @param solarnet.sn_power_datum		the PowerDatum row to update aggregated data for
+ * @param eniwarenet.sn_power_datum		the PowerDatum row to update aggregated data for
  */
-CREATE OR REPLACE FUNCTION solarnet.populate_rep_net_power_datum_hourly(datum solarnet.sn_power_datum)
+CREATE OR REPLACE FUNCTION eniwarenet.populate_rep_net_power_datum_hourly(datum eniwarenet.sn_power_datum)
   RETURNS void AS
 $BODY$
 DECLARE
 	chour timestamp;
-	data solarnet.rep_net_power_datum_hourly;
+	data eniwarenet.rep_net_power_datum_hourly;
 BEGIN
 	SELECT date_trunc('hour', c.created at time zone n.time_zone)
-	FROM solarnet.sn_power_datum c
-	INNER JOIN solarnet.sn_Edge n ON n.Edge_id = datum.Edge_id
+	FROM eniwarenet.sn_power_datum c
+	INNER JOIN eniwarenet.sn_Edge n ON n.Edge_id = datum.Edge_id
 	WHERE c.id = datum.prev_datum
 	INTO chour;
 
@@ -327,7 +327,7 @@ BEGIN
 		date_trunc('hour', sub.created) as created_hour,
 		datum.Edge_id,
 		sum(sub.watt_hours) as watt_hours
-	FROM solarnet.find_rep_net_power_datum(chour, interval '1 hour') AS sub
+	FROM eniwarenet.find_rep_net_power_datum(chour, interval '1 hour') AS sub
 	GROUP BY date_trunc('hour', sub.created)
 	ORDER BY date_trunc('hour', sub.created)
 	INTO data;
@@ -339,13 +339,13 @@ BEGIN
 	
 	<<insert_update>>
 	LOOP
-		UPDATE solarnet.rep_net_power_datum_hourly SET
+		UPDATE eniwarenet.rep_net_power_datum_hourly SET
 			watt_hours = data.watt_hours
 		WHERE created_hour = data.created_hour;
 		
 		EXIT insert_update WHEN FOUND;
 
-		INSERT INTO solarnet.rep_net_power_datum_hourly (
+		INSERT INTO eniwarenet.rep_net_power_datum_hourly (
 			created_hour, watt_hours)
 		VALUES (data.created_hour, data.watt_hours);
 
@@ -355,46 +355,46 @@ BEGIN
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE;
 
-CREATE OR REPLACE FUNCTION solarnet.populate_rep_net_power_hourly()
+CREATE OR REPLACE FUNCTION eniwarenet.populate_rep_net_power_hourly()
   RETURNS "trigger" AS
 $BODY$BEGIN
-	PERFORM solarnet.populate_rep_net_power_datum_hourly(NEW);
+	PERFORM eniwarenet.populate_rep_net_power_datum_hourly(NEW);
 	RETURN NEW;
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE;
 
 CREATE TRIGGER populate_rep_net_power_hourly
   AFTER INSERT OR UPDATE
-  ON solarnet.sn_power_datum
+  ON eniwarenet.sn_power_datum
   FOR EACH ROW
-  EXECUTE PROCEDURE solarnet.populate_rep_net_power_hourly();
+  EXECUTE PROCEDURE eniwarenet.populate_rep_net_power_hourly();
 
 /**************************************************************************************************
- * FUNCTION solarnet.populate_rep_power_datum_daily(solarnet.sn_power_datum)
+ * FUNCTION eniwarenet.populate_rep_power_datum_daily(eniwarenet.sn_power_datum)
  * 
  * Pl/PgSQL function to aggreage PowerDatum rows at an daily level and populate the results into
- * the solarnet.rep_power_datum_daily table. This function is designed to be exectued via a 
- * trigger function on the solarnet.sn_power_datum table and thus treat the rep_power_datum_daily
+ * the eniwarenet.rep_power_datum_daily table. This function is designed to be exectued via a 
+ * trigger function on the eniwarenet.sn_power_datum table and thus treat the rep_power_datum_daily
  * table like a materialized view.
  * 
  * The day to update is derived from the created column of the input record's "previous" record
  * (the sn_power_datum.prev_datum ID).
  * 
- * @param solarnet.sn_power_datum		the PowerDatum row to update aggregated data for
+ * @param eniwarenet.sn_power_datum		the PowerDatum row to update aggregated data for
  */
-CREATE OR REPLACE FUNCTION solarnet.populate_rep_power_datum_daily(datum solarnet.sn_power_datum)
+CREATE OR REPLACE FUNCTION eniwarenet.populate_rep_power_datum_daily(datum eniwarenet.sn_power_datum)
   RETURNS void AS
 $BODY$
 DECLARE
 	chour timestamp;
 	Edge_tz text;
-	data solarnet.rep_power_datum_daily;
+	data eniwarenet.rep_power_datum_daily;
 BEGIN
-	SELECT time_zone from solarnet.sn_Edge where Edge_id = datum.Edge_id
+	SELECT time_zone from eniwarenet.sn_Edge where Edge_id = datum.Edge_id
 	INTO Edge_tz;
 	
 	SELECT date_trunc('day', c.created at time zone Edge_tz)
-	FROM solarnet.sn_power_datum c
+	FROM eniwarenet.sn_power_datum c
 	WHERE c.id = datum.prev_datum
 	INTO chour;
 
@@ -413,7 +413,7 @@ BEGIN
 		sum(sub.watt_hours) as watt_hours,
 		sum(sub.cost_amt) as cost_amt,
 		min(sub.currency) as cost_currency
-	FROM solarnet.find_rep_power_datum(datum.Edge_id, datum.source_id, chour, Edge_tz, interval '1 day') AS sub
+	FROM eniwarenet.find_rep_power_datum(datum.Edge_id, datum.source_id, chour, Edge_tz, interval '1 day') AS sub
 	GROUP BY date(sub.created at time zone Edge_tz)
 	ORDER BY date(sub.created at time zone Edge_tz)
 	INTO data;
@@ -421,7 +421,7 @@ BEGIN
 	
 	<<insert_update>>
 	LOOP
-		UPDATE solarnet.rep_power_datum_daily SET
+		UPDATE eniwarenet.rep_power_datum_daily SET
 			pv_amps = data.pv_amps, 
 			pv_volts = data.pv_volts,
 			bat_volts = data.bat_volts,
@@ -434,7 +434,7 @@ BEGIN
 		
 		EXIT insert_update WHEN FOUND;
 
-		INSERT INTO solarnet.rep_power_datum_daily (
+		INSERT INTO eniwarenet.rep_power_datum_daily (
 			created_day, Edge_id, source_id, pv_amps, pv_volts, bat_volts, 
 			watt_hours, cost_amt, cost_currency)
 		VALUES (data.created_day, data.Edge_id, data.source_id,
@@ -447,43 +447,43 @@ BEGIN
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE;
 
-CREATE OR REPLACE FUNCTION solarnet.populate_rep_power_daily()
+CREATE OR REPLACE FUNCTION eniwarenet.populate_rep_power_daily()
   RETURNS "trigger" AS
 $BODY$BEGIN
-	PERFORM solarnet.populate_rep_power_datum_daily(NEW);
+	PERFORM eniwarenet.populate_rep_power_datum_daily(NEW);
 	RETURN NEW;
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE;
 
 CREATE TRIGGER populate_rep_power_daily
   AFTER INSERT OR UPDATE
-  ON solarnet.sn_power_datum
+  ON eniwarenet.sn_power_datum
   FOR EACH ROW
-  EXECUTE PROCEDURE solarnet.populate_rep_power_daily();
+  EXECUTE PROCEDURE eniwarenet.populate_rep_power_daily();
 
 /**************************************************************************************************
- * FUNCTION solarnet.populate_rep_net_power_datum_daily(solarnet.sn_power_datum)
+ * FUNCTION eniwarenet.populate_rep_net_power_datum_daily(eniwarenet.sn_power_datum)
  * 
  * Pl/PgSQL function to aggreage PowerDatum rows at an daily level and populate the results into
- * the solarnet.rep_net_power_datum_daily table. This function is designed to be exectued via a 
- * trigger function on the solarnet.sn_power_datum table and thus treat the 
+ * the eniwarenet.rep_net_power_datum_daily table. This function is designed to be exectued via a 
+ * trigger function on the eniwarenet.sn_power_datum table and thus treat the 
  * rep_net_power_datum_daily table like a materialized view.
  * 
  * The day to update is derived from the created column of the input record's "previous" record
  * (the sn_power_datum.prev_datum ID).
  * 
- * @param solarnet.sn_power_datum		the PowerDatum row to update aggregated data for
+ * @param eniwarenet.sn_power_datum		the PowerDatum row to update aggregated data for
  */
-CREATE OR REPLACE FUNCTION solarnet.populate_rep_net_power_datum_daily(datum solarnet.sn_power_datum)
+CREATE OR REPLACE FUNCTION eniwarenet.populate_rep_net_power_datum_daily(datum eniwarenet.sn_power_datum)
   RETURNS void AS
 $BODY$
 DECLARE
 	chour timestamp;
-	data solarnet.rep_net_power_datum_daily;
+	data eniwarenet.rep_net_power_datum_daily;
 BEGIN
 	SELECT date_trunc('day', c.created at time zone n.time_zone)
-	FROM solarnet.sn_power_datum c
-	INNER JOIN solarnet.sn_Edge n ON n.Edge_id = datum.Edge_id
+	FROM eniwarenet.sn_power_datum c
+	INNER JOIN eniwarenet.sn_Edge n ON n.Edge_id = datum.Edge_id
 	WHERE c.id = datum.prev_datum
 	INTO chour;
 
@@ -495,7 +495,7 @@ BEGIN
 	SELECT 
 		date(sub.created) as created_day,
 		sum(sub.watt_hours) as watt_hours
-	FROM solarnet.find_rep_net_power_datum(chour, interval '1 day') AS sub
+	FROM eniwarenet.find_rep_net_power_datum(chour, interval '1 day') AS sub
 	GROUP BY date(sub.created)
 	ORDER BY date(sub.created)
 	INTO data;
@@ -503,13 +503,13 @@ BEGIN
 	
 	<<insert_update>>
 	LOOP
-		UPDATE solarnet.rep_net_power_datum_daily SET
+		UPDATE eniwarenet.rep_net_power_datum_daily SET
 			watt_hours = data.watt_hours
 		WHERE created_day = data.created_day;
 		
 		EXIT insert_update WHEN FOUND;
 
-		INSERT INTO solarnet.rep_net_power_datum_daily (
+		INSERT INTO eniwarenet.rep_net_power_datum_daily (
 			created_day, watt_hours)
 		VALUES (data.created_day, data.watt_hours);
 
@@ -519,16 +519,16 @@ BEGIN
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE;
 
-CREATE OR REPLACE FUNCTION solarnet.populate_rep_net_power_daily()
+CREATE OR REPLACE FUNCTION eniwarenet.populate_rep_net_power_daily()
   RETURNS "trigger" AS
 $BODY$BEGIN
-	PERFORM solarnet.populate_rep_net_power_datum_daily(NEW);
+	PERFORM eniwarenet.populate_rep_net_power_datum_daily(NEW);
 	RETURN NEW;
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE;
 
 CREATE TRIGGER populate_rep_net_power_daily
   AFTER INSERT OR UPDATE
-  ON solarnet.sn_power_datum
+  ON eniwarenet.sn_power_datum
   FOR EACH ROW
-  EXECUTE PROCEDURE solarnet.populate_rep_net_power_daily();
+  EXECUTE PROCEDURE eniwarenet.populate_rep_net_power_daily();

@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION solarnet.calc_avg_watt_hours(real, real, real, real, 
+CREATE OR REPLACE FUNCTION eniwarenet.calc_avg_watt_hours(real, real, real, real, 
 	double precision, double precision, interval)
   RETURNS double precision AS
 $BODY$

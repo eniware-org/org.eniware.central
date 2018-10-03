@@ -1,8 +1,8 @@
-CREATE SCHEMA IF NOT EXISTS solardatum;
+CREATE SCHEMA IF NOT EXISTS eniwaredatum;
 
-CREATE SCHEMA IF NOT EXISTS solaragg;
+CREATE SCHEMA IF NOT EXISTS eniwareagg;
 
-CREATE TABLE solardatum.da_datum (
+CREATE TABLE eniwaredatum.da_datum (
   ts timestamp with time zone NOT NULL,
   Edge_id bigint NOT NULL,
   source_id text NOT NULL,
@@ -14,18 +14,18 @@ CREATE TABLE solardatum.da_datum (
   CONSTRAINT da_datum_pkey PRIMARY KEY (Edge_id, ts, source_id)
 );
 
-CREATE OR REPLACE FUNCTION solardatum.jdata_from_datum(datum solardatum.da_datum)
+CREATE OR REPLACE FUNCTION eniwaredatum.jdata_from_datum(datum eniwaredatum.da_datum)
 	RETURNS jsonb
 	LANGUAGE SQL IMMUTABLE AS
 $$
-	SELECT solarcommon.jdata_from_components(datum.jdata_i, datum.jdata_a, datum.jdata_s, datum.jdata_t);
+	SELECT eniwarecommon.jdata_from_components(datum.jdata_i, datum.jdata_a, datum.jdata_s, datum.jdata_t);
 $$;
 
-CREATE VIEW solardatum.da_datum_data AS
-    SELECT d.ts, d.Edge_id, d.source_id, d.posted, solardatum.jdata_from_datum(d) AS jdata
-    FROM solardatum.da_datum d;
+CREATE VIEW eniwaredatum.da_datum_data AS
+    SELECT d.ts, d.Edge_id, d.source_id, d.posted, eniwaredatum.jdata_from_datum(d) AS jdata
+    FROM eniwaredatum.da_datum d;
 
-CREATE TABLE solardatum.da_meta (
+CREATE TABLE eniwaredatum.da_meta (
   Edge_id bigint NOT NULL,
   source_id text NOT NULL,
   created timestamp with time zone NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE solardatum.da_meta (
   CONSTRAINT da_meta_pkey PRIMARY KEY (Edge_id, source_id)
 );
 
-CREATE TABLE solaragg.agg_stale_datum (
+CREATE TABLE eniwareagg.agg_stale_datum (
   ts_start timestamp with time zone NOT NULL,
   Edge_id bigint NOT NULL,
   source_id text NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE solaragg.agg_stale_datum (
   CONSTRAINT agg_stale_datum_pkey PRIMARY KEY (agg_kind, ts_start, Edge_id, source_id)
 );
 
-CREATE TABLE solaragg.agg_messages (
+CREATE TABLE eniwareagg.agg_messages (
   created timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
   Edge_id bigint NOT NULL,
   source_id text NOT NULL,
@@ -51,9 +51,9 @@ CREATE TABLE solaragg.agg_messages (
   msg text NOT NULL
 );
 
-CREATE INDEX agg_messages_ts_Edge_idx ON solaragg.agg_messages (ts, Edge_id);
+CREATE INDEX agg_messages_ts_Edge_idx ON eniwareagg.agg_messages (ts, Edge_id);
 
-CREATE TABLE solaragg.agg_datum_hourly (
+CREATE TABLE eniwareagg.agg_datum_hourly (
   ts_start timestamp with time zone NOT NULL,
   local_date timestamp without time zone NOT NULL,
   Edge_id bigint NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE solaragg.agg_datum_hourly (
  CONSTRAINT agg_datum_hourly_pkey PRIMARY KEY (Edge_id, ts_start, source_id)
 );
 
-CREATE TABLE solaragg.aud_datum_hourly (
+CREATE TABLE eniwareagg.aud_datum_hourly (
   ts_start timestamp with time zone NOT NULL,
   Edge_id bigint NOT NULL,
   source_id text NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE solaragg.aud_datum_hourly (
   CONSTRAINT aud_datum_hourly_pkey PRIMARY KEY (Edge_id, ts_start, source_id)
 );
 
-CREATE TABLE solaragg.agg_datum_daily (
+CREATE TABLE eniwareagg.agg_datum_daily (
   ts_start timestamp with time zone NOT NULL,
   local_date date NOT NULL,
   Edge_id bigint NOT NULL,
@@ -86,7 +86,7 @@ CREATE TABLE solaragg.agg_datum_daily (
  CONSTRAINT agg_datum_daily_pkey PRIMARY KEY (Edge_id, ts_start, source_id)
 );
 
-CREATE TABLE solaragg.agg_datum_monthly (
+CREATE TABLE eniwareagg.agg_datum_monthly (
   ts_start timestamp with time zone NOT NULL,
   local_date date NOT NULL,
   Edge_id bigint NOT NULL,
@@ -98,73 +98,73 @@ CREATE TABLE solaragg.agg_datum_monthly (
  CONSTRAINT agg_datum_monthly_pkey PRIMARY KEY (Edge_id, ts_start, source_id)
 );
 
-CREATE OR REPLACE FUNCTION solaragg.jdata_from_datum(datum solaragg.agg_datum_hourly)
+CREATE OR REPLACE FUNCTION eniwareagg.jdata_from_datum(datum eniwareagg.agg_datum_hourly)
 	RETURNS jsonb
 	LANGUAGE SQL IMMUTABLE AS
 $$
-	SELECT solarcommon.jdata_from_components(datum.jdata_i, datum.jdata_a, datum.jdata_s, datum.jdata_t);
+	SELECT eniwarecommon.jdata_from_components(datum.jdata_i, datum.jdata_a, datum.jdata_s, datum.jdata_t);
 $$;
 
-CREATE OR REPLACE FUNCTION solaragg.jdata_from_datum(datum solaragg.agg_datum_daily)
+CREATE OR REPLACE FUNCTION eniwareagg.jdata_from_datum(datum eniwareagg.agg_datum_daily)
 	RETURNS jsonb
 	LANGUAGE SQL IMMUTABLE AS
 $$
-	SELECT solarcommon.jdata_from_components(datum.jdata_i, datum.jdata_a, datum.jdata_s, datum.jdata_t);
+	SELECT eniwarecommon.jdata_from_components(datum.jdata_i, datum.jdata_a, datum.jdata_s, datum.jdata_t);
 $$;
 
-CREATE OR REPLACE FUNCTION solaragg.jdata_from_datum(datum solaragg.agg_datum_monthly)
+CREATE OR REPLACE FUNCTION eniwareagg.jdata_from_datum(datum eniwareagg.agg_datum_monthly)
 	RETURNS jsonb
 	LANGUAGE SQL IMMUTABLE AS
 $$
-	SELECT solarcommon.jdata_from_components(datum.jdata_i, datum.jdata_a, datum.jdata_s, datum.jdata_t);
+	SELECT eniwarecommon.jdata_from_components(datum.jdata_i, datum.jdata_a, datum.jdata_s, datum.jdata_t);
 $$;
 
-CREATE VIEW solaragg.agg_datum_hourly_data AS
-  SELECT d.ts_start, d.local_date, d.Edge_id, d.source_id, solaragg.jdata_from_datum(d) AS jdata
-  FROM solaragg.agg_datum_hourly d;
+CREATE VIEW eniwareagg.agg_datum_hourly_data AS
+  SELECT d.ts_start, d.local_date, d.Edge_id, d.source_id, eniwareagg.jdata_from_datum(d) AS jdata
+  FROM eniwareagg.agg_datum_hourly d;
 
-CREATE VIEW solaragg.agg_datum_daily_data AS
-  SELECT d.ts_start, d.local_date, d.Edge_id, d.source_id, solaragg.jdata_from_datum(d) AS jdata
-  FROM solaragg.agg_datum_daily d;
+CREATE VIEW eniwareagg.agg_datum_daily_data AS
+  SELECT d.ts_start, d.local_date, d.Edge_id, d.source_id, eniwareagg.jdata_from_datum(d) AS jdata
+  FROM eniwareagg.agg_datum_daily d;
 
-CREATE VIEW solaragg.agg_datum_monthly_data AS
-  SELECT d.ts_start, d.local_date, d.Edge_id, d.source_id, solaragg.jdata_from_datum(d) AS jdata
-  FROM solaragg.agg_datum_monthly d;
+CREATE VIEW eniwareagg.agg_datum_monthly_data AS
+  SELECT d.ts_start, d.local_date, d.Edge_id, d.source_id, eniwareagg.jdata_from_datum(d) AS jdata
+  FROM eniwareagg.agg_datum_monthly d;
 
-CREATE VIEW solaragg.da_datum_avail_hourly AS
+CREATE VIEW eniwareagg.da_datum_avail_hourly AS
 WITH Edgetz AS (
 	SELECT n.Edge_id, COALESCE(l.time_zone, 'UTC') AS tz
-	FROM solarnet.sn_Edge n
-	LEFT OUTER JOIN solarnet.sn_loc l ON l.id = n.loc_id
+	FROM eniwarenet.sn_Edge n
+	LEFT OUTER JOIN eniwarenet.sn_loc l ON l.id = n.loc_id
 )
 SELECT date_trunc('hour', d.ts at time zone Edgetz.tz) at time zone Edgetz.tz AS ts_start, d.Edge_id, d.source_id
-FROM solardatum.da_datum d
+FROM eniwaredatum.da_datum d
 INNER JOIN Edgetz ON Edgetz.Edge_id = d.Edge_id
 GROUP BY date_trunc('hour', d.ts at time zone Edgetz.tz) at time zone Edgetz.tz, d.Edge_id, d.source_id;
 
-CREATE VIEW solaragg.da_datum_avail_daily AS
+CREATE VIEW eniwareagg.da_datum_avail_daily AS
 WITH Edgetz AS (
 	SELECT n.Edge_id, COALESCE(l.time_zone, 'UTC') AS tz
-	FROM solarnet.sn_Edge n
-	LEFT OUTER JOIN solarnet.sn_loc l ON l.id = n.loc_id
+	FROM eniwarenet.sn_Edge n
+	LEFT OUTER JOIN eniwarenet.sn_loc l ON l.id = n.loc_id
 )
 SELECT date_trunc('day', d.ts at time zone Edgetz.tz) at time zone Edgetz.tz AS ts_start, d.Edge_id, d.source_id
-FROM solardatum.da_datum d
+FROM eniwaredatum.da_datum d
 INNER JOIN Edgetz ON Edgetz.Edge_id = d.Edge_id
 GROUP BY date_trunc('day', d.ts at time zone Edgetz.tz) at time zone Edgetz.tz, d.Edge_id, d.source_id;
 
-CREATE VIEW solaragg.da_datum_avail_monthly AS
+CREATE VIEW eniwareagg.da_datum_avail_monthly AS
 WITH Edgetz AS (
 	SELECT n.Edge_id, COALESCE(l.time_zone, 'UTC') AS tz
-	FROM solarnet.sn_Edge n
-	LEFT OUTER JOIN solarnet.sn_loc l ON l.id = n.loc_id
+	FROM eniwarenet.sn_Edge n
+	LEFT OUTER JOIN eniwarenet.sn_loc l ON l.id = n.loc_id
 )
 SELECT date_trunc('month', d.ts at time zone Edgetz.tz) at time zone Edgetz.tz AS ts_start, d.Edge_id, d.source_id
-FROM solardatum.da_datum d
+FROM eniwaredatum.da_datum d
 INNER JOIN Edgetz ON Edgetz.Edge_id = d.Edge_id
 GROUP BY date_trunc('month', d.ts at time zone Edgetz.tz) at time zone Edgetz.tz, d.Edge_id, d.source_id;
 
-CREATE OR REPLACE FUNCTION solardatum.store_meta(
+CREATE OR REPLACE FUNCTION eniwaredatum.store_meta(
 	cdate timestamp with time zone,
 	Edge bigint,
 	src text,
@@ -175,14 +175,14 @@ DECLARE
 	udate timestamp with time zone := now();
 	jdata_json jsonb := jdata::jsonb;
 BEGIN
-	INSERT INTO solardatum.da_meta(Edge_id, source_id, created, updated, jdata)
+	INSERT INTO eniwaredatum.da_meta(Edge_id, source_id, created, updated, jdata)
 	VALUES (Edge, src, cdate, udate, jdata_json)
 	ON CONFLICT (Edge_id, source_id) DO UPDATE
 	SET jdata = EXCLUDED.jdata, updated = EXCLUDED.updated;
 END;
 $BODY$;
 
-CREATE OR REPLACE FUNCTION solardatum.find_available_sources(
+CREATE OR REPLACE FUNCTION eniwaredatum.find_available_sources(
 	IN Edge bigint,
 	IN st timestamp with time zone DEFAULT NULL,
 	IN en timestamp with time zone DEFAULT NULL)
@@ -193,8 +193,8 @@ DECLARE
 BEGIN
 	IF st IS NOT NULL OR en IS NOT NULL THEN
 		-- get the Edge TZ for local date/time
-		SELECT l.time_zone  FROM solarnet.sn_Edge n
-		INNER JOIN solarnet.sn_loc l ON l.id = n.loc_id
+		SELECT l.time_zone  FROM eniwarenet.sn_Edge n
+		INNER JOIN eniwarenet.sn_loc l ON l.id = n.loc_id
 		WHERE n.Edge_id = Edge
 		INTO Edge_tz;
 
@@ -207,24 +207,24 @@ BEGIN
 	CASE
 		WHEN st IS NULL AND en IS NULL THEN
 			RETURN QUERY SELECT DISTINCT CAST(d.source_id AS text)
-			FROM solaragg.agg_datum_daily d
+			FROM eniwareagg.agg_datum_daily d
 			WHERE d.Edge_id = Edge;
 
 		WHEN en IS NULL THEN
 			RETURN QUERY SELECT DISTINCT CAST(d.source_id AS text)
-			FROM solaragg.agg_datum_daily d
+			FROM eniwareagg.agg_datum_daily d
 			WHERE d.Edge_id = Edge
 				AND d.ts_start >= CAST(st at time zone Edge_tz AS DATE);
 
 		WHEN st IS NULL THEN
 			RETURN QUERY SELECT DISTINCT CAST(d.source_id AS text)
-			FROM solaragg.agg_datum_daily d
+			FROM eniwareagg.agg_datum_daily d
 			WHERE d.Edge_id = Edge
 				AND d.ts_start <= CAST(en at time zone Edge_tz AS DATE);
 
 		ELSE
 			RETURN QUERY SELECT DISTINCT CAST(d.source_id AS text)
-			FROM solaragg.agg_datum_daily d
+			FROM eniwareagg.agg_datum_daily d
 			WHERE d.Edge_id = Edge
 				AND d.ts_start >= CAST(st at time zone Edge_tz AS DATE)
 				AND d.ts_start <= CAST(en at time zone Edge_tz AS DATE);
@@ -232,7 +232,7 @@ BEGIN
 END;$BODY$
   LANGUAGE plpgsql STABLE ROWS 50;
 
-CREATE OR REPLACE FUNCTION solardatum.find_reportable_interval(
+CREATE OR REPLACE FUNCTION eniwaredatum.find_reportable_interval(
 	IN Edge bigint,
 	IN src text DEFAULT NULL,
 	OUT ts_start timestamp with time zone,
@@ -244,27 +244,27 @@ $BODY$
 BEGIN
 	CASE
 		WHEN src IS NULL THEN
-			SELECT min(ts) FROM solardatum.da_datum WHERE Edge_id = Edge
+			SELECT min(ts) FROM eniwaredatum.da_datum WHERE Edge_id = Edge
 			INTO ts_start;
 		ELSE
-			SELECT min(ts) FROM solardatum.da_datum WHERE Edge_id = Edge AND source_id = src
+			SELECT min(ts) FROM eniwaredatum.da_datum WHERE Edge_id = Edge AND source_id = src
 			INTO ts_start;
 	END CASE;
 
 	CASE
 		WHEN src IS NULL THEN
-			SELECT max(ts) FROM solardatum.da_datum WHERE Edge_id = Edge
+			SELECT max(ts) FROM eniwaredatum.da_datum WHERE Edge_id = Edge
 			INTO ts_end;
 		ELSE
-			SELECT max(ts) FROM solardatum.da_datum WHERE Edge_id = Edge AND source_id = src
+			SELECT max(ts) FROM eniwaredatum.da_datum WHERE Edge_id = Edge AND source_id = src
 			INTO ts_end;
 	END CASE;
 
 	SELECT
 		l.time_zone,
 		CAST(EXTRACT(epoch FROM z.utc_offset) / 60 AS INTEGER)
-	FROM solarnet.sn_Edge n
-	INNER JOIN solarnet.sn_loc l ON l.id = n.loc_id
+	FROM eniwarenet.sn_Edge n
+	INNER JOIN eniwarenet.sn_loc l ON l.id = n.loc_id
 	INNER JOIN pg_timezone_names z ON z.name = l.time_zone
 	WHERE n.Edge_id = Edge
 	INTO Edge_tz, Edge_tz_offset;
@@ -277,7 +277,7 @@ BEGIN
 END;$BODY$
   LANGUAGE plpgsql STABLE;
 
-CREATE OR REPLACE FUNCTION solardatum.populate_updated()
+CREATE OR REPLACE FUNCTION eniwaredatum.populate_updated()
   RETURNS "trigger" AS
 $BODY$
 BEGIN
@@ -288,9 +288,9 @@ END;$BODY$
 
 CREATE TRIGGER populate_updated
   BEFORE INSERT OR UPDATE
-  ON solardatum.da_meta
+  ON eniwaredatum.da_meta
   FOR EACH ROW
-  EXECUTE PROCEDURE solardatum.populate_updated();
+  EXECUTE PROCEDURE eniwaredatum.populate_updated();
 
 
 
@@ -305,7 +305,7 @@ CREATE TRIGGER populate_updated
  *
  * @returns All matching source IDs.
  */
-CREATE OR REPLACE FUNCTION solardatum.find_sources_for_meta(
+CREATE OR REPLACE FUNCTION eniwaredatum.find_sources_for_meta(
     IN Edges bigint[],
     IN criteria text
   )
@@ -330,7 +330,7 @@ if ( !filter.rootEdge ) {
 	return;
 }
 
-stmt = plv8.prepare('SELECT Edge_id, source_id, jdata FROM solardatum.da_meta WHERE Edge_id = ANY($1)', ['bigint[]']);
+stmt = plv8.prepare('SELECT Edge_id, source_id, jdata FROM eniwaredatum.da_meta WHERE Edge_id = ANY($1)', ['bigint[]']);
 curs = stmt.cursor([Edges]);
 
 while ( rec = curs.fetch() ) {
@@ -355,7 +355,7 @@ $BODY$;
  *
  * @returns The property count.
  */
-CREATE OR REPLACE FUNCTION solardatum.datum_prop_count(IN jdata jsonb)
+CREATE OR REPLACE FUNCTION eniwaredatum.datum_prop_count(IN jdata jsonb)
   RETURNS INTEGER
   LANGUAGE plv8
   IMMUTABLE AS

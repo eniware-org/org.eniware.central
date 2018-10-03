@@ -1,7 +1,7 @@
-ALTER TABLE solarnet.sn_Edge_meta
+ALTER TABLE eniwarenet.sn_Edge_meta
   ALTER COLUMN jdata SET DATA TYPE jsonb;
 
-CREATE OR REPLACE FUNCTION solarnet.store_Edge_meta(
+CREATE OR REPLACE FUNCTION eniwarenet.store_Edge_meta(
 	cdate timestamp with time zone,
 	Edge bigint,
 	jdata text)
@@ -11,7 +11,7 @@ DECLARE
 	udate timestamp with time zone := now();
 	jdata_json jsonb := jdata::jsonb;
 BEGIN
-	INSERT INTO solarnet.sn_Edge_meta(Edge_id, created, updated, jdata)
+	INSERT INTO eniwarenet.sn_Edge_meta(Edge_id, created, updated, jdata)
 	VALUES (Edge, cdate, udate, jdata_json)
 	ON CONFLICT (Edge_id) DO UPDATE
 	SET jdata = EXCLUDED.jdata, updated = EXCLUDED.updated;

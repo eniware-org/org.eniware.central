@@ -1,89 +1,89 @@
 \echo Dropping aggregate datum views...
 
-DROP VIEW solaragg.da_datum_avail_hourly;
-DROP VIEW solaragg.da_datum_avail_daily;
-DROP VIEW solaragg.da_datum_avail_monthly;
+DROP VIEW eniwareagg.da_datum_avail_hourly;
+DROP VIEW eniwareagg.da_datum_avail_daily;
+DROP VIEW eniwareagg.da_datum_avail_monthly;
 
 \echo Removing domains from datum tables...
 
-ALTER TABLE solardatum.da_datum
+ALTER TABLE eniwaredatum.da_datum
   ALTER COLUMN ts SET DATA TYPE timestamp with time zone,
   ALTER COLUMN Edge_id SET DATA TYPE bigint,
   ALTER COLUMN source_id SET DATA TYPE character varying(64),
   ALTER COLUMN posted SET DATA TYPE timestamp with time zone;
 
-ALTER TABLE solardatum.da_meta
+ALTER TABLE eniwaredatum.da_meta
   ALTER COLUMN Edge_id SET DATA TYPE bigint,
   ALTER COLUMN source_id SET DATA TYPE character varying(64),
   ALTER COLUMN created SET DATA TYPE timestamp with time zone,
   ALTER COLUMN updated SET DATA TYPE timestamp with time zone;
 
-ALTER TABLE solaragg.agg_stale_datum
+ALTER TABLE eniwareagg.agg_stale_datum
   ALTER COLUMN Edge_id SET DATA TYPE bigint,
   ALTER COLUMN source_id SET DATA TYPE character varying(64);
 
-ALTER TABLE solaragg.agg_messages
+ALTER TABLE eniwareagg.agg_messages
   ALTER COLUMN Edge_id SET DATA TYPE bigint,
   ALTER COLUMN source_id SET DATA TYPE character varying(64),
   ALTER COLUMN ts SET DATA TYPE timestamp with time zone;
 
 \echo Removing domains from datum aggregate tables...
 
-ALTER TABLE solaragg.aud_datum_hourly
+ALTER TABLE eniwareagg.aud_datum_hourly
   ALTER COLUMN Edge_id SET DATA TYPE bigint,
   ALTER COLUMN source_id SET DATA TYPE character varying(64);
 
-ALTER TABLE solaragg.agg_datum_hourly
+ALTER TABLE eniwareagg.agg_datum_hourly
   ALTER COLUMN Edge_id SET DATA TYPE bigint,
   ALTER COLUMN source_id SET DATA TYPE character varying(64);
 
-ALTER TABLE solaragg.agg_datum_daily
+ALTER TABLE eniwareagg.agg_datum_daily
   ALTER COLUMN Edge_id SET DATA TYPE bigint,
   ALTER COLUMN source_id SET DATA TYPE character varying(64);
 
-ALTER TABLE solaragg.agg_datum_monthly
+ALTER TABLE eniwareagg.agg_datum_monthly
   ALTER COLUMN Edge_id SET DATA TYPE bigint,
   ALTER COLUMN source_id SET DATA TYPE character varying(64);
 
 \echo Recreating aggregate datum views...
 
-CREATE VIEW solaragg.da_datum_avail_hourly AS
+CREATE VIEW eniwareagg.da_datum_avail_hourly AS
 WITH Edgetz AS (
 	SELECT n.Edge_id, COALESCE(l.time_zone, 'UTC') AS tz
-	FROM solarnet.sn_Edge n
-	LEFT OUTER JOIN solarnet.sn_loc l ON l.id = n.loc_id
+	FROM eniwarenet.sn_Edge n
+	LEFT OUTER JOIN eniwarenet.sn_loc l ON l.id = n.loc_id
 )
 SELECT date_trunc('hour', d.ts at time zone Edgetz.tz) at time zone Edgetz.tz AS ts_start, d.Edge_id, d.source_id
-FROM solardatum.da_datum d
+FROM eniwaredatum.da_datum d
 INNER JOIN Edgetz ON Edgetz.Edge_id = d.Edge_id
 GROUP BY date_trunc('hour', d.ts at time zone Edgetz.tz) at time zone Edgetz.tz, d.Edge_id, d.source_id;
 
-CREATE VIEW solaragg.da_datum_avail_daily AS
+CREATE VIEW eniwareagg.da_datum_avail_daily AS
 WITH Edgetz AS (
 	SELECT n.Edge_id, COALESCE(l.time_zone, 'UTC') AS tz
-	FROM solarnet.sn_Edge n
-	LEFT OUTER JOIN solarnet.sn_loc l ON l.id = n.loc_id
+	FROM eniwarenet.sn_Edge n
+	LEFT OUTER JOIN eniwarenet.sn_loc l ON l.id = n.loc_id
 )
 SELECT date_trunc('day', d.ts at time zone Edgetz.tz) at time zone Edgetz.tz AS ts_start, d.Edge_id, d.source_id
-FROM solardatum.da_datum d
+FROM eniwaredatum.da_datum d
 INNER JOIN Edgetz ON Edgetz.Edge_id = d.Edge_id
 GROUP BY date_trunc('day', d.ts at time zone Edgetz.tz) at time zone Edgetz.tz, d.Edge_id, d.source_id;
 
-CREATE VIEW solaragg.da_datum_avail_monthly AS
+CREATE VIEW eniwareagg.da_datum_avail_monthly AS
 WITH Edgetz AS (
 	SELECT n.Edge_id, COALESCE(l.time_zone, 'UTC') AS tz
-	FROM solarnet.sn_Edge n
-	LEFT OUTER JOIN solarnet.sn_loc l ON l.id = n.loc_id
+	FROM eniwarenet.sn_Edge n
+	LEFT OUTER JOIN eniwarenet.sn_loc l ON l.id = n.loc_id
 )
 SELECT date_trunc('month', d.ts at time zone Edgetz.tz) at time zone Edgetz.tz AS ts_start, d.Edge_id, d.source_id
-FROM solardatum.da_datum d
+FROM eniwaredatum.da_datum d
 INNER JOIN Edgetz ON Edgetz.Edge_id = d.Edge_id
 GROUP BY date_trunc('month', d.ts at time zone Edgetz.tz) at time zone Edgetz.tz, d.Edge_id, d.source_id;
 
 \echo Recreating datum functions...
 
-DROP FUNCTION solardatum.store_meta(solarcommon.ts, solarcommon.Edge_id, solarcommon.source_id, text);
-CREATE OR REPLACE FUNCTION solardatum.store_meta(
+DROP FUNCTION eniwaredatum.store_meta(eniwarecommon.ts, eniwarecommon.Edge_id, eniwarecommon.source_id, text);
+CREATE OR REPLACE FUNCTION eniwaredatum.store_meta(
 	cdate timestamp with time zone,
 	Edge bigint,
 	src text,
@@ -94,15 +94,15 @@ DECLARE
 	udate timestamp with time zone := now();
 	jdata_json json := jdata::json;
 BEGIN
-	INSERT INTO solardatum.da_meta(Edge_id, source_id, created, updated, jdata)
+	INSERT INTO eniwaredatum.da_meta(Edge_id, source_id, created, updated, jdata)
 	VALUES (Edge, src, cdate, udate, jdata_json)
 	ON CONFLICT (Edge_id, source_id) DO UPDATE
 	SET jdata = EXCLUDED.jdata, updated = EXCLUDED.updated;
 END;
 $BODY$;
 
-DROP FUNCTION solardatum.find_available_sources(solarcommon.Edge_id, solarcommon.ts, solarcommon.ts);
-CREATE OR REPLACE FUNCTION solardatum.find_available_sources(
+DROP FUNCTION eniwaredatum.find_available_sources(eniwarecommon.Edge_id, eniwarecommon.ts, eniwarecommon.ts);
+CREATE OR REPLACE FUNCTION eniwaredatum.find_available_sources(
 	IN Edge bigint,
 	IN st timestamp with time zone DEFAULT NULL,
 	IN en timestamp with time zone DEFAULT NULL)
@@ -113,8 +113,8 @@ DECLARE
 BEGIN
 	IF st IS NOT NULL OR en IS NOT NULL THEN
 		-- get the Edge TZ for local date/time
-		SELECT l.time_zone  FROM solarnet.sn_Edge n
-		INNER JOIN solarnet.sn_loc l ON l.id = n.loc_id
+		SELECT l.time_zone  FROM eniwarenet.sn_Edge n
+		INNER JOIN eniwarenet.sn_loc l ON l.id = n.loc_id
 		WHERE n.Edge_id = Edge
 		INTO Edge_tz;
 
@@ -127,24 +127,24 @@ BEGIN
 	CASE
 		WHEN st IS NULL AND en IS NULL THEN
 			RETURN QUERY SELECT DISTINCT CAST(d.source_id AS text)
-			FROM solaragg.agg_datum_daily d
+			FROM eniwareagg.agg_datum_daily d
 			WHERE d.Edge_id = Edge;
 
 		WHEN en IS NULL THEN
 			RETURN QUERY SELECT DISTINCT CAST(d.source_id AS text)
-			FROM solaragg.agg_datum_daily d
+			FROM eniwareagg.agg_datum_daily d
 			WHERE d.Edge_id = Edge
 				AND d.ts_start >= CAST(st at time zone Edge_tz AS DATE);
 
 		WHEN st IS NULL THEN
 			RETURN QUERY SELECT DISTINCT CAST(d.source_id AS text)
-			FROM solaragg.agg_datum_daily d
+			FROM eniwareagg.agg_datum_daily d
 			WHERE d.Edge_id = Edge
 				AND d.ts_start <= CAST(en at time zone Edge_tz AS DATE);
 
 		ELSE
 			RETURN QUERY SELECT DISTINCT CAST(d.source_id AS text)
-			FROM solaragg.agg_datum_daily d
+			FROM eniwareagg.agg_datum_daily d
 			WHERE d.Edge_id = Edge
 				AND d.ts_start >= CAST(st at time zone Edge_tz AS DATE)
 				AND d.ts_start <= CAST(en at time zone Edge_tz AS DATE);
@@ -152,8 +152,8 @@ BEGIN
 END;$BODY$
   LANGUAGE plpgsql STABLE ROWS 50;
 
-DROP FUNCTION solardatum.find_reportable_interval(solarcommon.Edge_id, solarcommon.source_id);
-CREATE OR REPLACE FUNCTION solardatum.find_reportable_interval(
+DROP FUNCTION eniwaredatum.find_reportable_interval(eniwarecommon.Edge_id, eniwarecommon.source_id);
+CREATE OR REPLACE FUNCTION eniwaredatum.find_reportable_interval(
 	IN Edge bigint,
 	IN src text DEFAULT NULL,
 	OUT ts_start timestamp with time zone,
@@ -165,27 +165,27 @@ $BODY$
 BEGIN
 	CASE
 		WHEN src IS NULL THEN
-			SELECT min(ts) FROM solardatum.da_datum WHERE Edge_id = Edge
+			SELECT min(ts) FROM eniwaredatum.da_datum WHERE Edge_id = Edge
 			INTO ts_start;
 		ELSE
-			SELECT min(ts) FROM solardatum.da_datum WHERE Edge_id = Edge AND source_id = src
+			SELECT min(ts) FROM eniwaredatum.da_datum WHERE Edge_id = Edge AND source_id = src
 			INTO ts_start;
 	END CASE;
 
 	CASE
 		WHEN src IS NULL THEN
-			SELECT max(ts) FROM solardatum.da_datum WHERE Edge_id = Edge
+			SELECT max(ts) FROM eniwaredatum.da_datum WHERE Edge_id = Edge
 			INTO ts_end;
 		ELSE
-			SELECT max(ts) FROM solardatum.da_datum WHERE Edge_id = Edge AND source_id = src
+			SELECT max(ts) FROM eniwaredatum.da_datum WHERE Edge_id = Edge AND source_id = src
 			INTO ts_end;
 	END CASE;
 
 	SELECT
 		l.time_zone,
 		CAST(EXTRACT(epoch FROM z.utc_offset) / 60 AS INTEGER)
-	FROM solarnet.sn_Edge n
-	INNER JOIN solarnet.sn_loc l ON l.id = n.loc_id
+	FROM eniwarenet.sn_Edge n
+	INNER JOIN eniwarenet.sn_loc l ON l.id = n.loc_id
 	INNER JOIN pg_timezone_names z ON z.name = l.time_zone
 	WHERE n.Edge_id = Edge
 	INTO Edge_tz, Edge_tz_offset;
@@ -198,8 +198,8 @@ BEGIN
 END;$BODY$
   LANGUAGE plpgsql STABLE;
 
-DROP FUNCTION solardatum.find_sources_for_meta(bigint[],text);
-CREATE OR REPLACE FUNCTION solardatum.find_sources_for_meta(
+DROP FUNCTION eniwaredatum.find_sources_for_meta(bigint[],text);
+CREATE OR REPLACE FUNCTION eniwaredatum.find_sources_for_meta(
     IN Edges bigint[],
     IN criteria text
   )
@@ -224,7 +224,7 @@ if ( !filter.rootEdge ) {
 	return;
 }
 
-stmt = plv8.prepare('SELECT Edge_id, source_id, jdata FROM solardatum.da_meta WHERE Edge_id = ANY($1)', ['bigint[]']);
+stmt = plv8.prepare('SELECT Edge_id, source_id, jdata FROM eniwaredatum.da_meta WHERE Edge_id = ANY($1)', ['bigint[]']);
 curs = stmt.cursor([Edges]);
 
 while ( rec = curs.fetch() ) {

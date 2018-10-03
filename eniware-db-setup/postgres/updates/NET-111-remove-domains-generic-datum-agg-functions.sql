@@ -1,5 +1,5 @@
-DROP FUNCTION solaragg.find_agg_datum_minute(bigint,text[],timestamptz,timestamptz,integer,interval);
-CREATE OR REPLACE FUNCTION solaragg.find_agg_datum_minute(
+DROP FUNCTION eniwareagg.find_agg_datum_minute(bigint,text[],timestamptz,timestamptz,integer,interval);
+CREATE OR REPLACE FUNCTION eniwareagg.find_agg_datum_minute(
 	IN Edge bigint,
 	IN source text[],
 	IN start_ts timestamp with time zone,
@@ -21,20 +21,20 @@ SELECT
 	d.ts_start AT TIME ZONE COALESCE(l.time_zone, 'UTC') AS local_date,
 	d.source_id,
 	d.jdata
- FROM solaragg.calc_datum_time_slots(
+ FROM eniwareagg.calc_datum_time_slots(
 	Edge,
 	source,
-	solaragg.minute_time_slot(start_ts, solaragg.slot_seconds(slotsecs)),
-	(end_ts - solaragg.minute_time_slot(start_ts, solaragg.slot_seconds(slotsecs))),
-	solaragg.slot_seconds(slotsecs),
+	eniwareagg.minute_time_slot(start_ts, eniwareagg.slot_seconds(slotsecs)),
+	(end_ts - eniwareagg.minute_time_slot(start_ts, eniwareagg.slot_seconds(slotsecs))),
+	eniwareagg.slot_seconds(slotsecs),
 	tolerance
 ) AS d
-JOIN solarnet.sn_Edge n ON n.Edge_id = Edge
-LEFT OUTER JOIN solarnet.sn_loc l ON l.id = n.loc_id
+JOIN eniwarenet.sn_Edge n ON n.Edge_id = Edge
+LEFT OUTER JOIN eniwarenet.sn_loc l ON l.id = n.loc_id
 $BODY$;
 
-DROP FUNCTION solaragg.find_agg_datum_hod(bigint,text[],text[],timestamptz,timestamptz);
-CREATE OR REPLACE FUNCTION solaragg.find_agg_datum_hod(
+DROP FUNCTION eniwareagg.find_agg_datum_hod(bigint,text[],text[],timestamptz,timestamptz);
+CREATE OR REPLACE FUNCTION eniwareagg.find_agg_datum_hod(
 	IN Edge bigint,
 	IN source text[],
 	IN path text[],
@@ -57,7 +57,7 @@ SELECT
 	('{"' || path[1] || '":{"' || path[2] || '":'
 		|| ROUND(AVG(CAST(json_extract_path_text(jdata, VARIADIC path) AS double precision)) * 1000) / 1000
 		|| '}}')::json as jdata
-FROM solaragg.agg_datum_hourly d
+FROM eniwareagg.agg_datum_hourly d
 WHERE
 	d.Edge_id = Edge
 	AND d.source_id = ANY(source)
@@ -68,8 +68,8 @@ GROUP BY
 	d.source_id
 $BODY$;
 
-DROP FUNCTION solaragg.find_agg_datum_seasonal_hod(bigint,text[],text[],timestamptz,timestamptz);
-CREATE OR REPLACE FUNCTION solaragg.find_agg_datum_seasonal_hod(
+DROP FUNCTION eniwareagg.find_agg_datum_seasonal_hod(bigint,text[],text[],timestamptz,timestamptz);
+CREATE OR REPLACE FUNCTION eniwareagg.find_agg_datum_seasonal_hod(
 	IN Edge bigint,
 	IN source text[],
 	IN path text[],
@@ -86,28 +86,28 @@ CREATE OR REPLACE FUNCTION solaragg.find_agg_datum_seasonal_hod(
 $BODY$
 SELECT
 	Edge AS Edge_id,
-	(solarnet.get_season_monday_start(CAST(d.local_date AS DATE))
+	(eniwarenet.get_season_monday_start(CAST(d.local_date AS DATE))
 		+ CAST(EXTRACT(hour FROM d.local_date) || ' hour' AS INTERVAL)) AT TIME ZONE 'UTC' AS ts_start,
-	solarnet.get_season_monday_start(CAST(d.local_date AS DATE))
+	eniwarenet.get_season_monday_start(CAST(d.local_date AS DATE))
 		+ CAST(EXTRACT(hour FROM d.local_date) || ' hour' AS INTERVAL) AS local_date,
 	d.source_id,
 	('{"' || path[1] || '":{"' || path[2] || '":'
 		|| ROUND(AVG(CAST(json_extract_path_text(jdata, VARIADIC path) AS double precision)) * 1000) / 1000
 		|| '}}')::json as jdata
-FROM solaragg.agg_datum_hourly d
+FROM eniwareagg.agg_datum_hourly d
 WHERE
 	d.Edge_id = Edge
 	AND d.source_id = ANY(source)
 	AND d.ts_start >= start_ts
 	AND d.ts_start < end_ts
 GROUP BY
-	solarnet.get_season_monday_start(CAST(d.local_date AS date)),
+	eniwarenet.get_season_monday_start(CAST(d.local_date AS date)),
 	EXTRACT(hour FROM d.local_date),
 	d.source_id
 $BODY$;
 
-DROP FUNCTION solaragg.find_agg_datum_dow(bigint,text[],text[],timestamptz,timestamptz);
-CREATE OR REPLACE FUNCTION solaragg.find_agg_datum_dow(
+DROP FUNCTION eniwareagg.find_agg_datum_dow(bigint,text[],text[],timestamptz,timestamptz);
+CREATE OR REPLACE FUNCTION eniwareagg.find_agg_datum_dow(
 	IN Edge bigint,
 	IN source text[],
 	IN path text[],
@@ -130,7 +130,7 @@ SELECT
 	('{"' || path[1] || '":{"' || path[2] || '":'
 		|| ROUND(AVG(CAST(json_extract_path_text(jdata, VARIADIC path) AS double precision)) * 1000) / 1000
 		|| '}}')::json as jdata
-FROM solaragg.agg_datum_daily d
+FROM eniwareagg.agg_datum_daily d
 WHERE
 	d.Edge_id = Edge
 	AND d.source_id = ANY(source)
@@ -141,8 +141,8 @@ GROUP BY
 	d.source_id
 $BODY$;
 
-DROP FUNCTION solaragg.find_agg_datum_seasonal_dow(bigint,text[],text[],timestamptz,timestamptz);
-CREATE OR REPLACE FUNCTION solaragg.find_agg_datum_seasonal_dow(
+DROP FUNCTION eniwareagg.find_agg_datum_seasonal_dow(bigint,text[],text[],timestamptz,timestamptz);
+CREATE OR REPLACE FUNCTION eniwareagg.find_agg_datum_seasonal_dow(
 	IN Edge bigint,
 	IN source text[],
 	IN path text[],
@@ -159,53 +159,53 @@ CREATE OR REPLACE FUNCTION solaragg.find_agg_datum_seasonal_dow(
 $BODY$
 SELECT
 	Edge AS Edge_id,
-	(solarnet.get_season_monday_start(d.local_date)
+	(eniwarenet.get_season_monday_start(d.local_date)
 		+ CAST((EXTRACT(isodow FROM d.local_date) - 1) || ' day' AS INTERVAL)) AT TIME ZONE 'UTC' AS ts_start,
-	(solarnet.get_season_monday_start(d.local_date)
+	(eniwarenet.get_season_monday_start(d.local_date)
 		+ CAST((EXTRACT(isodow FROM d.local_date) - 1) || ' day' AS INTERVAL)) AS local_date,
 	d.source_id,
 	('{"' || path[1] || '":{"' || path[2] || '":'
 		|| ROUND(AVG(CAST(json_extract_path_text(jdata, VARIADIC path) AS double precision)) * 1000) / 1000
 		|| '}}')::json as jdata
-FROM solaragg.agg_datum_daily d
+FROM eniwareagg.agg_datum_daily d
 WHERE
 	d.Edge_id = Edge
 	AND d.source_id = ANY(source)
 	AND d.ts_start >= start_ts
 	AND d.ts_start < end_ts
 GROUP BY
-	solarnet.get_season_monday_start(CAST(d.local_date AS date)),
+	eniwarenet.get_season_monday_start(CAST(d.local_date AS date)),
 	EXTRACT(isodow FROM d.local_date),
 	d.source_id
 $BODY$;
 
-DROP FUNCTION solaragg.find_most_recent_hourly(solarcommon.Edge_id, solarcommon.source_ids);
-CREATE OR REPLACE FUNCTION solaragg.find_most_recent_hourly(
+DROP FUNCTION eniwareagg.find_most_recent_hourly(eniwarecommon.Edge_id, eniwarecommon.source_ids);
+CREATE OR REPLACE FUNCTION eniwareagg.find_most_recent_hourly(
 	Edge bigint,
 	sources text[] DEFAULT NULL)
-  RETURNS SETOF solaragg.agg_datum_hourly AS
+  RETURNS SETOF eniwareagg.agg_datum_hourly AS
 $BODY$
 BEGIN
 	IF sources IS NULL OR array_length(sources, 1) < 1 THEN
 		RETURN QUERY
 		WITH maxes AS (
-			SELECT max(d.ts_start) as ts_start, d.source_id, Edge as Edge_id FROM solaragg.agg_datum_hourly d
-			INNER JOIN (SELECT solardatum.find_available_sources(Edge) AS source_id) AS s ON s.source_id = d.source_id
+			SELECT max(d.ts_start) as ts_start, d.source_id, Edge as Edge_id FROM eniwareagg.agg_datum_hourly d
+			INNER JOIN (SELECT eniwaredatum.find_available_sources(Edge) AS source_id) AS s ON s.source_id = d.source_id
 			WHERE d. Edge_id = Edge
 			GROUP BY d.source_id
 		)
-		SELECT d.* FROM solaragg.agg_datum_hourly d
+		SELECT d.* FROM eniwareagg.agg_datum_hourly d
 		INNER JOIN maxes ON maxes.Edge_id = d.Edge_id AND maxes.source_id = d.source_id AND maxes.ts_start = d.ts_start
 		ORDER BY d.source_id ASC;
 	ELSE
 		RETURN QUERY
 		WITH maxes AS (
-			SELECT max(d.ts_start) as ts_start, d.source_id, Edge as Edge_id FROM solaragg.agg_datum_hourly d
+			SELECT max(d.ts_start) as ts_start, d.source_id, Edge as Edge_id FROM eniwareagg.agg_datum_hourly d
 			INNER JOIN (SELECT unnest(sources) AS source_id) AS s ON s.source_id = d.source_id
 			WHERE d. Edge_id = Edge
 			GROUP BY d.source_id
 		)
-		SELECT d.* FROM solaragg.agg_datum_hourly d
+		SELECT d.* FROM eniwareagg.agg_datum_hourly d
 		INNER JOIN maxes ON maxes.Edge_id = d.Edge_id AND maxes.source_id = d.source_id AND maxes.ts_start = d.ts_start
 		ORDER BY d.source_id ASC;
 	END IF;
@@ -213,33 +213,33 @@ END;$BODY$
   LANGUAGE plpgsql STABLE
   ROWS 20;
 
-DROP FUNCTION solaragg.find_most_recent_daily(solarcommon.Edge_id, solarcommon.source_ids);
-CREATE OR REPLACE FUNCTION solaragg.find_most_recent_daily(
+DROP FUNCTION eniwareagg.find_most_recent_daily(eniwarecommon.Edge_id, eniwarecommon.source_ids);
+CREATE OR REPLACE FUNCTION eniwareagg.find_most_recent_daily(
 	Edge bigint,
 	sources text[] DEFAULT NULL)
-  RETURNS SETOF solaragg.agg_datum_daily AS
+  RETURNS SETOF eniwareagg.agg_datum_daily AS
 $BODY$
 BEGIN
 	IF sources IS NULL OR array_length(sources, 1) < 1 THEN
 		RETURN QUERY
 		WITH maxes AS (
-			SELECT max(d.ts_start) as ts_start, d.source_id, Edge as Edge_id FROM solaragg.agg_datum_daily d
-			INNER JOIN (SELECT solardatum.find_available_sources(Edge) AS source_id) AS s ON s.source_id = d.source_id
+			SELECT max(d.ts_start) as ts_start, d.source_id, Edge as Edge_id FROM eniwareagg.agg_datum_daily d
+			INNER JOIN (SELECT eniwaredatum.find_available_sources(Edge) AS source_id) AS s ON s.source_id = d.source_id
 			WHERE d. Edge_id = Edge
 			GROUP BY d.source_id
 		)
-		SELECT d.* FROM solaragg.agg_datum_daily d
+		SELECT d.* FROM eniwareagg.agg_datum_daily d
 		INNER JOIN maxes ON maxes.Edge_id = d.Edge_id AND maxes.source_id = d.source_id AND maxes.ts_start = d.ts_start
 		ORDER BY d.source_id ASC;
 	ELSE
 		RETURN QUERY
 		WITH maxes AS (
-			SELECT max(d.ts_start) as ts_start, d.source_id, Edge as Edge_id FROM solaragg.agg_datum_daily d
+			SELECT max(d.ts_start) as ts_start, d.source_id, Edge as Edge_id FROM eniwareagg.agg_datum_daily d
 			INNER JOIN (SELECT unnest(sources) AS source_id) AS s ON s.source_id = d.source_id
 			WHERE d. Edge_id = Edge
 			GROUP BY d.source_id
 		)
-		SELECT d.* FROM solaragg.agg_datum_daily d
+		SELECT d.* FROM eniwareagg.agg_datum_daily d
 		INNER JOIN maxes ON maxes.Edge_id = d.Edge_id AND maxes.source_id = d.source_id AND maxes.ts_start = d.ts_start
 		ORDER BY d.source_id ASC;
 	END IF;
@@ -247,33 +247,33 @@ END;$BODY$
   LANGUAGE plpgsql STABLE
   ROWS 20;
 
-DROP FUNCTION solaragg.find_most_recent_monthly(solarcommon.Edge_id, solarcommon.source_ids);
-CREATE OR REPLACE FUNCTION solaragg.find_most_recent_monthly(
+DROP FUNCTION eniwareagg.find_most_recent_monthly(eniwarecommon.Edge_id, eniwarecommon.source_ids);
+CREATE OR REPLACE FUNCTION eniwareagg.find_most_recent_monthly(
 	Edge bigint,
 	sources text[] DEFAULT NULL)
-  RETURNS SETOF solaragg.agg_datum_monthly AS
+  RETURNS SETOF eniwareagg.agg_datum_monthly AS
 $BODY$
 BEGIN
 	IF sources IS NULL OR array_length(sources, 1) < 1 THEN
 		RETURN QUERY
 		WITH maxes AS (
-			SELECT max(d.ts_start) as ts_start, d.source_id, Edge as Edge_id FROM solaragg.agg_datum_monthly d
-			INNER JOIN (SELECT solardatum.find_available_sources(Edge) AS source_id) AS s ON s.source_id = d.source_id
+			SELECT max(d.ts_start) as ts_start, d.source_id, Edge as Edge_id FROM eniwareagg.agg_datum_monthly d
+			INNER JOIN (SELECT eniwaredatum.find_available_sources(Edge) AS source_id) AS s ON s.source_id = d.source_id
 			WHERE d. Edge_id = Edge
 			GROUP BY d.source_id
 		)
-		SELECT d.* FROM solaragg.agg_datum_monthly d
+		SELECT d.* FROM eniwareagg.agg_datum_monthly d
 		INNER JOIN maxes ON maxes.Edge_id = d.Edge_id AND maxes.source_id = d.source_id AND maxes.ts_start = d.ts_start
 		ORDER BY d.source_id ASC;
 	ELSE
 		RETURN QUERY
 		WITH maxes AS (
-			SELECT max(d.ts_start) as ts_start, d.source_id, Edge as Edge_id FROM solaragg.agg_datum_monthly d
+			SELECT max(d.ts_start) as ts_start, d.source_id, Edge as Edge_id FROM eniwareagg.agg_datum_monthly d
 			INNER JOIN (SELECT unnest(sources) AS source_id) AS s ON s.source_id = d.source_id
 			WHERE d. Edge_id = Edge
 			GROUP BY d.source_id
 		)
-		SELECT d.* FROM solaragg.agg_datum_monthly d
+		SELECT d.* FROM eniwareagg.agg_datum_monthly d
 		INNER JOIN maxes ON maxes.Edge_id = d.Edge_id AND maxes.source_id = d.source_id AND maxes.ts_start = d.ts_start
 		ORDER BY d.source_id ASC;
 	END IF;
@@ -281,8 +281,8 @@ END;$BODY$
   LANGUAGE plpgsql STABLE
   ROWS 20;
 
-DROP FUNCTION solaragg.find_audit_datum_interval(solarcommon.Edge_id, solarcommon.source_id);
-CREATE OR REPLACE FUNCTION solaragg.find_audit_datum_interval(
+DROP FUNCTION eniwareagg.find_audit_datum_interval(eniwarecommon.Edge_id, eniwarecommon.source_id);
+CREATE OR REPLACE FUNCTION eniwareagg.find_audit_datum_interval(
 	IN Edge bigint,
 	IN src text DEFAULT NULL,
 	OUT ts_start timestamp with time zone,
@@ -294,27 +294,27 @@ $BODY$
 BEGIN
 	CASE
 		WHEN src IS NULL THEN
-			SELECT min(a.ts_start) FROM solaragg.aud_datum_hourly a WHERE Edge_id = Edge
+			SELECT min(a.ts_start) FROM eniwareagg.aud_datum_hourly a WHERE Edge_id = Edge
 			INTO ts_start;
 		ELSE
-			SELECT min(a.ts_start) FROM solaragg.aud_datum_hourly a WHERE Edge_id = Edge AND source_id = src
+			SELECT min(a.ts_start) FROM eniwareagg.aud_datum_hourly a WHERE Edge_id = Edge AND source_id = src
 			INTO ts_start;
 	END CASE;
 
 	CASE
 		WHEN src IS NULL THEN
-			SELECT max(a.ts_start) FROM solaragg.aud_datum_hourly a WHERE Edge_id = Edge
+			SELECT max(a.ts_start) FROM eniwareagg.aud_datum_hourly a WHERE Edge_id = Edge
 			INTO ts_end;
 		ELSE
-			SELECT max(a.ts_start) FROM solaragg.aud_datum_hourly a WHERE Edge_id = Edge AND source_id = src
+			SELECT max(a.ts_start) FROM eniwareagg.aud_datum_hourly a WHERE Edge_id = Edge AND source_id = src
 			INTO ts_end;
 	END CASE;
 
 	SELECT
 		l.time_zone,
 		CAST(EXTRACT(epoch FROM z.utc_offset) / 60 AS INTEGER)
-	FROM solarnet.sn_Edge n
-	INNER JOIN solarnet.sn_loc l ON l.id = n.loc_id
+	FROM eniwarenet.sn_Edge n
+	INNER JOIN eniwarenet.sn_loc l ON l.id = n.loc_id
 	INNER JOIN pg_timezone_names z ON z.name = l.time_zone
 	WHERE n.Edge_id = Edge
 	INTO Edge_tz, Edge_tz_offset;

@@ -1,6 +1,6 @@
-DROP FUNCTION solaragg.find_datum_for_time_slot(bigint, text[], timestamp with time zone, interval, interval);
+DROP FUNCTION eniwareagg.find_datum_for_time_slot(bigint, text[], timestamp with time zone, interval, interval);
 
-CREATE OR REPLACE FUNCTION solaragg.find_datum_for_time_slot(
+CREATE OR REPLACE FUNCTION eniwareagg.find_datum_for_time_slot(
 	IN Edge bigint, 
 	IN sources text[], 
 	IN start_ts timestamp with time zone, 
@@ -28,7 +28,7 @@ SELECT * FROM (
 		END AS percent,
 		COALESCE(CAST(EXTRACT(EPOCH FROM d.ts - lag(d.ts) over win) * 1000 AS BIGINT), 0) as tdiff,
 		d.jdata as jdata
-	FROM solardatum.da_datum d
+	FROM eniwaredatum.da_datum d
 	WHERE d.Edge_id = Edge
 		AND d.source_id = ANY(sources)
 		AND d.ts >= start_ts - tolerance

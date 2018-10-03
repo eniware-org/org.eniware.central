@@ -1,4 +1,4 @@
-CREATE TABLE solarrep.rep_stale_Edge_datum (
+CREATE TABLE eniwarerep.rep_stale_Edge_datum (
 	ts			TIMESTAMP WITH TIME ZONE NOT NULL,
 	Edge_id 	BIGINT NOT NULL,
 	agg_kind 	CHARACTER(1) NOT NULL,
@@ -6,7 +6,7 @@ CREATE TABLE solarrep.rep_stale_Edge_datum (
 	PRIMARY KEY (ts, Edge_id, agg_kind, datum_kind)
 );
 
-CREATE TABLE solarrep.rep_stale_datum (
+CREATE TABLE eniwarerep.rep_stale_datum (
 	ts			TIMESTAMP WITH TIME ZONE NOT NULL,
 	agg_kind 	CHARACTER(1) NOT NULL,
 	datum_kind 	CHARACTER VARYING(64) NOT NULL,
@@ -14,25 +14,25 @@ CREATE TABLE solarrep.rep_stale_datum (
 );
 
 /**************************************************************************************************
- * FUNCTION solarnet.get_Edge_timezone(bigint)
+ * FUNCTION eniwarenet.get_Edge_timezone(bigint)
  * 
  * Return a Edge's time zone.
  * 
  * @param bigint the Edge ID
  * @return time zone name, e.g. 'Pacific/Auckland'
  */
-CREATE OR REPLACE FUNCTION solarnet.get_Edge_timezone(bigint)
+CREATE OR REPLACE FUNCTION eniwarenet.get_Edge_timezone(bigint)
   RETURNS text AS
 $BODY$
 	SELECT l.time_zone 
-	FROM solarnet.sn_Edge n
-	INNER JOIN solarnet.sn_loc l ON l.id = n.loc_id
+	FROM eniwarenet.sn_Edge n
+	INNER JOIN eniwarenet.sn_loc l ON l.id = n.loc_id
 	WHERE n.Edge_id = $1
 $BODY$
   LANGUAGE 'sql' STABLE;
 
 /**************************************************************************************************
- * FUNCTION solarrep.populate_rep_stale_datum(timestamp with time zone, bigint, varchar)
+ * FUNCTION eniwarerep.populate_rep_stale_datum(timestamp with time zone, bigint, varchar)
  * 
  * Insert records into the rep_stale_datum table for asynchronously aggregating updated data later.
  * 
@@ -40,7 +40,7 @@ $BODY$
  * @param Edge_id the Edge ID (or NULL if not Edge-specific)
  * @param datum_kind the type of datum, e.g. 'power', 'consumption', etc.
  */
-CREATE OR REPLACE FUNCTION solarrep.populate_rep_stale_datum(
+CREATE OR REPLACE FUNCTION eniwarerep.populate_rep_stale_datum(
 	ts timestamp with time zone, 
 	Edge_id bigint, 
 	datum_kind character varying(64))
@@ -60,10 +60,10 @@ BEGIN
 		END CASE;
 		BEGIN
 			IF Edge_id IS NULL THEN
-				INSERT INTO solarrep.rep_stale_datum (ts, agg_kind, datum_kind)
+				INSERT INTO eniwarerep.rep_stale_datum (ts, agg_kind, datum_kind)
 				VALUES (agg_ts, a, datum_kind);
 			ELSE
-				INSERT INTO solarrep.rep_stale_Edge_datum (ts, Edge_id, agg_kind, datum_kind)
+				INSERT INTO eniwarerep.rep_stale_Edge_datum (ts, Edge_id, agg_kind, datum_kind)
 				VALUES (agg_ts, Edge_id, a, datum_kind);
 			END IF;
 		EXCEPTION WHEN unique_violation THEN
@@ -73,70 +73,70 @@ BEGIN
 END;$BODY$
 LANGUAGE 'plpgsql' VOLATILE;
 
-CREATE OR REPLACE FUNCTION solarrep.trigger_rep_stale_Edge_datum()
+CREATE OR REPLACE FUNCTION eniwarerep.trigger_rep_stale_Edge_datum()
   RETURNS "trigger" AS
 $BODY$BEGIN
-	PERFORM solarrep.populate_rep_stale_datum(NEW.created, NEW.Edge_id, TG_TABLE_NAME::text);
+	PERFORM eniwarerep.populate_rep_stale_datum(NEW.created, NEW.Edge_id, TG_TABLE_NAME::text);
 	RETURN NEW;
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE;
 
 -- NOTE: populates "loc_id" into "Edge_id" column.
-CREATE OR REPLACE FUNCTION solarrep.trigger_rep_stale_loc_datum()
+CREATE OR REPLACE FUNCTION eniwarerep.trigger_rep_stale_loc_datum()
   RETURNS "trigger" AS
 $BODY$BEGIN
-	PERFORM solarrep.populate_rep_stale_datum(NEW.created, NEW.loc_id, TG_TABLE_NAME::text);
+	PERFORM eniwarerep.populate_rep_stale_datum(NEW.created, NEW.loc_id, TG_TABLE_NAME::text);
 	RETURN NEW;
 END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE;
 
-DROP TRIGGER IF EXISTS populate_rep_stale_datum ON solarnet.sn_consum_datum;
+DROP TRIGGER IF EXISTS populate_rep_stale_datum ON eniwarenet.sn_consum_datum;
 CREATE TRIGGER populate_rep_stale_datum
   AFTER INSERT OR UPDATE
-  ON solarnet.sn_consum_datum
+  ON eniwarenet.sn_consum_datum
   FOR EACH ROW
-  EXECUTE PROCEDURE solarrep.trigger_rep_stale_Edge_datum();
+  EXECUTE PROCEDURE eniwarerep.trigger_rep_stale_Edge_datum();
 
-DROP TRIGGER IF EXISTS populate_rep_stale_datum ON solarnet.sn_power_datum;
+DROP TRIGGER IF EXISTS populate_rep_stale_datum ON eniwarenet.sn_power_datum;
 CREATE TRIGGER populate_rep_stale_datum
   AFTER INSERT OR UPDATE
-  ON solarnet.sn_power_datum
+  ON eniwarenet.sn_power_datum
   FOR EACH ROW
-  EXECUTE PROCEDURE solarrep.trigger_rep_stale_Edge_datum();
+  EXECUTE PROCEDURE eniwarerep.trigger_rep_stale_Edge_datum();
 
-DROP TRIGGER IF EXISTS populate_rep_stale_datum ON solarnet.sn_price_datum;
+DROP TRIGGER IF EXISTS populate_rep_stale_datum ON eniwarenet.sn_price_datum;
 CREATE TRIGGER populate_rep_stale_datum
   AFTER INSERT OR UPDATE
-  ON solarnet.sn_price_datum
+  ON eniwarenet.sn_price_datum
   FOR EACH ROW
-  EXECUTE PROCEDURE solarrep.trigger_rep_stale_loc_datum();
+  EXECUTE PROCEDURE eniwarerep.trigger_rep_stale_loc_datum();
 
 /**************************************************************************************************
- * FUNCTION solarrep.process_one_rep_stale_Edge_datum()
+ * FUNCTION eniwarerep.process_one_rep_stale_Edge_datum()
  * 
  * Process a single row from the rep_stale_Edge_datum table, calling the appropriate aggregation
  * query based on the row data. This function works by naming conventions. 
  * The rep_stale_Edge_datum.datum_kind values are assumed to be named 'sn_X', referring to table
- * names in the solarnet schema. A corresponding 'populate_rep_X_Y' function will be called, 
+ * names in the eniwarenet schema. A corresponding 'populate_rep_X_Y' function will be called, 
  * where Y is derived from rep_stale_Edge_datum.agg_kind:
  * 
  *   d -> 'daily'
  *   h -> 'hourly'
  *
- * The function is expected to accept a RECORD type of the table 'solarnet.X'.
+ * The function is expected to accept a RECORD type of the table 'eniwarenet.X'.
  * 
  * For example, a datum_kind value of 'sn_power_datum' and agg_kind 'd' would result in a function
  * named 'populate_rep_power_datum_daily', which will be passed rows from the 
- * 'solarnet.sn_power_datum' table.
+ * 'eniwarenet.sn_power_datum' table.
  * 
  * @return count of rows processed (i.e. 0 or 1)
  */
-CREATE OR REPLACE FUNCTION solarrep.process_one_rep_stale_Edge_datum()
+CREATE OR REPLACE FUNCTION eniwarerep.process_one_rep_stale_Edge_datum()
   RETURNS INTEGER AS
 $BODY$
 DECLARE
-	stale solarrep.rep_stale_Edge_datum;
-	curs CURSOR FOR SELECT * FROM solarrep.rep_stale_Edge_datum 
+	stale eniwarerep.rep_stale_Edge_datum;
+	curs CURSOR FOR SELECT * FROM eniwarerep.rep_stale_Edge_datum 
 					ORDER BY agg_kind DESC, ts ASC, Edge_id ASC, datum_kind ASC
 					FOR UPDATE;
 	func_name text;
@@ -172,15 +172,15 @@ BEGIN
 		END CASE;
 		func_name := 'populate_rep_' || substring(stale.datum_kind FROM 4) || func_agg;
 		-- find all records in aggregate range, grouped by source, to run with
-		sql_call := 'SELECT solarrep.' || func_name || '(c) FROM solarnet.' ||stale.datum_kind || ' c'
-			|| ' where c.id in (select max(id) from solarnet.' || stale.datum_kind 
+		sql_call := 'SELECT eniwarerep.' || func_name || '(c) FROM eniwarenet.' ||stale.datum_kind || ' c'
+			|| ' where c.id in (select max(id) from eniwarenet.' || stale.datum_kind 
 			|| ' where ' || key_kind || ' = $1 and created >= $2 and created < $3 and prev_datum IS NOT NULL'
 			|| ' group by date_trunc(''' || trunc_kind || ''', created), ' || group_kind || ')';
 	
 		--RAISE NOTICE 'Calling aggregate SQL %; %, %, %', sql_call, stale.Edge_id, stale.ts, max_date;
 		EXECUTE sql_call USING stale.Edge_id, stale.ts, max_date;
 	
-		DELETE FROM solarrep.rep_stale_Edge_datum WHERE CURRENT OF curs;
+		DELETE FROM eniwarerep.rep_stale_Edge_datum WHERE CURRENT OF curs;
 		result := 1;
 	END IF;
 	
@@ -190,19 +190,19 @@ END;$BODY$
 LANGUAGE 'plpgsql' VOLATILE;
 
 /**************************************************************************************************
- * FUNCTION solarrep.process_rep_stale_Edge_datum()
+ * FUNCTION eniwarerep.process_rep_stale_Edge_datum()
  * 
  * Process all rows in rep_stale_Edge_datum by repeatedly calling 
- * solarrep.process_one_rep_stale_Edge_datum() until no rows remain.
+ * eniwarerep.process_one_rep_stale_Edge_datum() until no rows remain.
  */
-CREATE OR REPLACE FUNCTION solarrep.process_rep_stale_Edge_datum()
+CREATE OR REPLACE FUNCTION eniwarerep.process_rep_stale_Edge_datum()
   RETURNS void AS
 $BODY$
 DECLARE
 	result_count INTEGER;
 BEGIN
 	LOOP
-		SELECT * INTO result_count FROM solarrep.process_one_rep_stale_Edge_datum();
+		SELECT * INTO result_count FROM eniwarerep.process_one_rep_stale_Edge_datum();
 		IF result_count < 1 THEN
 			RETURN;
 		END IF;
@@ -211,12 +211,12 @@ END;$BODY$
 LANGUAGE 'plpgsql' VOLATILE;
  
 -- clean up old triggers
-DROP FUNCTION IF EXISTS solarrep.populate_rep_consum_daily() CASCADE;
-DROP FUNCTION IF EXISTS solarrep.populate_rep_consum_hourly() CASCADE;
-DROP FUNCTION IF EXISTS solarrep.populate_rep_power_daily() CASCADE;
-DROP FUNCTION IF EXISTS solarrep.populate_rep_power_hourly() CASCADE;
-DROP FUNCTION IF EXISTS solarrep.populate_rep_price_daily() CASCADE;
-DROP FUNCTION IF EXISTS solarrep.populate_rep_price_hourly() CASCADE;
+DROP FUNCTION IF EXISTS eniwarerep.populate_rep_consum_daily() CASCADE;
+DROP FUNCTION IF EXISTS eniwarerep.populate_rep_consum_hourly() CASCADE;
+DROP FUNCTION IF EXISTS eniwarerep.populate_rep_power_daily() CASCADE;
+DROP FUNCTION IF EXISTS eniwarerep.populate_rep_power_hourly() CASCADE;
+DROP FUNCTION IF EXISTS eniwarerep.populate_rep_price_daily() CASCADE;
+DROP FUNCTION IF EXISTS eniwarerep.populate_rep_price_hourly() CASCADE;
 
-DROP FUNCTION IF EXISTS solarrep.populate_rep_net_power_daily() CASCADE;
-DROP FUNCTION IF EXISTS solarrep.populate_rep_net_power_hourly() CASCADE;
+DROP FUNCTION IF EXISTS eniwarerep.populate_rep_net_power_daily() CASCADE;
+DROP FUNCTION IF EXISTS eniwarerep.populate_rep_net_power_hourly() CASCADE;

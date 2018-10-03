@@ -5,7 +5,7 @@
  *
  * @returns The property count.
  */
-CREATE OR REPLACE FUNCTION solardatum.datum_prop_count(IN jdata json)
+CREATE OR REPLACE FUNCTION eniwaredatum.datum_prop_count(IN jdata json)
   RETURNS INTEGER
   LANGUAGE plv8
   IMMUTABLE AS
@@ -25,35 +25,35 @@ if ( jdata ) {
 return count;
 $BODY$;
 
-CREATE TABLE solaragg.aud_datum_hourly (
+CREATE TABLE eniwareagg.aud_datum_hourly (
   ts_start timestamp with time zone NOT NULL,
-  Edge_id solarcommon.Edge_id NOT NULL,
-  source_id solarcommon.source_id NOT NULL,
+  Edge_id eniwarecommon.Edge_id NOT NULL,
+  source_id eniwarecommon.source_id NOT NULL,
   prop_count integer NOT NULL,
   CONSTRAINT aud_datum_hourly_pkey PRIMARY KEY (Edge_id, ts_start, source_id) DEFERRABLE INITIALLY IMMEDIATE
 );
 
-CREATE OR REPLACE FUNCTION solardatum.store_datum(
-	cdate solarcommon.ts,
-	Edge solarcommon.Edge_id,
-	src solarcommon.source_id,
-	pdate solarcommon.ts,
+CREATE OR REPLACE FUNCTION eniwaredatum.store_datum(
+	cdate eniwarecommon.ts,
+	Edge eniwarecommon.Edge_id,
+	src eniwarecommon.source_id,
+	pdate eniwarecommon.ts,
 	jdata text)
   RETURNS void AS
 $BODY$
 DECLARE
-	ts_crea solarcommon.ts := COALESCE(cdate, now());
-	ts_post solarcommon.ts := COALESCE(pdate, now());
+	ts_crea eniwarecommon.ts := COALESCE(cdate, now());
+	ts_post eniwarecommon.ts := COALESCE(pdate, now());
 	jdata_json json := jdata::json;
-	jdata_prop_count integer := solardatum.datum_prop_count(jdata_json);
+	jdata_prop_count integer := eniwaredatum.datum_prop_count(jdata_json);
 	ts_post_hour timestamp with time zone := date_trunc('hour', ts_post);
 BEGIN
 	BEGIN
-		INSERT INTO solardatum.da_datum(ts, Edge_id, source_id, posted, jdata)
+		INSERT INTO eniwaredatum.da_datum(ts, Edge_id, source_id, posted, jdata)
 		VALUES (ts_crea, Edge, src, ts_post, jdata_json);
 	EXCEPTION WHEN unique_violation THEN
 		-- We mostly expect inserts, but we allow updates
-		UPDATE solardatum.da_datum SET 
+		UPDATE eniwaredatum.da_datum SET 
 			jdata = jdata_json, 
 			posted = ts_post
 		WHERE
@@ -65,7 +65,7 @@ BEGIN
 	-- for auditing we mostly expect updates
 	<<update_audit>>
 	LOOP
-		UPDATE solaragg.aud_datum_hourly 
+		UPDATE eniwareagg.aud_datum_hourly 
 		SET prop_count = prop_count + jdata_prop_count
 		WHERE
 			Edge_id = Edge
@@ -74,7 +74,7 @@ BEGIN
 
 		EXIT update_audit WHEN FOUND;
 
-		INSERT INTO solaragg.aud_datum_hourly (
+		INSERT INTO eniwareagg.aud_datum_hourly (
 			ts_start, Edge_id, source_id, prop_count)
 		VALUES (
 			ts_post_hour,
@@ -88,35 +88,35 @@ END;
 $BODY$
   LANGUAGE plpgsql VOLATILE;
 
-CREATE TABLE solaragg.aud_loc_datum_hourly (
+CREATE TABLE eniwareagg.aud_loc_datum_hourly (
   ts_start timestamp with time zone NOT NULL,
-  loc_id solarcommon.loc_id NOT NULL,
-  source_id solarcommon.source_id NOT NULL,
+  loc_id eniwarecommon.loc_id NOT NULL,
+  source_id eniwarecommon.source_id NOT NULL,
   prop_count integer NOT NULL,
   CONSTRAINT aud_loc_datum_hourly_pkey PRIMARY KEY (loc_id, ts_start, source_id) DEFERRABLE INITIALLY IMMEDIATE
 );
 
-CREATE OR REPLACE FUNCTION solardatum.store_loc_datum(
-	cdate solarcommon.ts,
-	loc solarcommon.loc_id,
-	src solarcommon.source_id,
-	pdate solarcommon.ts,
+CREATE OR REPLACE FUNCTION eniwaredatum.store_loc_datum(
+	cdate eniwarecommon.ts,
+	loc eniwarecommon.loc_id,
+	src eniwarecommon.source_id,
+	pdate eniwarecommon.ts,
 	jdata text)
   RETURNS void AS
 $BODY$
 DECLARE
-	ts_crea solarcommon.ts := COALESCE(cdate, now());
-	ts_post solarcommon.ts := COALESCE(pdate, now());
+	ts_crea eniwarecommon.ts := COALESCE(cdate, now());
+	ts_post eniwarecommon.ts := COALESCE(pdate, now());
 	jdata_json json := jdata::json;
-	jdata_prop_count integer := solardatum.datum_prop_count(jdata_json);
+	jdata_prop_count integer := eniwaredatum.datum_prop_count(jdata_json);
 	ts_post_hour timestamp with time zone := date_trunc('hour', ts_post);
 BEGIN
 	BEGIN
-		INSERT INTO solardatum.da_loc_datum(ts, loc_id, source_id, posted, jdata)
+		INSERT INTO eniwaredatum.da_loc_datum(ts, loc_id, source_id, posted, jdata)
 		VALUES (ts_crea, loc, src, ts_post, jdata_json);
 	EXCEPTION WHEN unique_violation THEN
 		-- We mostly expect inserts, but we allow updates
-		UPDATE solardatum.da_loc_datum SET
+		UPDATE eniwaredatum.da_loc_datum SET
 			jdata = jdata_json,
 			posted = ts_post
 		WHERE
@@ -128,7 +128,7 @@ BEGIN
 	-- for auditing we mostly expect updates
 	<<update_audit>>
 	LOOP
-		UPDATE solaragg.aud_loc_datum_hourly 
+		UPDATE eniwareagg.aud_loc_datum_hourly 
 		SET prop_count = prop_count + jdata_prop_count
 		WHERE
 			loc_id = loc
@@ -137,7 +137,7 @@ BEGIN
 
 		EXIT update_audit WHEN FOUND;
 
-		INSERT INTO solaragg.aud_loc_datum_hourly (
+		INSERT INTO eniwareagg.aud_loc_datum_hourly (
 			ts_start, loc_id, source_id, prop_count)
 		VALUES (
 			ts_post_hour,

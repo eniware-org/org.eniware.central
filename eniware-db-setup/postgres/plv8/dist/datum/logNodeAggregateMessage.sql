@@ -9,7 +9,7 @@ exports.default = logEdgeAggregateMessage;
 var logInsertStmt;
 
 /**
- * Insert a log message into the <code>solaragg.agg_messages</code> table.
+ * Insert a log message into the <code>eniwareagg.agg_messages</code> table.
  *
  * @param {Number} EdgeId   The Edge ID to associated with the record.
  * @param {String} sourceId The source ID to associated with the record.
@@ -23,7 +23,7 @@ function logEdgeAggregateMessage(EdgeId, sourceId, ts, msg) {
 		return;
 	}
 	if (!logInsertStmt) {
-		logInsertStmt = plv8.prepare('INSERT INTO solaragg.agg_messages (Edge_id, source_id, ts, msg) VALUES ($1, $2, $3, $4)', ['bigint', 'text', 'timestamp with time zone', 'text']);
+		logInsertStmt = plv8.prepare('INSERT INTO eniwareagg.agg_messages (Edge_id, source_id, ts, msg) VALUES ($1, $2, $3, $4)', ['bigint', 'text', 'timestamp with time zone', 'text']);
 	}
 	var dbMsg = Array.prototype.slice.call(arguments, 3).join(' ');
 	logInsertStmt.execute([EdgeId, sourceId, ts, dbMsg]);

@@ -1,6 +1,6 @@
 /**
  * Calculate an aggregated value for the running total of data for a given Edge or location and set of sources.
- * This function calls solaragg.find_running_datum() internally and calculates the weighted average of
+ * This function calls eniwareagg.find_running_datum() internally and calculates the weighted average of
  * all 'i' JSON property values, the sum of all 'a' JSON property values, and the most recent available
  * value for all 's' JSON property values.
  * 
@@ -9,7 +9,7 @@
  * @param sources An array of source IDs to query for.
  * @param end_ts An optional date to limit the results to. If not provided the current date is used.
  */
-CREATE OR REPLACE FUNCTION solaragg.calc_running_total(
+CREATE OR REPLACE FUNCTION eniwareagg.calc_running_total(
 	IN query text,
 	IN pk bigint, 
 	IN sources text[], 
@@ -149,7 +149,7 @@ $BODY$;
  * @param sources An array of source IDs to query for.
  * @param end_ts An optional date to limit the results to. If not provided the current date is used.
  */
-CREATE OR REPLACE FUNCTION solaragg.find_running_datum(
+CREATE OR REPLACE FUNCTION eniwareagg.find_running_datum(
 	IN Edge bigint, 
 	IN sources text[], 
 	IN end_ts timestamp with time zone DEFAULT CURRENT_TIMESTAMP)
@@ -159,32 +159,32 @@ STABLE AS
 $BODY$
 	WITH Edgetz AS (
 		SELECT n.Edge_id, COALESCE(l.time_zone, 'UTC') AS tz
-		FROM solarnet.sn_Edge n
-		LEFT OUTER JOIN solarnet.sn_loc l ON l.id = n.loc_id
+		FROM eniwarenet.sn_Edge n
+		LEFT OUTER JOIN eniwarenet.sn_loc l ON l.id = n.loc_id
 		WHERE n.Edge_id = Edge
 	)
 	SELECT d.ts_start, d.local_date, d.Edge_id, d.source_id, d.jdata, CAST(extract(epoch from (local_date + interval '1 month') - local_date) / 3600 AS integer) AS weight
-	FROM solaragg.agg_datum_monthly d
+	FROM eniwareagg.agg_datum_monthly d
 	INNER JOIN Edgetz ON Edgetz.Edge_id = d.Edge_id
 	WHERE d.ts_start < date_trunc('month', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
 	SELECT d.ts_start, d.local_date, d.Edge_id, d.source_id, d.jdata, 24::integer as weight
-	FROM solaragg.agg_datum_daily d
+	FROM eniwareagg.agg_datum_daily d
 	INNER JOIN Edgetz ON Edgetz.Edge_id = d.Edge_id
 	WHERE ts_start < date_trunc('day', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
 		AND d.ts_start >= date_trunc('month', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
 	SELECT d.ts_start, d.local_date, d.Edge_id, d.source_id, d.jdata, 1::INTEGER as weight
-	FROM solaragg.agg_datum_hourly d
+	FROM eniwareagg.agg_datum_hourly d
 	INNER JOIN Edgetz ON Edgetz.Edge_id = d.Edge_id
 	WHERE d.ts_start < date_trunc('hour', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
 		AND d.ts_start >= date_trunc('day', end_ts AT TIME ZONE Edgetz.tz) AT TIME ZONE Edgetz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
 	SELECT ts_start, ts_start at time zone Edgetz.tz AS local_date, Edgetz.Edge_id, source_id, jdata, 1::integer as weight
-	FROM solaragg.calc_datum_time_slots(
+	FROM eniwareagg.calc_datum_time_slots(
 		Edge,
 		sources,
 		date_trunc('hour', end_ts),
@@ -198,7 +198,7 @@ $BODY$;
 
 /**
  * Calculate an aggregated value for the running total of data for a given Edge and set of sources.
- * This function calls solaragg.find_running_datum() internally and calculates the weighted average of
+ * This function calls eniwareagg.find_running_datum() internally and calculates the weighted average of
  * all 'i' JSON property values, the sum of all 'a' JSON property values, and the most recent available
  * value for all 's' JSON property values.
  * 
@@ -206,7 +206,7 @@ $BODY$;
  * @param sources An array of source IDs to query for.
  * @param end_ts An optional date to limit the results to. If not provided the current date is used.
  */
-CREATE OR REPLACE FUNCTION solaragg.calc_running_datum_total(
+CREATE OR REPLACE FUNCTION eniwareagg.calc_running_datum_total(
 	IN Edge bigint, 
 	IN sources text[], 
 	IN end_ts timestamp with time zone DEFAULT CURRENT_TIMESTAMP)
@@ -217,13 +217,13 @@ ROWS 10 AS
 $BODY$
 	WITH Edgetz AS (
 		SELECT n.Edge_id, COALESCE(l.time_zone, 'UTC') AS tz
-		FROM solarnet.sn_Edge n
-		LEFT OUTER JOIN solarnet.sn_loc l ON l.id = n.loc_id
+		FROM eniwarenet.sn_Edge n
+		LEFT OUTER JOIN eniwarenet.sn_loc l ON l.id = n.loc_id
 		WHERE n.Edge_id = Edge
 	)
 	SELECT end_ts, end_ts AT TIME ZONE Edgetz.tz AS local_date, Edge, r.source_id, r.jdata
-	FROM solaragg.calc_running_total(
-		'SELECT * FROM solaragg.find_running_datum($1, $2, $3)',
+	FROM eniwareagg.calc_running_total(
+		'SELECT * FROM eniwareagg.find_running_datum($1, $2, $3)',
 		Edge,
 		sources,
 		end_ts
@@ -243,7 +243,7 @@ $BODY$;
  * @param sources An array of source IDs to query for.
  * @param end_ts An optional date to limit the results to. If not provided the current date is used.
  */
-CREATE OR REPLACE FUNCTION solaragg.find_running_loc_datum(
+CREATE OR REPLACE FUNCTION eniwareagg.find_running_loc_datum(
 	IN loc bigint, 
 	IN sources text[], 
 	IN end_ts timestamp with time zone DEFAULT CURRENT_TIMESTAMP)
@@ -253,31 +253,31 @@ STABLE AS
 $BODY$
 	WITH loctz AS (
 		SELECT l.id as loc_id, COALESCE(l.time_zone, 'UTC') AS tz
-		FROM solarnet.sn_loc l
+		FROM eniwarenet.sn_loc l
 		WHERE l.id = loc
 	)
 	SELECT d.ts_start, d.local_date, d.loc_id, d.source_id, d.jdata, CAST(extract(epoch from (local_date + interval '1 month') - local_date) / 3600 AS integer) AS weight
-	FROM solaragg.agg_loc_datum_monthly d
+	FROM eniwareagg.agg_loc_datum_monthly d
 	INNER JOIN loctz ON loctz.loc_id = d.loc_id
 	WHERE d.ts_start < date_trunc('month', end_ts AT TIME ZONE loctz.tz) AT TIME ZONE loctz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
 	SELECT d.ts_start, d.local_date, d.loc_id, d.source_id, d.jdata, 24::integer as weight
-	FROM solaragg.agg_loc_datum_daily d
+	FROM eniwareagg.agg_loc_datum_daily d
 	INNER JOIN loctz ON loctz.loc_id = d.loc_id
 	WHERE ts_start < date_trunc('day', end_ts AT TIME ZONE loctz.tz) AT TIME ZONE loctz.tz
 		AND d.ts_start >= date_trunc('month', end_ts AT TIME ZONE loctz.tz) AT TIME ZONE loctz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
 	SELECT d.ts_start, d.local_date, d.loc_id, d.source_id, d.jdata, 1::INTEGER as weight
-	FROM solaragg.agg_loc_datum_hourly d
+	FROM eniwareagg.agg_loc_datum_hourly d
 	INNER JOIN loctz ON loctz.loc_id = d.loc_id
 	WHERE d.ts_start < date_trunc('hour', end_ts AT TIME ZONE loctz.tz) AT TIME ZONE loctz.tz
 		AND d.ts_start >= date_trunc('day', end_ts AT TIME ZONE loctz.tz) AT TIME ZONE loctz.tz
 		AND d.source_id = ANY(sources)
 	UNION ALL
 	SELECT ts_start, ts_start at time zone loctz.tz AS local_date, loctz.loc_id, source_id, jdata, 1::integer as weight
-	FROM solaragg.calc_loc_datum_time_slots(
+	FROM eniwareagg.calc_loc_datum_time_slots(
 		loc,
 		sources,
 		date_trunc('hour', end_ts),
@@ -291,7 +291,7 @@ $BODY$;
 
 /**
  * Calculate an aggregated value for the running total of data for a given location and set of sources.
- * This function calls solaragg.find_running_datum() internally and calculates the weighted average of
+ * This function calls eniwareagg.find_running_datum() internally and calculates the weighted average of
  * all 'i' JSON property values, the sum of all 'a' JSON property values, and the most recent available
  * value for all 's' JSON property values.
  * 
@@ -299,7 +299,7 @@ $BODY$;
  * @param sources An array of source IDs to query for.
  * @param end_ts An optional date to limit the results to. If not provided the current date is used.
  */
-CREATE OR REPLACE FUNCTION solaragg.calc_running_loc_datum_total(
+CREATE OR REPLACE FUNCTION eniwareagg.calc_running_loc_datum_total(
 	IN loc bigint, 
 	IN sources text[], 
 	IN end_ts timestamp with time zone DEFAULT CURRENT_TIMESTAMP)
@@ -310,12 +310,12 @@ ROWS 10 AS
 $BODY$
 	WITH loctz AS (
 		SELECT l.id as loc_id, COALESCE(l.time_zone, 'UTC') AS tz
-		FROM solarnet.sn_loc l
+		FROM eniwarenet.sn_loc l
 		WHERE l.id = loc
 	)
 	SELECT end_ts, end_ts AT TIME ZONE loctz.tz AS local_date, loc, r.source_id, r.jdata
-	FROM solaragg.calc_running_total(
-		'SELECT * FROM solaragg.find_running_loc_datum($1, $2, $3)',
+	FROM eniwareagg.calc_running_total(
+		'SELECT * FROM eniwareagg.find_running_loc_datum($1, $2, $3)',
 		loc,
 		sources,
 		end_ts
