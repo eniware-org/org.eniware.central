@@ -1,5 +1,5 @@
 /* ==================================================================
-be *  Eniware Open sorce:Nikolai Manchev
+be *  Eniware Open Source:Nikolai Manchev
  *  Apache License 2.0
  * ==================================================================
  */

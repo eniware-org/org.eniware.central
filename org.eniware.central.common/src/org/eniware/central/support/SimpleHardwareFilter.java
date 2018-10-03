@@ -1,5 +1,5 @@
 /* ==================================================================
- *  Eniware Open sorce:Nikolai Manchev
+ *  Eniware Open Source:Nikolai Manchev
  *  Apache License 2.0
  * ==================================================================
  */
@@ -15,7 +15,7 @@ import org.eniware.util.SerializeIgnore;
 /**
  * Simple implementation of {@link HardwareFilter}.
  * 
- * @author matt
+ * @Nikolai Manchev
  * @version $Revision$
  */
 public class SimpleHardwareFilter implements HardwareFilter {
