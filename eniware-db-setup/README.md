@@ -1,3 +1,3 @@
-# SolarNet dataabase setup
+# EniwareNet database setup
 
-This project contains setup scripts for the central SolarNet database.
+This project contains setup scripts for the central EniwareNet database.
