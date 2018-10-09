@@ -151,13 +151,13 @@ public class MyEdgesController extends ControllerSupport {
 		List<UserEdge> edges = userBiz.getUserEdges(SecurityUtils.getCurrentUser().getUserId());
 
 		// move any Edges with pending transfer into own list
-		List<UserEdge> pendingTransferEdges = new ArrayList<UserEdge>(Node == null ? 0 : edges.size());
-		if ( Nodes != null ) {
-			for ( Iterator<UserEdge> itr = Nodes.iterator(); itr.hasNext(); ) {
+		List<UserEdge> pendingTransferEdges = new ArrayList<UserEdge>(edges == null ? 0 : edges.size());
+		if ( edges != null ) {
+			for ( Iterator<UserEdge> itr = edges.iterator(); itr.hasNext(); ) {
 				UserEdge Edge = itr.next();
 				if ( Edge.getTransfer() != null ) {
 					itr.remove();
-					pendingTransferEdges.add(node);
+					pendingTransferEdges.add(Edge);
 				}
 			}
 		}
@@ -167,7 +167,7 @@ public class MyEdgesController extends ControllerSupport {
 		List<UserEdgeTransfer> pendingEdgeOwnershipRequests = EdgeOwnershipBiz
 				.pendingEdgeOwnershipTransfersForEmail(actor.getEmail());
 		ModelAndView mv = new ModelAndView("my-Edges/my-Edges");
-		mv.addObject("userEdgesList", Nodes);
+		mv.addObject("userEdgesList", edges);
 		mv.addObject("pendingUserEdgeConfirmationsList", pendingConfirmationList);
 		mv.addObject("pendingUserEdgeTransferList", pendingTransferEdges);
 		mv.addObject("pendingEdgeOwnershipRequests", pendingEdgeOwnershipRequests);
