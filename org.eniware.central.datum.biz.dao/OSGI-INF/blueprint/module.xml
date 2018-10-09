@@ -38,7 +38,7 @@
 	<!-- Use Java @Transactional annotations to declare transactions. -->
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
-	<bean id="daoDatumMetadataBiz" class="org.eniware.central.daum.biz.dao.DaoDatumMetadataBiz">
+	<bean id="daoDatumMetadataBiz" class="org.eniware.central.dautm.biz.dao.DaoDatumMetadataBiz">
 		<property name="generalLocationDatumMetadataDao" ref="generalLocationDatumMetadataDao"/>
 		<property name="generalEdgeDatumMetadataDao" ref="generalEdgeDatumMetadataDao"/>
 	</bean>

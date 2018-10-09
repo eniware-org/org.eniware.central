@@ -4,7 +4,7 @@
  * ==================================================================
  */
 
-package org.eniware.central.daum.biz.dao;
+package org.eniware.central.dautm.biz.dao;
 
 import java.util.List;
 import java.util.Set;
