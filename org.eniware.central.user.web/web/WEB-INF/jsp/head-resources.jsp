@@ -1,11 +1,10 @@
-<%@ taglib prefix="pack" uri="http://packtag.sf.net" %>
-<pack:style>
+<style>
 	/css/bootstrap.css
 	/css/bootstrap-theme.css
 	/css/global.css
 	/css/edit-Edge.css
-</pack:style>
-<pack:script> 
+</style>
+<script> 
 	/js-lib/jquery-2.1.1.js
 	/js-lib/jquery.form.js
 	/js-lib/jquery.maphilight.js
@@ -19,4 +18,4 @@
 	/js/auth-tokens.js
 	/js/alerts.js
 	/js/billing.js
-</pack:script>
+</script>
