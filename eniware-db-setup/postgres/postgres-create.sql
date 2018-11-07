@@ -4,7 +4,7 @@
  * appropriate.
  * ============================================================================
  */
-CREATE ROLE eniware LOGIN ENCRYPTED PASSWORD 'Eniware8' VALID UNTIL 'infinity';
+CREATE ROLE eniware WITH SUPERUSER LOGIN ENCRYPTED PASSWORD 'Eniware8' VALID UNTIL 'infinity';
 
 CREATE DATABASE eniware WITH ENCODING='UTF8' OWNER=eniware TEMPLATE=template0;
 
