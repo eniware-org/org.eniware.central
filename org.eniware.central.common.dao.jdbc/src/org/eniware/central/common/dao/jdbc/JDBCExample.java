@@ -1,61 +1,65 @@
 package org.eniware.central.common.dao.jdbc;
-
-import java.sql.*;
-
-public class JDBCExample {
-private static Statement sql;
-
-public static void main(String[] args)  throws ClassNotFoundException, SQLException{
-
-System.out.println("——– PostgreSQL " + "JDBC Connection Testing ————");
-
-try {
-
-Class.forName("org.postgresql.Driver");
-
-} catch (ClassNotFoundException e) {
-
-System.out.println("Where is your PostgreSQL JDBC Driver? " + "Include in your library path!");
-e.printStackTrace();
-return;
-
-}
-
-System.out.println("PostgreSQL JDBC Driver Registered!");
-
-Connection connection = null;
-
-try {
-
-connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/eniware", "postgres",
-"Eniware8");
-
-} catch (SQLException e) {
-
-System.out.println("Connection Failed! Check output console");
-e.printStackTrace();
-return;
-
-}
-
-sql = connection.createStatement();
-
-if (connection != null) {
-
-sqlStatement("INSERT INTO TESTTABLE (product_id,product_name,) VALUES(1,  ‘product1’)");
-System.out.println("Successfully added");
-
-} else {
-
-System.out.println("Failed to make connection!");
-
-}
-
-}
-
-private static void sqlStatement(String string) {
-	// TODO Auto-generated method stub
 	
-}
+	import java.sql.Connection;
+	import java.sql.DriverManager;
+	import java.sql.ResultSet;
+	import java.sql.SQLException;
+	import java.sql.Statement;
 
-}
+	/**
+	 * @author 
+	 */
+	public class JDBCExample {
+	  public static void main(String[] args) throws ClassNotFoundException {
+
+	    String jdbcUrl = "jdbc:postgresql://localhost:5432/eniware";
+	    String username = "eniware";
+	    String password = "Eniware8";
+
+	    Connection conn = null;
+	    Statement stmt = null;
+	    ResultSet rs = null;
+
+	    try {
+	      // Step 1 - Load driver
+	     // Class.forName("org.postgresql.Driver"); // Class.forName() is not needed since JDBC 4.0
+
+	      // Step 2 - Open connection
+	      conn = DriverManager.getConnection(jdbcUrl, username, password);
+
+	      // Step 3 - Execute statement
+	      stmt = conn.createStatement();
+	      rs = stmt.executeQuery("SELECT version()");
+
+	      // Step 4 - Get result
+	      if (rs.next()) {
+	        System.out.println(rs.getString(1));
+	      }
+
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	    } finally {
+	      try {
+
+	        // Step 5 Close connection
+	        if (stmt != null) {
+	          stmt.close();
+	        }
+	        if (rs != null) {
+	          rs.close();
+	        }
+	        if (conn != null) {
+	          conn.close();
+	        }
+	      } catch (Exception e) {
+	        e.printStackTrace();
+	      }
+	    }
+	  }
+	}
+
+	    
+	  
+	
+	
+
