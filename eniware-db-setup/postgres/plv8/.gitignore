@@ -2,3 +2,4 @@
 coverage/
 Edge_modules/
 tmp/
+/npm-debug.log
