@@ -1,4 +1,4 @@
-# SolarNet PostgreSQL Database Setup
+# EniwareNet PostgreSQL Database Setup
 
 SolarNet requires a [PostgreSQL][pgsql] database, version 9.6 or higher, to
 operate. Please note that only version 9.6 has been extensively tested. It also
@@ -14,8 +14,8 @@ requires the [plv8][plv8] extension.
 
 The `postgres-create.sql` script can be used to
 
- 1. Create a **solarnet** database user.
- 2. Create a **solarnetwork** database, owned by the **solarnet** user.
+ 1. Create a **eniware** database user.
+ 2. Create a **eniware** database, owned by the **eniware** user.
  3. Install the **citext** and **pgcrypto** extensions.
 
 This script should be run as a database superuser, for example **postgres**.
@@ -23,19 +23,9 @@ Assuming Postgres is available on the same machine you are are, the script can
 be executed similarly to this:
 
 ```shell
-$ psql -U postgres -d tempalte0 -f postgres-create.sql
+$ psql -U postgres -f postgres-create.sql
 ```
 
-Alternatively you can execute commands manually like the following:
-
-```shell
-$ createuser -U postgres -EP solarnet
-$ createdb -U postgres -E UTF8 -O solarnet -T template0 solarnetwork
-$ psql -U postgres -d solarnetwork \
-	-c 'CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;'
-$ psql -U postgres -d solarnetwork \
-	-c 'CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;'
-```
 
 ## Setup plv8
 
@@ -44,7 +34,7 @@ not the SolarNet database user, as it contains cluster-wide elements. Run the
 `postgres-init-plv8.sql` script as the superuser:
 
 ```shell
-$ psql -U postgres -d solarnetwork -f postgres-init-plv8.sql
+$ psql -U postgres -d eniware -f postgres-init-plv8.sql
 ```
 
 Now the `postgresql.conf` configuration must be updated to add the plv8 global
@@ -61,7 +51,7 @@ Now the SolarNet database schemas and tables can be created, this time as the
 normal database user:
 
 ```shell
-$ psql -U solarnet -d solarnetwork -f postgres-init.sql
+$ psql -U eniware -d eniware -f postgres-init.sql
 ```
 
 ## Done
