@@ -16,7 +16,7 @@ var sn = {
 	
 	config : {
 		debug : false,
-		host : 'data.network.eniware.org/',
+		host : 'network.eniware.org',
 		tls : (function() {
 			return (window !== undefined 
 				&& window.location.protocol !== undefined 
