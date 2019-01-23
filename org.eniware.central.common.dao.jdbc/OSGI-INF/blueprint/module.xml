@@ -21,9 +21,9 @@
 	
 	<osgix:cm-properties id="central.dao.cfg" persistent-id="org.eniware.central.dao.jdbc">
 		<beans:prop key="jdbc.driver">org.postgresql.Driver</beans:prop>
-		<beans:prop key="jdbc.url">jdbc:postgresql://localhost:5432/eniwarenetwork</beans:prop>
-		<beans:prop key="jdbc.user">eniwarenet</beans:prop>
-		<beans:prop key="jdbc.pass">eniwarenet</beans:prop>
+		<beans:prop key="jdbc.url">jdbc:postgresql://localhost:5432/eniware</beans:prop>
+		<beans:prop key="jdbc.user">eniware</beans:prop>
+		<beans:prop key="jdbc.pass">Eniware8</beans:prop>
 		<beans:prop key="jdbc.pool.initialSize">1</beans:prop>
 		<beans:prop key="jdbc.pool.minIdle">1</beans:prop>
 		<beans:prop key="jdbc.pool.maxIdle">4</beans:prop>

@@ -45,7 +45,7 @@ import org.springframework.util.FileCopyUtils;
  */
 public class DevEdgePKIBiz implements EdgePKIBiz {
 
-	private static final String WEBSERVER_KEYSTORE_PASSWORD = "dev123";
+	private static final String WEBSERVER_KEYSTORE_PASSWORD = "eniwareedge";
 	private static final String CA_ALIAS = "ca";
 	private static final String WEBSERVER_ALIAS = "web";
 	private static final String DIR_REQUESTS = "requests";
@@ -66,7 +66,7 @@ public class DevEdgePKIBiz implements EdgePKIBiz {
 	 * This method will generate a new certification authority (CA) certificate
 	 * if one does not already exist in the configured {@code baseDir}
 	 * directory. When it is generated, a copy of the keystore will be saved as
-	 * {@code central.jks} with a password {@code dev123}, which is designed to
+	 * {@code central.jks} with a password {@code eniwareedge}, which is designed to
 	 * be configured with your development webserver to support EniwareIn
 	 * development.
 	 * </p>
@@ -123,7 +123,7 @@ public class DevEdgePKIBiz implements EdgePKIBiz {
 
 					out = new BufferedOutputStream(new FileOutputStream(webserverKeyStoreFile));
 					webserverKeyStore.store(out, WEBSERVER_KEYSTORE_PASSWORD.toCharArray());
-					log.info("Development webserver keystore saved to {}; password is dev123",
+					log.info("Development webserver keystore saved to {}; password is eniwareedge",
 							webserverKeyStoreFile.getAbsolutePath());
 				} catch ( Exception e ) {
 					log.error("Error saving central webserver KeyStore [{}]", webserverKeyStoreFile, e);
