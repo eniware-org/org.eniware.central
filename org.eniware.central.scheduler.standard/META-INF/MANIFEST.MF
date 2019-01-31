@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EniwareNet Simple Task Scheduling Support
+Bundle-SymbolicName: org.eniware.central.scheduler.standard
+Bundle-Version: 1.0.0
+Bundle-Vendor: EniwareNetwork
+Automatic-Module-Name: org.eniware.central.scheduler.standard
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: 
+ org.springframework.core.task;version="[4.2,5.0)",
+ org.springframework.scheduling;version="[4.2,5.0)",
+ org.springframework.scheduling.concurrent;version="[4.2,5.0)"
